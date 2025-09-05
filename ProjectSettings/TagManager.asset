@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Ground
+  - Crystal
+  - CrystalJump
+  - CrystalDash
+  - Trap
+  - OneWay
+  - Breakable
+  - BounceLeftUp
+  - BounceRightUp
+  - SensorTrap
+  - Wall
+  - BackGround
+  - Bullet
+  - Pushable
+  - Lava
+  - Monster
+  - PlayerHitBox
+  - Player1
+  - Player2
+  - Swap
+  - LeftGo
+  - RightGo
+  - FastRun
+  - SlowRun
+  - Monkill
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Ground
+  - Water
+  - UI
+  - Player
+  - Wall
+  - EventGround
+  - Trap
+  - OneWayGround
+  - Slime
+  - Handle
+  - Monster
+  - OnlyGround
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  m_RenderingLayers:
+  - Default
