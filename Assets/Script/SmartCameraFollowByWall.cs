@@ -28,6 +28,9 @@ public class SmartCameraFollowByWall : MonoBehaviour
     [SerializeField] private float farDistance = 25f;  // 이 이상이면 거의 farColor
     [SerializeField] private UnityEngine.UI.Graphic indicatorGraphic; // 화살표 UI(Image 등)
 
+    [SerializeField] private GameObject Knight_UI;
+    [SerializeField] private GameObject Princess_UI;
+
     // ===== Off-screen Indicator UI =====
     [SerializeField] private Camera cam;                    // 비워두면 자동으로 Camera.main 사용
     [SerializeField] private RectTransform canvasRect;      // Canvas의 RectTransform
@@ -71,6 +74,12 @@ public class SmartCameraFollowByWall : MonoBehaviour
     }
 
 
+    private void Reset()
+    {
+        Knight_UI = gameObject;
+        Princess_UI = gameObject;
+    }
+
     void Start()
     {
         selectmark2.SetActive(false);
@@ -101,12 +110,16 @@ public class SmartCameraFollowByWall : MonoBehaviour
             {
                 if (!swapsup)
                 {
+                    Knight_UI.SetActive(true);
+                    Princess_UI.SetActive(false);
                     selectmark2.SetActive(false);
                     selectmark1.SetActive(true);
                     swapsup = true;
                 }
                 else if (swapsup)
                 {
+                    Knight_UI.SetActive(false);
+                    Princess_UI.SetActive(true);
                     selectmark2.SetActive(true);
                     selectmark1.SetActive(false);
                     swapsup = false;

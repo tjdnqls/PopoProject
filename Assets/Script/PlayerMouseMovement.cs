@@ -22,7 +22,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [Header("Carry Drop/Throw Spawn")]
     [SerializeField] private float carryDropForward = 0.35f; // 바라보는 방향으로 얼마나 앞에 둘지
 
-
     // 내부 캐시 (코드에서만 사용)
     private int groundMask, eventMask, trapMask, slimeMask;
     private LayerMask slimeLayerMask; // ContactFilter2D 용
@@ -48,10 +47,22 @@ public class PlayerMouseMovement : MonoBehaviour
     public SwapController swap;
 
     [Header("Carry Animation/Lock")]
-    [SerializeField] private float carryLockDuration = 0.6f; // 캐리/해제 시 입력잠금
+    [SerializeField] private float carryLockDuration = 0.6f; // 기존 고정 잠금(백업용)
     [SerializeField] private string carryBoolName = "carry"; // Animator Bool 파라미터명
 
+    // === Carry Timing (anim-driven) ===
+    [Header("Carry Timing (Anim-driven)")]
+    [SerializeField] private bool useAnimDrivenCarry = true;
+    [SerializeField] private float carryStartMinLock = 0.08f;
+    [SerializeField] private float carryEndMinLock = 0.06f;
+
+    // ▼ 정확히 0.6초 후에 보이게 고정
+    [SerializeField] private float revealDelayOnDrop = 0.6f; // EXACT 0.6s
+    private Coroutine _carryLockCo;
+
     private Coroutine _revealCo; // P2 복귀 코루틴
+    private Coroutine _throwResetCo; // throw 종료 타이머
+
 
     // === 접지/레이 거리 ===
     [Header("Ray distances")]
@@ -60,7 +71,7 @@ public class PlayerMouseMovement : MonoBehaviour
     public float checkceilingtrap = 0.7f;
 
     [Header("Carry Cooldown")]
-    [SerializeField] private float carryCooldown = 0.7f;   // 해제 후 추가 쿨타임
+    [SerializeField] private float carryCooldown = 1.4f;   // 해제 후 추가 쿨타임
     private float nextCarryAllowedAt = 0f;                    // 다음 캐리 허용 시각
 
     // === 키보드 이동 파라미터 (아이워너 느낌) ===
@@ -307,7 +318,6 @@ public class PlayerMouseMovement : MonoBehaviour
         bool suppressed = Time.time < swapSuppressUntil;
         bool locked = suppressed || Time.time < inputLockUntil;
 
-
         if (IsDead)
         {
             rawX = 0f;
@@ -398,7 +408,7 @@ public class PlayerMouseMovement : MonoBehaviour
         if (rawX != 0f)
         {
             dir = rawX > 0 ? 1f : -1f;
-            transform.localScale = new Vector3(dirseto ? dir : dir * 0.5f, dirsetofl, dirsetofl);
+            transform.localScale = new Vector3(dirseto ? dir : dir * 1f, dirsetofl, dirsetofl);
         }
 
         // 천장 트랩
@@ -424,8 +434,8 @@ public class PlayerMouseMovement : MonoBehaviour
         else
         {
             dirseto = false;
-            dir = 0.5f;
-            dirsetofl = 0.5f;
+            dir = 1f;
+            dirsetofl = 1f;
             groundrayDistance = 0.7f;
             breakrayDistance = 0.6f;
             checkceilingtrap = 0.35f;
@@ -611,6 +621,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
             ballisticThrowActive = false;
         }
+        wasGroundedThisFrame = groundedThisFrame; // fix typo -> declare var correctly
         wasGrounded = groundedThisFrame;
 
         touchL_byTrigger = touchR_byTrigger = false;
@@ -620,6 +631,13 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D col)
     {
+        if (playerID == SwapController.PlayerChar.P1 && otherPlayer != null)
+        {
+            var op = col.collider.GetComponentInParent<PlayerMouseMovement>();
+            if (op != null && op == otherPlayer)
+                isCarried = true;
+        }
+
         if (!IsInLayerMask(col.collider.gameObject.layer, slimeLayerMask)) return;
 
         for (int i = 0; i < col.contactCount; i++)
@@ -628,43 +646,18 @@ public class PlayerMouseMovement : MonoBehaviour
             if (n.x > 0.35f) touchL_byCollision = true;
             if (n.x < -0.35f) touchR_byCollision = true;
         }
+    }
 
-        // === 캐리 대상 접촉 체크 ===
-        if (playerID == SwapController.PlayerChar.P1 && otherPlayer != null)
-        {
-            var op = col.collider.GetComponentInParent<PlayerMouseMovement>();
-            if (op != null && op == otherPlayer)
-                isCarried = true;
-        }
-        // === 캐리 대상 이탈 체크 ===
+    void OnCollisionExit2D(Collision2D col)
+    {
+        // 캐리 대상 이탈 체크는 Exit에서 처리
         if (playerID == SwapController.PlayerChar.P1 && otherPlayer != null)
         {
             var op = col.collider.GetComponentInParent<PlayerMouseMovement>();
             if (op != null && op == otherPlayer)
                 isCarried = false;
         }
-    }
 
-    private void TryStartCarryNow()
-    {
-        if (Time.time < nextCarryAllowedAt) return;  // 시간 가드 추가
-
-        if (otherPlayer == null || isCarrying || bodyCollider == null || otherPlayer.bodyCollider == null)
-            return;
-
-        var d = Physics2D.Distance(bodyCollider, otherPlayer.bodyCollider);
-        bool closeEnough = d.isOverlapped || d.distance <= carryPickupMaxGap;
-        if (!closeEnough)
-        {
-            Debug.Log($"[Carry] too far: overlapped={d.isOverlapped}, dist={d.distance:F3}, need<={carryPickupMaxGap:F3}");
-            return;
-        }
-
-        StartCarry();
-    }
-
-    void OnCollisionExit2D(Collision2D col)
-    {
         if (!IsInLayerMask(col.collider.gameObject.layer, slimeLayerMask)) return;
         touchL_byCollision = false;
         touchR_byCollision = false;
@@ -714,6 +707,23 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+    private void TryStartCarryNow()
+    {
+        if (Time.time < nextCarryAllowedAt) return;
+
+        if (otherPlayer == null || isCarrying || bodyCollider == null || otherPlayer.bodyCollider == null)
+            return;
+
+        var d = Physics2D.Distance(bodyCollider, otherPlayer.bodyCollider);
+        bool closeEnough = d.isOverlapped || d.distance <= carryPickupMaxGap;
+        if (!closeEnough)
+        {
+            Debug.Log($"[Carry] too far: overlapped={d.isOverlapped}, dist={d.distance:F3}, need<={carryPickupMaxGap:F3}");
+            return;
+        }
+
+        StartCarry();
+    }
 
     private void TryResolveSwap()
     {
@@ -758,13 +768,21 @@ public class PlayerMouseMovement : MonoBehaviour
         for (int i = 0; i < rends.Length; i++) rends[i].enabled = visible;
     }
 
-    // P2를 delay 뒤에 다시 보이게
+    // P2를 delay 뒤에 다시 보이게 (정확히 0.6초: Real-time 기준)
     private IEnumerator RevealOtherAfter(float delay)
     {
-        yield return new WaitForSeconds(delay);
-
+        // 정확한 실시간 딜레이(타임스케일 영향 없음)
+        yield return new WaitForSecondsRealtime(delay);
         SetOtherPlayerVisible(true);
     }
+
+    private IEnumerator ResetThrowAfter(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        if (rb2) rb2.SetBool("carry", false);
+        if (rb2) rb2.SetBool("throw", false);
+    }
+
     private void StartCarry()
     {
         if (otherPlayer == null || isCarrying) return;
@@ -782,17 +800,13 @@ public class PlayerMouseMovement : MonoBehaviour
         otherPlayer.transform.position = transform.position + new Vector3(0f, carryOffsetY, 0f);
 
         SetOtherPlayerVisible(false);
-        
-        SuppressInputFor(carryLockDuration, true);
-        rb2.SetBool("carry", true);
 
-        // ▼ 캐리 시작: 락 끝날 때까지 재토글 금지
-        nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, Time.time + carryLockDuration);
+        // 애니 기반 입력잠금 시작
+        BeginCarryStartLock();
+        rb2.SetBool("carry", true);
 
         if (_revealCo != null) { StopCoroutine(_revealCo); _revealCo = null; }
     }
-
-
 
     private void StopCarry()
     {
@@ -807,49 +821,48 @@ public class PlayerMouseMovement : MonoBehaviour
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) horizSign = -1;
         bool upHeld = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
 
-        // 바라보는 방향(+1/-1)
         int facingSign = (transform.localScale.x >= 0f) ? +1 : -1;
-
-        // 스폰 방향: 입력이 있으면 입력 방향, 없으면 바라보는 방향
         int spawnSign = (horizSign != 0) ? horizSign : facingSign;
 
-        // 플레이어1 기준 ‘조금 앞 + 살짝 위’에 배치
         Vector3 spawnOffset = new Vector3(spawnSign * carryDropForward,
                                           carryOffsetY + carryThrowSeparation, 0f);
 
+        // 분리 & 위치
         otherPlayer.transform.SetParent(otherOriginalParent, worldPositionStays: true);
         otherPlayer.transform.position = transform.position + spawnOffset;
 
+        // 물리/상태 복구
         otherPlayer.rb.simulated = true;
         otherPlayer.isCarried = false;
 
         bool anyDir = (horizSign != 0) || upHeld;
+
         if (!anyDir)
         {
-            // === 드롭 ===
+            // === DROP: 0.6초 후에 보이기 유지 ===
             otherPlayer.rb.linearVelocity = Vector2.zero;
             otherPlayer.ballisticThrowActive = false;
+
             isCarrying = false;
             carryset = false;
-
-            // 연출: 애니 off + 입력잠금 + P2 0.6초 후 보이기
             rb2.SetBool("carry", false);
-            SuppressInputFor(carryCooldown, true);
+
+            BeginCarryEndLock();
+
             if (_revealCo != null) StopCoroutine(_revealCo);
-            _revealCo = StartCoroutine(RevealOtherAfter(carryLockDuration));
+            _revealCo = StartCoroutine(RevealOtherAfter(0.6f)); // 정확히 0.6초
+
             Debug.Log("[Carry] DROP (no input)");
             return;
         }
 
-        // === 던지기 ===
+        // === THROW: 즉시 보이기 ===
         float vx = horizSign * carryThrowSideSpeed;
         float vy = carryThrowUpSpeed;
-
         otherPlayer.rb.linearVelocity = new Vector2(vx, vy);
 
         otherPlayer.ballisticThrowActive = true;
         otherPlayer.ballisticThrowEndTime = Time.time + otherPlayer.carryThrowBallisticMinTime;
-
         otherPlayer.didCutThisJump = true;
         otherPlayer.lastJumpStartTime = Time.time;
         otherPlayer.ignoreGroundUntil = Time.time + otherPlayer.postJumpGroundIgnore;
@@ -857,14 +870,26 @@ public class PlayerMouseMovement : MonoBehaviour
         isCarrying = false;
         carryset = false;
 
-        //// 연출: 애니 off + 입력잠금 + P2 0.6초 후 보이기
-        rb2.SetBool("carry", false);
-        SuppressInputFor(carryLockDuration, true);
-        if (_revealCo != null) StopCoroutine(_revealCo);
-        _revealCo = StartCoroutine(RevealOtherAfter(carryLockDuration));
+        // 캐리 애니는 해제, 던지기 애니는 on
+        rb2.SetBool("throw", true);
 
-        // ▼ 캐리 해제: 락(0.6) + 추가 쿨타임(0.5) 동안 재토글 금지
-        nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, Time.time + carryLockDuration + carryCooldown);
+        // 애니 기반 잠금(기존 로직 유지)
+        BeginCarryEndLock();
+
+        // ▶ P1은 0.7초 동안 이동 불가 + 그 뒤 throw false
+        if (playerID == SwapController.PlayerChar.P1)
+        {
+            inputLockUntil = Mathf.Max(inputLockUntil, Time.time + 0.6f);
+
+            if (_throwResetCo != null) StopCoroutine(_throwResetCo);
+            _throwResetCo = StartCoroutine(ResetThrowAfter(0.6f));
+        }
+
+
+        
+        // 던지기는 바로 가시화
+        if (_revealCo != null) { StopCoroutine(_revealCo); _revealCo = null; }
+        SetOtherPlayerVisible(true);
 
         Debug.Log("[Carry] THROW input: up=" + upHeld + " horiz=" + horizSign + " vel=" + new Vector2(vx, vy));
     }
@@ -972,6 +997,74 @@ public class PlayerMouseMovement : MonoBehaviour
         // selectedObject는 fPulseDuration 타이머로 별도 종료됨
     }
 
+    // === 애니 기반 잠금 유틸 ===
+    private void CancelCarryLock()
+    {
+        if (_carryLockCo != null)
+        {
+            StopCoroutine(_carryLockCo);
+            _carryLockCo = null;
+        }
+    }
+
+    private float GetCurrentClipLengthSec(int layer = 0)
+    {
+        if (!rb2) return 0f;
+        var clips = rb2.GetCurrentAnimatorClipInfo(layer);
+        if (clips != null && clips.Length > 0 && clips[0].clip)
+        {
+            float speed = Mathf.Max(0.0001f, rb2.speed);
+            return clips[0].clip.length / speed;
+        }
+        return 0f;
+    }
+
+    private IEnumerator LockForAnimation(float minLockSeconds, bool zeroHorizontalVelocity)
+    {
+        float t0 = Time.time;
+
+        inputLockUntil = Mathf.Max(inputLockUntil, t0 + 0.0001f);
+
+        if (zeroHorizontalVelocity && rb)
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+
+        yield return null; // 상태 전이 후 길이 측정
+
+        float clipLen = useAnimDrivenCarry ? GetCurrentClipLengthSec() : 0f;
+        float lockFor = Mathf.Max(minLockSeconds, clipLen);
+
+        inputLockUntil = Time.time + lockFor;
+
+        while (Time.time < inputLockUntil)
+            yield return null;
+
+        _carryLockCo = null;
+    }
+
+    private void BeginCarryStartLock()
+    {
+        CancelCarryLock();
+        _carryLockCo = StartCoroutine(LockForAnimation(carryStartMinLock, true));
+
+        float planned = Time.time + Mathf.Max(carryStartMinLock, useAnimDrivenCarry ? GetCurrentClipLengthSec() : 0f);
+        nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, planned);
+    }
+
+    private void BeginCarryEndLock()
+    {
+        CancelCarryLock();
+        _carryLockCo = StartCoroutine(LockForAnimation(carryEndMinLock, true));
+
+        float planned = Time.time + Mathf.Max(carryEndMinLock, useAnimDrivenCarry ? GetCurrentClipLengthSec() : 0f) + carryCooldown;
+        nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, planned);
+    }
+
+    // 애니메이션 이벤트 훅(선택 사용)
+    public void AE_CarryStart_Begin() { }
+    public void AE_CarryStart_End() { inputLockUntil = Time.time; }
+    public void AE_CarryEnd_Begin() { }
+    public void AE_CarryEnd_End() { inputLockUntil = Time.time; }
+
     // === 탄도 유지 판단용: Ground만 짧게 본다(OneWay/Event는 무시) ===
     private bool IsGroundedStrictSmall()
     {
@@ -992,6 +1085,7 @@ public class PlayerMouseMovement : MonoBehaviour
 #endif
         return hit != null;
     }
+
     private void SetFrictionless(bool on)
     {
         if (!bodyCollider) return;
@@ -1111,6 +1205,8 @@ public class PlayerMouseMovement : MonoBehaviour
             (centerHit.collider && ((trapLayerIndex >= 0 && centerHit.collider.gameObject.layer == trapLayerIndex) || centerHit.collider.CompareTag("Trap"))) ||
             (leftHit.collider && ((trapLayerIndex >= 0 && leftHit.collider.gameObject.layer == trapLayerIndex) || leftHit.collider.CompareTag("Trap"))) ||
             (rightHit.collider && ((trapLayerIndex >= 0 && rightHit.collider.gameObject.layer == trapLayerIndex) || rightHit.collider.CompareTag("Trap")));
-
     }
+
+    // 내부 필드 보정
+    private bool wasGroundedThisFrame; // added to fix reference in FixedUpdate
 }
