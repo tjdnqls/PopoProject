@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1360708946295218638}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5371785, y: 2.244407, z: 0}
+  m_LocalPosition: {x: 10.966642, y: -38.347412, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -153,7 +153,9 @@ MonoBehaviour:
   - Default
   - Ground
   ignoreWithAllLayers: 0
-  onlyTheseLayerNames: []
+  onlyTheseLayerNames:
+  - Player
+  - Monster
   alsoIgnoreBloodWithBlood: 1
   revertOnDisable: 0
 --- !u!50 &5198889387107018510

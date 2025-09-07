@@ -47,10 +47,12 @@ public class Player1HP : MonoBehaviour
 
         if (CurrentHP <= 0)
         {
+            CameraShaker.Shake(0.5f, 0.2f);
             Die(); // Die() 내부에서 HpChanged(0, max)와 Died 호출
         }
         else
         {
+            CameraShaker.Shake(0.5f, 0.2f);
             HpChanged?.Invoke(CurrentHP, maxHP); // ★ 감소 알림
         }
     }

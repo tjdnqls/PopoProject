@@ -95,6 +95,19 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     [Header("Death")]
     [SerializeField] private float despawnDelay = 3f;
 
+    // ====== 추가: Death VFX (Blood) ======
+    [Header("Death VFX (Blood)")]
+    [SerializeField] private GameObject blood0Prefab;
+    [SerializeField] private GameObject blood1Prefab;
+    [SerializeField] private int burstBloodCount = 10;              // 즉시 분출 개수
+    [SerializeField] private float burstRadius = 0.35f;            // 즉시 분출 반경
+    [SerializeField] private Vector2 burstSpeedRange = new Vector2(1.2f, 3.0f); // 즉시 분출 속도
+    [SerializeField] private float sustainDelay = 0.3f;            // 발 분출 시작 지연
+    [SerializeField] private float sustainDuration = 3.0f;         // 발 분출 지속 시간
+    [SerializeField] private Vector2 sustainIntervalRange = new Vector2(0.06f, 0.20f); // 분출 간격
+    [SerializeField] private float sustainJitter = 0.06f;          // 발 분출 위치 지터
+    [SerializeField] private float bloodLifetime = 3.0f;           // 혈흔 자동 소멸 시간
+
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private bool logPing = false;
@@ -144,6 +157,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     // 사망 위치 고정
     private Vector3 _deathPos;
     private Quaternion _deathRot;
+    private Vector3 _deathFeetPos; // ★ 발 위치 캐시
 
     // ---------- Helpers ----------
     private static bool IsOnLayerMask(int layer, LayerMask mask) => (mask.value & (1 << layer)) != 0;
@@ -288,7 +302,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         // 1) 핑 기반 후보 스캔 & 발사
         ScanAndShootPings();
 
-        // 2) 직감지(백업) — 핑이 없거나 실패해도 즉시 인지
+        // 2) 직감지(백업)
         if (enableDirectDetect)
         {
             if (TryDetectNearest(playerMask, directDetectRadius, out Transform p))
@@ -653,19 +667,27 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         StartDeathSequence("OnHit");
     }
 
-    // 사망 시 공통 진입: 전면 정지 + Hit→Death 연출 + 위치 고정
+    // 사망 시 공통 진입: 전면 정지 + Hit→Death 연출 + 위치 고정 + Blood VFX
     private void StartDeathSequence(string reason)
     {
         if (isDying) return;
         isDying = true;
         state = State.Dead;
 
-        // 좌표 고정 스냅샷
+        // 좌표 고정 스냅샷 (★ Feet도 이 타이밍에 미리 계산해둔다)
         _deathPos = transform.position;
         _deathRot = transform.rotation;
+        _deathFeetPos = GetFeetWorldFallback(); // body.enabled 끄기 전에 계산
+
+        // === 발 분출 예약 ===
+        if ((blood0Prefab || blood1Prefab) && sustainDuration > 0f)
+            StartCoroutine(FootBloodSustain());
 
         // 모든 코루틴 종료
         StopAllCoroutines();
+
+        // === 즉시 혈흔 버스트 ===
+        SpawnBloodBurst(GetBodyCenterFallback(), burstBloodCount);
 
         // 이동/물리 완전 봉인
         StopHorizontal();
@@ -674,7 +696,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            rb.simulated = false; // ★ 물리 완전 비활성 (다른 힘/중력 무시)
+            rb.simulated = false; // 물리 비활성
         }
 
         // 충돌/히트박스 차단
@@ -705,6 +727,86 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             yield return null;
         }
         Destroy(gameObject);
+    }
+
+    // === Blood VFX Helpers ===
+    private Vector3 GetBodyCenterFallback()
+    {
+        if (body != null)
+        {
+            var b = body.bounds;
+            return b.center;
+        }
+        return transform.position;
+    }
+
+    private Vector3 GetFeetWorldFallback()
+    {
+        if (body != null)
+        {
+            var b = body.bounds;
+            return new Vector3(b.center.x, b.min.y + feetYOffset, transform.position.z);
+        }
+        // 대충 발 위치 추정 (콜라이더가 없을 경우)
+        return transform.position + new Vector3(0f, -0.25f, 0f);
+    }
+
+    private void SpawnBloodBurst(Vector3 center, int count)
+    {
+        if (!blood0Prefab && !blood1Prefab) return;
+
+        for (int i = 0; i < count; i++)
+        {
+            var prefab = (UnityEngine.Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
+            if (!prefab) continue;
+
+            Vector2 dir = UnityEngine.Random.insideUnitCircle.normalized;
+            float dist = UnityEngine.Random.Range(0.05f, burstRadius);
+            Vector3 pos = center + (Vector3)(dir * dist);
+
+            var go = Instantiate(prefab, pos, Quaternion.identity);
+            if (go.TryGetComponent<Rigidbody2D>(out var r2d))
+            {
+                float spd = UnityEngine.Random.Range(burstSpeedRange.x, burstSpeedRange.y);
+                r2d.AddForce(dir * spd, ForceMode2D.Impulse);
+                r2d.AddTorque(UnityEngine.Random.Range(-10f, 10f), ForceMode2D.Impulse);
+            }
+            if (bloodLifetime > 0f) Destroy(go, bloodLifetime);
+        }
+    }
+
+    private IEnumerator FootBloodSustain()
+    {
+        // 시작 지연
+        if (sustainDelay > 0f) yield return new WaitForSeconds(sustainDelay);
+
+        float t = 0f;
+        while (t < sustainDuration)
+        {
+            // 발 기준 위치 + 지터
+            Vector2 jitter = UnityEngine.Random.insideUnitCircle * sustainJitter;
+            Vector3 pos = _deathFeetPos + (Vector3)jitter;
+
+            // 위쪽 반구 쏘기(자연스러운 분사)
+            Vector2 dir = (Vector2.up + UnityEngine.Random.insideUnitCircle * 0.6f).normalized;
+            float spd = UnityEngine.Random.Range(burstSpeedRange.x * 0.6f, burstSpeedRange.y);
+
+            var prefab = (UnityEngine.Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
+            if (prefab)
+            {
+                var go = Instantiate(prefab, pos, Quaternion.identity);
+                if (go.TryGetComponent<Rigidbody2D>(out var r2d))
+                {
+                    r2d.AddForce(dir * spd, ForceMode2D.Impulse);
+                    r2d.AddTorque(UnityEngine.Random.Range(-12f, 12f), ForceMode2D.Impulse);
+                }
+                if (bloodLifetime > 0f) Destroy(go, bloodLifetime);
+            }
+
+            float wait = UnityEngine.Random.Range(sustainIntervalRange.x, sustainIntervalRange.y);
+            t += wait;
+            yield return new WaitForSeconds(wait);
+        }
     }
 
     // Death/Instant Kill 양쪽에서 히트박스 완전 비활성화

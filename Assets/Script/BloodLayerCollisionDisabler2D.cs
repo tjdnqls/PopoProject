@@ -19,7 +19,7 @@ public class BloodLayerCollisionDisabler2D : MonoBehaviour
     [SerializeField] private bool ignoreWithAllLayers = false;
 
     [Tooltip("ignoreWithAllLayers=false일 때만 사용: 이 배열의 레이어들과 Blood 충돌을 끊습니다.")]
-    [SerializeField] private string[] onlyTheseLayerNames = new string[0];
+    [SerializeField] private string[] onlyTheseLayerNames ={ "Player", "Monster" };
 
 
 

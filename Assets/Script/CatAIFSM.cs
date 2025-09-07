@@ -82,12 +82,23 @@ public class CatAIFSM : MonoBehaviour
     [SerializeField] private Vector2 lowerEmitLocalOffset = new Vector2(0f, +0.05f);
     [SerializeField] private float emitJitter = 0.06f;
 
+    // ====== Facing Control ======
+    [Header("Facing Control")]
+    [SerializeField] private bool lockFacingInFlee = true; // Flee 동안 스프라이트 방향 고정
+    private SpriteRenderer _sr; // 본체 SR 캐시
+
+    // ====== NEW: Flee 타겟 & 히스테리시스 ======
+    [Header("Flee Tuning")]
+    [Tooltip("몬스터가 x축으로 이 거리 이상 반대편으로 넘어갔을 때만 도망 방향을 뒤집습니다.")]
+    [SerializeField] private float fleeFlipHysteresis = 0.35f;
+
     // runtime
     private State _state = State.Wander;
     private int _dir = +1;
     private float _stateTimer;
     private float _fleeStartTime;
-    private int _fleeDir = +1;
+    private int _fleeDir = +1;       // 현재 도망 방향(+1/-1)
+    private Transform _fleeTarget;   // 현재 도망의 기준이 되는 몬스터
     private float _nextMeowAvailableTime = 0f;
     private bool _lastLoungeWasLaying;
     private readonly Collider2D[] _scanBuf = new Collider2D[8];
@@ -109,6 +120,9 @@ public class CatAIFSM : MonoBehaviour
         if (!body) body = GetComponent<Collider2D>();
         if (!anim) anim = GetComponentInChildren<SpriteAnimationManager>();
 
+        _sr = anim ? anim.GetComponentInChildren<SpriteRenderer>(true)
+                   : GetComponentInChildren<SpriteRenderer>(true);
+
         _dir = startRandomDirection ? (UnityEngine.Random.value < 0.5f ? -1 : +1)
                                     : (startDir >= 0 ? +1 : -1);
 
@@ -129,15 +143,21 @@ public class CatAIFSM : MonoBehaviour
 
     void Update()
     {
-        // 1) 몬스터 감지 → Flee 우선
+        // --- 몬스터 감지 → Flee 우선 ---
         if (TryDetectNearest(monsterMask, monsterDetectRadius, out Transform monster))
         {
             if (_state != State.Flee)
             {
                 _state = State.Flee;
+                _fleeTarget = monster; // ▶ 이번 도망의 기준 타겟 고정
                 _fleeStartTime = Time.time;
-                _fleeDir = (transform.position.x - monster.position.x) >= 0f ? +1 : -1;
+
+                // 진입 즉시 몬스터 반대방향으로 설정
+                _fleeDir = (transform.position.x - _fleeTarget.position.x) >= 0f ? +1 : -1;
+                _dir = _fleeDir;
                 PlayLoop(clipRun, true, interruptOneShot: true);
+                ForceRunDuringFlee();
+                ApplyFacing(_fleeDir);
             }
         }
 
@@ -236,11 +256,11 @@ public class CatAIFSM : MonoBehaviour
                 break;
         }
 
-        // 스프라이트 좌우 뒤집기
-        if (faceFlipX && anim != null)
+        // --- 스프라이트 좌우 제어(중앙집중) ---
+        if (faceFlipX && _sr)
         {
-            var sr = anim.GetComponentInChildren<SpriteRenderer>();
-            if (sr) sr.flipX = (_dir < 0);
+            int faceDir = (_state == State.Flee && lockFacingInFlee) ? _fleeDir : _dir;
+            _sr.flipX = (faceDir < 0);
         }
     }
 
@@ -253,7 +273,12 @@ public class CatAIFSM : MonoBehaviour
                 MoveX(walkSpeed, obeyObstacles: true);
                 break;
             case State.Flee:
-                MoveX(runSpeed, obeyObstacles: false);
+                // 도망 중에는 기존 경로/장애물 로직 완전 무시하고, 몬스터의 반대방향으로만 달림
+                _dir = _fleeDir;
+                ApplyFacing(_fleeDir);
+                var v = rb.linearVelocity;
+                v.x = _dir * runSpeed;
+                rb.linearVelocity = v;
                 break;
         }
     }
@@ -273,36 +298,30 @@ public class CatAIFSM : MonoBehaviour
     private void DoGoreAndDie()
     {
         if (_gibbed) return;
+        CameraShaker.Shake(0.5f, 0.2f);
         _gibbed = true;
 
         Vector3 center = body ? (Vector3)body.bounds.center : transform.position;
         float halfGap = body ? Mathf.Clamp(body.bounds.extents.y * 0.25f, 0.03f, 0.20f) : 0.08f;
 
-        // 상/하반신 위치
         Vector3 posUpper = center + new Vector3(0f, +halfGap, 0f);
         Vector3 posLower = center + new Vector3(0f, -halfGap, 0f);
 
-        // 프리팹 스폰
         GameObject upper = upperPrefab ? Instantiate(upperPrefab, posUpper, Quaternion.identity) : null;
         GameObject lower = lowerPrefab ? Instantiate(lowerPrefab, posLower, Quaternion.identity) : null;
 
-        // 좌우 방향 맞추기
         bool faceLeft = (_dir < 0);
         ApplyFacingToGib(upper, faceLeft);
         ApplyFacingToGib(lower, faceLeft);
 
-        // 즉시 분출(10개)
         BurstBlood(center, burstBloodCount);
 
-        // 각 잔해에서 지속 분출
         if (upper) AttachEmitter(upper, upperEmitLocalOffset);
         if (lower) AttachEmitter(lower, lowerEmitLocalOffset);
 
-        // 수명
         if (upper) Destroy(upper, halvesLifetime);
         if (lower) Destroy(lower, halvesLifetime);
 
-        // 원본 제거
         Destroy(gameObject);
     }
 
@@ -332,15 +351,12 @@ public class CatAIFSM : MonoBehaviour
             Vector3 pos = center + (Vector3)(dir * dist);
 
             var go = Instantiate(prefab, pos, Quaternion.identity);
-            // 리지드바디가 있으면 튀게 만든다
             if (go.TryGetComponent<Rigidbody2D>(out var r2d))
             {
                 float spd = UnityEngine.Random.Range(burstSpeedRange.x, burstSpeedRange.y);
                 r2d.AddForce(dir * spd, ForceMode2D.Impulse);
                 r2d.AddTorque(UnityEngine.Random.Range(-10f, 10f), ForceMode2D.Impulse);
             }
-
-            // 프리팹이 자체 소멸이 없다면 안전망(3초)
             Destroy(go, 3f);
         }
     }
@@ -354,7 +370,7 @@ public class CatAIFSM : MonoBehaviour
         em.intervalMax = emitIntervalMax;
         em.localOffset = localOffset;
         em.jitter = emitJitter;
-        em.autoDestroySeconds = 3f; // 개별 혈흔 수명
+        em.autoDestroySeconds = 3f;
     }
 
     // ====== STATE TICKS ======
@@ -365,17 +381,32 @@ public class CatAIFSM : MonoBehaviour
 
     private void TickFlee()
     {
-        bool monsterInRange = TryDetectNearest(monsterMask, monsterDetectRadius, out _);
+        ForceRunDuringFlee();
+        // 추격 지속 조건
+        bool monsterInRange = TryDetectNearest(monsterMask, monsterDetectRadius, out var m);
         bool overTime = (Time.time - _fleeStartTime) >= fleeMaxDurationSec;
 
-        if (!monsterInRange || overTime)
+        // 현재 타겟 유지(가장 가까운 몬스터 갱신). 없으면 기존 _fleeTarget 유지
+        if (m) _fleeTarget = m;
+
+        if (!monsterInRange || overTime || !_fleeTarget)
         {
             _state = State.Wander;
             PlayLoop(clipWalk, true, interruptOneShot: true);
             PickRandomDir();
+            _fleeTarget = null;
             return;
         }
-        _dir = _fleeDir;
+
+        // === 핵심: 몬스터 반대 방향으로만 ===
+        float dx = _fleeTarget.position.x - transform.position.x;
+        int desired = (dx >= 0f) ? -1 : +1; // 몬스터가 오른쪽에 있으면 왼쪽(-1)으로 도망
+        if (desired != _fleeDir && Mathf.Abs(dx) > fleeFlipHysteresis)
+        {
+            _fleeDir = desired; // 히스테리시스 넘었을 때만 뒤집기 → 좌우 깜빡임 방지
+        }
+
+        _dir = _fleeDir; // 다른 로직과 겹치지 않도록 내부 방향도 동일하게 유지
     }
 
     // ====== MOVEMENT / PHYSICS ======
@@ -446,6 +477,12 @@ public class CatAIFSM : MonoBehaviour
         if (!target) return;
         _dir = (target.position.x - transform.position.x) >= 0f ? +1 : -1;
     }
+    private void ApplyFacing(int dir)
+    {
+        if (!faceFlipX || !_sr) return;
+        _sr.flipX = (dir < 0);
+    }
+
     private void WarnIfMissingClips()
     {
         if (!anim) return;
@@ -482,6 +519,12 @@ public class CatAIFSM : MonoBehaviour
         }
 
         if (meowVFXAutoDestroy > 0f) Destroy(vfx, meowVFXAutoDestroy);
+    }
+    private void ForceRunDuringFlee()
+    {
+        if (!anim) return;
+        // 원샷이든 무엇이든 켜져 있으면 즉시 Run으로 덮어쓰기
+        anim.Play(clipRun, forceRestart: true, interruptOneShot: true);
     }
 
     // 레이어 충돌 전역 무시(플레이어/몬스터)
