@@ -1,5 +1,4 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -22,14 +21,8 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
     [SerializeField] private float fadeInSec = 0.25f;
     [SerializeField] private float fadeOutSec = 0.25f;
 
-    [Header("Position by Facing (Player2)")]
-    [SerializeField] private Vector2 offsetRight = new Vector2(0.6f, 1.6f); // 바라보는 방향이 오른쪽일 때 오프셋
-    [SerializeField] private Vector2 offsetLeft = new Vector2(-0.6f, 1.6f); // 바라보는 방향이 왼쪽일 때 오프셋
-    [SerializeField] private bool mirrorScaleXByFacing = true;  // 왼/오 전환 시 프리팹 X 스케일 반전
-
-    [Header("Facing source (optional)")]
-    [SerializeField] private SpriteRenderer facingSprite; // flipX 기준; 비우면 자동 탐색
-    [SerializeField] private Rigidbody2D facingRb;        // 없을 때 속도로 보조 판단
+    [Header("Popup Position")]
+    [SerializeField] private Vector2 offsetRight = new Vector2(0.6f, 1.6f); // 항상 이 오프셋만 사용
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
@@ -46,7 +39,6 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
     private bool _isShowing = false;
 
     private Player1HP _p1hp; // 죽음 무시 옵션을 위한 캐시
-    private Vector3 _popupOriginalScale = Vector3.one;
 
     // ===== Unity =====
     private void Reset()
@@ -63,15 +55,11 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
     {
         if (!player2) player2 = transform;
 
-        if (!facingSprite) facingSprite = player2.GetComponentInChildren<SpriteRenderer>();
-        if (!facingRb) facingRb = player2.GetComponent<Rigidbody2D>();
-
         if (player1) _p1hp = player1.GetComponent<Player1HP>();
 
         if (popupPrefab)
         {
             _popup = Instantiate(popupPrefab, transform); // player2의 자식으로 생성(월드 공간 프리팹이어도 괜찮음)
-            _popupOriginalScale = _popup.transform.localScale;
             _popupCG = _popup.GetComponentInChildren<CanvasGroup>();
 
             // 스프라이트/문자 렌더러 수집(알파 페이드용)
@@ -97,9 +85,12 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
             _stayTimer = 0f;
             _wasInside = false;
             _lockedUntilExit = false;
-            // 표시 중이라면 바로 페이드아웃(강제 끝)
-            if (_isShowing) StopAllCoroutines();
-            if (_isShowing) StartCoroutine(FadeOutNow());
+
+            if (_isShowing)
+            {
+                StopAllCoroutines();
+                StartCoroutine(FadeOutNow());
+            }
             return;
         }
 
@@ -125,8 +116,8 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
         }
         _wasInside = inside;
 
-        // 표시 중/아니더라도 항상 위치/거울 스케일 갱신 (자연스럽게 따라다니게)
-        UpdatePopupTransformByFacing();
+        // 표시 중/아니더라도 항상 위치 갱신 (항상 오른쪽 고정)
+        UpdatePopupTransform();
     }
 
     // ===== Popup =====
@@ -135,7 +126,7 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
         _isShowing = true;
 
         _popup.SetActive(true);
-        UpdatePopupTransformByFacing();
+        UpdatePopupTransform();
 
         // 페이드 인
         float t = 0f;
@@ -159,8 +150,7 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
             while (h < hold)
             {
                 h += Time.deltaTime;
-                // 유지 중에도 방향 변하면 계속 업데이트
-                UpdatePopupTransformByFacing();
+                UpdatePopupTransform();
                 yield return null;
             }
         }
@@ -200,37 +190,11 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
         _isShowing = false;
     }
 
-    // ===== Facing / Transform =====
-    private int FacingDir()
-    {
-        // 우: +1, 좌: -1
-        if (facingSprite) return facingSprite.flipX ? -1 : +1;
-
-        // 스프라이트 없으면 속도로 추정
-        if (facingRb && Mathf.Abs(facingRb.linearVelocity.x) > 0.01f)
-            return facingRb.linearVelocity.x > 0 ? +1 : -1;
-
-        // 결정 불가 시 기본 우측
-        return +1;
-    }
-
-    private void UpdatePopupTransformByFacing()
+    // ===== Transform (오른쪽 고정) =====
+    private void UpdatePopupTransform()
     {
         if (!_popup || !player2) return;
-
-        int f = FacingDir();
-        Vector2 off = (f >= 0) ? offsetRight : offsetLeft;
-
-        // 월드 포지션 갱신 (player2 기준)
-        _popup.transform.position = (Vector2)player2.position + off;
-
-        // 좌/우 반전
-        if (mirrorScaleXByFacing)
-        {
-            var sc = _popupOriginalScale;
-            sc.x = Mathf.Abs(sc.x) * (f >= 0 ? 1f : -1f);
-            _popup.transform.localScale = sc;
-        }
+        _popup.transform.position = (Vector2)player2.position + offsetRight;
     }
 
     // ===== Fade helpers =====
@@ -268,10 +232,8 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
         Gizmos.color = new Color(1f, 0.6f, 0f, 0.25f);
         Gizmos.DrawWireSphere(p2.position, detectRadius);
 
-        // 대략적인 좌/우 오프셋 미리보기
+        // 고정될 오프셋 미리보기
         Gizmos.color = Color.green;
         Gizmos.DrawSphere((Vector2)p2.position + offsetRight, 0.06f);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere((Vector2)p2.position + offsetLeft, 0.06f);
     }
 }

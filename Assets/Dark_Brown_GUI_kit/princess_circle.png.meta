@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      princess_circle_0: -5349846373693430697
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
