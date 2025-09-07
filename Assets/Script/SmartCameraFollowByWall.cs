@@ -52,6 +52,17 @@ public class SmartCameraFollowByWall : MonoBehaviour
     private CanvasGroup warnGroup;
     private readonly Collider2D[] _hazardHits = new Collider2D[8];
 
+    // === 추가: 전환 제어 ===
+    [Header("Tab 전환 이동")]
+    [SerializeField] private bool disableWallGroundWhileTransit = true; // 전환 중 벽/바닥 차단 해제
+    [SerializeField] private float transitArriveEps = 0.20f;            // 카메라 도착 판정(월드 유닛)
+    [SerializeField] private float transitMaxDuration = 1.2f;           // 전환 타임아웃(초)
+    [SerializeField] private float transitBoostFollowSpeed = 16f;       // 전환 중 임시 추종 속도
+    private bool isTransit = false;
+    private float transitUntil = 0f;
+    private float originalFollowSpeed = 0f;
+
+
     // === 거리 기반 스케일 ===
     [Header("Indicator Scale by Distance")]
     [SerializeField] private float nearScale = 1.4f;   // 가까울 때 화살표 크기
@@ -66,6 +77,8 @@ public class SmartCameraFollowByWall : MonoBehaviour
     private void Awake()
     {
         if (!cam) cam = Camera.main;
+        originalFollowSpeed = followSpeed;
+
         if (offscreenIndicator)
         {
             if (!indicatorGraphic)
@@ -73,7 +86,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
             offscreenIndicator.pivot = new Vector2(0.5f, 0.5f);
             offscreenIndicator.anchorMin = offscreenIndicator.anchorMax = new Vector2(0.5f, 0.5f);
 
-            // 인디케이터 기본 스케일 캐싱
             indicatorBaseScale = offscreenIndicator.localScale;
             currentScale = 1f;
         }
@@ -86,6 +98,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
             warnIcon.gameObject.SetActive(false);
         }
     }
+
 
     private void Reset()
     {
@@ -105,18 +118,26 @@ public class SmartCameraFollowByWall : MonoBehaviour
         Vector3 targetPos2 = target2.position;
         Vector3 cameraPos = transform.position;
 
-        blockLeft = Physics2D.Raycast(cameraPos, Vector2.left, rayDistance, wallLayer);
-        blockRight = Physics2D.Raycast(cameraPos, Vector2.right, rayDistance, wallLayer);
+        // === 변경: 전환 중이면 벽/바닥 차단을 해제 ===
+        if (isTransit && disableWallGroundWhileTransit)
+        {
+            blockLeft = blockRight = blockUp = false;
+        }
+        else
+        {
+            blockLeft = Physics2D.Raycast(cameraPos, Vector2.left, rayDistance, wallLayer);
+            blockRight = Physics2D.Raycast(cameraPos, Vector2.right, rayDistance, wallLayer);
 
-        // 원웨이 타일은 감지에서 제외
-        RaycastHit2D hitUpRaw = Physics2D.Raycast(cameraPos, Vector2.up, raygroundDistance, groundLayer);
-        blockUp = hitUpRaw.collider != null && hitUpRaw.collider.tag != "OneWay";
+            RaycastHit2D hitUpRaw = Physics2D.Raycast(cameraPos, Vector2.up, raygroundDistance, groundLayer);
+            blockUp = hitUpRaw.collider != null && hitUpRaw.collider.tag != "OneWay";
+        }
 
         float targetX = cameraPos.x;
         float targetY = cameraPos.y;
 
         Transform focus = swapsup ? target1 : target2;
 
+        // === 탭 입력: 전환 시작 시점에서 전환 상태 On + 속도 부스트 ===
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (carry.carryset == false)
@@ -129,7 +150,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
                     selectmark1.SetActive(true);
                     swapsup = true;
                 }
-                else // swapsup == true
+                else
                 {
                     Knight_UI.SetActive(false);
                     Princess_UI.SetActive(true);
@@ -137,40 +158,55 @@ public class SmartCameraFollowByWall : MonoBehaviour
                     selectmark1.SetActive(false);
                     swapsup = false;
                 }
+
+                // === 전환 시작 ===
+                isTransit = true;
+                transitUntil = Time.unscaledTime + transitMaxDuration;
+                originalFollowSpeed = Mathf.Approximately(originalFollowSpeed, 0f) ? followSpeed : originalFollowSpeed;
+                followSpeed = Mathf.Max(followSpeed, transitBoostFollowSpeed);
             }
         }
 
         if (swapsup)
         {
-            if (!blockLeft && target1.position.x < cameraPos.x)
-                targetX = target1.position.x;
-            else if (!blockRight && target1.position.x > cameraPos.x)
-                targetX = target1.position.x;
+            if (!blockLeft && target1.position.x < cameraPos.x) targetX = target1.position.x;
+            else if (!blockRight && target1.position.x > cameraPos.x) targetX = target1.position.x;
 
             float desiredY = target1.position.y + yOffset;
-            if (!blockUp && desiredY > cameraPos.y)
-                targetY = desiredY;
-            else if (desiredY < cameraPos.y)
-                targetY = desiredY;
+            if (!blockUp && desiredY > cameraPos.y) targetY = desiredY;
+            else if (desiredY < cameraPos.y) targetY = desiredY;
         }
-        else // !swapsup
+        else
         {
-            if (!blockLeft && target2.position.x < cameraPos.x)
-                targetX = target2.position.x;
-            else if (!blockRight && target2.position.x > cameraPos.x)
-                targetX = target2.position.x;
+            if (!blockLeft && target2.position.x < cameraPos.x) targetX = target2.position.x;
+            else if (!blockRight && target2.position.x > cameraPos.x) targetX = target2.position.x;
 
             float desiredY = target2.position.y + yOffset;
-            if (!blockUp && desiredY > cameraPos.y)
-                targetY = desiredY;
-            else if (desiredY < cameraPos.y)
-                targetY = desiredY;
+            if (!blockUp && desiredY > cameraPos.y) targetY = desiredY;
+            else if (desiredY < cameraPos.y) targetY = desiredY;
         }
 
         Vector3 desiredPosition = new Vector3(targetX, targetY, cameraPos.z);
         transform.position = Vector3.SmoothDamp(cameraPos, desiredPosition, ref currentVelocity, 1f / followSpeed);
 
-        // === 추가: 쉐이크 오프셋/회전 적용 ===
+        // === 전환 종료 판정: 충분히 가까워졌거나 타임아웃 ===
+        if (isTransit)
+        {
+            float remain = Vector2.Distance(new Vector2(transform.position.x, transform.position.y),
+                                            new Vector2(desiredPosition.x, desiredPosition.y));
+
+            bool arrived = remain <= transitArriveEps || currentVelocity.sqrMagnitude <= 0.0001f;
+            bool timedOut = Time.unscaledTime >= transitUntil;
+
+            if (arrived || timedOut)
+            {
+                isTransit = false;
+                followSpeed = originalFollowSpeed; // 속도 원복
+                                                   // 이후 프레임부터 다시 벽/바닥 차단 레이가 동작
+            }
+        }
+
+        // === 쉐이크 보정 ===
         if (CameraShaker.Exists)
         {
             var s = CameraShaker.Instance;
@@ -185,11 +221,11 @@ public class SmartCameraFollowByWall : MonoBehaviour
             transform.rotation = Quaternion.identity;
         }
 
-        Transform self = swapsup ? target1 : target2; // 카메라가 따라가는 쪽
-        Transform other = swapsup ? target2 : target1; // 화면 밖 공주(반대편)
-
+        Transform self = swapsup ? target1 : target2;
+        Transform other = swapsup ? target2 : target1;
         UpdateOffscreenIndicator(other, self);
     }
+
 
     void OnDrawGizmos()
     {

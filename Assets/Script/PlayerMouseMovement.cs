@@ -10,6 +10,7 @@ public class PlayerMouseMovement : MonoBehaviour
     // === 필수 컴포넌트 / 레이어 ===
     public Rigidbody2D rb;
     public Animator rb2;
+
     [Header("Layers")]
     // ▼▼ LayerMask 대신 "이름"만 설정 (기본값 그대로 쓰면 인스펙터 세팅 불필요)
     [Header("Layer Names (auto-resolve)")]
@@ -20,7 +21,18 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private string playerLayerName = "Player";
 
     [Header("Carry Drop/Throw Spawn")]
-    [SerializeField] private float carryDropForward = 0.35f; // 바라보는 방향으로 얼마나 앞에 둘지
+    [SerializeField] private float carryDropForward = 0.35f; // 내려놓기 시, 바라보는 방향 앞으로 얼마나 둘지
+
+    // === 던지기 시작 위치(인스펙터로 조정) ===
+    [Header("Throw Start (Inspector Control)")]
+    [Tooltip("던지기 시작 지연(초). 이 시간이 지난 뒤 보이면서 실제로 날아가기 시작합니다.")]
+    [SerializeField] private float throwDelay = 0.25f;
+    [Tooltip("월드 좌표로 지정할 수 있는 시작 위치. 설정되면 오프셋 대신 이 위치를 사용합니다.")]
+    [SerializeField] private Transform throwStartWorldPoint;
+    [Tooltip("P1의 현재 위치 기준 로컬 오프셋 (x는 좌/우 방향에 따라 자동으로 부호가 붙습니다).")]
+    [SerializeField] private Vector2 throwStartLocalOffset = new Vector2(0.35f, 0.6f);
+    [Tooltip("로컬 오프셋 X를 P1의 바라보는 방향 기준으로 좌/우 반전할지 여부")]
+    [SerializeField] private bool throwStartUseFacing = true;
 
     // 내부 캐시 (코드에서만 사용)
     private int groundMask, eventMask, trapMask, slimeMask;
@@ -56,13 +68,13 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float carryStartMinLock = 0.08f;
     [SerializeField] private float carryEndMinLock = 0.06f;
 
-    // ▼ 정확히 0.6초 후에 보이게 고정
+    // ▼ 내려놓기: 정확히 0.6초 후에 보이게 고정
     [SerializeField] private float revealDelayOnDrop = 0.6f; // EXACT 0.6s
     private Coroutine _carryLockCo;
 
-    private Coroutine _revealCo; // P2 복귀 코루틴
-    private Coroutine _throwResetCo; // throw 종료 타이머
-
+    private Coroutine _revealCo;       // P2 복귀 코루틴
+    private Coroutine _throwResetCo;   // throw 종료 타이머
+    private Coroutine _delayedThrowCo; // 던지기 지연 코루틴
 
     // === 접지/레이 거리 ===
     [Header("Ray distances")]
@@ -72,7 +84,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
     [Header("Carry Cooldown")]
     [SerializeField] private float carryCooldown = 1.4f;   // 해제 후 추가 쿨타임
-    private float nextCarryAllowedAt = 0f;                    // 다음 캐리 허용 시각
+    private float nextCarryAllowedAt = 0f;                  // 다음 캐리 허용 시각
 
     // === 키보드 이동 파라미터 (아이워너 느낌) ===
     [Header("Keyboard Movement (IWB-style)")]
@@ -370,7 +382,7 @@ public class PlayerMouseMovement : MonoBehaviour
             bool shiftDown = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
             bool canToggleCarry = !locked && Time.time >= nextCarryAllowedAt;
 
-            if (shiftDown && canToggleCarry && !jumpHeld)
+            if (shiftDown && canToggleCarry && !jumpHeld && IsGroundedStrictSmall())
             {
                 if (!isCarrying) TryStartCarryNow();
                 else StopCarry();
@@ -470,9 +482,10 @@ public class PlayerMouseMovement : MonoBehaviour
         // 디버그(F9)
         if (Input.GetKeyDown(KeyCode.F9))
         {
-            Debug.Log($"[SLIME] grounded(IsGrounded)={groundedForWall}, L={touchingLeftSlime}, R={touchingRightSlime}, isDiving={isDiving}");
+            Debug.Log($"[SLIME] grounded(IsGrounded)={{groundedForWall}}, L={{touchingLeftSlime}}, R={{touchingRightSlime}}, isDiving={{isDiving}}");
         }
 
+        // === Run 애니메이션 (캐리 중 차단 없음) ===
         if (!lockedall && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
             !lockedall && Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -613,6 +626,12 @@ public class PlayerMouseMovement : MonoBehaviour
         {
             JumpedAni();
 
+            // P2가 착지하면 throwed 해제
+            if (playerID == SwapController.PlayerChar.P2 && rb2)
+            {
+                rb2.SetBool("throwed", false);
+            }
+
             if (isDiving)
             {
                 var hit = IsBreak();
@@ -723,7 +742,6 @@ public class PlayerMouseMovement : MonoBehaviour
             Debug.Log($"[Carry] too far: overlapped={d.isOverlapped}, dist={d.distance:F3}, need<={carryPickupMaxGap:F3}");
             return;
         }
-
         StartCarry();
     }
 
@@ -766,7 +784,6 @@ public class PlayerMouseMovement : MonoBehaviour
     {
         if (!otherPlayer) return;
         var rends = otherPlayer.GetComponentsInChildren<Renderer>(true);
-        Debug.Log("공주 내려놓음");
         for (int i = 0; i < rends.Length; i++) rends[i].enabled = visible;
     }
 
@@ -802,12 +819,12 @@ public class PlayerMouseMovement : MonoBehaviour
         otherPlayer.transform.position = transform.position + new Vector3(0f, carryOffsetY, 0f);
 
         SetOtherPlayerVisible(false);
+        rb2.SetBool("jump", false);
+        rb2.SetBool("run", false);
 
         // 애니 기반 입력잠금 시작
         BeginCarryStartLock();
-        rb2.SetBool("jump", false);
-        rb2.SetBool("jumped", false);
-        rb2.SetBool("run", false);
+
         rb2.SetBool("carry", true);
         lockedall = true;
 
@@ -827,15 +844,16 @@ public class PlayerMouseMovement : MonoBehaviour
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) horizSign = -1;
         bool upHeld = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
 
-        int facingSign = (transform.localScale.x >= 0f) ? +1 : -1;
+        int facingSign = (transform.localScale.x >= 0f) ? +3 : -3;
         int spawnSign = (horizSign != 0) ? horizSign : facingSign;
 
-        Vector3 spawnOffset = new Vector3(spawnSign * carryDropForward,
-                                          carryOffsetY + carryThrowSeparation, 0f);
+        // 기본 분리 위치(내려놓기 용)
+        Vector3 dropSpawnOffset = new Vector3(spawnSign * carryDropForward,
+                                              carryOffsetY + carryThrowSeparation, 1f);
 
-        // 분리 & 위치
+        // 분리 & 기본 위치(우선 공통적으로 이동)
         otherPlayer.transform.SetParent(otherOriginalParent, worldPositionStays: true);
-        otherPlayer.transform.position = transform.position + spawnOffset;
+        otherPlayer.transform.position = transform.position + dropSpawnOffset;
 
         // 물리/상태 복구
         otherPlayer.rb.simulated = true;
@@ -849,57 +867,107 @@ public class PlayerMouseMovement : MonoBehaviour
             otherPlayer.rb.linearVelocity = Vector2.zero;
             otherPlayer.ballisticThrowActive = false;
 
+            int faceToP1 = (transform.position.x > otherPlayer.transform.position.x) ? +1 : -1;
+            otherPlayer.ForceFaceSign(faceToP1);
+
             isCarrying = false;
             carryset = false;
             rb2.SetBool("carry", false);
-            
+
             BeginCarryEndLock();
 
             if (_revealCo != null) StopCoroutine(_revealCo);
-            _revealCo = StartCoroutine(RevealOtherAfter(0.6f)); // 정확히 0.6초
+            _revealCo = StartCoroutine(RevealOtherAfter(revealDelayOnDrop));
 
             Debug.Log("[Carry] DROP (no input)");
             return;
         }
 
-        // === THROW: 즉시 보이기 ===
-        float vx = horizSign * carryThrowSideSpeed;
-        float vy = carryThrowUpSpeed;
-        otherPlayer.rb.linearVelocity = new Vector2(vx, vy);
+        // === THROW: 0.25초 후 보이면서 실제로 날아가기 시작 ===
+        // 던지기 시작 월드 위치 계산 (인스펙터 제어)
+        Vector3 throwStartPos;
+        if (throwStartWorldPoint != null)
+        {
+            throwStartPos = throwStartWorldPoint.position;
+        }
+        else
+        {
+            float xoff = throwStartLocalOffset.x;
+            if (throwStartUseFacing) xoff *= spawnSign;
+            throwStartPos = transform.position + new Vector3(xoff, throwStartLocalOffset.y, 0f);
+        }
 
-        otherPlayer.ballisticThrowActive = true;
-        otherPlayer.ballisticThrowEndTime = Time.time + otherPlayer.carryThrowBallisticMinTime;
-        otherPlayer.didCutThisJump = true;
-        otherPlayer.lastJumpStartTime = Time.time;
-        otherPlayer.ignoreGroundUntil = Time.time + otherPlayer.postJumpGroundIgnore;
+        // 던지기 전, 지정된 시작 위치로 즉시 이동(숨긴 상태로 대기)
+        otherPlayer.transform.position = throwStartPos;
+
+        // 던지기 전까지 고정: 물리 OFF + 비가시
+        if (_revealCo != null) { StopCoroutine(_revealCo); _revealCo = null; }
+        SetOtherPlayerVisible(false);
+        otherPlayer.rb.simulated = false;
+
+        // 초기 속도 준비 — ↑키가 눌리면 '수직'으로 던진다
+        Vector2 initialVelocity = upHeld
+            ? new Vector2(0f, carryThrowUpSpeed)
+            : new Vector2(spawnSign * carryThrowSideSpeed, carryThrowUpSpeed);
 
         isCarrying = false;
         carryset = false;
 
-        // 캐리 애니는 해제, 던지기 애니는 on
+        // 캐리 애니 해제, 던지기 애니 on
         rb2.SetBool("throw", true);
 
-        // 애니 기반 잠금(기존 로직 유지)
+        // (기존) 애니 기반 잠금 시작 - 다음 캐리 쿨타임 계산을 위해 호출
         BeginCarryEndLock();
 
-        // ▶ P1은 0.7초 동안 이동 불가 + 그 뒤 throw false
+        // ◆ 던지기 '시전 순간' P1 이동락 0.45초
         if (playerID == SwapController.PlayerChar.P1)
         {
-            inputLockUntil = Mathf.Max(inputLockUntil, Time.time + 0.6f);
+            CancelCarryLock();
+            inputLockUntil = Time.time + 0.45f;
 
             if (_throwResetCo != null) StopCoroutine(_throwResetCo);
             _throwResetCo = StartCoroutine(ResetThrowAfter(0.6f));
         }
 
+        // ◆ 던지기 순간 P2의 스프라이트 방향을 P1과 동일하게
+        otherPlayer.ForceFaceSign(spawnSign);
 
-        
-        // 던지기는 바로 가시화
-        if (_revealCo != null) { StopCoroutine(_revealCo); _revealCo = null; }
-        SetOtherPlayerVisible(true);
+        // 지연 후 실제 던지기 시작 (보이기 + 속도 적용 + 탄도 상태 세팅)
+        if (_delayedThrowCo != null) StopCoroutine(_delayedThrowCo);
+        _delayedThrowCo = StartCoroutine(DelayedThrow(throwDelay, initialVelocity));
 
-        Debug.Log("[Carry] THROW input: up=" + upHeld + " horiz=" + horizSign + " vel=" + new Vector2(vx, vy));
+        Debug.Log($"[Carry] THROW scheduled after {throwDelay:F2}s: startPos={throwStartPos}, vel={initialVelocity}");
     }
 
+    private IEnumerator DelayedThrow(float delay, Vector2 initialVelocity)
+    {
+        // 정확한 실시간 지연(타임스케일 영향 없음)
+        yield return new WaitForSecondsRealtime(delay);
+
+        // 보이게
+        SetOtherPlayerVisible(true);
+
+        // 물리 켜고 실제 비행 시작
+        if (otherPlayer != null && otherPlayer.rb != null)
+        {
+            otherPlayer.rb.simulated = true;
+
+            // 던지기 시작 애니 플래그 (P2)
+            if (otherPlayer.rb2) otherPlayer.rb2.SetBool("throwed", true);
+
+            // 탄도 유지 플래그/타이밍 세팅
+            otherPlayer.ballisticThrowActive = true;
+            otherPlayer.ballisticThrowEndTime = Time.time + otherPlayer.carryThrowBallisticMinTime;
+            otherPlayer.didCutThisJump = true;
+            otherPlayer.lastJumpStartTime = Time.time;
+            otherPlayer.ignoreGroundUntil = Time.time + otherPlayer.postJumpGroundIgnore;
+
+            // 초기 속도 적용
+            otherPlayer.rb.linearVelocity = initialVelocity;
+        }
+
+        _delayedThrowCo = null;
+    }
 
     private void ApplyLayerIgnores()
     {
@@ -1211,6 +1279,15 @@ public class PlayerMouseMovement : MonoBehaviour
             (centerHit.collider && ((trapLayerIndex >= 0 && centerHit.collider.gameObject.layer == trapLayerIndex) || centerHit.collider.CompareTag("Trap"))) ||
             (leftHit.collider && ((trapLayerIndex >= 0 && leftHit.collider.gameObject.layer == trapLayerIndex) || leftHit.collider.CompareTag("Trap"))) ||
             (rightHit.collider && ((trapLayerIndex >= 0 && rightHit.collider.gameObject.layer == trapLayerIndex) || rightHit.collider.CompareTag("Trap")));
+    }
+
+    // === 유틸: 스프라이트 좌우 강제 (항상 '자기 자신'만 수정) ===
+    public void ForceFaceSign(int sign)
+    {
+        sign = sign >= 0 ? 1 : -1;
+        var ls = transform.localScale;
+        transform.localScale = new Vector3(Mathf.Abs(ls.x) * sign, ls.y, ls.z);
+        dir = sign;
     }
 
     // 내부 필드 보정

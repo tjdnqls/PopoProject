@@ -1,4 +1,5 @@
 ﻿// ===================== MonsterABPatrolFSM.cs =====================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 {
-    public enum State { Patrol, Alert, Chase, AttackWindup, Return }
+    // [FIX-DEATH] Dead 상태
+    public enum State { Patrol, Alert, Chase, AttackWindup, Return, Dead }
 
     [Header("Animation")]
     public SpriteAnimationManager anim; // Idle / Run / AttackStart / Attack / Hit / Death
@@ -19,8 +21,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
     [Header("Stop-All on Tag Hit")]
     [SerializeField] private string stopOnTag = "Monkill";
-    [SerializeField] private bool freezeRigidbodyOnStop = true;   // FreezeAll 고정
-    [SerializeField] private bool disableComponentOnStop = true;  // 이 스크립트 비활성화
+    [SerializeField] private bool freezeRigidbodyOnStop = true;
+    [SerializeField] private bool disableComponentOnStop = true;
     private bool isStoppedByTag = false;
 
     [Header("Waypoints (A <-> B 왕복)")]
@@ -36,83 +38,79 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     [SerializeField] private float accel = 25f;
 
     [Header("Ground / Obstacle Layers")]
-    [SerializeField] private LayerMask groundMask;   // 바닥
-    [SerializeField] private LayerMask obstacleMask; // 벽/턱 등
-    [SerializeField] private LayerMask playerMask;   // 플레이어(핑/탐지 용도)
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask obstacleMask;
+    [SerializeField] private LayerMask playerMask;
 
     [Header("Ray Probes")]
-    [SerializeField] private float wallCheckDist = 0.30f;   // 정면 벽
-    [SerializeField] private float lowWallCheckDist = 0.25f;// 하단 앞벽(턱)
-    [SerializeField] private float ledgeForward = 0.25f;    // 발끝 전방
-    [SerializeField] private float ledgeDownDist = 0.60f;   // 낙하 체크 깊이
-    [SerializeField] private float feetYOffset = 0.05f;     // 발 위치 y 보정
-    [SerializeField] private float lowWallYOffset = 0.10f;  // 하단 앞벽 레이 y
+    [SerializeField] private float wallCheckDist = 0.30f;
+    [SerializeField] private float lowWallCheckDist = 0.25f;
+    [SerializeField] private float ledgeForward = 0.25f;
+    [SerializeField] private float ledgeDownDist = 0.60f;
+    [SerializeField] private float feetYOffset = 0.05f;
+    [SerializeField] private float lowWallYOffset = 0.10f;
 
     [Header("Melee Hitbox (child pulse)")]
-    [SerializeField] private GameObject meleeHitbox;     // 자식 히트박스(콜라이더 포함)
-    [SerializeField] private float meleeActiveSeconds = 0.2f; // 활성 시간
-    [SerializeField] private bool useHitboxDamage = true;     // true면 히트박스 방식
-    [SerializeField] private Vector2 meleeOffset = new Vector2(0.6f, 0f); // 몬스터 기준 앞쪽 오프셋(양수 x)
-    [SerializeField] private bool flipHitboxBySpriteFlip = true;          // 좌우 뒤집기 시 히트박스도 미러링
+    [SerializeField] private GameObject meleeHitbox;
+    [SerializeField] private float meleeActiveSeconds = 0.2f;
+    [SerializeField] private bool useHitboxDamage = true;
+    [SerializeField] private Vector2 meleeOffset = new Vector2(0.6f, 0f);
+    [SerializeField] private bool flipHitboxBySpriteFlip = true;
 
-    // 히트박스 내부 캐시
-    private Vector3 _meleeLocalPosZLocked;   // 원래 z 보존
+    // 히트박스 캐시
+    private Vector3 _meleeLocalPosZLocked;
     private BoxCollider2D _hbBox;
     private CapsuleCollider2D _hbCapsule;
     private CircleCollider2D _hbCircle;
-    private Vector2 _colliderOffset0;        // 콜라이더 원래 offset
+    private Vector2 _colliderOffset0;
 
     [Header("Aggro Detection (by Ping)")]
-    [Tooltip("어그로 후보를 모을 반경(핑 발사 트리거)")]
     [SerializeField] private float pingScanRadius = 6f;
-    [Tooltip("핑 프리팹(반드시 Rigidbody2D + Trigger Collider2D 포함)")]
     [SerializeField] private AggroPing2D pingPrefab;
-    [Tooltip("핑 발사 위치(없으면 눈 위치에서 발사)")]
     [SerializeField] private Transform pingMuzzle;
-    [Tooltip("같은 타겟으로 핑 재발사 최소 쿨타임")]
     [SerializeField] private float pingCooldownPerTarget = 0.5f;
-    [Tooltip("한 번에 발사 가능한 핑 수(스팸 방지)")]
     [SerializeField] private int maxConcurrentPings = 4;
 
     [Header("Ping Flight")]
     [SerializeField] private float pingSpeed = 18f;
     [SerializeField] private float pingLifetime = 0.8f;
-    [Tooltip("핑 진행 방향 예측 보정(0=없음)")]
     [SerializeField] private float pingLeadFactor = 0f;
 
     [Header("Alert / Chase / Return")]
-    [SerializeField] private float alertStopSec = 0.5f; // 5) 잠깐 멈춤
+    [SerializeField] private float alertStopSec = 0.5f;
     [SerializeField] private GameObject exclamationPrefab;
     [SerializeField] private Vector2 exclamationOffset = new Vector2(0f, 1.2f);
-    [Tooltip("추격이 이 시간 이상 지속되면 종료 후 복귀")]
     [SerializeField] private float maxChaseSeconds = 5f;
 
     [Header("Attack (one-shot / hitbox)")]
     [SerializeField] private int attackDamage = 1;
-    [SerializeField] private float attackWindupSec = 1.0f;   // 점점 붉어짐
-    [SerializeField] private float attackRecoverSec = 0.2f;  // 후딜
+    [SerializeField] private float attackWindupSec = 1.0f;
+    [SerializeField] private float attackRecoverSec = 0.2f;
     [SerializeField] private Color attackColor = new Color(1f, 0.2f, 0.2f, 1f);
 
     [Header("Attack Tuning (Edge Distance)")]
-    [Tooltip("콜라이더-콜라이더 가장자리 거리로 본 사거리")]
     [SerializeField] private float attackEdgeRange = 0.35f;
-    [Tooltip("수직 위치 허용치(같은 발판 정도로 인정)")]
     [SerializeField] private float attackVerticalTolerance = 0.9f;
 
     [Header("Death")]
-    [SerializeField] private float despawnDelay = 3f; // 피격 사망 후 제거 지연
+    [SerializeField] private float despawnDelay = 3f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private bool logPing = false;
 
-    // ---------- Return 상태: 길막 공격 트리거 ----------
+    // ---------- Return 길막 공격 ----------
     [Header("Return Block Attack")]
-    [SerializeField] private float returnBlockCheckDist = 0.9f;   // 앞 탐지 거리
-    [SerializeField] private float returnBlockYTolerance = 0.9f;  // 높이 허용(같은 발판 정도)
-    [SerializeField] private float returnBlockedAttackDelay = 2f; // 2초 길막이면 공격
+    [SerializeField] private float returnBlockCheckDist = 0.9f;
+    [SerializeField] private float returnBlockYTolerance = 0.9f;
+    [SerializeField] private float returnBlockedAttackDelay = 2f;
     private float returnBlockTimer = 0f;
     private Transform returnBlockingPlayer = null;
+
+    // ---------- Direct Player Detect (fallback) ----------
+    [Header("Direct Player Detect (Fallback)")]
+    [SerializeField] private bool enableDirectDetect = true;
+    [SerializeField] private float directDetectRadius = 4f;
 
     // 내부 상태
     private State state;
@@ -124,7 +122,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private Coroutine alertCo, attackCo;
 
     // 핑 관리
-    private readonly Dictionary<int, float> _lastPingTime = new Dictionary<int, float>(); // key: target.GetInstanceID()
+    private readonly Dictionary<int, float> _lastPingTime = new Dictionary<int, float>();
     private int _activePings = 0;
 
     // 탐지 버퍼
@@ -134,11 +132,18 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private Transform currentTarget;
 
     // 기타
-    private LayerMask blockingMask; // obstacle에서 player 제외한 벽 마스크
+    private LayerMask blockingMask; // obstacle에서 player 제외
     private bool isDying = false;
 
-    // ---- 충돌 무시(플레이어 루트 단위 캐시) ----
+    // 충돌 무시(플레이어 루트 단위 캐시)
     private readonly HashSet<int> _ignoredPlayerRoots = new HashSet<int>();
+
+    // Dead/Stopped 가드
+    private bool IsDeadOrStopped => isDying || isStoppedByTag || state == State.Dead;
+
+    // 사망 위치 고정
+    private Vector3 _deathPos;
+    private Quaternion _deathRot;
 
     // ---------- Helpers ----------
     private static bool IsOnLayerMask(int layer, LayerMask mask) => (mask.value & (1 << layer)) != 0;
@@ -147,7 +152,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         if (!a || !b) return false;
         return a == b || a.IsChildOf(b) || b.IsChildOf(a);
     }
-    // 부모 중 "Player" 태그가 있으면 true (시체가 Ground 레이어여도 태그는 Player일 수 있음)
     private static bool HasPlayerTagInParents(Transform t)
     {
         for (Transform p = t; p != null; p = p.parent)
@@ -158,7 +162,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private void PlayAnim(string key, bool forceRestart = false)
     {
         if (anim == null || string.IsNullOrEmpty(key)) return;
-        if (anim.IsOneShotActive) return; // 1회 재생 보호
+        if (anim.IsOneShotActive) return;
         anim.Play(key, forceRestart);
     }
     private void PlayOnce(string key, string fallback = null, bool forceRestart = true)
@@ -170,7 +174,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private void SetFlipByDir(int d)
     {
         if (sr) sr.flipX = d < 0;
-        PositionMeleeHitbox(); // 바라보는 방향 바뀔 때 히트박스 위치/offset 동기화
+        PositionMeleeHitbox();
     }
 
     private void Reset()
@@ -189,7 +193,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         rb.freezeRotation = true;
         homePos = transform.position;
 
-        // obstacle에서 player를 제외 (플레이어를 벽으로 보지 않기)
+        // obstacle에서 player 제외(플레이어를 벽으로 보지 않기)
         blockingMask = obstacleMask & ~playerMask;
 
         // 웨이포인트 확정
@@ -206,7 +210,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         // 히트박스 캐시
         if (meleeHitbox)
         {
-            _meleeLocalPosZLocked = meleeHitbox.transform.localPosition; // 원래 z 보존
+            _meleeLocalPosZLocked = meleeHitbox.transform.localPosition;
             _hbBox = meleeHitbox.GetComponent<BoxCollider2D>();
             _hbCapsule = meleeHitbox.GetComponent<CapsuleCollider2D>();
             _hbCircle = meleeHitbox.GetComponent<CircleCollider2D>();
@@ -216,21 +220,23 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             else if (_hbCircle) _colliderOffset0 = _hbCircle.offset;
         }
 
-        // 시작 시 씬에 있는 Player 루트들과 충돌 미리 끊기(사체 포함)
+        // 시작 시 Player 루트들과 충돌 미리 끊기
         var players = GameObject.FindGameObjectsWithTag("Player");
         foreach (var p in players) IgnorePlayerRootCollisions(p.transform);
     }
 
     private void OnEnable()
     {
+        if (IsDeadOrStopped) return;
+
         var v = rb.linearVelocity; v.x = dir * patrolSpeed; rb.linearVelocity = v;
         PlayAnim("Run", true);
-        SetFlipByDir(dir); // 내부에서 PositionMeleeHitbox 호출됨
+        SetFlipByDir(dir);
     }
 
     private void FixedUpdate()
     {
-        if (isStoppedByTag || isDying)
+        if (IsDeadOrStopped)
         {
             StopHorizontal();
             return;
@@ -243,6 +249,17 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             case State.Chase: TickChase(); break;
             case State.AttackWindup: StopHorizontal(); break;
             case State.Return: TickReturn(); break;
+            case State.Dead: StopHorizontal(); break;
+        }
+    }
+
+    // 사망 위치 고정(다른 스크립트가 Transform을 움직여도 무효화)
+    private void LateUpdate()
+    {
+        if (state == State.Dead)
+        {
+            transform.position = _deathPos;
+            transform.rotation = _deathRot;
         }
     }
 
@@ -268,8 +285,18 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             MoveHorizontalTowards(dir * patrolSpeed);
         }
 
-        // 핑 기반 후보 스캔 & 발사
+        // 1) 핑 기반 후보 스캔 & 발사
         ScanAndShootPings();
+
+        // 2) 직감지(백업) — 핑이 없거나 실패해도 즉시 인지
+        if (enableDirectDetect)
+        {
+            if (TryDetectNearest(playerMask, directDetectRadius, out Transform p))
+            {
+                currentTarget = p;
+                EnterAlert();
+            }
+        }
     }
 
     private void TickAlert()
@@ -283,7 +310,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     {
         PlayAnim("Run");
 
-        // 타겟이 플레이어 마스크에서 사라지면(사망→Ground 등) 바로 복귀
         if (currentTarget && !IsOnLayerMask(currentTarget.gameObject.layer, playerMask))
         {
             currentTarget = null;
@@ -296,7 +322,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             EnterReturn(); return;
         }
 
-        // 추격 시간 제한
         if (Time.time - chaseStartTime >= maxChaseSeconds)
         {
             EnterReturn(); return;
@@ -317,6 +342,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     // ============ Attack ============
     private void EnterAttack(Transform target)
     {
+        if (IsDeadOrStopped) return;
         if (attackCo != null) StopCoroutine(attackCo);
         state = State.AttackWindup;
         attackCo = StartCoroutine(AttackRoutine(target));
@@ -326,21 +352,19 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     {
         if (!sr) yield break;
 
-        // 공격 직전 방향-히트박스 위치 재보정(안전)
         PositionMeleeHitbox();
 
-        // 공격 준비 (점점 붉어짐)
         Color startC = sr.color; float t = 0f;
         PlayOnce("AttackStart");
         while (t < attackWindupSec)
         {
+            if (IsDeadOrStopped) yield break;
             t += Time.fixedDeltaTime;
             float a = Mathf.Clamp01(t / attackWindupSec);
             sr.color = Color.Lerp(startC, attackColor, a);
             yield return new WaitForFixedUpdate();
         }
 
-        // === 공격 개시 ===
         sr.color = Color.white;
         PlayOnce("Attack", "Idle");
 
@@ -350,15 +374,21 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             if (hb) hb.Arm(attackDamage, transform);
             else meleeHitbox.SetActive(true);
 
-            yield return new WaitForSeconds(meleeActiveSeconds);
+            float elapsed = 0f;
+            while (elapsed < meleeActiveSeconds)
+            {
+                if (IsDeadOrStopped) break;
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
 
             if (hb) hb.Disarm();
             else meleeHitbox.SetActive(false);
         }
         else
         {
-            // 단발 판정(여전히 사정거리 & "플레이어 레이어"일 때만)
-            if (snapshotTarget &&
+            if (!IsDeadOrStopped &&
+                snapshotTarget &&
                 IsOnLayerMask(snapshotTarget.gameObject.layer, playerMask) &&
                 WithinAttackWindow(snapshotTarget))
             {
@@ -366,11 +396,15 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             }
         }
 
-        // 후딜
         float r = 0f;
-        while (r < attackRecoverSec) { r += Time.fixedDeltaTime; yield return new WaitForFixedUpdate(); }
+        while (r < attackRecoverSec)
+        {
+            if (IsDeadOrStopped) yield break;
+            r += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
 
-        state = State.Chase;
+        if (!IsDeadOrStopped) state = State.Chase;
     }
 
     // ============ Return ============
@@ -381,13 +415,12 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         int retDir = (homePos.x > transform.position.x) ? +1 : -1;
         SetFlipByDir(retDir);
 
-        // 기본 복귀 이동
         if (FrontWall(retDir) || LowFrontWall(retDir) || LedgeAhead(retDir))
             StopHorizontal();
         else
             MoveHorizontalTowards(retDir * patrolSpeed);
 
-        // ---- 길막 감지 & 2초 유지 시 공격/추격 전환 ----
+        // 길막 감지 & 2초 유지 시 공격/추격 전환
         Transform blocker = DetectPlayerAhead(retDir);
         bool touchingPlayer = body && body.IsTouchingLayers(playerMask);
         bool almostStopped = Mathf.Abs(rb.linearVelocity.x) < 0.05f;
@@ -419,6 +452,13 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         // 복귀 완료
         if (Mathf.Abs(homePos.x - transform.position.x) <= arriveEps)
             KickstartPatrolLoop();
+
+        // 복귀 중에도 직감지 백업
+        if (enableDirectDetect && TryDetectNearest(playerMask, directDetectRadius, out Transform p))
+        {
+            currentTarget = p;
+            EnterAlert();
+        }
     }
 
     private void KickstartPatrolLoop()
@@ -446,6 +486,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     // ============ State transitions ============
     private void EnterAlert()
     {
+        if (IsDeadOrStopped) return;
+
         state = State.Alert;
         StopHorizontal();
         PlayAnim("Idle", true);
@@ -463,12 +505,18 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         }
 
         float t = 0f;
-        while (t < alertStopSec) { t += Time.fixedDeltaTime; yield return new WaitForFixedUpdate(); }
+        while (t < alertStopSec)
+        {
+            if (IsDeadOrStopped) yield break;
+            t += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
         EnterChase();
     }
 
     private void EnterChase()
     {
+        if (IsDeadOrStopped) return;
         if (!currentTarget) { state = State.Return; return; }
         state = State.Chase;
         chaseStartTime = Time.time;
@@ -477,21 +525,48 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
     private void EnterReturn()
     {
+        if (IsDeadOrStopped) return;
         state = State.Return;
         StopHorizontal();
         currentTarget = null;
-
-        // 길막 타이머 리셋
         returnBlockTimer = 0f;
         returnBlockingPlayer = null;
-
         PlayAnim("Run");
+    }
+
+    // ============ Direct Detect ============
+    private bool TryDetectNearest(LayerMask mask, float radius, out Transform nearest)
+    {
+        nearest = null;
+
+        var filter = new ContactFilter2D
+        {
+            useLayerMask = true,
+            layerMask = mask,
+            useTriggers = true
+        };
+
+        int n = Physics2D.OverlapCircle((Vector2)transform.position, radius, filter, _hits);
+        if (n <= 0) return false;
+
+        float best = float.PositiveInfinity;
+        for (int i = 0; i < n; i++)
+        {
+            var c = _hits[i];
+            if (!c) continue;
+            Transform t = c.attachedRigidbody ? c.attachedRigidbody.transform : c.transform;
+            float d = ((Vector2)t.position - (Vector2)transform.position).sqrMagnitude;
+            if (d < best) { best = d; nearest = t; }
+        }
+        return nearest != null;
     }
 
     // ============ Ping-based Detection ============
     private void ScanAndShootPings()
     {
+        if (IsDeadOrStopped) return;
         if (!pingPrefab) return;
+
         ContactFilter2D filter = new ContactFilter2D
         {
             useLayerMask = true,
@@ -523,10 +598,11 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
     private void FirePing(Transform target)
     {
+        if (IsDeadOrStopped) return;
+
         Vector2 origin = pingMuzzle ? (Vector2)pingMuzzle.position : Eyes();
         Vector2 aim = TargetAimPoint(target);
 
-        // 간단한 예측(선택)
         if (pingLeadFactor > 0f && target.TryGetComponent<Rigidbody2D>(out var trb))
         {
             Vector2 vel = trb.linearVelocity;
@@ -551,52 +627,108 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     // 핑이 플레이어에 명중했을 때 호출됨
     public void OnAggroPingHit(Transform hitPlayer)
     {
+        if (IsDeadOrStopped) return;
         if (!hitPlayer) return;
-        currentTarget = hitPlayer; // 이 순간에만 어그로 확정
-        EnterAlert();              // 5) 잠시 멈추고 느낌표 → 6) 추격
+        currentTarget = hitPlayer;
+        EnterAlert();
     }
 
     // ============ Damage / Death ============
+    // 오버로드: 어떤 호출이 와도 사망 시퀀스로 진입
+    public void TakeDamage(int amount)
+    {
+        if (IsDeadOrStopped) return;
+        StartDeathSequence("TakeDamage(int)");
+    }
+
     public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
     {
-        if (isDying) return;
-        StartCoroutine(HitDeathRoutine());
+        if (IsDeadOrStopped) return;
+        StartDeathSequence("TakeDamage(int,vec,vec)");
     }
 
-    public void OnHit(int damage) // SendMessage 호환
+    public void OnHit(int damage)
     {
-        if (isDying) return;
-        StartCoroutine(HitDeathRoutine());
+        if (IsDeadOrStopped) return;
+        StartDeathSequence("OnHit");
     }
 
-    private IEnumerator HitDeathRoutine()
+    // 사망 시 공통 진입: 전면 정지 + Hit→Death 연출 + 위치 고정
+    private void StartDeathSequence(string reason)
     {
+        if (isDying) return;
         isDying = true;
+        state = State.Dead;
 
-        // 로직/물리 정지
-        if (alertCo != null) { StopCoroutine(alertCo); alertCo = null; }
-        if (attackCo != null) { StopCoroutine(attackCo); attackCo = null; }
-        state = State.Patrol;
+        // 좌표 고정 스냅샷
+        _deathPos = transform.position;
+        _deathRot = transform.rotation;
+
+        // 모든 코루틴 종료
+        StopAllCoroutines();
+
+        // 이동/물리 완전 봉인
+        StopHorizontal();
         if (rb)
         {
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
-            if (freezeRigidbodyOnStop)
-                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            rb.simulated = false; // ★ 물리 완전 비활성 (다른 힘/중력 무시)
         }
-        if (body) body.enabled = false; // 추가 타격/충돌 차단
 
-        PlayOnce("Hit", "Death");
-        yield return new WaitForSeconds(despawnDelay);
+        // 충돌/히트박스 차단
+        if (body) body.enabled = false;
+        ForceDisableMeleeHitbox();
 
+        // 시각 정리
+        if (sr) sr.color = Color.white;
+
+        // 연출: Hit가 있으면 Hit→Death, 없으면 Death 바로
+        if (anim && anim.HasClip("Hit"))
+            PlayOnce("Hit", "Death", true);
+        else
+            PlayOnce("Death", null, true);
+
+#if UNITY_EDITOR
+        Debug.Log($"[Monster] Death start ({reason})", this);
+#endif
+        StartCoroutine(DeathDespawn());
+    }
+
+    private IEnumerator DeathDespawn()
+    {
+        float t = 0f;
+        while (t < despawnDelay)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
         Destroy(gameObject);
+    }
+
+    // Death/Instant Kill 양쪽에서 히트박스 완전 비활성화
+    private void ForceDisableMeleeHitbox()
+    {
+        if (!meleeHitbox) return;
+        var hb = meleeHitbox.GetComponent<MeleeHitboxOnce>();
+        if (hb) hb.Disarm();
+        meleeHitbox.SetActive(false);
+    }
+
+    // === Monkill 즉사 ===
+    private IEnumerator DieInstantByTag(string reason)
+    {
+        if (isDying) yield break;
+        StartDeathSequence(reason);
+        yield break;
     }
 
     // ============ Helpers ============
     private Vector2 Eyes()
     {
         var b = body.bounds;
-        return new Vector2(b.center.x, b.max.y + 0.51f); // 눈 높이 약간 위
+        return new Vector2(b.center.x, b.max.y + 0.51f);
     }
     private Vector2 TargetAimPoint(Transform t)
     {
@@ -633,14 +765,23 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
     private void ApplyDamage(Transform target)
     {
+        if (IsDeadOrStopped) return;
         if (!target) return;
 
         if (target.TryGetComponent<IDamageable>(out var dmg))
+        {
             dmg.TakeDamage(attackDamage, transform.position, new Vector2(dir, 0));
-        else if (target.TryGetComponent<PlayerHealth>(out var hp))
-            hp.ApplyDamage(attackDamage);
-        else
-            target.SendMessage("OnHit", attackDamage, SendMessageOptions.DontRequireReceiver);
+            return;
+        }
+
+        var dmgInParent = target.GetComponentInParent<IDamageable>();
+        if (dmgInParent != null)
+        {
+            dmgInParent.TakeDamage(attackDamage, transform.position, new Vector2(dir, 0));
+            return;
+        }
+
+        target.SendMessage("OnHit", attackDamage, SendMessageOptions.DontRequireReceiver);
     }
 
     // Movement / Probes
@@ -661,8 +802,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     }
 
     // 플레이어를 벽으로 보지 않도록 playerMask 제외한 blockingMask 사용
-    // 단, '현재 타겟'을 무시하는 예외는 그 타겟이 아직 플레이어 레이어일 때만 적용.
-    // 추가: 맞은 물체(혹은 그 부모)가 Player 태그면(시체가 Ground여도) 벽으로 처리하지 않음.
     private bool FrontWall(int d)
     {
         Vector2 origin = Feet() + new Vector2(d * (body.bounds.extents.x + 0.02f), 0.15f);
@@ -675,11 +814,11 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
             bool isCurrentTargetCollider = SameTargetBranch(hit.collider.transform, currentTarget);
             bool targetStillPlayerLayer = IsOnLayerMask(hit.collider.gameObject.layer, playerMask);
             if (isCurrentTargetCollider && targetStillPlayerLayer)
-                return false; // 타겟이 아직 Player 레이어일 때만 무시
+                return false;
         }
 
         if (hit.collider && HasPlayerTagInParents(hit.collider.transform))
-            return false; // ★ Ground가 된 플레이어 시체도 통과
+            return false;
 
         return true;
     }
@@ -699,7 +838,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         }
 
         if (hit.collider && HasPlayerTagInParents(hit.collider.transform))
-            return false; // ★ Ground가 된 플레이어 시체도 통과
+            return false;
 
         return true;
     }
@@ -712,7 +851,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private Vector2 GetPatrolTarget() => (patrolTargetIndex == 0) ? wpA : wpB;
     private void TogglePatrolTarget() => patrolTargetIndex = (patrolTargetIndex == 0) ? 1 : 0;
 
-    // === 공격 거리: 콜라이더-대-콜라이더 가장자리 거리 사용
     private float EdgeDistanceTo(Transform t)
     {
         if (!t) return float.MaxValue;
@@ -743,7 +881,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         if (!root) return;
 
         int id = root.GetInstanceID();
-        if (_ignoredPlayerRoots.Contains(id)) return; // 이미 처리
+        if (_ignoredPlayerRoots.Contains(id)) return;
 
         var allCols = root.GetComponentsInChildren<Collider2D>(true);
         foreach (var c in allCols)
@@ -763,32 +901,47 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
     private void OnCollisionEnter2D(Collision2D c)
     {
-        // stopOnTag 처리
-        if (!isStoppedByTag && c.collider && c.collider.CompareTag(stopOnTag))
-            StopAllBehaviours($"Collision with {stopOnTag}");
+        if (IsDeadOrStopped) return;
 
-        // ★ 플레이어(루트에 Player 태그)와는 항상 물리 충돌 무시 (생존/사망 상관없이)
+        if (!isDying && c.collider && c.collider.CompareTag(stopOnTag))
+        {
+            StartCoroutine(DieInstantByTag($"Collision with {stopOnTag}"));
+            return;
+        }
+
         TryIgnoreIfPlayer(c.collider);
     }
 
     private void OnCollisionStay2D(Collision2D c)
     {
-        // 혹시 Enter에서 놓친 경우에도 계속 끊어준다
+        if (IsDeadOrStopped) return;
         TryIgnoreIfPlayer(c.collider);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isStoppedByTag && other && other.CompareTag(stopOnTag))
-            StopAllBehaviours($"Trigger with {stopOnTag}");
+        if (IsDeadOrStopped) return;
 
-        // 트리거여도 플레이어 루트면 전부 무시 (자식에 Trigger가 있을 수 있음)
+        if (!isDying && other && other.CompareTag(stopOnTag))
+        {
+            StartCoroutine(DieInstantByTag($"Trigger with {stopOnTag}"));
+            return;
+        }
+
         TryIgnoreIfPlayer(other);
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (IsDeadOrStopped) return;
         TryIgnoreIfPlayer(other);
+    }
+
+    private void OnDisable()
+    {
+        if (attackCo != null) { StopCoroutine(attackCo); attackCo = null; }
+        if (alertCo != null) { StopCoroutine(alertCo); alertCo = null; }
+        ForceDisableMeleeHitbox();
     }
 
     private void OnDrawGizmosSelected()
@@ -802,9 +955,16 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         Gizmos.color = Color.blue; Gizmos.DrawSphere(b, 0.08f);
         Gizmos.color = Color.yellow; Gizmos.DrawLine(a, b);
 
-        // EdgeDistance용 시각 보조 (근사)
         Gizmos.color = new Color(1, 0, 0, 0.35f);
         Gizmos.DrawWireSphere(transform.position, attackEdgeRange);
+
+#if UNITY_EDITOR
+        if (enableDirectDetect)
+        {
+            Gizmos.color = new Color(1f, 0.4f, 0f, 0.25f);
+            Gizmos.DrawWireSphere(transform.position, directDetectRadius);
+        }
+#endif
     }
 
     // ---------- 히트박스 좌/우 미러링 ----------
@@ -814,14 +974,12 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
         int facing = (sr && sr.flipX) ? -1 : 1;
 
-        // 트랜스폼 로컬 위치를 방향에 맞게 미러링(원래 z는 유지)
         meleeHitbox.transform.localPosition = new Vector3(
             Mathf.Abs(meleeOffset.x) * facing,
             meleeOffset.y,
             _meleeLocalPosZLocked.z
         );
 
-        // 콜라이더 offset.x도 좌/우 뒤집기
         if (_hbBox) _hbBox.offset = new Vector2(Mathf.Abs(_colliderOffset0.x) * facing, _colliderOffset0.y);
         if (_hbCapsule) _hbCapsule.offset = new Vector2(Mathf.Abs(_colliderOffset0.x) * facing, _colliderOffset0.y);
         if (_hbCircle) _hbCircle.offset = new Vector2(Mathf.Abs(_colliderOffset0.x) * facing, _colliderOffset0.y);
@@ -861,14 +1019,4 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 public interface IDamageable
 {
     void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal);
-}
-
-public class PlayerHealth : MonoBehaviour
-{
-    public int hp = 3;
-    public void ApplyDamage(int dmg)
-    {
-        hp -= dmg;
-        if (hp <= 0) { /* 사망 처리 */ }
-    }
 }

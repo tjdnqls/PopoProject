@@ -24,6 +24,11 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
     [Header("Popup Position")]
     [SerializeField] private Vector2 offsetRight = new Vector2(0.6f, 1.6f); // 항상 이 오프셋만 사용
 
+    [Header("Facing Freeze")]
+    [SerializeField] private bool freezeFacingToPrefab = true;   // 부모 좌우 반전 영향 금지(월드 X스케일 고정)
+    [SerializeField] private bool detachPopupFromParent = false; // 팝업을 부모에서 완전히 분리(원하면 사용)
+    private Vector3 _popupBaseWorldScale;                        // 팝업 생성 시 월드 스케일(기준)
+
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
 
@@ -59,15 +64,24 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
 
         if (popupPrefab)
         {
-            _popup = Instantiate(popupPrefab, transform); // player2의 자식으로 생성(월드 공간 프리팹이어도 괜찮음)
+            _popup = Instantiate(popupPrefab, transform); // 기본은 자식으로
             _popupCG = _popup.GetComponentInChildren<CanvasGroup>();
 
             // 스프라이트/문자 렌더러 수집(알파 페이드용)
             _popupSprites.AddRange(_popup.GetComponentsInChildren<SpriteRenderer>(true));
             _popupTexts.AddRange(_popup.GetComponentsInChildren<TMP_Text>(true));
 
+            // 기준 월드 스케일 저장(이 값을 유지하도록 보정)
+            _popupBaseWorldScale = _popup.transform.lossyScale;
+
             SetPopupAlpha(0f);
             _popup.SetActive(false);
+
+            // 옵션: 완전 분리(부모 스케일/반전 상속 자체를 차단)
+            if (detachPopupFromParent)
+            {
+                _popup.transform.SetParent(null, true);
+            }
         }
         else
         {
@@ -195,6 +209,37 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
     {
         if (!_popup || !player2) return;
         _popup.transform.position = (Vector2)player2.position + offsetRight;
+
+        // 부모 좌우 반전에 영향받지 않게 월드 X스케일을 초기값으로 유지
+        if (freezeFacingToPrefab && !detachPopupFromParent)
+        {
+            MaintainWorldFacing();
+        }
+    }
+
+    // 부모 좌우 반전(scale.x = ±1)에 영향받지 않도록,
+    // 팝업의 월드 X스케일을 생성 시점의 값(_popupBaseWorldScale.x)으로 유지
+    private void MaintainWorldFacing()
+    {
+        if (_popup == null) return;
+
+        // 부모의 현재 월드 스케일
+        var parent = player2 ? player2 : transform;
+        var pLossy = parent.lossyScale;
+
+        // 0 나눗셈 방지
+        float px = Mathf.Abs(pLossy.x) < 1e-6f ? 1f : pLossy.x;
+
+        // 현재 로컬 스케일에서 X만 보정 (Y/Z는 프리팹값 유지)
+        var ls = _popup.transform.localScale;
+
+        // 부모 * 자식 = 월드 -> 월드 X를 _popupBaseWorldScale.x가 되도록 역산
+        ls.x = _popupBaseWorldScale.x / px;
+
+        _popup.transform.localScale = ls;
+
+        // 필요 시 회전까지 고정하고 싶다면:
+        // _popup.transform.rotation = Quaternion.identity;
     }
 
     // ===== Fade helpers =====
@@ -235,5 +280,14 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
         // 고정될 오프셋 미리보기
         Gizmos.color = Color.green;
         Gizmos.DrawSphere((Vector2)p2.position + offsetRight, 0.06f);
+    }
+
+    // 부모에서 완전 분리 모드일 때, 원 오브젝트 파괴 시 팝업도 정리
+    private void OnDestroy()
+    {
+        if (detachPopupFromParent && _popup)
+        {
+            Destroy(_popup);
+        }
     }
 }
