@@ -21,7 +21,7 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private string playerLayerName = "Player";
 
     [Header("Carry Drop/Throw Spawn")]
-    [SerializeField] private float carryDropForward = 0.35f; // 내려놓기 시, 바라보는 방향 앞으로 얼마나 둘지
+    [SerializeField] private float carryDropForward = 0.4f; // 내려놓기 시, 바라보는 방향 앞으로 얼마나 둘지
 
     // === 던지기 시작 위치(인스펙터로 조정) ===
     [Header("Throw Start (Inspector Control)")]
@@ -38,7 +38,7 @@ public class PlayerMouseMovement : MonoBehaviour
     private int groundMask, eventMask, trapMask, slimeMask;
     private LayerMask slimeLayerMask; // ContactFilter2D 용
     private int trapLayerIndex;
-
+    public Player1HP dead;
     // === Slime Stick Tuning ===
     [SerializeField] private float slimeStickPush = 22f;
     [SerializeField] private float slimeNormalClamp = 20f;
@@ -238,6 +238,7 @@ public class PlayerMouseMovement : MonoBehaviour
     private bool prevSelected = false;
     private int playerLayerIndexSelf;
     private bool lockedall;
+    private bool deadcount;
 
     // SmoothDamp용
     bool touchingLeftSlime, touchingRightSlime;

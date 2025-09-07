@@ -17,6 +17,9 @@ public class SmartCameraFollowByWall : MonoBehaviour
     public GameObject selectmark1;
     public GameObject selectmark2;
     public PlayerMouseMovement rb;
+    public Player1HP dead;
+    public bool deadcount;
+
 
     private bool blockLeft, blockRight, blockUp;
     private Vector3 currentVelocity;
@@ -117,7 +120,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
         Vector3 targetPos1 = target1.position;
         Vector3 targetPos2 = target2.position;
         Vector3 cameraPos = transform.position;
-
+        
         // === 변경: 전환 중이면 벽/바닥 차단을 해제 ===
         if (isTransit && disableWallGroundWhileTransit)
         {
@@ -138,24 +141,18 @@ public class SmartCameraFollowByWall : MonoBehaviour
         Transform focus = swapsup ? target1 : target2;
 
         // === 탭 입력: 전환 시작 시점에서 전환 상태 On + 속도 부스트 ===
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && dead.Dead == false)
         {
             if (carry.carryset == false)
             {
                 if (!swapsup)
                 {
-                    Knight_UI.SetActive(true);
-                    Princess_UI.SetActive(false);
-                    selectmark2.SetActive(false);
-                    selectmark1.SetActive(true);
+                    
                     swapsup = true;
                 }
                 else
                 {
-                    Knight_UI.SetActive(false);
-                    Princess_UI.SetActive(true);
-                    selectmark2.SetActive(true);
-                    selectmark1.SetActive(false);
+                    
                     swapsup = false;
                 }
 
@@ -169,6 +166,11 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
         if (swapsup)
         {
+            Knight_UI.SetActive(true);
+            Princess_UI.SetActive(false);
+            selectmark2.SetActive(false);
+            selectmark1.SetActive(true);
+
             if (!blockLeft && target1.position.x < cameraPos.x) targetX = target1.position.x;
             else if (!blockRight && target1.position.x > cameraPos.x) targetX = target1.position.x;
 
@@ -178,6 +180,11 @@ public class SmartCameraFollowByWall : MonoBehaviour
         }
         else
         {
+            Knight_UI.SetActive(false);
+            Princess_UI.SetActive(true);
+            selectmark2.SetActive(true);
+            selectmark1.SetActive(false);
+
             if (!blockLeft && target2.position.x < cameraPos.x) targetX = target2.position.x;
             else if (!blockRight && target2.position.x > cameraPos.x) targetX = target2.position.x;
 

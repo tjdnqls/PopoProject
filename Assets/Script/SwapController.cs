@@ -6,12 +6,24 @@ public class SwapController : MonoBehaviour
     public enum PlayerChar { P1, P2 }
     public PlayerChar charSelect = PlayerChar.P1; // 기본은 P1 선택
     public PlayerMouseMovement carry;
-
+    public Player1HP dead;
+    public bool coubt;
     public PlayerChar Current; // 실제 프로젝트의 소스 오브 트루스
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (dead.Dead == true)
+        {
+            coubt = false;
+            charSelect = PlayerChar.P2;
+            Current = PlayerChar.P2;
+        }
+        else
+        {
+            coubt = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab) && coubt == true)
         {
             if (carry.carryset == false)
             {

@@ -14,6 +14,9 @@ public class Player1HP : MonoBehaviour
     // ★ HP 변경/사망 이벤트
     public event Action<int, int> HpChanged;   // (current, max)
     public event Action Died;
+    public bool Dead = false;
+    public SmartCameraFollowByWall swap;
+
 
     [Header("Layers (사망 시 Ground로 변경)")]
     [SerializeField] private string groundLayerName = "Ground";
@@ -71,7 +74,7 @@ public class Player1HP : MonoBehaviour
     }
 
     /// <summary>P1 사망 처리: 조작불가 + Ground 레이어 + 정적화</summary>
-    private void Die()
+    public void Die()
     {
         if (IsDead) return;
         IsDead = true;
@@ -103,10 +106,11 @@ public class Player1HP : MonoBehaviour
         if (groundIdx >= 0) gameObject.layer = groundIdx;
         else Debug.LogWarning($"[Player1HP] Ground 레이어 '{groundLayerName}'를 찾을 수 없습니다.");
 
+        swap.swapsup = false;
         // 애니메이터 dead 플래그
         if (anim && !string.IsNullOrEmpty(deadBoolName))
             anim.SetBool(deadBoolName, true);
-
+        Dead = true;
         // ★ 마지막으로 UI에 0 동기화 & 사망 알림
         HpChanged?.Invoke(0, maxHP);
         Died?.Invoke();

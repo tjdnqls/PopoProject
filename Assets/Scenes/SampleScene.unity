@@ -20662,7 +20662,7 @@ Transform:
   m_GameObject: {fileID: 1634702177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.98, y: -41.06, z: -0.08372452}
+  m_LocalPosition: {x: 12.4, y: -40.3, z: -0.08372452}
   m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24995,8 +24995,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6865428161056805613, guid: 16819997a18797143b2e1a1e020077ae, type: 3}
     - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
+      propertyPath: despawnDelay
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: sustainDelay
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
+      propertyPath: bloodLifetime
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: meleeOffset.x
@@ -25005,6 +25013,10 @@ PrefabInstance:
     - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: burstBloodCount
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
+      propertyPath: sustainDuration
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7896037364119539161, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: attackRecoverSec
@@ -25311,6 +25323,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7935183497072637055}
     - target: {fileID: 8729801131823638229, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
+      propertyPath: dead
+      value: 
+      objectReference: {fileID: 7935183497072637064}
+    - target: {fileID: 8729801131823638229, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
       propertyPath: swap
       value: 
       objectReference: {fileID: 5970518801399258676}
@@ -25505,6 +25521,10 @@ PrefabInstance:
       value: 0.075574875
       objectReference: {fileID: 0}
     - target: {fileID: 6537827293540442743, guid: d803fba66391da642b21e3ca8237cb47, type: 3}
+      propertyPath: dead
+      value: 
+      objectReference: {fileID: 7935183497072637064}
+    - target: {fileID: 6537827293540442743, guid: d803fba66391da642b21e3ca8237cb47, type: 3}
       propertyPath: swap
       value: 
       objectReference: {fileID: 5970518801399258676}
@@ -25641,8 +25661,12 @@ PrefabInstance:
       objectReference: {fileID: 1592550265}
     - target: {fileID: 5647443507717455602, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: killDelay
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 6764185667224882155, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
+      propertyPath: dead
+      value: 
+      objectReference: {fileID: 7935183497072637064}
     - target: {fileID: 6764185667224882155, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: swap
       value: 
@@ -25914,6 +25938,17 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8772764058954490103, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
   m_PrefabInstance: {fileID: 6312633683019052545}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7357204630883092742 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8729801131823638229, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
+  m_PrefabInstance: {fileID: 6312633683019052545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c388a7d6a17d664ca370070699ef118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7822253267658330065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25922,6 +25957,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 75124999234020380, guid: 930d744de3bb6d34c9197581c4fafb9b, type: 3}
+      propertyPath: dead
+      value: 
+      objectReference: {fileID: 7935183497072637064}
     - target: {fileID: 75124999234020380, guid: 930d744de3bb6d34c9197581c4fafb9b, type: 3}
       propertyPath: carry
       value: 
@@ -26003,6 +26042,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 2
+  Dead: 0
+  swap: {fileID: 7357204630883092742}
   groundLayerName: Ground
   deadBoolName: dead
 --- !u!61 &7935183497072637072
@@ -26039,7 +26080,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.044252038, y: -0.21926081}
+  m_Offset: {x: 0.044252038, y: -0.30269432}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -26049,7 +26090,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.1035411, y: 2.1644447}
+  m_Size: {x: 1.1035411, y: 1.9975777}
   m_EdgeRadius: 0
 --- !u!114 &7935183497072637079
 MonoBehaviour:
