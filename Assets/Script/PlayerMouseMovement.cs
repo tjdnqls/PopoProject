@@ -225,6 +225,7 @@ public class PlayerMouseMovement : MonoBehaviour
     private bool righthold;
     private bool prevSelected = false;
     private int playerLayerIndexSelf;
+    private bool lockedall;
 
     // SmoothDamp용
     bool touchingLeftSlime, touchingRightSlime;
@@ -317,6 +318,7 @@ public class PlayerMouseMovement : MonoBehaviour
         bool isSelected = (swap != null && swap.charSelect == playerID);
         bool suppressed = Time.time < swapSuppressUntil;
         bool locked = suppressed || Time.time < inputLockUntil;
+        lockedall = locked;
 
         if (IsDead)
         {
@@ -336,18 +338,6 @@ public class PlayerMouseMovement : MonoBehaviour
             rawX = 0f;
             jumpHeld = false;
             return;
-        }
-
-        if (playerID == SwapController.PlayerChar.P1)
-        {
-            bool shiftDown = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
-            bool canToggleCarry = !locked && Time.time >= nextCarryAllowedAt;
-
-            if (shiftDown && canToggleCarry)
-            {
-                if (!isCarrying) TryStartCarryNow();
-                else StopCarry();
-            }
         }
 
         if (prevSelected && !isSelected)
@@ -374,6 +364,18 @@ public class PlayerMouseMovement : MonoBehaviour
         if (!locked && Input.GetKeyDown(KeyCode.Space))
             lastJumpPressedTime = Time.time;
         jumpHeld = !locked && Input.GetKey(KeyCode.Space);
+
+        if (playerID == SwapController.PlayerChar.P1)
+        {
+            bool shiftDown = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
+            bool canToggleCarry = !locked && Time.time >= nextCarryAllowedAt;
+
+            if (shiftDown && canToggleCarry && !jumpHeld)
+            {
+                if (!isCarrying) TryStartCarryNow();
+                else StopCarry();
+            }
+        }
 
         // --- 공격 처리 & F Pulse ---
         if (selectedObject)
@@ -471,8 +473,8 @@ public class PlayerMouseMovement : MonoBehaviour
             Debug.Log($"[SLIME] grounded(IsGrounded)={groundedForWall}, L={touchingLeftSlime}, R={touchingRightSlime}, isDiving={isDiving}");
         }
 
-        if (!locked && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
-            !locked && Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (!lockedall && Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+            !lockedall && Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             RunAni();
         }
@@ -803,9 +805,13 @@ public class PlayerMouseMovement : MonoBehaviour
 
         // 애니 기반 입력잠금 시작
         BeginCarryStartLock();
+        rb2.SetBool("jump", false);
+        rb2.SetBool("jumped", false);
+        rb2.SetBool("run", false);
         rb2.SetBool("carry", true);
+        lockedall = true;
 
-        if (_revealCo != null) { StopCoroutine(_revealCo); _revealCo = null; }
+        if (_revealCo != null) { StopCoroutine(_revealCo); _revealCo = null; lockedall = false; }
     }
 
     private void StopCarry()
@@ -846,7 +852,7 @@ public class PlayerMouseMovement : MonoBehaviour
             isCarrying = false;
             carryset = false;
             rb2.SetBool("carry", false);
-
+            
             BeginCarryEndLock();
 
             if (_revealCo != null) StopCoroutine(_revealCo);

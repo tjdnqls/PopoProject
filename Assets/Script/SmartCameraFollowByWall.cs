@@ -24,8 +24,8 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
     [SerializeField] private Color nearColor = new Color(1f, 0.78f, 0.06f, 1f); // 진한 노랑(Amber #FFC107)
     [SerializeField] private Color farColor = new Color(1f, 0.97f, 0.71f, 1f); // 연한 노랑
-    [SerializeField] private float nearDistance = 3f;   // 이 이하이면 거의 nearColor
-    [SerializeField] private float farDistance = 25f;  // 이 이상이면 거의 farColor
+    [SerializeField] private float nearDistance = 3f;   // 이 이하이면 거의 nearColor/nearScale
+    [SerializeField] private float farDistance = 25f;  // 이 이상이면 거의 farColor/farScale
     [SerializeField] private UnityEngine.UI.Graphic indicatorGraphic; // 화살표 UI(Image 등)
 
     [SerializeField] private GameObject Knight_UI;
@@ -52,9 +52,19 @@ public class SmartCameraFollowByWall : MonoBehaviour
     private CanvasGroup warnGroup;
     private readonly Collider2D[] _hazardHits = new Collider2D[8];
 
+    // === 거리 기반 스케일 ===
+    [Header("Indicator Scale by Distance")]
+    [SerializeField] private float nearScale = 1.4f;   // 가까울 때 화살표 크기
+    [SerializeField] private float farScale = 0.7f;    // 멀 때 화살표 크기
+    [SerializeField, Tooltip("스케일 보간 속도(초당)")]
+    private float scaleLerpSpeed = 12f;
+
+    // 내부 캐시
+    private Vector3 indicatorBaseScale = Vector3.one; // 인디케이터 원본 스케일
+    private float currentScale = 1f;                  // 현재 배율(1=기본)
+
     private void Awake()
     {
-
         if (!cam) cam = Camera.main;
         if (offscreenIndicator)
         {
@@ -62,6 +72,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
                 indicatorGraphic = offscreenIndicator.GetComponent<UnityEngine.UI.Graphic>();
             offscreenIndicator.pivot = new Vector2(0.5f, 0.5f);
             offscreenIndicator.anchorMin = offscreenIndicator.anchorMax = new Vector2(0.5f, 0.5f);
+
+            // 인디케이터 기본 스케일 캐싱
+            indicatorBaseScale = offscreenIndicator.localScale;
+            currentScale = 1f;
         }
 
         if (warnIcon)
@@ -72,7 +86,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
             warnIcon.gameObject.SetActive(false);
         }
     }
-
 
     private void Reset()
     {
@@ -116,7 +129,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
                     selectmark1.SetActive(true);
                     swapsup = true;
                 }
-                else if (swapsup)
+                else // swapsup == true
                 {
                     Knight_UI.SetActive(false);
                     Princess_UI.SetActive(true);
@@ -125,12 +138,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
                     swapsup = false;
                 }
             }
-
         }
 
         if (swapsup)
         {
-
             if (!blockLeft && target1.position.x < cameraPos.x)
                 targetX = target1.position.x;
             else if (!blockRight && target1.position.x > cameraPos.x)
@@ -142,10 +153,8 @@ public class SmartCameraFollowByWall : MonoBehaviour
             else if (desiredY < cameraPos.y)
                 targetY = desiredY;
         }
-
-        if (!swapsup)
+        else // !swapsup
         {
-
             if (!blockLeft && target2.position.x < cameraPos.x)
                 targetX = target2.position.x;
             else if (!blockRight && target2.position.x > cameraPos.x)
@@ -180,9 +189,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
         Transform other = swapsup ? target2 : target1; // 화면 밖 공주(반대편)
 
         UpdateOffscreenIndicator(other, self);
-
-
-
     }
 
     void OnDrawGizmos()
@@ -218,6 +224,8 @@ public class SmartCameraFollowByWall : MonoBehaviour
         {
             offscreenIndicator.gameObject.SetActive(false);
             if (warnIcon) warnIcon.gameObject.SetActive(false);
+            // 필요 시 스케일 원복:
+            // offscreenIndicator.localScale = indicatorBaseScale;
             return;
         }
         offscreenIndicator.gameObject.SetActive(true);
@@ -283,12 +291,24 @@ public class SmartCameraFollowByWall : MonoBehaviour
         offscreenIndicator.anchoredPosition = local;
         offscreenIndicator.rotation = Quaternion.Euler(0f, 0f, angle);
 
-        // --- 거리 기반 색 보간 ---
-        if (indicatorGraphic && otherTarget && selfTarget)
+        // --- 거리 기반 색 & 스케일 보간 ---
+        if (otherTarget && selfTarget)
         {
             float dist = Vector2.Distance(selfTarget.position, otherTarget.position);
-            float closeness = 1f - Mathf.InverseLerp(nearDistance, farDistance, dist);
-            indicatorGraphic.color = Color.Lerp(farColor, nearColor, closeness);
+            float closeness = 1f - Mathf.InverseLerp(nearDistance, farDistance, dist); // 0(멀다)~1(가깝다)
+
+            // 색 보간
+            if (indicatorGraphic)
+                indicatorGraphic.color = Color.Lerp(farColor, nearColor, closeness);
+
+            // 스케일 보간: 가까울수록 nearScale, 멀수록 farScale
+            float targetScale = Mathf.Lerp(farScale, nearScale, closeness);
+            currentScale = Mathf.Lerp(currentScale, targetScale, Time.unscaledDeltaTime * scaleLerpSpeed);
+            offscreenIndicator.localScale = indicatorBaseScale * currentScale;
+
+            // 거리 텍스트(선택)
+            if (showDistance && distanceText)
+                distanceText.text = Mathf.RoundToInt(dist).ToString();
         }
 
         // --- 위험 감지 & 경고 아이콘 페이드 ---
