@@ -1,6 +1,7 @@
-using System; // ★ 추가
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 [DisallowMultipleComponent]
 public class Player1HP : MonoBehaviour
@@ -16,7 +17,7 @@ public class Player1HP : MonoBehaviour
     public event Action Died;
     public bool Dead = false;
     public SmartCameraFollowByWall swap;
-
+    public Animator rb2;
 
     [Header("Layers (사망 시 Ground로 변경)")]
     [SerializeField] private string groundLayerName = "Ground";
@@ -24,6 +25,8 @@ public class Player1HP : MonoBehaviour
     [Header("Optional")]
     [SerializeField] private string deadBoolName = "dead"; // Animator bool 파라미터명(있으면 세팅)
 
+    [Header("Timing")]
+    [SerializeField] private float swapDisableDelay = 1.5f;
     private PlayerMouseMovement move;
     private Rigidbody2D rb;
     private Animator anim;
@@ -84,6 +87,7 @@ public class Player1HP : MonoBehaviour
         {
             var op = move.otherPlayer;
             op.transform.SetParent(null, true);
+            move.SetOtherPlayerVisible(true);
             if (op.rb) op.rb.simulated = true;
             op.isCarried = false;
             move.isCarrying = false;
@@ -99,6 +103,7 @@ public class Player1HP : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.gravityScale = 0f;
             rb.bodyType = RigidbodyType2D.Static;
+            rb2.SetBool("death", true);
         }
 
         // 레이어 변경
@@ -106,15 +111,25 @@ public class Player1HP : MonoBehaviour
         if (groundIdx >= 0) gameObject.layer = groundIdx;
         else Debug.LogWarning($"[Player1HP] Ground 레이어 '{groundLayerName}'를 찾을 수 없습니다.");
 
-        swap.swapsup = false;
         // 애니메이터 dead 플래그
         if (anim && !string.IsNullOrEmpty(deadBoolName))
             anim.SetBool(deadBoolName, true);
-        Dead = true;
-        // ★ 마지막으로 UI에 0 동기화 & 사망 알림
+        
+
+        if (swap != null)
+        {
+            if (swapDisableDelay <= 0f) swap.swapsup = false;
+            else StartCoroutine(DisableSwapAfterDelay());
+        }
+
         HpChanged?.Invoke(0, maxHP);
         Died?.Invoke();
 
         Debug.Log("[Player1HP] 사망 처리 완료: 조작불가, Ground 레이어, Static 고정(씬 리로드 없음)");
+    }
+    private IEnumerator DisableSwapAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(swapDisableDelay);
+        if (swap != null) swap.swapsup = false; Dead = true;
     }
 }

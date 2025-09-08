@@ -134,7 +134,7 @@ public class MonsterKillerTrigger2D : MonoBehaviour
         // ★ 피격 인정: 즉시 레이어 변경 (Monster → Default 등)
         if (changeLayerOnHit)
         {
-            CameraShaker.Shake(0.5f, 0.2f);
+            CameraShaker.Shake(1f, 0.2f);
             ChangeLayerOnHit(victimGO);
         }
             

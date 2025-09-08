@@ -20662,7 +20662,7 @@ Transform:
   m_GameObject: {fileID: 1634702177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.4, y: -40.3, z: -0.08372452}
+  m_LocalPosition: {x: 32.81, y: -40.74, z: -0.08372452}
   m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25171,6 +25171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 1
+  playerID: {fileID: 0}
 --- !u!114 &5823906202299695673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25695,6 +25696,10 @@ PrefabInstance:
       propertyPath: throwStartWorldPoint
       value: 
       objectReference: {fileID: 1784966431}
+    - target: {fileID: 6764185667224882155, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
+      propertyPath: releaseGroundProbeDown
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7511618873478945521, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -26044,8 +26049,10 @@ MonoBehaviour:
   maxHP: 2
   Dead: 0
   swap: {fileID: 7357204630883092742}
+  rb2: {fileID: 1359214075}
   groundLayerName: Ground
   deadBoolName: dead
+  swapDisableDelay: 1.5
 --- !u!61 &7935183497072637072
 BoxCollider2D:
   m_ObjectHideFlags: 0

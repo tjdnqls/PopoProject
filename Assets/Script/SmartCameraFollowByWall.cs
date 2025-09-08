@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 public class SmartCameraFollowByWall : MonoBehaviour
 {
     public Transform target1;
@@ -140,8 +141,14 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
         Transform focus = swapsup ? target1 : target2;
 
+        if (SpiralBoxWipe.IsBusy)
+        {
+            swapsup = false;
+        }
+
+
         // === 탭 입력: 전환 시작 시점에서 전환 상태 On + 속도 부스트 ===
-        if (Input.GetKeyDown(KeyCode.Tab) && dead.Dead == false)
+        if (Input.GetKeyDown(KeyCode.Tab) && dead.Dead == false && !SpiralBoxWipe.IsBusy)
         {
             if (carry.carryset == false)
             {

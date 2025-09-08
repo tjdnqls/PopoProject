@@ -8,6 +8,8 @@ public class Player2HP : MonoBehaviour
     [SerializeField] private int maxHP = 1;
     public int CurrentHP { get; private set; }
     public bool IsDead { get; private set; }
+    private bool _sceneReloading = false;
+    public SwapController playerID;
 
     private bool _reloading;
 
@@ -36,10 +38,10 @@ public class Player2HP : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        if (_reloading) return;
-        _reloading = true;
+        if (_sceneReloading) return;
+        _sceneReloading = true;
 
-        // 즉시 씬 리로드
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        string sceneName = SceneManager.GetActiveScene().name;
+        SpiralBoxWipe.Run(sceneName);
     }
 }

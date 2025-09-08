@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class SwapController : MonoBehaviour
 {
     public enum PlayerChar { P1, P2 }
@@ -12,6 +12,12 @@ public class SwapController : MonoBehaviour
 
     void Update()
     {
+        if (SpiralBoxWipe.IsBusy)
+        {
+            coubt = false;
+            return;
+        }
+
         if (dead.Dead == true)
         {
             coubt = false;
