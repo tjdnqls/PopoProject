@@ -19,6 +19,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
     public GameObject selectmark2;
     public PlayerMouseMovement rb;
     public Player1HP dead;
+    public Player2HP deade;
     public bool deadcount;
 
 
@@ -141,11 +142,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
         Transform focus = swapsup ? target1 : target2;
 
-        if (SpiralBoxWipe.IsBusy)
+        if (SpiralBoxWipe.IsBusy && deade.IsDead == true)
         {
             swapsup = false;
         }
-
 
         // === 탭 입력: 전환 시작 시점에서 전환 상태 On + 속도 부스트 ===
         if (Input.GetKeyDown(KeyCode.Tab) && dead.Dead == false && !SpiralBoxWipe.IsBusy)
