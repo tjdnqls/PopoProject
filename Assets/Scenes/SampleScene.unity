@@ -4158,12 +4158,23 @@ MonoBehaviour:
     loop: 0
   - name: desh
     frames:
+    - {fileID: 7796489720157118539, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
     - {fileID: 4151046763693669347, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
     - {fileID: -4162129941589120387, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+    - {fileID: 3032867974267129088, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+    - {fileID: -1829377064002598094, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+    - {fileID: -956870321305392998, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+    - {fileID: -4280123317493518697, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
     fps: 6
     loop: 0
   - name: deshStay
     frames:
+    - {fileID: 7219762561262908552, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+    fps: 6
+    loop: 0
+  - name: backStep
+    frames:
+    - {fileID: 4681548934482222617, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
     - {fileID: 7219762561262908552, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
     fps: 6
     loop: 0
@@ -4213,7 +4224,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1459458051413904079, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+  m_Sprite: {fileID: -4280123317493518697, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
