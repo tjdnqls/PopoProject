@@ -167,10 +167,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
