@@ -1,4 +1,5 @@
 ﻿// ===================== MonsterABPatrolFSM.cs =====================
+using Game.AI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
+public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
 {
     // [FIX-DEATH] Dead 상태
     public enum State { Patrol, Alert, Chase, AttackWindup, Return, Dead }
@@ -652,18 +653,21 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         if (IsDeadOrStopped) return;
+        CameraShaker.Shake(0.4f, 0.5f);
         StartDeathSequence("TakeDamage(int)");
     }
 
     public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
     {
         if (IsDeadOrStopped) return;
+        CameraShaker.Shake(0.4f, 0.5f);
         StartDeathSequence("TakeDamage(int,vec,vec)");
     }
 
     public void OnHit(int damage)
     {
         if (IsDeadOrStopped) return;
+        CameraShaker.Shake(0.4f, 0.5f);
         StartDeathSequence("OnHit");
     }
 

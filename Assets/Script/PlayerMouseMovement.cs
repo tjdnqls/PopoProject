@@ -942,12 +942,14 @@ public class PlayerMouseMovement : MonoBehaviour
         {
             rb2.SetBool("run", false);
             rb2.SetBool("throw", true);
+            rb2.SetBool("throwed", true);
         }
         else
         {
             Debug.Log("공중 던지기 실행");
             rb2.SetBool("run", false);
             rb2.SetBool("throw", true);
+            rb2.SetBool("throwed", true);
         }
         throwmanager = false;
 
@@ -988,6 +990,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
             // 던지기 시작 애니 플래그 (P2)
             if (otherPlayer.rb2) otherPlayer.rb2.SetBool("throwe", true);
+            if (otherPlayer.rb2) otherPlayer.rb2.SetBool("throwed", true);
 
             // 탄도 유지 플래그/타이밍 세팅
             otherPlayer.ballisticThrowActive = true;
