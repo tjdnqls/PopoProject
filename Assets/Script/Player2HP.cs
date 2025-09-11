@@ -43,5 +43,6 @@ public class Player2HP : MonoBehaviour
 
         string sceneName = SceneManager.GetActiveScene().name;
         SpiralBoxWipe.Run(sceneName);
+
     }
 }
