@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 [DisallowMultipleComponent]
-public class Player1HP : MonoBehaviour
+public class Player1HP : MonoBehaviour, global::IDamageable
 {
     [Header("HP")]
     [SerializeField] private int maxHP = 2;
@@ -62,7 +62,17 @@ public class Player1HP : MonoBehaviour
             HpChanged?.Invoke(CurrentHP, maxHP); // ★ 감소 알림
         }
     }
+    // ChargerSentinelAI, Monster 등에서 이 시그니처로 호출합니다.
+    public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
+    {
+        TakeDamage(amount); // 기존 단일 인자 버전 재사용
+    }
 
+    // ================== ★ 추가: SendMessage 폴백 대응 ==================
+    public void OnHit(int damage)
+    {
+        TakeDamage(damage);
+    }
     /// <summary>회복이 필요하면 사용(최대치 초과 방지)</summary>
     public void Heal(int amount)
     {

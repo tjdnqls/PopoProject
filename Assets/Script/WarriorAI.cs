@@ -1,5 +1,6 @@
-﻿// ===================== ChargerSentinelAI.cs (Monkill death + blood) =====================
+﻿// ===================== ChargerSentinelAI.cs (Monkill death + blood + Dash hits Player) =====================
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -18,6 +19,9 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private string dashAnim = "Dash";
     [SerializeField] private string hitAnim = "Hit";
     [SerializeField] private string deathAnim = "Death";
+    [SerializeField] private string attackOmegaAnim = "attackOmega"; // 접촉 시 재생할 애니메이션
+    [SerializeField] private float onHitShakeAmp = 0.6f;
+    [SerializeField] private float onHitShakeDur = 0.25f;
 
     // ---------- Layers / Refs ----------
     [Header("Layers")]
@@ -84,16 +88,23 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private bool drawKillBox = false;
 
+    // ---------- NEW: Player damage while dashing ----------
+    [Header("Player Hit (while Dashing)")]
+    [SerializeField] private int dashPlayerDamage = 1;                         // ★ 돌진 접촉 데미지
+    [SerializeField] private Vector2 playerBoxPadding = new Vector2(0.10f, 0); // ★ 필요시 별도 패딩
+    [SerializeField] private float playerBoxForward = 0.10f;                   // ★ 필요시 별도 전방
+
     private State state;
     private Transform currentTarget;
     private float _timer;
     private int _dashDir, _plannedDashDir;
     private bool _mustDashOnce;
     private Color _baseColor = Color.white;
-
+    private bool _stoppedThisDash;
     private int _groundLayer, _monsterLayer, _monkillLayer, _myLayer;
     private static readonly Collider2D[] _buf = new Collider2D[8];
     private static readonly Collider2D[] _killBuf = new Collider2D[16];
+    private static readonly Collider2D[] _playerBuf = new Collider2D[16];      // ★
 
     private GameObject _previewGO;
     private SpriteRenderer _previewSR;
@@ -103,6 +114,9 @@ public class ChargerSentinelAI : MonoBehaviour
     private Vector3 _deathPos;
     private Quaternion _deathRot;
     private Vector3 _deathFeetPos;
+
+    // ★ 중복 타격 방지(한 번의 Dash 동안)
+    private readonly HashSet<int> _hitPlayerRootsThisDash = new HashSet<int>();
 
     // ---------- Unity ----------
     private void Reset()
@@ -162,14 +176,17 @@ public class ChargerSentinelAI : MonoBehaviour
             case State.Recover: TickRecover(); break;
         }
 
-        if (state == State.Dashing) KillSweepAhead();
+        if (state == State.Dashing)
+        {
+            KillSweepAhead();     // Monster 즉사
+            DamagePlayersAhead(); // ★ Player 데미지
+        }
     }
 
     private void LateUpdate()
     {
         if (state == State.Dead)
         {
-            // 위치/회전 고정
             transform.position = _deathPos;
             transform.rotation = _deathRot;
         }
@@ -243,6 +260,8 @@ public class ChargerSentinelAI : MonoBehaviour
 
     private void EnterDash()
     {
+        _stoppedThisDash = false;            // ★ 초기화
+        _hitPlayerRootsThisDash.Clear();
         if (!StillValidTarget() && !_mustDashOnce) { EnterIdle(); return; }
         state = State.Dashing; _timer = 0f;
         _dashDir = (_plannedDashDir != 0) ? _plannedDashDir
@@ -251,16 +270,17 @@ public class ChargerSentinelAI : MonoBehaviour
         Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; rb.linearVelocity = v;
         if (sr) sr.color = _baseColor;
         _mustDashOnce = false;
+        _hitPlayerRootsThisDash.Clear(); // ★ 대시 시작 시 중복 타격 캐시 초기화
         HidePreview();
         CameraShaker.Shake(0.4f, 0.2f);
         PlayAnim(dashAnim, true);
     }
 
-    private void EnterRecover()
+    private void EnterRecover(string animKeyOverride = null)
     {
         state = State.Recover; _timer = 0f;
         StopHorizontal(); HidePreview();
-        PlayAnim(idleAnim);
+        PlayAnim(string.IsNullOrEmpty(animKeyOverride) ? idleAnim : animKeyOverride);
     }
 
     // ---------- Helpers ----------
@@ -324,6 +344,66 @@ public class ChargerSentinelAI : MonoBehaviour
             Debug.DrawLine(center + new Vector2(-size.x / 2, size.y / 2), center + new Vector2(-size.x / 2, -size.y / 2), cc, 0f);
         }
 #endif
+    }
+
+    // ---------- NEW: Player damage sweep while Dashing ----------
+    private void DamagePlayersAhead() // ★
+    {
+        if (!body) return;
+
+        Bounds b = body.bounds;
+        Vector2 size = new Vector2(b.size.x + playerBoxPadding.x, b.size.y + playerBoxPadding.y);
+        Vector2 center = new Vector2(b.center.x + _dashDir * (b.extents.x + playerBoxForward), b.center.y);
+
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
+        int count = Physics2D.OverlapBox(center, size, 0f, filter, _playerBuf);
+
+        for (int i = 0; i < count; i++)
+        {
+            var c = _playerBuf[i]; if (!c) continue;
+
+            // 자기 자신 무시
+            if (c.transform.root == transform.root) continue;
+
+            // 루트 단위 중복 타격 방지
+            var root = c.attachedRigidbody ? c.attachedRigidbody.transform.root : c.transform.root;
+            int id = root.GetInstanceID();
+            if (_hitPlayerRootsThisDash.Contains(id)) continue;
+
+            // 실제 데미지 전달
+            DealDamageTo(c.transform, dashPlayerDamage);
+            StopDashOnPlayerHit();
+            _hitPlayerRootsThisDash.Add(id);
+        }
+    }
+
+    private void StopDashOnPlayerHit()
+    {
+        if (_stoppedThisDash) return; // 대시 중 1회만
+        _stoppedThisDash = true;
+
+        // 즉시 정지
+        Vector2 v = rb.linearVelocity; v.x = 0f; rb.linearVelocity = v;
+
+        // attackOmega 재생 + 쉐이크
+        EnterRecover(attackOmegaAnim);
+        CameraShaker.Shake(onHitShakeAmp, onHitShakeDur);
+    }
+
+    private void DealDamageTo(Transform t, int dmg) // ★
+    {
+        if (!t) return;
+
+        var dmgIf = t.GetComponentInParent<global::IDamageable>(); // ★ 모호성 제거
+        if (dmgIf != null)
+        {
+            Vector2 hitPoint = body ? (Vector2)body.bounds.center : (Vector2)transform.position;
+            Vector2 hitNormal = new Vector2(_dashDir, 0);
+            dmgIf.TakeDamage(dmg, hitPoint, hitNormal);
+            return;
+        }
+
+        t.SendMessage("OnHit", dmg, SendMessageOptions.DontRequireReceiver);
     }
 
     // ---------- Monkill 즉사 처리 ----------
@@ -397,7 +477,7 @@ public class ChargerSentinelAI : MonoBehaviour
         if (body != null)
         {
             var b = body.bounds;
-            return new Vector3(2f + feetYOffset, transform.position.z);
+            return new Vector3(b.center.x, b.min.y + feetYOffset, transform.position.z); // ★ fix
         }
         return transform.position + new Vector3(0f, -0.25f, 0f);
     }
@@ -538,3 +618,6 @@ public class ChargerSentinelAI : MonoBehaviour
     // 외부에서 즉사시키고 싶을 때 쓸 수 있는 메시지 훅(선택)
     public void OnHit(int damage) { StartDeathSequence("OnHit"); }
 }
+
+// 선택형 인터페이스(다른 스크립트와 호환)
+
