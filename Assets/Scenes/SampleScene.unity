@@ -4586,7 +4586,7 @@ Transform:
   m_GameObject: {fileID: 525449826}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 91.3, y: -38.87, z: -0.18683665}
+  m_LocalPosition: {x: 86.54, y: -37.27, z: -0.18683665}
   m_LocalScale: {x: 7, y: 7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32887,7 +32887,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -32912,7 +32912,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 881c0f0f048dfbd4d8c349141a6d85ce, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -33154,8 +33154,8 @@ MonoBehaviour:
   hitboxDamage: 1
   damageOnlyCurrentTarget: 1
   backOnlyDamage: 1
-  rearDamageDotMax: -0.65
-  longitudinalBehindEps: 0.06
+  backConeCosMax: -5
+  backMinBehindX: 0.5
   monkillLayerName: Monkill
   player1Tag: Player1
   guardHoldSec: 0.5
@@ -35811,11 +35811,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870041295297937991, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 83.27
+      value: 118.59
       objectReference: {fileID: 0}
     - target: {fileID: 7870041295297937991, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -37.75
+      value: -40.44
       objectReference: {fileID: 0}
     - target: {fileID: 7870041295297937991, guid: d51343c9b134b2c4a91653c96889aa7d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -41522,7 +41522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789038932171583171, guid: d803fba66391da642b21e3ca8237cb47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -37.25
+      value: -37.13
       objectReference: {fileID: 0}
     - target: {fileID: 8789038932171583171, guid: d803fba66391da642b21e3ca8237cb47, type: 3}
       propertyPath: m_LocalPosition.z
@@ -41656,6 +41656,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6764185667224882155, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
+      propertyPath: attackCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6764185667224882155, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: carryLockDuration
       value: 0.6
       objectReference: {fileID: 0}
@@ -41677,11 +41681,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7511618873478945521, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 108.47
+      value: 106
       objectReference: {fileID: 0}
     - target: {fileID: 7511618873478945521, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -40.37
+      value: -39.45
       objectReference: {fileID: 0}
     - target: {fileID: 7511618873478945521, guid: 7d866f8d82f1cb941a7a75f721a2a799, type: 3}
       propertyPath: m_LocalPosition.z
