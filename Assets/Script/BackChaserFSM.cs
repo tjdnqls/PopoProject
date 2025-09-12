@@ -71,9 +71,9 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [Header("Back-Only Damage (입는 쪽) — 완화된 ‘뒤’ 인식")]
     [SerializeField] private bool backOnlyDamage = true;
     [SerializeField, Tooltip("뒤쪽 각도 한계(cosθ). -1(완전 뒤)~0(정면). 더 작을수록 '진짜 뒤'만 인정")]
-    private float backConeCosMax = -0.85f;                         // 기존보다 더 빡세게
+    private float backConeCosMax = -0.85f;
     [SerializeField, Tooltip("내 뒤쪽으로 최소 얼마나 더 들어왔는지(X축 전후 성분, 월드유닛)")]
-    private float backMinBehindX = 0.12f;                          // 기존보다 좀 더 깊이
+    private float backMinBehindX = 0.12f;
 
     [Header("Block by Position (Monkill)")]
     [SerializeField] private string monkillLayerName = "Monkill";
@@ -84,7 +84,19 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private float guardShakeDur = 0.15f;
     [SerializeField] private float despawnDelay = 5f;
 
-    [Header("Debug")]
+    [Header("AI Options")]
+    [SerializeField, Tooltip("사거리 안에 들어온 아무 플레이어라도 발견되면 그 대상으로 즉시 공격")]
+    private bool attackAnyPlayerInRange = true;
+    [SerializeField, Tooltip("추격 중에도 선호 태그(예: Player2)로 타깃을 재지정할지")]
+    private bool switchToPreferWhileChasing = false; // 기본: P1 추격 유지
+
+    [Header("Debug View")]
+    [SerializeField] private bool showAttackWindowGizmo = true;
+    [SerializeField] private bool alwaysShowGizmo = true;
+    [SerializeField] private Color attackGizmoColor = new Color(1f, 0f, 0f, 0.18f);     // 전방 사각
+    [SerializeField] private Color attackGizmoEdgeColor = new Color(1f, 0f, 0f, 0.9f);
+    [SerializeField] private Color fallbackGizmoColor = new Color(1f, 0.55f, 0f, 0.12f); // 폴백 윈도우
+    [SerializeField] private Color fallbackGizmoEdgeColor = new Color(1f, 0.55f, 0f, 0.9f);
     [SerializeField] private bool drawGizmos = true;
 
     // ---- runtime ----
@@ -99,7 +111,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private int _monkillLayer;
 
     private bool _lookLocked; // 공격 준비 중 시선락
-    private static readonly Collider2D[] _buf = new Collider2D[8];
+    private static readonly Collider2D[] _buf = new Collider2D[12];
 
     private bool isDying = false;
 
@@ -126,7 +138,6 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         dir = ((GetPatrolTarget().x - transform.position.x) >= 0f) ? +1 : -1;
         state = State.Patrol;
 
-        // 히트박스 준비
         if (attackHitbox)
         {
             attackHitbox.SetActive(false);
@@ -195,14 +206,20 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void TickAlert()
     {
         StopHorizontal();
-        // 대기 코루틴이 전이 담당
     }
 
     private void TickChase()
     {
         Play(runAnim);
 
-        PromotePreferTargetIfVisible();
+        // 선호 타깃 승격은 "추격 유지" 옵션을 우선 고려
+        if (switchToPreferWhileChasing || currentTarget == null || !StillValidTarget(currentTarget) || currentTarget.root.CompareTag(preferPlayerTag) == false)
+        {
+            if (!(currentTarget && currentTarget.root.CompareTag(player1Tag) && StillValidTarget(currentTarget)))
+            {
+                PromotePreferTargetIfVisible();
+            }
+        }
 
         if (!StillValidTarget(currentTarget))
         {
@@ -219,15 +236,22 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         stuckTimer = (AlmostStopped() || FrontWall(chaseDir)) ? stuckTimer + Time.fixedDeltaTime : 0f;
         if (stuckTimer >= stuckGiveUpSec) { EnterReturn(); return; }
 
-        // 사거리면 "항상" 공격 대기부터
+        // ---- 공격 진입 로직 강화 ----
         if (currentTarget && WithinAttackWindow(currentTarget))
+        {
             EnterAttackWindup();
+            return;
+        }
+        if (attackAnyPlayerInRange && TryFindTargetInAttackWindow(out var nearTarget))
+        {
+            currentTarget = nearTarget;
+            EnterAttackWindup();
+        }
     }
 
     private void TickAttackRecover()
     {
         StopHorizontal();
-        // 쿨타임은 코루틴에서 처리
     }
 
     private void TickReturn()
@@ -290,24 +314,33 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
     private IEnumerator AttackRoutine()
     {
-        // 시선 고정
-        int lockedDir = (currentTarget && currentTarget.position.x >= transform.position.x) ? +1 : -1;
+        // ---------- 커밋 스냅샷: 이번 한 번은 무조건 휘두른다 ----------
+        Transform commitTargetRoot = currentTarget ? currentTarget.root : null;
+
+        int lockedDir = 0;
+        if (commitTargetRoot)
+            lockedDir = (commitTargetRoot.position.x >= transform.position.x) ? +1 : -1;
+        else if (currentTarget)
+            lockedDir = (currentTarget.position.x >= transform.position.x) ? +1 : -1;
+        else
+            lockedDir = dir != 0 ? dir : +1;
+
         ForceFlipByDir(lockedDir);
         dir = lockedDir;
         _lookLocked = true;
 
-        // 1) 공격 대기(AttackStart) 먼저
+        // 1) 공격 대기(취소 없음)
         Color start = sr ? sr.color : Color.white;
         float t = 0f;
-        Play(attackStartAnim, true); // 항상 선행
+        Play(attackStartAnim, true);
         while (t < attackWindupSec)
         {
             t += Time.fixedDeltaTime;
             if (sr) sr.color = Color.Lerp(start, windupColor, Mathf.Clamp01(t / attackWindupSec));
             yield return new WaitForFixedUpdate();
 
-            if (!currentTarget || !StillValidTarget(currentTarget))
-            { if (sr) sr.color = start; _lookLocked = false; EnterChase(); yield break; }
+            if (state == State.Dead) { if (sr) sr.color = start; _lookLocked = false; yield break; }
+            // ※ 더 이상 타깃 유효성/사거리로 취소하지 않음 (최소 1회 보장)
         }
         if (sr) sr.color = baseColor;
 
@@ -322,18 +355,19 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
                 ownerRoot: transform.root,
                 playerMask: playerMask,
                 damage: hitboxDamage,
-                onlyTarget: damageOnlyCurrentTarget ? currentTarget : null // ★ 현재 타겟이 P1이면 P1을 공격
+                // 커밋 타깃 기준으로 한 번은 확실히 공격
+                onlyTarget: damageOnlyCurrentTarget ? commitTargetRoot : null
             );
 
-            attackHitbox.SetActive(true);           // 켜는 순간 내부 대상도 즉시 판정
+            attackHitbox.SetActive(true);
             yield return new WaitForSeconds(hitboxActiveSeconds);
             attackHitbox.SetActive(false);
         }
         else
         {
-            // 폴백
-            if (currentTarget && StillValidTarget(currentTarget) && WithinAttackWindow(currentTarget))
-                ApplyDamage(currentTarget);
+            // 히트박스 없을 때도 커밋 타깃 우선
+            if (commitTargetRoot) ApplyDamage(commitTargetRoot);
+            else if (currentTarget) ApplyDamage(currentTarget);
             yield return new WaitForSeconds(hitboxActiveSeconds);
         }
 
@@ -343,7 +377,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         while (r < attackRecoverSec) { r += Time.fixedDeltaTime; yield return new WaitForFixedUpdate(); }
         _lookLocked = false;
 
-        // 4) 사거리면 재공격, 아니면 추격/복귀
+        // 4) 재결정
         if (currentTarget && StillValidTarget(currentTarget))
         {
             if (WithinAttackWindow(currentTarget)) EnterAttackWindup();
@@ -384,6 +418,11 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void PromotePreferTargetIfVisible()
     {
         if (string.IsNullOrEmpty(preferPlayerTag)) return;
+
+        // 현재 유효한 타깃이 있고 P1이면 유지
+        if (currentTarget && StillValidTarget(currentTarget) && currentTarget.root.CompareTag(player1Tag))
+            return;
+
         var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
         int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _buf);
         if (n <= 0) return;
@@ -399,6 +438,38 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
             if (d < best) { best = d; prefer = t; }
         }
         if (prefer && prefer != currentTarget) { currentTarget = prefer; lastSeenTime = Time.time; }
+    }
+
+    private bool TryFindTargetInAttackWindow(out Transform best)
+    {
+        best = null;
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
+        int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _buf);
+        if (n <= 0) return false;
+
+        Transform prefer = null; float preferBest = float.PositiveInfinity;
+        Transform nearest = null; float nearBest = float.PositiveInfinity;
+
+        for (int i = 0; i < n; i++)
+        {
+            var c = _buf[i]; if (!c) continue;
+            var t = c.attachedRigidbody ? c.attachedRigidbody.transform : c.transform;
+
+            // 사거리/수직 허용치 검사
+            if (!WithinAttackWindow(t)) continue;
+
+            float d = ((Vector2)t.position - (Vector2)transform.position).sqrMagnitude;
+
+            if (!string.IsNullOrEmpty(preferPlayerTag) && t.root.CompareTag(preferPlayerTag))
+            {
+                if (d < preferBest) { preferBest = d; prefer = t; }
+            }
+
+            if (d < nearBest) { nearBest = d; nearest = t; }
+        }
+
+        best = prefer ? prefer : nearest;
+        return best != null;
     }
 
     private bool StillValidTarget(Transform t)
@@ -424,7 +495,6 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
             return;
         }
 
-        // Player1HP/Player2HP 호환
         t.SendMessage("TakeDamage", attackDamage, SendMessageOptions.DontRequireReceiver);
         t.SendMessage("OnHit", attackDamage, SendMessageOptions.DontRequireReceiver);
     }
@@ -441,24 +511,22 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     {
         if (!backOnlyDamage) { KillImmediate(); return; }
 
-        // 내 전방(+dir) 기준으로 충분히 "뒤쪽"에서 맞은 경우만 유효
         Vector2 fwd = new Vector2(dir, 0f).normalized;
         Vector2 toHit = ((Vector2)hitPoint - (Vector2)transform.position);
 
-        float dotDir = Vector2.Dot(fwd, toHit.normalized); // -1(완전뒤)~+1(정면)
-        float longProj = Vector2.Dot(toHit, fwd);          // 전후 성분(+전방, -후방)
+        float dotDir = Vector2.Dot(fwd, toHit.normalized);
+        float longProj = Vector2.Dot(toHit, fwd);
 
         bool deepBehind = (longProj <= -backMinBehindX);
         bool inBackCone = (dotDir <= backConeCosMax);
 
         if (deepBehind && inBackCone)
         {
-            KillImmediate(); // 진짜 뒤에서 찌르면 즉사
+            KillImmediate();
         }
-        // 그 외(정면/측면/살짝 뒤)는 가드로 무시
     }
 
-    public void OnHit(int damage) { /* 정면/측면/애매한 뒤는 무시(가드) */ }
+    public void OnHit(int damage) { }
 
     // ---------- Monkill 충돌(가드/즉사) ----------
     private void OnCollisionEnter2D(Collision2D c)
@@ -472,24 +540,47 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         if (other.gameObject.layer == _monkillLayer) HandleMonkillHit(other);
     }
 
+    // 전방 판정 유틸
+    private bool IsAheadOfMe(Vector2 worldPoint, float cosThreshold = 0.2f)
+    {
+        Vector2 fwd = new Vector2(dir, 0f);
+        Vector2 to = (worldPoint - (Vector2)transform.position);
+        if (to.sqrMagnitude < 1e-6f) return true;
+        float dot = Vector2.Dot(fwd, to.normalized);
+        return dot >= cosThreshold;
+    }
+
     private void HandleMonkillHit(Collider2D monkillCol)
     {
         Transform p1 = FindPlayer1Root(monkillCol.transform);
 
-        int moveSign = GetMoveSign(); // 0이면 dir 사용
+        bool aheadByDir = IsAheadOfMe(monkillCol.bounds.center);
+        int moveSign = GetMoveSign();
+
         if (p1)
         {
             int relSign = Mathf.Sign(p1.position.x - transform.position.x) >= 0 ? +1 : -1;
-            bool playerAhead = (moveSign == 0) ? (relSign == dir) : (relSign == moveSign);
+            bool playerAhead = aheadByDir || ((moveSign != 0) ? (relSign == moveSign) : (relSign == dir));
 
             if (playerAhead)
             {
                 if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
-                StartCoroutine(BlockRoutine(p1));
+                StartCoroutine(BlockRoutine(p1, monkillCol));
                 return;
             }
+            StartDeathSequence("MonkillBehind");
+            return;
         }
-        StartDeathSequence("Monkill");
+
+        if (aheadByDir)
+        {
+            if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
+            StartCoroutine(BlockRoutine(null, monkillCol));
+        }
+        else
+        {
+            StartDeathSequence("MonkillBehind");
+        }
     }
 
     private int GetMoveSign()
@@ -502,7 +593,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         return 0;
     }
 
-    private IEnumerator BlockRoutine(Transform playerRoot)
+    private IEnumerator BlockRoutine(Transform playerRoot, Collider2D optionalMonkill = null)
     {
         state = State.Guard;
         CameraShaker.Shake(guardShakeAmp, guardShakeDur);
@@ -517,10 +608,18 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
         float collisionOffSec = Mathf.Max(blockNoCollisionSec, guardHoldSec);
         List<Collider2D> cached = null;
-        if (body && playerRoot)
+
+        if (body)
         {
-            cached = new List<Collider2D>(playerRoot.GetComponentsInChildren<Collider2D>(true));
-            foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, true);
+            if (playerRoot)
+            {
+                cached = new List<Collider2D>(playerRoot.GetComponentsInChildren<Collider2D>(true));
+                foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, true);
+            }
+            if (optionalMonkill)
+            {
+                Physics2D.IgnoreCollision(body, optionalMonkill, true);
+            }
         }
 
         yield return new WaitForSeconds(guardHoldSec);
@@ -528,8 +627,11 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         if (collisionOffSec > guardHoldSec)
             yield return new WaitForSeconds(collisionOffSec - guardHoldSec);
 
-        if (body && cached != null)
-            foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, false);
+        if (body)
+        {
+            if (cached != null) foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, false);
+            if (optionalMonkill) Physics2D.IgnoreCollision(body, optionalMonkill, false);
+        }
 
         if (rb) rb.constraints = prevConstraints;
 
@@ -618,18 +720,50 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     {
         if (!t || !body) return false;
 
-        float vy = Mathf.Abs(t.position.y - transform.position.y);
-        if (vy > attackVerticalTolerance) return false;
-
-        var tc = GetAnyCollider2D(t);
-        if (tc)
+        // 루트의 모든 콜라이더 중 playerMask에 포함되고 가장 가까운 콜라이더로 판단
+        if (ClosestTargetCollider(t, out var bestCol, out float edge, out float vy))
         {
-            var d = Physics2D.Distance(body, tc);
-            float edge = d.isOverlapped ? 0f : d.distance;
+            if (vy > attackVerticalTolerance) return false;
             return edge <= attackRange;
         }
+
+        // 콜라이더를 못 찾는 희귀 케이스: 폴백
+        float vy2 = Mathf.Abs(t.position.y - transform.position.y);
+        if (vy2 > attackVerticalTolerance) return false;
         float hx = Mathf.Abs(t.position.x - transform.position.x);
         return hx <= attackHorizontalRange;
+    }
+
+    // 루트 아래의 모든 Collider2D 중에서 body와의 최소 에지 거리 콜라이더를 찾는다.
+    private bool ClosestTargetCollider(Transform target, out Collider2D bestCol, out float minEdgeDist, out float vyAbs)
+    {
+        bestCol = null; minEdgeDist = float.PositiveInfinity; vyAbs = float.PositiveInfinity;
+        if (!target || !body) return false;
+
+        var cols = target.root.GetComponentsInChildren<Collider2D>(true);
+        if (cols == null || cols.Length == 0) return false;
+
+        Vector2 myCenter = body.bounds.center;
+        int mask = playerMask.value;
+
+        foreach (var tc in cols)
+        {
+            if (!tc || !tc.enabled) continue;
+            // 플레이어 허트박스 레이어만 사용
+            if (((1 << tc.gameObject.layer) & mask) == 0) continue;
+
+            var dist = Physics2D.Distance(body, tc);
+            float edge = dist.isOverlapped ? 0f : dist.distance;
+            float vy = Mathf.Abs(tc.bounds.center.y - myCenter.y);
+
+            if (edge < minEdgeDist)
+            {
+                minEdgeDist = edge;
+                vyAbs = vy;
+                bestCol = tc;
+            }
+        }
+        return bestCol != null;
     }
 
     private Collider2D GetAnyCollider2D(Transform t)
@@ -647,16 +781,64 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         if (anim != null) anim.Play(key, force);
     }
 
+    // ---- Gizmos (공격 범위 시각화) ----
+    private void DrawAttackWindowGizmos()
+    {
+        if (!showAttackWindowGizmo) return;
+
+        Collider2D col = body ? body : GetComponent<Collider2D>();
+        if (!col) return;
+
+        float fwd = Application.isPlaying ? (dir >= 0 ? 1f : -1f) : 1f;
+        Bounds b = col.bounds;
+
+        // 전방 사각(거리기반 attackRange 근사)
+        Vector3 frontSize = new Vector3(
+            Mathf.Max(0.02f, attackRange),
+            Mathf.Max(0.02f, attackVerticalTolerance * 2f),
+            0.1f);
+        Vector3 frontCenter = new Vector3(
+            b.center.x + fwd * (b.extents.x + frontSize.x * 0.5f),
+            transform.position.y,
+            0f);
+
+        Gizmos.color = attackGizmoColor;
+        Gizmos.DrawCube(frontCenter, frontSize);
+        Gizmos.color = attackGizmoEdgeColor;
+        Gizmos.DrawWireCube(frontCenter, frontSize);
+
+        // 폴백 윈도우(수평거리/수직허용치)
+        Vector3 fbSize = new Vector3(
+            Mathf.Max(0.02f, attackHorizontalRange * 2f),
+            Mathf.Max(0.02f, attackVerticalTolerance * 2f),
+            0.1f);
+        Vector3 fbCenter = new Vector3(transform.position.x, transform.position.y, 0f);
+
+        Gizmos.color = fallbackGizmoColor;
+        Gizmos.DrawCube(fbCenter, fbSize);
+        Gizmos.color = fallbackGizmoEdgeColor;
+        Gizmos.DrawWireCube(fbCenter, fbSize);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (alwaysShowGizmo) DrawAttackWindowGizmos();
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (!drawGizmos) return;
+
         Vector2 a = waypointA ? (Vector2)waypointA.position : (Vector2)transform.position + fallbackLocalA;
         Vector2 b = waypointB ? (Vector2)waypointB.position : (Vector2)transform.position + fallbackLocalB;
+
         Gizmos.color = Color.green; Gizmos.DrawSphere(a, 0.08f);
         Gizmos.color = Color.blue; Gizmos.DrawSphere(b, 0.08f);
         Gizmos.color = Color.yellow; Gizmos.DrawLine(a, b);
 
         Gizmos.color = new Color(1, 0, 0, 0.35f);
         Gizmos.DrawWireSphere(transform.position, detectRadius);
+
+        DrawAttackWindowGizmos();
     }
 }
