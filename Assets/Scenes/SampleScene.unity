@@ -32936,7 +32936,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.02245824, y: 0.6565937}
+  m_Offset: {x: -0.005419031, y: 0.6565937}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -32946,7 +32946,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.56677246, y: 1.10569}
+  m_Size: {x: 0.73713684, y: 1.10569}
   m_EdgeRadius: 0
 --- !u!114 &1029956883
 MonoBehaviour:
@@ -33154,8 +33154,9 @@ MonoBehaviour:
   hitboxDamage: 1
   damageOnlyCurrentTarget: 1
   backOnlyDamage: 1
-  backConeCosMax: -10
-  backMinBehindX: 0.9
+  backConeCosMax: -5
+  backMinBehindX: -1
+  frontNormalCosMin: 0.1
   monkillLayerName: Monkill
   player1Tag: Player1
   guardHoldSec: 0.5
@@ -33163,6 +33164,8 @@ MonoBehaviour:
   guardShakeAmp: 0.4
   guardShakeDur: 0.2
   despawnDelay: 5
+  frontDotThreshold: 10
+  frontEdgeBuffer: 0.1
   attackAnyPlayerInRange: 0
   switchToPreferWhileChasing: 0
   showAttackWindowGizmo: 1
