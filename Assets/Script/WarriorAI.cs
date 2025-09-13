@@ -390,11 +390,12 @@ public class ChargerSentinelAI : MonoBehaviour
         CameraShaker.Shake(onHitShakeAmp, onHitShakeDur);
     }
 
-    private void DealDamageTo(Transform t, int dmg) // ★
+    private void DealDamageTo(Transform t, int dmg) // ★ 보강
     {
         if (!t) return;
 
-        var dmgIf = t.GetComponentInParent<global::IDamageable>(); // ★ 모호성 제거
+        // 1) 표준 인터페이스 우선
+        var dmgIf = t.GetComponentInParent<global::IDamageable>();
         if (dmgIf != null)
         {
             Vector2 hitPoint = body ? (Vector2)body.bounds.center : (Vector2)transform.position;
@@ -403,7 +404,19 @@ public class ChargerSentinelAI : MonoBehaviour
             return;
         }
 
-        t.SendMessage("OnHit", dmg, SendMessageOptions.DontRequireReceiver);
+        // 2) 대표적인 HP 컴포넌트 직접 참조 (P2)
+        var p2 = t.GetComponentInParent<Player2HP>();
+        if (p2 != null)
+        {
+            p2.TakeDamage(dmg);
+            return;
+        }
+
+        // 3) 상향식 메시지: TakeDamage(int)
+        t.SendMessageUpwards("TakeDamage", dmg, SendMessageOptions.DontRequireReceiver);
+
+        // 4) 마지막 폴백: OnHit(int)
+        t.SendMessageUpwards("OnHit", dmg, SendMessageOptions.DontRequireReceiver);
     }
 
     // ---------- Monkill 즉사 처리 ----------
@@ -618,6 +631,3 @@ public class ChargerSentinelAI : MonoBehaviour
     // 외부에서 즉사시키고 싶을 때 쓸 수 있는 메시지 훅(선택)
     public void OnHit(int damage) { StartDeathSequence("OnHit"); }
 }
-
-// 선택형 인터페이스(다른 스크립트와 호환)
-

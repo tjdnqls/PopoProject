@@ -9,6 +9,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 {
     public enum State { Patrol, Alert, Chase, AttackWindup, Attacking, AttackRecover, Return, Guard, Dead }
 
+    // ===== Anim =====
     [Header("Anim")]
     public SpriteAnimationManager anim;     // 선택
     public SpriteRenderer sr;
@@ -19,10 +20,26 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private string blockAnim = "Block";
     [SerializeField] private string deathAnim = "Death";
 
+    // ===== Damage Gate: 플레이어가 이 콜라이더들과 접촉 중일 때만 피해 허용 =====
+    [Header("Damage Gate (Player must touch these child colliders)")]
+    [SerializeField] private Collider2D[] damageAcceptZones;         // 플레이어 접촉 중이면 대미지 허용
+    [SerializeField] private bool includeTriggersForGate = true;     // 플레이어 콜라이더가 Trigger여도 인정
+    private static readonly Collider2D[] _gateBuf = new Collider2D[16];
+    private ContactFilter2D _gateFilter;
+
+    // ===== Child rotation sync (Z 회전만 동기화) =====
+    [Header("Child Rotation Sync")]
+    [SerializeField] private bool syncChildRotation = true;               // 부모 회전 싱크 on/off
+    [SerializeField] private bool syncOnlyKinematicChildren = true;       // Kinematic만 동기화(권장)
+    private readonly List<Rigidbody2D> _childBodies = new List<Rigidbody2D>();
+    private float _lastParentRotZ;
+
+    // ===== Refs =====
     [Header("Refs")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Collider2D body;
 
+    // ===== Patrol Waypoints =====
     [Header("Waypoints (A<->B)")]
     [SerializeField] private Transform waypointA;
     [SerializeField] private Transform waypointB;
@@ -30,12 +47,14 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private Vector2 fallbackLocalB = new Vector2(3, 0);
     [SerializeField] private float arriveEps = 0.08f;
 
+    // ===== Move =====
     [Header("Move")]
     [SerializeField] private float patrolSpeed = 2.2f;
     [SerializeField] private float chaseSpeed = 3.8f;
     [SerializeField] private float accel = 25f;
     [SerializeField] private float stationarySpeedEps = 0.05f;
 
+    // ===== Detect =====
     [Header("Detect")]
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private float detectRadius = 5f;
@@ -43,16 +62,19 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private string preferPlayerTag = "Player2";
     [SerializeField] private float alertWaitSec = 1.0f;
 
+    // ===== Give Up / Stuck =====
     [Header("Give Up / Stuck")]
     [SerializeField] private float lostGiveUpSec = 2.0f;
     [SerializeField] private float stuckGiveUpSec = 2.0f;
 
+    // ===== Obstacle Probe =====
     [Header("Obstacle Probe")]
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private float wallCheckDist = 0.30f;
     [SerializeField] private float lowWallCheckDist = 0.25f;
     [SerializeField] private float feetYOffset = 0.05f;
 
+    // ===== Attack (outgoing) =====
     [Header("Attack")]
     [SerializeField] private int attackDamage = 1;
     [SerializeField] private float attackRange = 0.35f;
@@ -68,41 +90,23 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private int hitboxDamage = 1;
     [SerializeField] private bool damageOnlyCurrentTarget = true;
 
-    [Header("Back-Only Damage (입는 쪽) — 완화된 ‘뒤’ 인식")]
-    [SerializeField] private bool backOnlyDamage = true;
-    [SerializeField, Tooltip("뒤쪽 각도 한계(cosθ). -1(완전 뒤)~0(정면)")]
-    private float backConeCosMax = -0.85f;
-    [SerializeField, Tooltip("내 뒤쪽으로 최소 얼마나 들어왔는지(X축 성분)")]
-    private float backMinBehindX = 0.12f;
+    // ===== Hazard (Monkill 등) =====
+    [Header("Hazard")]
+    [SerializeField] private string hazardLayerName = "Monkill";
+    private int _hazardLayer;
 
-    [Header("Backstab Correction")]
-    [SerializeField, Tooltip("노멀 기반 전방 접근 판정 임계치(cos). 전방 흔적이면 뒤판정 무효")]
-    [Range(-1f, 1f)] private float frontNormalCosMin = 0.1f;
-
-    [Header("Block by Position (Monkill)")]
-    [SerializeField] private string monkillLayerName = "Monkill";
-    [SerializeField] private string player1Tag = "Player1";
-    [SerializeField] private float guardHoldSec = 0.5f;
-    [SerializeField] private float blockNoCollisionSec = 0.35f;
-    [SerializeField] private float guardShakeAmp = 0.4f;
-    [SerializeField] private float guardShakeDur = 0.15f;
-    [SerializeField] private float despawnDelay = 5f;
-
-    [Header("Monkill Front/Back Tuning")]
-    [SerializeField, Tooltip("접촉 법선이 전방과 이 값 이상이면 '정면'으로 본다")]
-    private float frontDotThreshold = 0.15f;
-    [SerializeField, Tooltip("에지 전후 투영 버퍼. 이 값 이상이면 정면으로 본다")]
-    private float frontEdgeBuffer = 0.06f;
-
+    // ===== AI Options =====
     [Header("AI Options")]
     [SerializeField] private bool attackAnyPlayerInRange = true;
     [SerializeField] private bool switchToPreferWhileChasing = false;
+    [SerializeField] private string player1Tag = "Player1"; // 표적 승격용 태그
 
+    // ===== Debug =====
     [Header("Debug View")]
     [SerializeField] private bool showAttackWindowGizmo = true;
     [SerializeField] private bool alwaysShowGizmo = true;
     [SerializeField] private Color attackGizmoColor = new Color(1f, 0f, 0f, 0.18f);
-    [SerializeField] private Color attackGizmoEdgeColor = new Color(1f, 0f, 0f, 0.9f);
+    [SerializeField] private Color attackGizmoEdgeColor = new Color(1f, 0f, 0.9f, 1f);
     [SerializeField] private Color fallbackGizmoColor = new Color(1f, 0.55f, 0f, 0.12f);
     [SerializeField] private Color fallbackGizmoEdgeColor = new Color(1f, 0.55f, 0f, 0.9f);
     [SerializeField] private bool drawGizmos = true;
@@ -116,13 +120,12 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private float stuckTimer;
     private Color baseColor;
     private Coroutine logicCo;
-    private int _monkillLayer;
-
-    private bool _lookLocked; // 공격 준비 중 시선락
+    private Coroutine guardCo;             // ★ 가드 중첩 방지
+    private bool _lookLocked;
     private static readonly Collider2D[] _buf = new Collider2D[12];
-
     private bool isDying = false;
 
+    // ===== Unity =====
     private void Reset()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -138,11 +141,10 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
         rb.freezeRotation = true;
         baseColor = sr ? sr.color : Color.white;
-        _monkillLayer = LayerMask.NameToLayer(monkillLayerName);
+        _hazardLayer = LayerMask.NameToLayer(hazardLayerName);
 
         patrolTargetIndex = (Vector2.SqrMagnitude((Vector2)transform.position - WpA()) <=
                              Vector2.SqrMagnitude((Vector2)transform.position - WpB())) ? 0 : 1;
-
         dir = ((GetPatrolTarget().x - transform.position.x) >= 0f) ? +1 : -1;
         state = State.Patrol;
 
@@ -152,17 +154,33 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
             if (!attackHitbox.TryGetComponent<OneShotMeleeHitbox>(out _))
                 attackHitbox.AddComponent<OneShotMeleeHitbox>();
         }
+
+        _gateFilter = new ContactFilter2D
+        {
+            useLayerMask = true,
+            layerMask = playerMask,                // Player만
+            useTriggers = includeTriggersForGate
+        };
+
+        CacheChildBodies();
+        _lastParentRotZ = rb ? rb.rotation : transform.eulerAngles.z;
+
+        // 시작 시 시선 방향을 Y 로테이션으로 반영
+        ApplyFacingY(dir);
     }
 
     private void OnEnable()
     {
         Play(runAnim, true);
-        SetFlipByDir(dir);
+        SetFlipByDir(dir); // 내부에서 Y 회전으로 처리
     }
 
     private void FixedUpdate()
     {
         if (state == State.Dead) { StopHorizontal(); return; }
+
+        // ★ 가드 종료 후 얼어남 방지: Guard가 아닐 때 X 프리즈가 남아 있으면 해제
+        EnsureUnfrozenX();
 
         switch (state)
         {
@@ -175,15 +193,21 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
             case State.Return: TickReturn(); break;
             case State.Guard: StopHorizontal(); break;
         }
+
+        // 부모 Z회전 → 자식 Rigidbody2D 회전 싱크
+        SyncChildRotations();
     }
 
     private void OnDisable()
     {
         if (sr) sr.color = baseColor;
         if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
+        if (guardCo != null) { StopCoroutine(guardCo); guardCo = null; }
+        // 안전: 비활성화 시에도 X 프리즈 잔존 제거
+        if (rb) rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
     }
 
-    // ---------- Waypoint helpers ----------
+    // ===== Waypoints =====
     private Vector2 WpA() => waypointA ? (Vector2)waypointA.position : (Vector2)transform.position + fallbackLocalA;
     private Vector2 WpB() => waypointB ? (Vector2)waypointB.position : (Vector2)transform.position + fallbackLocalB;
     private Vector2 GetPatrolTarget() => (patrolTargetIndex == 0) ? WpA() : WpB();
@@ -196,7 +220,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         return (da <= db) ? a : b;
     }
 
-    // ---------- Ticks ----------
+    // ===== Ticks =====
     private void TickPatrol()
     {
         Play(runAnim);
@@ -270,7 +294,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         if (TryPickTarget(out Transform t)) { currentTarget = t; EnterAlert(); }
     }
 
-    // ---------- State enter ----------
+    // ===== State enter =====
     private void EnterAlert()
     {
         state = State.Alert;
@@ -381,7 +405,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         else EnterReturn();
     }
 
-    // ---------- 공격 즉시 취소(가드 인터럽트용) ----------
+    // ===== 공격 즉시 취소(가드 인터럽트용) =====
     private void CancelAttackIfAny()
     {
         if (state == State.AttackWindup || state == State.Attacking || state == State.AttackRecover)
@@ -393,7 +417,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         }
     }
 
-    // ---------- Detect / target pick ----------
+    // ===== Detect / target pick =====
     private bool TryPickTarget(out Transform best)
     {
         best = null;
@@ -485,7 +509,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         return true;
     }
 
-    // ---------- Damage out ----------
+    // ===== Damage out =====
     private void ApplyDamage(Transform t)
     {
         if (!t) return;
@@ -510,144 +534,84 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         return t.GetComponentInChildren<global::IDamageable>();
     }
 
-    // ---------- Damage in (뒤에서만 맞음: 보정된 백어택) ----------
+    // ===== Damage in (게이트 접촉이면 피해 허용, 아니면 가드) =====
     public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
     {
-        if (!backOnlyDamage) { KillImmediate(); return; }
+        if (state == State.Dead || isDying) return;
 
-        if (IsRearHitCorrected(hitPoint, hitNormal))
+        if (IsPlayerTouchingGate())
         {
+            // 대미지 허용(현재 설계: 즉사)
             KillImmediate();
         }
-        // 정면/측면/압착 상황이면 무효
-    }
-
-    private bool IsRearHitCorrected(Vector2 hitPoint, Vector2 hitNormal)
-    {
-        Vector2 fwd = new Vector2(dir, 0f).normalized;
-
-        Vector2 cp = body ? body.ClosestPoint(hitPoint) : hitPoint;
-        Vector2 toEdge = cp - (Vector2)transform.position;
-
-        float longProj = Vector2.Dot(toEdge, fwd);
-
-        float cosEdge = (toEdge.sqrMagnitude > 1e-6f)
-            ? Vector2.Dot(fwd, toEdge.normalized)
-            : 1f;
-
-        bool frontByNormal = false;
-        if (hitNormal.sqrMagnitude > 1e-6f)
+        else
         {
-            Vector2 attackDir = (-hitNormal).normalized;
-            float cosN = Vector2.Dot(fwd, attackDir);
-            frontByNormal = (cosN >= frontNormalCosMin);
+            // 방어 판정: 데미지 무효 + 가드 연출
+            StartGuard(null);
         }
-
-        bool deepBehind = (longProj <= -backMinBehindX);
-        bool inBackCone = (cosEdge <= backConeCosMax);
-
-        if (frontByNormal) return false;
-        return deepBehind && inBackCone;
     }
 
     public void OnHit(int damage) { }
 
-    // ---------- Monkill 충돌(가드/즉사) ----------
+    // ===== Hazard 충돌: 게이트 우선 검사 → (있으면 즉사 / 없으면 가드) =====
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (state == State.Dead || isDying) return;
-        if (c.collider.gameObject.layer == _monkillLayer) HandleMonkillHit(c.collider);
+        if (c.collider.gameObject.layer == _hazardLayer) HandleHazardHit(c.collider);
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (state == State.Dead || isDying) return;
-        if (other.gameObject.layer == _monkillLayer) HandleMonkillHit(other);
+        if (other.gameObject.layer == _hazardLayer) HandleHazardHit(other);
     }
 
-    // ★★ 새 전방 판정: 접촉 법선/에지 기반으로 겹침에서도 안정적으로 앞/뒤 구분
-    private bool IsFrontContact(Collider2D other)
+    private void HandleHazardHit(Collider2D col)
     {
-        if (!body || !other) return true; // 안전하게 정면으로 간주(즉사 오탐 방지)
-        Vector2 fwd = new Vector2(dir, 0f);
-
-        var d = Physics2D.Distance(body, other);
-
-        Vector2 toOther;
-        if (d.isOverlapped)
+        if (IsPlayerTouchingGate())
         {
-            // 겹침일 때도 normal은 body→other 방향을 가리킴
-            toOther = d.normal; // 단위벡터
+            StartDeathSequence("HazardGateKill"); // 공격 받음(즉사)
+            return;
         }
-        else
+        StartGuard(col);
+    }
+
+    // ★ 가드 시작(중첩 방지 + 공격 인터럽트 + 항상 제약 복원)
+    private void StartGuard(Collider2D optionalHazard)
+    {
+        CancelAttackIfAny();                        // 공격/윈드업 중단 & 시선락 해제
+        if (guardCo != null) { StopCoroutine(guardCo); guardCo = null; } // 이전 가드 중단
+        guardCo = StartCoroutine(BlockRoutine(null, optionalHazard));
+    }
+
+    // 자식 게이트 콜라이더 중 하나라도 Player와 "오버랩" 중인지?
+    private bool IsPlayerTouchingGate()
+    {
+        if (damageAcceptZones == null || damageAcceptZones.Length == 0) return false; // 엄격 모드
+        for (int i = 0; i < damageAcceptZones.Length; i++)
         {
-            // 에지-에지 최소 벡터를 사용
-            toOther = (d.pointB - d.pointA);
-            if (toOther.sqrMagnitude > 1e-8f) toOther.Normalize(); else toOther = d.normal;
+            var z = damageAcceptZones[i];
+            if (!z || !z.enabled) continue;
+            int n = z.Overlap(_gateFilter, _gateBuf); // OverlapCollider 사용
+            if (n > 0) return true;
         }
-
-        float dotN = Vector2.Dot(fwd, toOther);
-        if (dotN >= frontDotThreshold) return true;
-
-        // 보조: 우리 콜라이더 에지 기준 장축 투영으로도 한 번 더 확인
-        Vector2 cp = body.ClosestPoint(other.bounds.center);
-        float longProj = Vector2.Dot(cp - (Vector2)transform.position, fwd);
-        if (longProj >= frontEdgeBuffer) return true;
-
         return false;
     }
 
-    private void HandleMonkillHit(Collider2D monkillCol)
-    {
-        Transform p1 = FindPlayer1Root(monkillCol.transform);
+    [Header("Block/Death Settings")]
+    [SerializeField] private float guardHoldSec = 0.5f;
+    [SerializeField] private float blockNoCollisionSec = 0.35f;
+    [SerializeField] private float guardShakeAmp = 0.4f;
+    [SerializeField] private float guardShakeDur = 0.15f;
+    [SerializeField] private float despawnDelay = 5f;
 
-        bool frontContact = IsFrontContact(monkillCol);
-        int moveSign = GetMoveSign();
-
-        if (p1)
-        {
-            int relSign = Mathf.Sign(p1.position.x - transform.position.x) >= 0 ? +1 : -1;
-            bool playerAhead = frontContact || ((moveSign != 0) ? (relSign == moveSign) : (relSign == dir));
-
-            if (playerAhead)
-            {
-                CancelAttackIfAny();
-                if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
-                StartCoroutine(BlockRoutine(p1, monkillCol));
-                return;
-            }
-            StartDeathSequence("MonkillBehind");
-            return;
-        }
-
-        if (frontContact)
-        {
-            CancelAttackIfAny();
-            if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
-            StartCoroutine(BlockRoutine(null, monkillCol));
-        }
-        else
-        {
-            StartDeathSequence("MonkillBehind");
-        }
-    }
-
-    private int GetMoveSign()
-    {
-        if (rb)
-        {
-            float vx = rb.linearVelocity.x;
-            if (Mathf.Abs(vx) > 0.001f) return vx >= 0 ? +1 : -1;
-        }
-        return 0;
-    }
-
-    private IEnumerator BlockRoutine(Transform playerRoot, Collider2D optionalMonkill = null)
+    private IEnumerator BlockRoutine(Transform playerRoot, Collider2D optionalHazard = null)
     {
         state = State.Guard;
         CameraShaker.Shake(guardShakeAmp, guardShakeDur);
         Play(blockAnim, true);
 
-        var prevConstraints = rb ? rb.constraints : RigidbodyConstraints2D.None;
+        // --- 제약 캐시 & 가드 제약 설정 ---
+        var prevConstraints = rb ? rb.constraints : RigidbodyConstraints2D.FreezeRotation;
         if (rb)
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
@@ -657,6 +621,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         float collisionOffSec = Mathf.Max(blockNoCollisionSec, guardHoldSec);
         List<Collider2D> cached = null;
 
+        // --- 임시 충돌 무시 ---
         if (body)
         {
             if (playerRoot)
@@ -664,51 +629,58 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
                 cached = new List<Collider2D>(playerRoot.GetComponentsInChildren<Collider2D>(true));
                 foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, true);
             }
-            if (optionalMonkill)
-            {
-                Physics2D.IgnoreCollision(body, optionalMonkill, true);
-            }
+            if (optionalHazard) Physics2D.IgnoreCollision(body, optionalHazard, true);
         }
 
-        yield return new WaitForSeconds(guardHoldSec);
-
+        // --- 대기 ---
+        float t = 0f;
+        while (t < guardHoldSec) { t += Time.fixedDeltaTime; yield return new WaitForFixedUpdate(); }
         if (collisionOffSec > guardHoldSec)
-            yield return new WaitForSeconds(collisionOffSec - guardHoldSec);
+        {
+            float r = 0f;
+            while (r < (collisionOffSec - guardHoldSec)) { r += Time.fixedDeltaTime; yield return new WaitForFixedUpdate(); }
+        }
 
+        // --- finally: 반드시 원복 ---
         if (body)
         {
             if (cached != null) foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, false);
-            if (optionalMonkill) Physics2D.IgnoreCollision(body, optionalMonkill, false);
+            if (optionalHazard) Physics2D.IgnoreCollision(body, optionalHazard, false);
         }
 
-        if (rb) rb.constraints = prevConstraints;
+        if (rb)
+        {
+            // 회전 프리즈 유지, X 프리즈 해제 보장
+            var restored = prevConstraints | RigidbodyConstraints2D.FreezeRotation;
+            restored &= ~RigidbodyConstraints2D.FreezePositionX;
+            rb.constraints = restored;
+        }
 
-        Transform t;
-        if (!TryPickTarget(out t)) t = playerRoot;
-        currentTarget = t;
+        // 상태/타이머 리셋
+        stuckTimer = 0f;
+        lastSeenTime = Time.time;
+
+        // 다음 상태 전이
+        Transform tTarget;
+        if (!TryPickTarget(out tTarget)) tTarget = playerRoot;
+        currentTarget = tTarget;
 
         if (currentTarget && StillValidTarget(currentTarget) && WithinAttackWindow(currentTarget))
-        {
             EnterAttackWindup();
-        }
         else
-        {
             EnterChase();
-        }
+
+        guardCo = null;
     }
 
-    private Transform FindPlayer1Root(Transform from)
-    {
-        for (Transform t = from; t != null; t = t.parent)
-            if (t.CompareTag(player1Tag)) return t;
-        return null;
-    }
-
-    // ---------- Death sequence ----------
+    // ===== Death sequence =====
     private void StartDeathSequence(string reason)
     {
         if (isDying) return;
         isDying = true;
+
+        if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
+        if (guardCo != null) { StopCoroutine(guardCo); guardCo = null; }
 
         StopAllCoroutines();
         state = State.Dead;
@@ -738,7 +710,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
     private void KillImmediate() => StartDeathSequence("Damage");
 
-    // ---------- Movement / probes ----------
+    // ===== Movement / probes =====
     private void MoveHorizontalTowards(float targetSpeedX)
     {
         Vector2 v = rb.linearVelocity;
@@ -762,17 +734,26 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         return high || low;
     }
 
+    // ===== Facing by Y-rotation (스프라이트 플립/스케일 변경 금지) =====
     private void SetFlipByDir(int d)
     {
         if (_lookLocked) return;
-        if (sr) sr.flipX = d < 0;
+        ApplyFacingY(d);
     }
     private void ForceFlipByDir(int d)
     {
-        if (sr) sr.flipX = d < 0;
+        ApplyFacingY(d);
+    }
+    private void ApplyFacingY(int d)
+    {
+        // 오른쪽 바라봄: Y=0, 왼쪽: Y=180
+        Vector3 e = transform.localEulerAngles;
+        e.y = (d < 0) ? 180f : 0f;
+        transform.localEulerAngles = e;
+        // sr.flipX, localScale.x 변경하지 않음
     }
 
-    // ---------- Attack window ----------
+    // ===== Attack window =====
     private bool WithinAttackWindow(Transform t)
     {
         if (!t || !body) return false;
@@ -831,6 +812,48 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void Play(string key, bool force = false)
     {
         if (anim != null) anim.Play(key, force);
+    }
+
+    // ===== Child bodies cache & rotation sync (Z만) =====
+    private void CacheChildBodies()
+    {
+        _childBodies.Clear();
+        var all = GetComponentsInChildren<Rigidbody2D>(true);
+        foreach (var r in all)
+        {
+            if (!r || r == rb) continue; // 자기 자신 제외
+            if (syncOnlyKinematicChildren && r.bodyType != RigidbodyType2D.Kinematic) continue;
+            _childBodies.Add(r);
+        }
+    }
+
+    private void SyncChildRotations()
+    {
+        if (!syncChildRotation) return;
+
+        float parentRot = rb ? rb.rotation : transform.eulerAngles.z;
+        if (Mathf.Approximately(parentRot, _lastParentRotZ)) return;
+
+        float delta = Mathf.DeltaAngle(_lastParentRotZ, parentRot);
+        for (int i = 0; i < _childBodies.Count; i++)
+        {
+            var cb = _childBodies[i];
+            if (!cb) continue;
+            cb.MoveRotation(cb.rotation + delta);
+        }
+        _lastParentRotZ = parentRot;
+    }
+
+    // ===== 안전장치: Guard가 아닐 때 X 프리즈 잔존 제거 =====
+    private void EnsureUnfrozenX()
+    {
+        if (!rb) return;
+        if (state == State.Guard) return;
+        if ((rb.constraints & RigidbodyConstraints2D.FreezePositionX) != 0)
+        {
+            rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+            rb.constraints |= RigidbodyConstraints2D.FreezeRotation; // 회전 프리즈는 유지
+        }
     }
 
     // ---- Gizmos (공격 범위 시각화) ----
