@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ½ÃÀÛ~³¡ ±âÁØÀ¸·Î '°øÁÖ/ÇÃ·¹ÀÌ¾î1' ÁøÇàµµ¸¦ ¹Ù/¹Ì´Ï¸Ê¿¡ Ç¥½Ã.
-/// °øÁÖ ÁÖº¯¿¡ Monster/Trap ·¹ÀÌ¾î °¨Áö ½Ã °øÁÖ ¸¶Ä¿(±×¸®°í ¼±ÅÃÀûÀ¸·Î ¹Ì´Ï¸Ê Á¡) ÆäÀÌµå ÀÎ/¾Æ¿ô.
+/// ì‹œì‘~ë ê¸°ì¤€ìœ¼ë¡œ 'ê³µì£¼/í”Œë ˆì´ì–´1' ì§„í–‰ë„ë¥¼ ë°”/ë¯¸ë‹ˆë§µì— í‘œì‹œ.
+/// ê³µì£¼ ì£¼ë³€ì— Monster/Trap ë ˆì´ì–´ ê°ì§€ ì‹œ ê³µì£¼ ë§ˆì»¤(ê·¸ë¦¬ê³  ì„ íƒì ìœ¼ë¡œ ë¯¸ë‹ˆë§µ ì ) í˜ì´ë“œ ì¸/ì•„ì›ƒ.
 /// </summary>
 public class PrincessProgressUI : MonoBehaviour
 {
@@ -14,53 +14,50 @@ public class PrincessProgressUI : MonoBehaviour
     [SerializeField] private Transform endPoint;
 
     [Header("Progress Bar UI (1D)")]
-    [SerializeField] private RectTransform barRect;           // °¡·Î ¹Ù ¿µ¿ª
-    [SerializeField] private RectTransform markerPrincess;    // °øÁÖ ¸¶Ä¿
-    [SerializeField] private RectTransform markerPlayer1;     // P1 ¸¶Ä¿
-    [SerializeField] private Image fillImage;                 // (¼±ÅÃ) Ã¤¿ì±â ÀÌ¹ÌÁö(Filled-Horizontal ±ÇÀå)
+    [SerializeField] private RectTransform barRect;        // ê°€ë¡œ ë°” ì˜ì—­
+    [SerializeField] private RectTransform markerPrincess; // ê³µì£¼ ë§ˆì»¤
+    [SerializeField] private RectTransform markerPlayer1;  // P1 ë§ˆì»¤
+    [SerializeField] private Image fillImage;              // (ì„ íƒ) ì±„ìš°ê¸° ì´ë¯¸ì§€(Filled-Horizontal ê¶Œì¥)
 
     [Header("MiniMap UI (2D, Optional)")]
-    [SerializeField] private RectTransform miniMapRect;       // ¹Ì´Ï¸Ê ¹Ú½º
-    [SerializeField] private RectTransform dotPrincess;       // °øÁÖ Á¡
-    [SerializeField] private RectTransform dotPlayer1;        // P1 Á¡
-    [Tooltip("½ÃÀÛ/³¡ AABB¿¡ ¿©À¯ ÆĞµù(¿ùµå À¯´Ö)")]
+    [SerializeField] private RectTransform miniMapRect;    // ë¯¸ë‹ˆë§µ ë°•ìŠ¤
+    [SerializeField] private RectTransform dotPrincess;    // ê³µì£¼ ì 
+    [SerializeField] private RectTransform dotPlayer1;     // P1 ì 
+    [Tooltip("ì‹œì‘/ë AABBì— ì—¬ìœ  íŒ¨ë”©(ì›”ë“œ ìœ ë‹›)")]
     [SerializeField] private float worldPadding = 1f;
 
     [Header("Smoothing")]
-    [Tooltip("UI º¸°£ ½Ã°£(ÃÊ). 0ÀÌ¸é Áï½Ã ¹İ¿µ")]
+    [Tooltip("UI ë³´ê°„ ì‹œê°„(ì´ˆ). 0ì´ë©´ ì¦‰ì‹œ ë°˜ì˜")]
     [SerializeField] private float smoothTime = 0.08f;
     private float _tPrincessSmoothed; // 0~1
     private float _tP1Smoothed;       // 0~1
 
     // ================== Danger Blink ==================
     [Header("Danger Blink (Princess)")]
-    [Tooltip("À§Çè °¨Áö ·¹ÀÌ¾î(¿¹: Monster, Trap)")]
+    [Tooltip("ìœ„í—˜ ê°ì§€ ë ˆì´ì–´(ì˜ˆ: Monster, Trap)")]
     [SerializeField] private LayerMask dangerMask;
-    [Tooltip("°øÁÖ ÁÖº¯ À§Çè °¨Áö ¹İ°æ(¿ùµå À¯´Ö)")]
+    [Tooltip("ê³µì£¼ ì£¼ë³€ ìœ„í—˜ ê°ì§€ ë°˜ê²½(ì›”ë“œ ìœ ë‹›)")]
     [SerializeField] private float dangerRadius = 2.0f;
-    [Tooltip("ÆäÀÌµå ±ôºıÀÓ ¼Óµµ(ÁÖ±â/ÃÊ)")]
+    [Tooltip("í˜ì´ë“œ ê¹œë¹¡ì„ ì†ë„(ì£¼ê¸°/ì´ˆ)")]
     [SerializeField] private float blinkSpeed = 4.0f;
-    [Tooltip("±ôºıÀÓ ¾ËÆÄ ÃÖ¼Ò/ÃÖ´ë")]
+    [Tooltip("ê¹œë¹¡ì„ ì•ŒíŒŒ ìµœì†Œ/ìµœëŒ€")]
     [SerializeField] private float blinkMinAlpha = 0.35f;
     [SerializeField] private float blinkMaxAlpha = 1.0f;
-    [Tooltip("¹Ì´Ï¸Ê Á¡µµ °°ÀÌ ±ôºıÀÏÁö")]
+    [Tooltip("ë¯¸ë‹ˆë§µ ì ë„ ê°™ì´ ê¹œë¹¡ì¼ì§€")]
     [SerializeField] private bool blinkMiniMapDotAlso = true;
-    [Tooltip("UnscaledTime »ç¿ë(ÀÏ½ÃÁ¤Áö Áß¿¡µµ ±ôºıÀÓ À¯Áö)")]
+    [Tooltip("UnscaledTime ì‚¬ìš©(ì¼ì‹œì •ì§€ ì¤‘ì—ë„ ê¹œë¹¡ì„ ìœ ì§€)")]
     [SerializeField] private bool useUnscaledTime = true;
 
-    // Ä³½Ã/»óÅÂ
+    // ìºì‹œ/ìƒíƒœ
     private CanvasGroup _cgMarkerPrincess;
     private Graphic[] _gfxMarkerPrincess;
 
     private CanvasGroup _cgDotPrincess;
     private Graphic[] _gfxDotPrincess;
 
-    private float _blinkPhase;         // ´©Àû À§»ó
-    private bool _dangerNow;           // ÀÌ¹ø ÇÁ·¹ÀÓ À§Çè °¨Áö
-    private bool _dangerPrev;          // ÀÌÀü ÇÁ·¹ÀÓ À§Çè °¨Áö
-
-    // NonAlloc Ä³½Ã
-    private readonly Collider2D[] _dangerHits = new Collider2D[8];
+    private float _blinkPhase;   // ëˆ„ì  ìœ„ìƒ
+    private bool _dangerNow;     // ì´ë²ˆ í”„ë ˆì„ ìœ„í—˜ ê°ì§€
+    private bool _dangerPrev;    // ì´ì „ í”„ë ˆì„ ìœ„í—˜ ê°ì§€
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
@@ -74,13 +71,13 @@ public class PrincessProgressUI : MonoBehaviour
 
     void Awake()
     {
-        // °øÁÖ ¸¶Ä¿ ±×·¡ÇÈ Ä³½Ã
+        // ê³µì£¼ ë§ˆì»¤ ê·¸ë˜í”½ ìºì‹œ
         if (markerPrincess)
         {
             markerPrincess.TryGetComponent(out _cgMarkerPrincess);
             _gfxMarkerPrincess = markerPrincess.GetComponentsInChildren<Graphic>(true);
         }
-        // ¹Ì´Ï¸Ê Á¡ ±×·¡ÇÈ Ä³½Ã
+        // ë¯¸ë‹ˆë§µ ì  ê·¸ë˜í”½ ìºì‹œ
         if (dotPrincess)
         {
             dotPrincess.TryGetComponent(out _cgDotPrincess);
@@ -90,7 +87,7 @@ public class PrincessProgressUI : MonoBehaviour
 
     void LateUpdate()
     {
-        // ===== ÁøÇàµµ °è»ê =====
+        // ===== ì§„í–‰ë„ ê³„ì‚° =====
         if (!startPoint || !endPoint) return;
 
         Vector2 s = startPoint.position;
@@ -122,10 +119,11 @@ public class PrincessProgressUI : MonoBehaviour
             tP1 = proj1 / len;
         }
 
-        // ½º¹«µù
+        // ìŠ¤ë¬´ë”©
         if (smoothTime > 0f)
         {
-            float k = 1f - Mathf.Exp(-Time.unscaledDeltaTime / Mathf.Max(1e-4f, smoothTime));
+            float dt = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+            float k = 1f - Mathf.Exp(-dt / Mathf.Max(1e-4f, smoothTime));
             _tPrincessSmoothed = Mathf.Lerp(_tPrincessSmoothed, tPrincess, k);
             _tP1Smoothed = Mathf.Lerp(_tP1Smoothed, tP1, k);
         }
@@ -135,16 +133,16 @@ public class PrincessProgressUI : MonoBehaviour
             _tP1Smoothed = tP1;
         }
 
-        // UI ¹İ¿µ
+        // UI ë°˜ì˜
         UpdateBarUI(_tPrincessSmoothed, _tP1Smoothed);
         UpdateMiniMapUI(pPos, p1Pos, s, e);
 
-        // ===== À§Çè °¨Áö & ±ôºıÀÓ =====
+        // ===== ìœ„í—˜ ê°ì§€ & ê¹œë¹¡ì„ =====
         UpdateDangerState();
         UpdateBlinkVisuals();
     }
 
-    // ---------------- Progress Bar (ÇÇ¹ş º¸Á¤: Ç×»ó ¿ŞÂÊ¡æ¿À¸¥ÂÊ) ----------------
+    // ---------------- Progress Bar ----------------
     private void UpdateBarUI(float tPrincess, float tP1)
     {
         tPrincess = Mathf.Clamp01(tPrincess);
@@ -175,11 +173,11 @@ public class PrincessProgressUI : MonoBehaviour
             if (fillImage.type != Image.Type.Filled) fillImage.type = Image.Type.Filled;
             fillImage.fillMethod = Image.FillMethod.Horizontal;
             fillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
-            fillImage.fillAmount = tPrincess; // °øÁÖ ÁøÇàµµ·Î Ã¤¿ò(ÇÊ¿ä½Ã ¹Ù²Ù¼¼¿ä)
+            fillImage.fillAmount = tPrincess; // ê³µì£¼ ì§„í–‰ë„ë¡œ ì±„ì›€(í•„ìš”ì‹œ ë³€ê²½)
         }
     }
 
-    // ---------------- MiniMap (ÇÇ¹ş º¸Á¤: Ç×»ó ¿ŞÂÊ-¾Æ·¡ ±âÁØ) ----------------
+    // ---------------- MiniMap ----------------
     private void UpdateMiniMapUI(Vector2 princessWorld, Vector2 p1World, Vector2 s, Vector2 e)
     {
         if (!miniMapRect) return;
@@ -224,11 +222,13 @@ public class PrincessProgressUI : MonoBehaviour
             return;
         }
 
-        int count = Physics2D.OverlapCircleNonAlloc(princess.position, dangerRadius, _dangerHits, dangerMask);
-        _dangerNow = (count > 0);
+        // âœ” NonAlloc ì œê±°: ë‹¨ìˆœ ì¡´ì¬ ì—¬ë¶€ë§Œ í•„ìš”í•˜ë‹ˆ OverlapCircle(ë‹¨ì¼) ì‚¬ìš©
+        Collider2D hit = Physics2D.OverlapCircle(princess.position, dangerRadius, dangerMask);
+        _dangerNow = (hit != null);
+
         if (!_dangerPrev && _dangerNow)
         {
-            // ¸· À§Çè ÁøÀÔ ½Ã À§»ó ÃÊ±âÈ­·Î Áï½Ã ´«¿¡ ¶ç°Ô
+            // ë§‰ ìœ„í—˜ ì§„ì… ì‹œ ìœ„ìƒ ì´ˆê¸°í™”ë¡œ ì¦‰ì‹œ ëˆˆì— ë„ê²Œ
             _blinkPhase = 0f;
         }
     }
@@ -242,16 +242,12 @@ public class PrincessProgressUI : MonoBehaviour
             float s = 0.5f * (1f + Mathf.Sin(_blinkPhase)); // 0~1
             float alpha = Mathf.Lerp(blinkMinAlpha, blinkMaxAlpha, s);
 
-            // °øÁÖ ¹Ù ¸¶Ä¿
             ApplyAlphaToTarget(markerPrincess, _cgMarkerPrincess, _gfxMarkerPrincess, alpha);
-
-            // (¿É¼Ç) ¹Ì´Ï¸Ê Á¡
             if (blinkMiniMapDotAlso)
                 ApplyAlphaToTarget(dotPrincess, _cgDotPrincess, _gfxDotPrincess, alpha);
         }
         else
         {
-            // À§Çè ¾øÀ½: ¾ËÆÄ º¹±¸
             ApplyAlphaToTarget(markerPrincess, _cgMarkerPrincess, _gfxMarkerPrincess, 1f);
             if (blinkMiniMapDotAlso)
                 ApplyAlphaToTarget(dotPrincess, _cgDotPrincess, _gfxDotPrincess, 1f);

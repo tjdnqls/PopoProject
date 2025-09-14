@@ -31,7 +31,7 @@ public class SwapController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab) && coubt == true)
         {
-            if (carry.carryset == false)
+            if (carry.isCarrying == false)
             {
                 // P1 <-> P2 ≈‰±€
                 charSelect = (charSelect == PlayerChar.P1) ? PlayerChar.P2 : PlayerChar.P1;

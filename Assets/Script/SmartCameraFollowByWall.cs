@@ -150,7 +150,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
         // === 탭 입력: 전환 시작 시점에서 전환 상태 On + 속도 부스트 ===
         if (Input.GetKeyDown(KeyCode.Tab) && dead.Dead == false && !SpiralBoxWipe.IsBusy)
         {
-            if (carry.carryset == false)
+            if (carry.isCarrying == false)
             {
                 if (!swapsup)
                 {

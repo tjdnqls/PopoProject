@@ -101,7 +101,6 @@ public class Player1HP : MonoBehaviour, global::IDamageable
             if (op.rb) op.rb.simulated = true;
             op.isCarried = false;
             move.isCarrying = false;
-            move.carryset = false;
         }
 
         // 이동/입력 차단

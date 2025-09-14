@@ -1,5 +1,4 @@
-﻿// ===================== ChargerSentinelAI.cs (Monkill death + blood + Dash hits Player) =====================
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,14 +11,14 @@ public class ChargerSentinelAI : MonoBehaviour
 
     // ---------- Animation ----------
     [Header("Animation")]
-    public SpriteAnimationManager anim;  // 없으면 무시
-    public Animator animator;            // 없으면 무시
+    public SpriteAnimationManager anim;   // 없으면 무시
+    public Animator animator;             // 없으면 무시
     [SerializeField] private string idleAnim = "Idle";
     [SerializeField] private string prepareAnim = "deshStay";
     [SerializeField] private string dashAnim = "Dash";
     [SerializeField] private string hitAnim = "Hit";
     [SerializeField] private string deathAnim = "Death";
-    [SerializeField] private string attackOmegaAnim = "attackOmega"; // 접촉 시 재생할 애니메이션
+    [SerializeField] private string attackOmegaAnim = "attackOmega";
     [SerializeField] private float onHitShakeAmp = 0.6f;
     [SerializeField] private float onHitShakeDur = 0.25f;
 
@@ -27,7 +26,8 @@ public class ChargerSentinelAI : MonoBehaviour
     [Header("Layers")]
     [SerializeField] private string groundLayerName = "Ground";
     [SerializeField] private string monsterLayerName = "Monster";
-    [SerializeField] private string monkillLayerName = "Monkill"; // 즉사용
+    [SerializeField] private string monkillLayerName = "Monkill";
+    [SerializeField] private string backMonsterLayerName = "BackMonster"; // ★ 추가
 
     [Header("Refs")]
     [SerializeField] private Rigidbody2D rb;
@@ -35,10 +35,20 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
 
     // ---------- Detect / Timings ----------
-    [Header("Detect")]
+    [Header("Detect (Radius)")]
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private float detectRadius = 4f;
-    [SerializeField] private float verticalTolerance = 2.0f;
+
+    [Tooltip("최초 감지 이후 감지 반경 배수(어그로 후 확대)")]
+    [SerializeField] private float postAggroDetectMultiplier = 3f;
+
+    [Header("Detect Rules (LOS/Height)")]
+    [SerializeField, Tooltip("Ground로 가려지면 감지 안 함")]
+    private bool requireLineOfSight = true;
+    [SerializeField, Tooltip("몬스터보다 위로 이 값(유닛) 초과면 감지 안 함")]
+    private float ignoreIfHigherThan = 5f;     // ≈ 5블럭
+    [SerializeField, Tooltip("몬스터보다 아래로 이 값(유닛) 초과면 감지 안 함")]
+    private float ignoreIfLowerThan = 1f;      // ≈ 1블럭
 
     [Header("Prepare (turn red)")]
     [SerializeField] private float prepareSeconds = 2.0f;
@@ -67,33 +77,52 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private string previewSortingLayerName = "Effects";
     [SerializeField] private int previewSortingOrder = 100;
 
+    private GameObject _previewGO;
+    private SpriteRenderer _previewSR;
+
+    // ---------- Offscreen Edge Indicator ----------
+    [Header("Offscreen Edge Indicator")]
+    [SerializeField] private bool showOffscreenIndicator = true;
+    [SerializeField] private bool indicatorDuringPrepare = true;
+    [SerializeField] private Sprite indicatorSprite;
+    [SerializeField] private Color indicatorColor = new Color(1f, 0.25f, 0.25f, 0.95f);
+    [SerializeField, Range(0f, 0.49f)] private float indicatorEdgeInset = 0.06f;
+    [SerializeField] private float indicatorScaleWorld = 0.8f;
+    [SerializeField] private string indicatorSortingLayerName = "Effects";
+    [SerializeField] private int indicatorSortingOrder = 200;
+
+    private Camera _cam;
+    private GameObject _indicatorGO;
+    private SpriteRenderer _indicatorSR;
+
     // ---------- Death / Blood ----------
     [Header("Death")]
-    [SerializeField] private float despawnDelay = 5f;    // 요청: 5초 뒤 파괴
+    [SerializeField] private float despawnDelay = 5f;
     [SerializeField] private float feetYOffset = 0.05f;
 
     [Header("Death VFX (Blood)")]
     [SerializeField] private GameObject blood0Prefab;     // Blood_0
     [SerializeField] private GameObject blood1Prefab;     // Blood_1
-    [SerializeField] private int burstBloodCount = 10;    // 즉시 터뜨릴 개수
+    [SerializeField] private int burstBloodCount = 10;
     [SerializeField] private float burstRadius = 0.35f;
     [SerializeField] private Vector2 burstSpeedRange = new Vector2(1.2f, 3.0f);
-    [SerializeField] private float sustainDelay = 0.0f;   // Death 시작과 동시에 뿜게 0
-    [SerializeField] private float sustainDuration = 5.0f;// death 동안 지속(=despawnDelay)
+    [SerializeField] private float sustainDelay = 0.0f;
+    [SerializeField] private float sustainDuration = 5.0f;
     [SerializeField] private Vector2 sustainIntervalRange = new Vector2(0.06f, 0.20f);
     [SerializeField] private float sustainJitter = 0.06f;
     [SerializeField] private float bloodLifetime = 3.0f;
+
+    // ---------- Player/BackMonster damage while dashing ----------
+    [Header("Dash Contact (stop & attack)")]
+    [SerializeField] private int dashPlayerDamage = 1;
+    [SerializeField] private Vector2 playerBoxPadding = new Vector2(0.10f, 0);
+    [SerializeField] private float playerBoxForward = 0.10f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private bool drawKillBox = false;
 
-    // ---------- NEW: Player damage while dashing ----------
-    [Header("Player Hit (while Dashing)")]
-    [SerializeField] private int dashPlayerDamage = 1;                         // ★ 돌진 접촉 데미지
-    [SerializeField] private Vector2 playerBoxPadding = new Vector2(0.10f, 0); // ★ 필요시 별도 패딩
-    [SerializeField] private float playerBoxForward = 0.10f;                   // ★ 필요시 별도 전방
-
+    // ---------- Runtime ----------
     private State state;
     private Transform currentTarget;
     private float _timer;
@@ -101,24 +130,24 @@ public class ChargerSentinelAI : MonoBehaviour
     private bool _mustDashOnce;
     private Color _baseColor = Color.white;
     private bool _stoppedThisDash;
-    private int _groundLayer, _monsterLayer, _monkillLayer, _myLayer;
+    private int _groundLayer, _monsterLayer, _monkillLayer, _backMonsterLayer, _myLayer;
     private static readonly Collider2D[] _buf = new Collider2D[8];
     private static readonly Collider2D[] _killBuf = new Collider2D[16];
-    private static readonly Collider2D[] _playerBuf = new Collider2D[16];      // ★
+    private static readonly Collider2D[] _playerBuf = new Collider2D[16];
 
-    private GameObject _previewGO;
-    private SpriteRenderer _previewSR;
-
-    // death lock
     private bool isDying = false;
     private Vector3 _deathPos;
     private Quaternion _deathRot;
     private Vector3 _deathFeetPos;
 
-    // ★ 중복 타격 방지(한 번의 Dash 동안)
-    private readonly HashSet<int> _hitPlayerRootsThisDash = new HashSet<int>();
+    private readonly HashSet<int> _hitPlayerRootsThisDash = new();
 
-    // ---------- Unity ----------
+    // ★ 플레이어 + BackMonster 통합 마스크
+    private LayerMask AggroMask => playerMask | (1 << _backMonsterLayer);
+    private float DetectRadiusNow => detectRadius * (_aggroBoosted ? Mathf.Max(1f, postAggroDetectMultiplier) : 1f);
+
+    private bool _aggroBoosted = false;  // 최초 어그로 후 반경 확대 전용 플래그
+
     private void Reset()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -138,18 +167,22 @@ public class ChargerSentinelAI : MonoBehaviour
         _groundLayer = LayerMask.NameToLayer(groundLayerName);
         _monsterLayer = LayerMask.NameToLayer(monsterLayerName);
         _monkillLayer = LayerMask.NameToLayer(monkillLayerName);
+        _backMonsterLayer = LayerMask.NameToLayer(backMonsterLayerName);
         _myLayer = gameObject.layer;
 
-        // 내 레이어는 Ground & Monkill만 충돌, 나머지는 전부 무시
+        // 내 레이어는 Ground & Monkill만 충돌
         for (int i = 0; i < 32; i++)
         {
             bool allow = (i == _groundLayer) || (i == _monkillLayer);
             Physics2D.IgnoreLayerCollision(_myLayer, i, !allow);
         }
 
-        state = State.Idle;
+        _cam = Camera.main;
         EnsurePreviewObject();
+        EnsureIndicatorObject();
         HidePreview();
+        HideIndicator();
+        state = State.Idle;
     }
 
     private void OnEnable()
@@ -159,9 +192,11 @@ public class ChargerSentinelAI : MonoBehaviour
         _mustDashOnce = false;
         _plannedDashDir = 0;
         isDying = false;
+        _aggroBoosted = false;
         if (sr) sr.color = _baseColor;
         PlayAnim(idleAnim, true);
         HidePreview();
+        HideIndicator();
     }
 
     private void FixedUpdate()
@@ -178,28 +213,46 @@ public class ChargerSentinelAI : MonoBehaviour
 
         if (state == State.Dashing)
         {
-            KillSweepAhead();     // Monster 즉사
-            DamagePlayersAhead(); // ★ Player 데미지
+            KillSweepAhead();
+            DamagePlayersAhead();
         }
     }
 
     private void LateUpdate()
     {
+        if (!_cam) _cam = Camera.main;
+
         if (state == State.Dead)
         {
             transform.position = _deathPos;
             transform.rotation = _deathRot;
+            HideIndicator();
+            return;
         }
+
+        if (showDashPreview && state == State.Preparing) UpdateDashPreview(_plannedDashDir);
+        else HidePreview();
+
+        bool wantIndicator = showOffscreenIndicator &&
+                             (state == State.Dashing || (indicatorDuringPrepare && state == State.Preparing));
+        if (wantIndicator) UpdateOffscreenIndicator();
+        else HideIndicator();
     }
 
-    // ---------- State Ticks ----------
+    // ========== States ==========
     private void TickIdle()
     {
         StopHorizontal();
+
+        // 감지: LOS/높이 조건을 만족하는 가장 가까운 대상
         if (TryDetectNearest(out Transform t))
         {
             currentTarget = t;
             EnterPrepare();
+        }
+        else
+        {
+            currentTarget = null;
         }
     }
 
@@ -208,8 +261,8 @@ public class ChargerSentinelAI : MonoBehaviour
         StopHorizontal();
         if (!StillValidTarget() && !_mustDashOnce) { EnterIdle(); return; }
 
-        if (StillValidTarget()) _plannedDashDir = (currentTarget.position.x >= transform.position.x) ? +1 : -1;
-        else if (_plannedDashDir == 0) _plannedDashDir = (sr && sr.flipX) ? -1 : +1;
+        if (_plannedDashDir == 0)
+            _plannedDashDir = (currentTarget && currentTarget.position.x < transform.position.x) ? -1 : +1;
 
         _timer += Time.fixedDeltaTime;
         if (sr)
@@ -218,7 +271,6 @@ public class ChargerSentinelAI : MonoBehaviour
             sr.color = Color.Lerp(_baseColor, prepareColor, a);
             sr.flipX = (_plannedDashDir < 0);
         }
-        if (showDashPreview) UpdateDashPreview(_plannedDashDir);
         if (_timer >= prepareSeconds) EnterDash();
     }
 
@@ -240,7 +292,6 @@ public class ChargerSentinelAI : MonoBehaviour
         }
     }
 
-    // ---------- Transitions ----------
     private void EnterIdle()
     {
         state = State.Idle; _timer = 0f; _mustDashOnce = false; _plannedDashDir = 0;
@@ -252,15 +303,16 @@ public class ChargerSentinelAI : MonoBehaviour
     private void EnterPrepare()
     {
         state = State.Preparing; _timer = 0f; _mustDashOnce = true;
+        _aggroBoosted = true;
         _plannedDashDir = (currentTarget && currentTarget.position.x < transform.position.x) ? -1 : +1;
         if (sr) sr.flipX = (_plannedDashDir < 0);
-        if (showDashPreview) ShowPreview();
+        ShowPreview();
         PlayAnim(prepareAnim, true);
     }
 
     private void EnterDash()
     {
-        _stoppedThisDash = false;            // ★ 초기화
+        _stoppedThisDash = false;
         _hitPlayerRootsThisDash.Clear();
         if (!StillValidTarget() && !_mustDashOnce) { EnterIdle(); return; }
         state = State.Dashing; _timer = 0f;
@@ -270,7 +322,6 @@ public class ChargerSentinelAI : MonoBehaviour
         Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; rb.linearVelocity = v;
         if (sr) sr.color = _baseColor;
         _mustDashOnce = false;
-        _hitPlayerRootsThisDash.Clear(); // ★ 대시 시작 시 중복 타격 캐시 초기화
         HidePreview();
         CameraShaker.Shake(0.4f, 0.2f);
         PlayAnim(dashAnim, true);
@@ -283,40 +334,81 @@ public class ChargerSentinelAI : MonoBehaviour
         PlayAnim(string.IsNullOrEmpty(animKeyOverride) ? idleAnim : animKeyOverride);
     }
 
-    // ---------- Helpers ----------
+    // ========== Helpers ==========
     private void StopHorizontal()
     {
         Vector2 v = rb.linearVelocity; v.x = 0f; rb.linearVelocity = v;
     }
 
+    // 높이/LOS 규칙 포함 타깃 유효성
     private bool StillValidTarget()
     {
         if (!currentTarget) return false;
-        if (((1 << currentTarget.gameObject.layer) & playerMask) == 0) return false;
-        if (Vector2.Distance(currentTarget.position, transform.position) > detectRadius) return false;
-        if (Mathf.Abs(currentTarget.position.y - transform.position.y) > verticalTolerance) return false;
+        if (((1 << currentTarget.gameObject.layer) & AggroMask) == 0) return false;
+        if (Vector2.Distance(currentTarget.position, transform.position) > DetectRadiusNow) return false;
+
+        // 높이 규칙
+        float dy = currentTarget.position.y - transform.position.y;
+        if (dy > ignoreIfHigherThan) return false;
+        if (dy < -ignoreIfLowerThan) return false;
+
+        // LOS 규칙
+        if (requireLineOfSight && !HasLineOfSightTo(currentTarget)) return false;
+
         return true;
     }
 
     private bool TryDetectNearest(out Transform t)
     {
         t = null;
-        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
-        int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _buf);
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = AggroMask, useTriggers = true };
+        int n = Physics2D.OverlapCircle((Vector2)transform.position, DetectRadiusNow, filter, _buf);
         if (n <= 0) return false;
+
         float best = float.PositiveInfinity;
         for (int i = 0; i < n; i++)
         {
             var c = _buf[i]; if (!c) continue;
             Transform cand = c.attachedRigidbody ? c.attachedRigidbody.transform : c.transform;
-            float vy = Mathf.Abs(cand.position.y - transform.position.y); if (vy > verticalTolerance) continue;
-            float d = ((Vector2)cand.position - (Vector2)transform.position).sqrMagnitude;
-            if (d < best) { best = d; t = cand; }
+            if (!cand) continue;
+
+            // 높이 규칙 적용
+            float dy = cand.position.y - transform.position.y;
+            if (dy > ignoreIfHigherThan) continue;
+            if (dy < -ignoreIfLowerThan) continue;
+
+            // LOS 규칙 적용
+            if (requireLineOfSight && !HasLineOfSightTo(cand)) continue;
+
+            float d2 = ((Vector2)cand.position - (Vector2)transform.position).sqrMagnitude;
+            if (d2 < best) { best = d2; t = cand; }
         }
         return t != null;
     }
 
-    // ---------- Kill sweep without collision (for Monster layer) ----------
+    // Ground로 가려지면 false
+    private bool HasLineOfSightTo(Transform target)
+    {
+        if (!target) return false;
+
+        Vector2 from = body ? (Vector2)body.bounds.center : (Vector2)transform.position;
+        Vector2 to;
+        if (target.TryGetComponent<Collider2D>(out var tc))
+            to = (Vector2)tc.bounds.center;
+        else
+            to = (Vector2)target.position;
+
+        Vector2 dir = (to - from);
+        float dist = dir.magnitude;
+        if (dist < 0.001f) return true;
+        dir /= dist;
+
+        int mask = 1 << _groundLayer; // Ground만 가림판정
+        RaycastHit2D hit = Physics2D.Raycast(from, dir, dist, mask);
+        return !hit.collider; // 맞으면 가려짐
+    }
+
+    // ========== Monster kill sweep ==========
     private void KillSweepAhead()
     {
         if (!body) return;
@@ -333,7 +425,6 @@ public class ChargerSentinelAI : MonoBehaviour
             var targetGo = c.attachedRigidbody ? c.attachedRigidbody.gameObject : c.gameObject;
             targetGo.SendMessage("OnHit", killDamage, SendMessageOptions.DontRequireReceiver);
         }
-
 #if UNITY_EDITOR
         if (drawKillBox)
         {
@@ -346,8 +437,8 @@ public class ChargerSentinelAI : MonoBehaviour
 #endif
     }
 
-    // ---------- NEW: Player damage sweep while Dashing ----------
-    private void DamagePlayersAhead() // ★
+    // ========== Player/BackMonster contact while Dashing ==========
+    private void DamagePlayersAhead()
     {
         if (!body) return;
 
@@ -355,22 +446,18 @@ public class ChargerSentinelAI : MonoBehaviour
         Vector2 size = new Vector2(b.size.x + playerBoxPadding.x, b.size.y + playerBoxPadding.y);
         Vector2 center = new Vector2(b.center.x + _dashDir * (b.extents.x + playerBoxForward), b.center.y);
 
-        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = AggroMask, useTriggers = true };
         int count = Physics2D.OverlapBox(center, size, 0f, filter, _playerBuf);
 
         for (int i = 0; i < count; i++)
         {
             var c = _playerBuf[i]; if (!c) continue;
-
-            // 자기 자신 무시
             if (c.transform.root == transform.root) continue;
 
-            // 루트 단위 중복 타격 방지
             var root = c.attachedRigidbody ? c.attachedRigidbody.transform.root : c.transform.root;
             int id = root.GetInstanceID();
             if (_hitPlayerRootsThisDash.Contains(id)) continue;
 
-            // 실제 데미지 전달
             DealDamageTo(c.transform, dashPlayerDamage);
             StopDashOnPlayerHit();
             _hitPlayerRootsThisDash.Add(id);
@@ -379,22 +466,18 @@ public class ChargerSentinelAI : MonoBehaviour
 
     private void StopDashOnPlayerHit()
     {
-        if (_stoppedThisDash) return; // 대시 중 1회만
+        if (_stoppedThisDash) return;
         _stoppedThisDash = true;
-
-        // 즉시 정지
         Vector2 v = rb.linearVelocity; v.x = 0f; rb.linearVelocity = v;
 
-        // attackOmega 재생 + 쉐이크
         EnterRecover(attackOmegaAnim);
         CameraShaker.Shake(onHitShakeAmp, onHitShakeDur);
     }
 
-    private void DealDamageTo(Transform t, int dmg) // ★ 보강
+    private void DealDamageTo(Transform t, int dmg)
     {
         if (!t) return;
 
-        // 1) 표준 인터페이스 우선
         var dmgIf = t.GetComponentInParent<global::IDamageable>();
         if (dmgIf != null)
         {
@@ -404,22 +487,14 @@ public class ChargerSentinelAI : MonoBehaviour
             return;
         }
 
-        // 2) 대표적인 HP 컴포넌트 직접 참조 (P2)
         var p2 = t.GetComponentInParent<Player2HP>();
-        if (p2 != null)
-        {
-            p2.TakeDamage(dmg);
-            return;
-        }
+        if (p2 != null) { p2.TakeDamage(dmg); return; }
 
-        // 3) 상향식 메시지: TakeDamage(int)
         t.SendMessageUpwards("TakeDamage", dmg, SendMessageOptions.DontRequireReceiver);
-
-        // 4) 마지막 폴백: OnHit(int)
         t.SendMessageUpwards("OnHit", dmg, SendMessageOptions.DontRequireReceiver);
     }
 
-    // ---------- Monkill 즉사 처리 ----------
+    // ========== Death ==========
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (state == State.Dead) return;
@@ -437,24 +512,19 @@ public class ChargerSentinelAI : MonoBehaviour
         isDying = true;
         state = State.Dead;
 
-        // 스냅샷 (위치 고정)
         _deathPos = transform.position;
         _deathRot = transform.rotation;
         _deathFeetPos = GetFeetWorld();
 
-        // 모든 동작/표시 정리
         StopHorizontal();
         HidePreview();
+        HideIndicator();
         if (sr) sr.color = Color.white;
 
-        // 즉시 혈흔 버스트(중앙에서)
         SpawnBloodBurst(GetBodyCenter(), burstBloodCount);
-
-        // 발 지속 분출
         if ((blood0Prefab || blood1Prefab) && sustainDuration > 0f)
             StartCoroutine(FootBloodSustain());
 
-        // 물리 봉인
         if (rb)
         {
             rb.linearVelocity = Vector2.zero;
@@ -464,14 +534,13 @@ public class ChargerSentinelAI : MonoBehaviour
         }
         if (body) body.enabled = false;
 
-        // Hit → Death 연출
         StartCoroutine(DeathAnimThenDespawn());
     }
 
     private IEnumerator DeathAnimThenDespawn()
     {
         PlayAnim(hitAnim, true);
-        yield return null;              // 한 프레임만 보여주고
+        yield return null;
         PlayAnim(deathAnim, true);
 
         float t = 0f;
@@ -480,17 +549,14 @@ public class ChargerSentinelAI : MonoBehaviour
     }
 
     // ---------- Blood helpers ----------
-    private Vector3 GetBodyCenter()
-    {
-        if (body != null) return body.bounds.center;
-        return transform.position;
-    }
+    private Vector3 GetBodyCenter() => body ? body.bounds.center : transform.position;
+
     private Vector3 GetFeetWorld()
     {
         if (body != null)
         {
             var b = body.bounds;
-            return new Vector3(b.center.x, b.min.y + feetYOffset, transform.position.z); // ★ fix
+            return new Vector3(b.center.x, b.min.y + feetYOffset, transform.position.z);
         }
         return transform.position + new Vector3(0f, -0.25f, 0f);
     }
@@ -529,7 +595,7 @@ public class ChargerSentinelAI : MonoBehaviour
             Vector3 pos = _deathFeetPos + (Vector3)jitter;
 
             Vector2 dir = (Vector2.up + Random.insideUnitCircle * 0.6f).normalized;
-            float spd = Random.Range(burstSpeedRange.x * 0.6f, burstSpeedRange.y);
+            float spd = Random.Range(burstSpeedRange.x * 0.6f, burstBloodCount > 0 ? burstSpeedRange.y : burstSpeedRange.y);
 
             var prefab = (Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
             if (prefab)
@@ -549,21 +615,24 @@ public class ChargerSentinelAI : MonoBehaviour
         }
     }
 
-    // ---------- Preview ----------
+    // ---------- Preview (box only) ----------
     private void EnsurePreviewObject()
     {
         if (_previewGO) return;
+
         _previewGO = new GameObject("DashPreview");
         _previewGO.transform.SetParent(transform, false);
-        _previewSR = _previewGO.AddComponent<SpriteRenderer>();
 
+        _previewSR = _previewGO.AddComponent<SpriteRenderer>();
         var tex = Texture2D.whiteTexture;
-        var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), tex.width);
+        var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height),
+                                   new Vector2(0.5f, 0.5f), tex.width);
         _previewSR.sprite = sprite;
         _previewSR.color = new Color(1f, 0f, 0f, previewAlpha);
         if (!string.IsNullOrEmpty(previewSortingLayerName))
             _previewSR.sortingLayerName = previewSortingLayerName;
         _previewSR.sortingOrder = previewSortingOrder;
+
         _previewGO.SetActive(false);
     }
     private void ShowPreview() { if (_previewGO) _previewGO.SetActive(true); }
@@ -598,10 +667,7 @@ public class ChargerSentinelAI : MonoBehaviour
         float widthWorld = Mathf.Max(0.01f, dist);
         float heightWorld = Mathf.Max(0.01f, previewThickness);
 
-        Vector3 center = new Vector3(
-            b.center.x + dirSign * (dist * 0.5f),
-            b.center.y, b.center.z
-        );
+        Vector3 center = new Vector3(b.center.x + dirSign * (dist * 0.5f), b.center.y, b.center.z);
 
         var ps = GetParentScaleAbs();
         float safeX = (ps.x <= 0.0001f) ? 1f : ps.x;
@@ -613,14 +679,101 @@ public class ChargerSentinelAI : MonoBehaviour
         if (_previewSR) _previewSR.color = new Color(1f, 0f, 0f, previewAlpha);
     }
 
+    // ---------- Offscreen Indicator ----------
+    private void EnsureIndicatorObject()
+    {
+        if (_indicatorGO || !_cam) return;
+
+        _indicatorGO = new GameObject("OffscreenIndicator");
+        _indicatorGO.transform.SetParent(_cam.transform, false);
+
+        _indicatorSR = _indicatorGO.AddComponent<SpriteRenderer>();
+        _indicatorSR.sprite = indicatorSprite ? indicatorSprite : Texture2D.whiteTexture.ToSprite();
+        _indicatorSR.color = indicatorColor;
+        if (!string.IsNullOrEmpty(indicatorSortingLayerName))
+            _indicatorSR.sortingLayerName = indicatorSortingLayerName;
+        _indicatorSR.sortingOrder = indicatorSortingOrder;
+
+        _indicatorGO.transform.localScale = Vector3.one * indicatorScaleWorld;
+        _indicatorGO.SetActive(false);
+    }
+    private void HideIndicator() { if (_indicatorGO && _indicatorGO.activeSelf) _indicatorGO.SetActive(false); }
+    private void ShowIndicator() { if (!_indicatorGO) EnsureIndicatorObject(); if (_indicatorGO && !_indicatorGO.activeSelf) _indicatorGO.SetActive(true); }
+
+    private void UpdateOffscreenIndicator()
+    {
+        if (!_cam || !_indicatorSR || !showOffscreenIndicator) { HideIndicator(); return; }
+
+        if (IsBoundsInCameraView(_cam, body ? body.bounds : new Bounds(transform.position, Vector3.one * 0.2f)))
+        {
+            HideIndicator();
+            return;
+        }
+
+        Vector3 v = _cam.WorldToViewportPoint(body ? body.bounds.center : transform.position);
+        if (v.z < 0f) { v.x = 1f - v.x; v.y = 1f - v.y; v.z = 0.01f; }
+
+        Vector2 c = new Vector2(0.5f, 0.5f);
+        Vector2 to = new Vector2(v.x, v.y) - c;
+        if (to.sqrMagnitude < 1e-6f) to = new Vector2(_dashDir != 0 ? _dashDir : 1, 0);
+        Vector2 dir = to.normalized;
+
+        float inset = Mathf.Clamp(indicatorEdgeInset, 0f, 0.49f);
+        float maxX = 0.5f - inset;
+        float maxY = 0.5f - inset;
+        float tX = (Mathf.Abs(dir.x) > 1e-6f) ? (maxX / Mathf.Abs(dir.x)) : float.PositiveInfinity;
+        float tY = (Mathf.Abs(dir.y) > 1e-6f) ? (maxY / Mathf.Abs(dir.y)) : float.PositiveInfinity;
+        float t = Mathf.Min(tX, tY);
+
+        Vector2 edge = c + dir * t;
+
+        ShowIndicator();
+        if (_cam.orthographic)
+        {
+            float h = 2f * _cam.orthographicSize;
+            float w = h * _cam.aspect;
+            Vector3 local = new Vector3((edge.x - 0.5f) * w, (edge.y - 0.5f) * h, 0f);
+            _indicatorGO.transform.localPosition = local;
+            float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            _indicatorGO.transform.localRotation = Quaternion.Euler(0, 0, ang);
+        }
+        else
+        {
+            float depth = Mathf.Max(1f, _cam.nearClipPlane + 0.5f);
+            Vector3 world = _cam.ViewportToWorldPoint(new Vector3(edge.x, edge.y, depth));
+            _indicatorGO.transform.position = world;
+            float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            _indicatorGO.transform.rotation = Quaternion.Euler(0, 0, ang);
+        }
+
+        _indicatorSR.color = indicatorColor;
+    }
+
+    private static bool IsBoundsInCameraView(Camera cam, Bounds b)
+    {
+        Vector3[] cs = new Vector3[4] {
+            new Vector3(b.min.x, b.min.y, b.center.z),
+            new Vector3(b.min.x, b.max.y, b.center.z),
+            new Vector3(b.max.x, b.min.y, b.center.z),
+            new Vector3(b.max.x, b.max.y, b.center.z),
+        };
+        for (int i = 0; i < cs.Length; i++)
+        {
+            var v = cam.WorldToViewportPoint(cs[i]);
+            if (v.z > 0f && v.x >= 0f && v.x <= 1f && v.y >= 0f && v.y <= 1f)
+                return true;
+        }
+        return false;
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (!drawGizmos) return;
         Gizmos.color = new Color(1f, 0.4f, 0f, 0.25f);
-        Gizmos.DrawWireSphere(transform.position, detectRadius);
+        float r = Application.isPlaying ? DetectRadiusNow : detectRadius;
+        Gizmos.DrawWireSphere(transform.position, r);
     }
 
-    // ---------- Animation helper ----------
     private void PlayAnim(string key, bool forceRestart = false)
     {
         if (string.IsNullOrEmpty(key)) return;
@@ -628,6 +781,15 @@ public class ChargerSentinelAI : MonoBehaviour
         if (animator != null) animator.Play(key, 0, 0f);
     }
 
-    // 외부에서 즉사시키고 싶을 때 쓸 수 있는 메시지 훅(선택)
     public void OnHit(int damage) { StartDeathSequence("OnHit"); }
+}
+
+// ---- Utility ----
+public static class SpriteUtilExt
+{
+    public static Sprite ToSprite(this Texture2D tex)
+    {
+        return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height),
+                             new Vector2(0.5f, 0.5f), tex.width);
+    }
 }

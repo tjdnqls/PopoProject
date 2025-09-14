@@ -1,5 +1,4 @@
 ﻿// ===================== MonsterABPatrolFSM.cs =====================
-using Game.AI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,13 +6,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
+public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 {
-    // [FIX-DEATH] Dead 상태
     public enum State { Patrol, Alert, Chase, AttackWindup, Return, Dead }
 
     [Header("Animation")]
-    public SpriteAnimationManager anim; // Idle / Run / AttackStart / Attack / Hit / Death
+    public SpriteAnimationManager anim;
 
     [Header("Refs")]
     [SerializeField] private Rigidbody2D rb;
@@ -65,17 +63,17 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
     private CircleCollider2D _hbCircle;
     private Vector2 _colliderOffset0;
 
-    [Header("Aggro Detection (by Ping)")]
-    [SerializeField] private float pingScanRadius = 6f;
-    [SerializeField] private AggroPing2D pingPrefab;
-    [SerializeField] private Transform pingMuzzle;
-    [SerializeField] private float pingCooldownPerTarget = 0.5f;
-    [SerializeField] private int maxConcurrentPings = 4;
-
-    [Header("Ping Flight")]
-    [SerializeField] private float pingSpeed = 18f;
-    [SerializeField] private float pingLifetime = 0.8f;
-    [SerializeField] private float pingLeadFactor = 0f;
+    // ====== 감지 규칙 (LOS + 높이) ======
+    [Header("Detect (LOS + Height)")]
+    [SerializeField] private float detectRadius = 6f;
+    [SerializeField, Tooltip("Ground/Obstacle가 사이에 있으면 감지 불가")]
+    private bool requireLineOfSight = true;
+    [SerializeField, Tooltip("시야를 막는 레이어 (대개 Ground | Obstacle)")]
+    private LayerMask losBlockMask;
+    [SerializeField, Tooltip("몬스터 기준 위로 이 값(유닛) 초과면 감지 안 함")]
+    private float ignoreIfHigherThan = 5f;   // ≈ 5블럭
+    [SerializeField, Tooltip("몬스터 기준 아래로 이 값(유닛) 초과면 감지 안 함")]
+    private float ignoreIfLowerThan = 1f;   // ≈ 1블럭
 
     [Header("Alert / Chase / Return")]
     [SerializeField] private float alertStopSec = 0.5f;
@@ -96,22 +94,20 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
     [Header("Death")]
     [SerializeField] private float despawnDelay = 3f;
 
-    // ====== 추가: Death VFX (Blood) ======
     [Header("Death VFX (Blood)")]
     [SerializeField] private GameObject blood0Prefab;
     [SerializeField] private GameObject blood1Prefab;
-    [SerializeField] private int burstBloodCount = 10;              // 즉시 분출 개수
-    [SerializeField] private float burstRadius = 0.35f;            // 즉시 분출 반경
-    [SerializeField] private Vector2 burstSpeedRange = new Vector2(1.2f, 3.0f); // 즉시 분출 속도
-    [SerializeField] private float sustainDelay = 0.3f;            // 발 분출 시작 지연
-    [SerializeField] private float sustainDuration = 3.0f;         // 발 분출 지속 시간
-    [SerializeField] private Vector2 sustainIntervalRange = new Vector2(0.06f, 0.20f); // 분출 간격
-    [SerializeField] private float sustainJitter = 0.06f;          // 발 분출 위치 지터
-    [SerializeField] private float bloodLifetime = 3.0f;           // 혈흔 자동 소멸 시간
+    [SerializeField] private int burstBloodCount = 10;
+    [SerializeField] private float burstRadius = 0.35f;
+    [SerializeField] private Vector2 burstSpeedRange = new Vector2(1.2f, 3.0f);
+    [SerializeField] private float sustainDelay = 0.3f;
+    [SerializeField] private float sustainDuration = 3.0f;
+    [SerializeField] private Vector2 sustainIntervalRange = new Vector2(0.06f, 0.20f);
+    [SerializeField] private float sustainJitter = 0.06f;
+    [SerializeField] private float bloodLifetime = 3.0f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
-    [SerializeField] private bool logPing = false;
 
     // ---------- Return 길막 공격 ----------
     [Header("Return Block Attack")]
@@ -121,44 +117,26 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
     private float returnBlockTimer = 0f;
     private Transform returnBlockingPlayer = null;
 
-    // ---------- Direct Player Detect (fallback) ----------
-    [Header("Direct Player Detect (Fallback)")]
-    [SerializeField] private bool enableDirectDetect = true;
-    [SerializeField] private float directDetectRadius = 4f;
-
     // 내부 상태
     private State state;
     private Vector2 wpA, wpB;
     private int patrolTargetIndex; // 0:A, 1:B
-    private int dir;               // +1/-1
+    private int dir;
     private Vector2 homePos;
     private float chaseStartTime;
     private Coroutine alertCo, attackCo;
 
-    // 핑 관리
-    private readonly Dictionary<int, float> _lastPingTime = new Dictionary<int, float>();
-    private int _activePings = 0;
-
-    // 탐지 버퍼
     private static readonly Collider2D[] _hits = new Collider2D[16];
-
-    // 타겟
     private Transform currentTarget;
-
-    // 기타
-    private LayerMask blockingMask; // obstacle에서 player 제외
+    private LayerMask blockingMask;
     private bool isDying = false;
 
-    // 충돌 무시(플레이어 루트 단위 캐시)
     private readonly HashSet<int> _ignoredPlayerRoots = new HashSet<int>();
-
-    // Dead/Stopped 가드
     private bool IsDeadOrStopped => isDying || isStoppedByTag || state == State.Dead;
 
-    // 사망 위치 고정
     private Vector3 _deathPos;
     private Quaternion _deathRot;
-    private Vector3 _deathFeetPos; // ★ 발 위치 캐시
+    private Vector3 _deathFeetPos;
 
     // ---------- Helpers ----------
     private static bool IsOnLayerMask(int layer, LayerMask mask) => (mask.value & (1 << layer)) != 0;
@@ -210,6 +188,9 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
 
         // obstacle에서 player 제외(플레이어를 벽으로 보지 않기)
         blockingMask = obstacleMask & ~playerMask;
+
+        // 기본 LOS 차단 마스크가 비어있으면 Ground|Obstacle 사용
+        if (losBlockMask == 0) losBlockMask = groundMask | obstacleMask;
 
         // 웨이포인트 확정
         wpA = waypointA ? (Vector2)waypointA.position : (Vector2)transform.position + fallbackLocalA;
@@ -268,7 +249,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
         }
     }
 
-    // 사망 위치 고정(다른 스크립트가 Transform을 움직여도 무효화)
     private void LateUpdate()
     {
         if (state == State.Dead)
@@ -300,17 +280,11 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
             MoveHorizontalTowards(dir * patrolSpeed);
         }
 
-        // 1) 핑 기반 후보 스캔 & 발사
-        ScanAndShootPings();
-
-        // 2) 직감지(백업)
-        if (enableDirectDetect)
+        // LOS + 높이 규칙으로 감지
+        if (TryDetectNearestWithRules(out Transform p))
         {
-            if (TryDetectNearest(playerMask, directDetectRadius, out Transform p))
-            {
-                currentTarget = p;
-                EnterAlert();
-            }
+            currentTarget = p;
+            EnterAlert();
         }
     }
 
@@ -464,12 +438,11 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
             return;
         }
 
-        // 복귀 완료
         if (Mathf.Abs(homePos.x - transform.position.x) <= arriveEps)
             KickstartPatrolLoop();
 
-        // 복귀 중에도 직감지 백업
-        if (enableDirectDetect && TryDetectNearest(playerMask, directDetectRadius, out Transform p))
+        // 복귀 중에도 감지
+        if (TryDetectNearestWithRules(out Transform p))
         {
             currentTarget = p;
             EnterAlert();
@@ -498,7 +471,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
         PlayAnim("Run", true);
     }
 
-    // ============ State transitions ============
     private void EnterAlert()
     {
         if (IsDeadOrStopped) return;
@@ -549,19 +521,19 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
         PlayAnim("Run");
     }
 
-    // ============ Direct Detect ============
-    private bool TryDetectNearest(LayerMask mask, float radius, out Transform nearest)
+    // ============ Detect (LOS + Height) ============
+    private bool TryDetectNearestWithRules(out Transform nearest)
     {
         nearest = null;
 
         var filter = new ContactFilter2D
         {
             useLayerMask = true,
-            layerMask = mask,
+            layerMask = playerMask,
             useTriggers = true
         };
 
-        int n = Physics2D.OverlapCircle((Vector2)transform.position, radius, filter, _hits);
+        int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _hits);
         if (n <= 0) return false;
 
         float best = float.PositiveInfinity;
@@ -570,305 +542,43 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
             var c = _hits[i];
             if (!c) continue;
             Transform t = c.attachedRigidbody ? c.attachedRigidbody.transform : c.transform;
+            if (!t) continue;
+
+            // 높이 규칙
+            float dy = t.position.y - transform.position.y;
+            if (dy > ignoreIfHigherThan) continue;
+            if (dy < -ignoreIfLowerThan) continue;
+
+            // LOS 규칙
+            if (requireLineOfSight && !HasLineOfSightTo(t)) continue;
+
             float d = ((Vector2)t.position - (Vector2)transform.position).sqrMagnitude;
             if (d < best) { best = d; nearest = t; }
         }
         return nearest != null;
     }
 
-    // ============ Ping-based Detection ============
-    private void ScanAndShootPings()
+    private bool HasLineOfSightTo(Transform t)
     {
-        if (IsDeadOrStopped) return;
-        if (!pingPrefab) return;
+        if (!t) return false;
 
-        ContactFilter2D filter = new ContactFilter2D
-        {
-            useLayerMask = true,
-            layerMask = playerMask,
-            useTriggers = true
-        };
-
-        int n = Physics2D.OverlapCircle((Vector2)transform.position, pingScanRadius, filter, _hits);
-        if (n <= 0) return;
-
-        for (int i = 0; i < n; i++)
-        {
-            if (_activePings >= maxConcurrentPings) break;
-
-            var col = _hits[i];
-            if (!col) continue;
-            Transform cand = col.attachedRigidbody ? col.attachedRigidbody.transform : col.transform;
-            if (!cand) continue;
-
-            int key = cand.GetInstanceID();
-            if (_lastPingTime.TryGetValue(key, out float last) && (Time.time - last) < pingCooldownPerTarget)
-                continue;
-
-            FirePing(cand);
-            _lastPingTime[key] = Time.time;
-            _activePings++;
-        }
-    }
-
-    private void FirePing(Transform target)
-    {
-        if (IsDeadOrStopped) return;
-
-        Vector2 origin = pingMuzzle ? (Vector2)pingMuzzle.position : Eyes();
-        Vector2 aim = TargetAimPoint(target);
-
-        if (pingLeadFactor > 0f && target.TryGetComponent<Rigidbody2D>(out var trb))
-        {
-            Vector2 vel = trb.linearVelocity;
-            aim += vel * pingLeadFactor;
-        }
-
-        var ping = Instantiate(pingPrefab, origin, Quaternion.identity);
-        ping.Init(
-            owner: this,
-            target: target,
-            speed: pingSpeed,
-            lifetime: pingLifetime,
-            groundMask: groundMask,
-            playerMask: playerMask,
-            obstacleMask: obstacleMask,
-            onDespawn: () => { _activePings = Mathf.Max(0, _activePings - 1); }
-        );
-
-        if (logPing) Debug.Log($"[Monster] FirePing -> {target.name}");
-    }
-
-    // 핑이 플레이어에 명중했을 때 호출됨
-    public void OnAggroPingHit(Transform hitPlayer)
-    {
-        if (IsDeadOrStopped) return;
-        if (!hitPlayer) return;
-        currentTarget = hitPlayer;
-        EnterAlert();
-    }
-
-    // ============ Damage / Death ============
-    // 오버로드: 어떤 호출이 와도 사망 시퀀스로 진입
-    public void TakeDamage(int amount)
-    {
-        if (IsDeadOrStopped) return;
-        CameraShaker.Shake(0.4f, 0.5f);
-        StartDeathSequence("TakeDamage(int)");
-    }
-
-    public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
-    {
-        if (IsDeadOrStopped) return;
-        CameraShaker.Shake(0.4f, 0.5f);
-        StartDeathSequence("TakeDamage(int,vec,vec)");
-    }
-
-    public void OnHit(int damage)
-    {
-        if (IsDeadOrStopped) return;
-        CameraShaker.Shake(0.4f, 0.5f);
-        StartDeathSequence("OnHit");
-    }
-
-    // 사망 시 공통 진입: 전면 정지 + Hit→Death 연출 + 위치 고정 + Blood VFX
-    private void StartDeathSequence(string reason)
-    {
-        if (isDying) return;
-        isDying = true;
-        state = State.Dead;
-
-        // 좌표 고정 스냅샷 (★ Feet도 이 타이밍에 미리 계산해둔다)
-        _deathPos = transform.position;
-        _deathRot = transform.rotation;
-        _deathFeetPos = GetFeetWorldFallback(); // body.enabled 끄기 전에 계산
-
-        // === 발 분출 예약 ===
-        if ((blood0Prefab || blood1Prefab) && sustainDuration > 0f)
-            StartCoroutine(FootBloodSustain());
-
-        // 모든 코루틴 종료
-        StopAllCoroutines();
-
-        // === 즉시 혈흔 버스트 ===
-        SpawnBloodBurst(GetBodyCenterFallback(), burstBloodCount);
-
-        // 이동/물리 완전 봉인
-        StopHorizontal();
-        if (rb)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.angularVelocity = 0f;
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            rb.simulated = false; // 물리 비활성
-        }
-
-        // 충돌/히트박스 차단
-        if (body) body.enabled = false;
-        ForceDisableMeleeHitbox();
-
-        // 시각 정리
-        if (sr) sr.color = Color.white;
-
-        // 연출: Hit가 있으면 Hit→Death, 없으면 Death 바로
-        if (anim && anim.HasClip("Hit"))
-            PlayOnce("Hit", "Death", true);
+        Vector2 from = body ? (Vector2)body.bounds.center : (Vector2)transform.position;
+        Vector2 to;
+        if (t.TryGetComponent<Collider2D>(out var tc))
+            to = (Vector2)tc.bounds.center;
         else
-            PlayOnce("Death", null, true);
+            to = (Vector2)t.position;
 
-#if UNITY_EDITOR
-        Debug.Log($"[Monster] Death start ({reason})", this);
-#endif
-        StartCoroutine(DeathDespawn());
+        Vector2 dir = to - from;
+        float dist = dir.magnitude;
+        if (dist < 0.001f) return true;
+        dir /= dist;
+
+        var hit = Physics2D.Raycast(from, dir, dist, losBlockMask);
+        return !hit; // 막히지 않으면 true
     }
 
-    private IEnumerator DeathDespawn()
-    {
-        float t = 0f;
-        while (t < despawnDelay)
-        {
-            t += Time.deltaTime;
-            yield return null;
-        }
-        Destroy(gameObject);
-    }
-
-    // === Blood VFX Helpers ===
-    private Vector3 GetBodyCenterFallback()
-    {
-        if (body != null)
-        {
-            var b = body.bounds;
-            return b.center;
-        }
-        return transform.position;
-    }
-
-    private Vector3 GetFeetWorldFallback()
-    {
-        if (body != null)
-        {
-            var b = body.bounds;
-            return new Vector3(b.center.x, b.min.y + feetYOffset, transform.position.z);
-        }
-        // 대충 발 위치 추정 (콜라이더가 없을 경우)
-        return transform.position + new Vector3(0f, -0.25f, 0f);
-    }
-
-    private void SpawnBloodBurst(Vector3 center, int count)
-    {
-        if (!blood0Prefab && !blood1Prefab) return;
-
-        for (int i = 0; i < count; i++)
-        {
-            var prefab = (UnityEngine.Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
-            if (!prefab) continue;
-
-            Vector2 dir = UnityEngine.Random.insideUnitCircle.normalized;
-            float dist = UnityEngine.Random.Range(0.05f, burstRadius);
-            Vector3 pos = center + (Vector3)(dir * dist);
-
-            var go = Instantiate(prefab, pos, Quaternion.identity);
-            if (go.TryGetComponent<Rigidbody2D>(out var r2d))
-            {
-                float spd = UnityEngine.Random.Range(burstSpeedRange.x, burstSpeedRange.y);
-                r2d.AddForce(dir * spd, ForceMode2D.Impulse);
-                r2d.AddTorque(UnityEngine.Random.Range(-10f, 10f), ForceMode2D.Impulse);
-            }
-            if (bloodLifetime > 0f) Destroy(go, bloodLifetime);
-        }
-    }
-
-    private IEnumerator FootBloodSustain()
-    {
-        // 시작 지연
-        if (sustainDelay > 0f) yield return new WaitForSeconds(sustainDelay);
-
-        float t = 0f;
-        while (t < sustainDuration)
-        {
-            // 발 기준 위치 + 지터
-            Vector2 jitter = UnityEngine.Random.insideUnitCircle * sustainJitter;
-            Vector3 pos = _deathFeetPos + (Vector3)jitter;
-
-            // 위쪽 반구 쏘기(자연스러운 분사)
-            Vector2 dir = (Vector2.up + UnityEngine.Random.insideUnitCircle * 0.6f).normalized;
-            float spd = UnityEngine.Random.Range(burstSpeedRange.x * 0.6f, burstSpeedRange.y);
-
-            var prefab = (UnityEngine.Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
-            if (prefab)
-            {
-                var go = Instantiate(prefab, pos, Quaternion.identity);
-                if (go.TryGetComponent<Rigidbody2D>(out var r2d))
-                {
-                    r2d.AddForce(dir * spd, ForceMode2D.Impulse);
-                    r2d.AddTorque(UnityEngine.Random.Range(-12f, 12f), ForceMode2D.Impulse);
-                }
-                if (bloodLifetime > 0f) Destroy(go, bloodLifetime);
-            }
-
-            float wait = UnityEngine.Random.Range(sustainIntervalRange.x, sustainIntervalRange.y);
-            t += wait;
-            yield return new WaitForSeconds(wait);
-        }
-    }
-
-    // Death/Instant Kill 양쪽에서 히트박스 완전 비활성화
-    private void ForceDisableMeleeHitbox()
-    {
-        if (!meleeHitbox) return;
-        var hb = meleeHitbox.GetComponent<MeleeHitboxOnce>();
-        if (hb) hb.Disarm();
-        meleeHitbox.SetActive(false);
-    }
-
-    // === Monkill 즉사 ===
-    private IEnumerator DieInstantByTag(string reason)
-    {
-        if (isDying) yield break;
-        StartDeathSequence(reason);
-        yield break;
-    }
-
-    // ============ Helpers ============
-    private Vector2 Eyes()
-    {
-        var b = body.bounds;
-        return new Vector2(b.center.x, b.max.y + 0.51f);
-    }
-    private Vector2 TargetAimPoint(Transform t)
-    {
-        if (!t) return transform.position;
-        if (t.TryGetComponent<Collider2D>(out var c))
-            return (Vector2)c.bounds.center + new Vector2(0f, 0.25f);
-        return (Vector2)t.position + new Vector2(0f, 0.25f);
-    }
-
-    private void StopAllBehaviours(string reason)
-    {
-        isStoppedByTag = true;
-
-        if (alertCo != null) { StopCoroutine(alertCo); alertCo = null; }
-        if (attackCo != null) { StopCoroutine(attackCo); attackCo = null; }
-        state = State.Patrol;
-        if (sr) sr.color = Color.white;
-
-        if (rb)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.angularVelocity = 0f;
-            if (freezeRigidbodyOnStop)
-                rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
-
-        if (disableComponentOnStop)
-            enabled = false;
-
-#if UNITY_EDITOR
-        Debug.Log($"[Monster] Stopped by tag '{stopOnTag}' ({reason})", this);
-#endif
-    }
-
+    // ============ Helpers / Movement / Probes ============
     private void ApplyDamage(Transform target)
     {
         if (IsDeadOrStopped) return;
@@ -890,7 +600,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
         target.SendMessage("OnHit", attackDamage, SendMessageOptions.DontRequireReceiver);
     }
 
-    // Movement / Probes
     private void MoveHorizontalTowards(float targetSpeedX)
     {
         Vector2 v = rb.linearVelocity;
@@ -979,7 +688,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
 
     private float DistanceTo(Transform t) => t ? Vector2.Distance(t.position, transform.position) : float.MaxValue;
 
-    // ---- Player(태그)와의 물리 충돌 완전 무시: 시체가 Ground여도 루트에 Player 태그 있으면 끊는다 ----
     private void IgnorePlayerRootCollisions(Transform anyChildInPlayerRoot)
     {
         if (!body || !anyChildInPlayerRoot) return;
@@ -1064,13 +772,9 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
         Gizmos.color = new Color(1, 0, 0, 0.35f);
         Gizmos.DrawWireSphere(transform.position, attackEdgeRange);
 
-#if UNITY_EDITOR
-        if (enableDirectDetect)
-        {
-            Gizmos.color = new Color(1f, 0.4f, 0f, 0.25f);
-            Gizmos.DrawWireSphere(transform.position, directDetectRadius);
-        }
-#endif
+        // Detect 반경 표시
+        Gizmos.color = new Color(1f, 0.4f, 0f, 0.25f);
+        Gizmos.DrawWireSphere(transform.position, detectRadius);
     }
 
     // ---------- 히트박스 좌/우 미러링 ----------
@@ -1118,6 +822,214 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable, IAggroPingOwner
         if (vy > returnBlockYTolerance) return null;
 
         return col.attachedRigidbody ? col.attachedRigidbody.transform : col.transform;
+    }
+
+    // ============ Damage / Death ============
+    public void TakeDamage(int amount)
+    {
+        if (IsDeadOrStopped) return;
+        CameraShaker.Shake(0.4f, 0.5f);
+        StartDeathSequence("TakeDamage(int)");
+    }
+
+    public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
+    {
+        if (IsDeadOrStopped) return;
+        CameraShaker.Shake(0.4f, 0.5f);
+        StartDeathSequence("TakeDamage(int,vec,vec)");
+    }
+
+    public void OnHit(int damage)
+    {
+        if (IsDeadOrStopped) return;
+        CameraShaker.Shake(0.4f, 0.5f);
+        StartDeathSequence("OnHit");
+    }
+    private void ForceDisableMeleeHitbox()
+    {
+        if (!meleeHitbox) return;
+
+        // 한 번용 히트박스 스크립트가 붙어있다면 무장 해제
+        var hb = meleeHitbox.GetComponent<MeleeHitboxOnce>();
+        if (hb != null) hb.Disarm();
+
+        // 히트박스 오브젝트 자체 비활성화
+        meleeHitbox.SetActive(false);
+    }
+    private void StartDeathSequence(string reason)
+    {
+        if (isDying) return;
+        isDying = true;
+        state = State.Dead;
+
+        _deathPos = transform.position;
+        _deathRot = transform.rotation;
+        _deathFeetPos = GetFeetWorldFallback();
+
+        // VFX
+        if ((blood0Prefab || blood1Prefab) && sustainDuration > 0f)
+            StartCoroutine(FootBloodSustain());
+
+        StopAllCoroutines();
+
+        SpawnBloodBurst(GetBodyCenterFallback(), burstBloodCount);
+
+        // 물리/충돌 봉인
+        StopHorizontal();
+        if (rb)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            rb.simulated = false;
+        }
+
+        if (body) body.enabled = false;
+        ForceDisableMeleeHitbox();
+        if (sr) sr.color = Color.white;
+
+        if (anim && anim.HasClip("Hit"))
+            PlayOnce("Hit", "Death", true);
+        else
+            PlayOnce("Death", null, true);
+
+#if UNITY_EDITOR
+        Debug.Log($"[Monster] Death start ({reason})", this);
+#endif
+        StartCoroutine(DeathDespawn());
+    }
+
+    private IEnumerator DeathDespawn()
+    {
+        float t = 0f;
+        while (t < despawnDelay)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(gameObject);
+    }
+
+    // === Blood VFX Helpers ===
+    private Vector3 GetBodyCenterFallback()
+    {
+        if (body != null)
+        {
+            var b = body.bounds;
+            return b.center;
+        }
+        return transform.position;
+    }
+
+    private Vector3 GetFeetWorldFallback()
+    {
+        if (body != null)
+        {
+            var b = body.bounds;
+            return new Vector3(b.center.x, b.min.y + feetYOffset, transform.position.z);
+        }
+        return transform.position + new Vector3(0f, -0.25f, 0f);
+    }
+
+    private void SpawnBloodBurst(Vector3 center, int count)
+    {
+        if (!blood0Prefab && !blood1Prefab) return;
+
+        for (int i = 0; i < count; i++)
+        {
+            var prefab = (UnityEngine.Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
+            if (!prefab) continue;
+
+            Vector2 dir = UnityEngine.Random.insideUnitCircle.normalized;
+            float dist = UnityEngine.Random.Range(0.05f, burstRadius);
+            Vector3 pos = center + (Vector3)(dir * dist);
+
+            var go = Instantiate(prefab, pos, Quaternion.identity);
+            if (go.TryGetComponent<Rigidbody2D>(out var r2d))
+            {
+                float spd = UnityEngine.Random.Range(burstSpeedRange.x, burstSpeedRange.y);
+                r2d.AddForce(dir * spd, ForceMode2D.Impulse);
+                r2d.AddTorque(UnityEngine.Random.Range(-10f, 10f), ForceMode2D.Impulse);
+            }
+            if (bloodLifetime > 0f) Destroy(go, bloodLifetime);
+        }
+    }
+
+    private IEnumerator FootBloodSustain()
+    {
+        if (sustainDelay > 0f) yield return new WaitForSeconds(sustainDelay);
+
+        float t = 0f;
+        while (t < sustainDuration)
+        {
+            Vector2 jitter = UnityEngine.Random.insideUnitCircle * sustainJitter;
+            Vector3 pos = _deathFeetPos + (Vector3)jitter;
+
+            Vector2 dir = (Vector2.up + UnityEngine.Random.insideUnitCircle * 0.6f).normalized;
+            float spd = UnityEngine.Random.Range(burstSpeedRange.x * 0.6f, burstSpeedRange.y);
+
+            var prefab = (UnityEngine.Random.value < 0.5f || !blood1Prefab) ? blood0Prefab : blood1Prefab;
+            if (prefab)
+            {
+                var go = Instantiate(prefab, pos, Quaternion.identity);
+                if (go.TryGetComponent<Rigidbody2D>(out var r2d))
+                {
+                    r2d.AddForce(dir * spd, ForceMode2D.Impulse);
+                    r2d.AddTorque(UnityEngine.Random.Range(-12f, 12f), ForceMode2D.Impulse);
+                }
+                if (bloodLifetime > 0f) Destroy(go, bloodLifetime);
+            }
+
+            float wait = UnityEngine.Random.Range(sustainIntervalRange.x, sustainIntervalRange.y);
+            t += wait;
+            yield return new WaitForSeconds(wait);
+        }
+    }
+
+    // === Monkill 즉사 ===
+    private IEnumerator DieInstantByTag(string reason)
+    {
+        if (isDying) yield break;
+        StartDeathSequence(reason);
+        yield break;
+    }
+
+    private Vector2 Eyes()
+    {
+        var b = body.bounds;
+        return new Vector2(b.center.x, b.max.y + 0.51f);
+    }
+    private Vector2 TargetAimPoint(Transform t)
+    {
+        if (!t) return transform.position;
+        if (t.TryGetComponent<Collider2D>(out var c))
+            return (Vector2)c.bounds.center + new Vector2(0f, 0.25f);
+        return (Vector2)t.position + new Vector2(0f, 0.25f);
+    }
+
+    private void StopAllBehaviours(string reason)
+    {
+        isStoppedByTag = true;
+
+        if (alertCo != null) { StopCoroutine(alertCo); alertCo = null; }
+        if (attackCo != null) { StopCoroutine(attackCo); attackCo = null; }
+        state = State.Patrol;
+        if (sr) sr.color = Color.white;
+
+        if (rb)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            if (freezeRigidbodyOnStop)
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        if (disableComponentOnStop)
+            enabled = false;
+
+#if UNITY_EDITOR
+        Debug.Log($"[Monster] Stopped by tag '{stopOnTag}' ({reason})", this);
+#endif
     }
 }
 

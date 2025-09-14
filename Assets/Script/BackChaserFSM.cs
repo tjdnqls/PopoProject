@@ -24,7 +24,8 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [Header("Damage Gate (Player must touch these child colliders)")]
     [SerializeField] private Collider2D[] damageAcceptZones;         // 플레이어 접촉 중이면 대미지 허용
     [SerializeField] private bool includeTriggersForGate = true;     // 플레이어 콜라이더가 Trigger여도 인정
-    private static readonly Collider2D[] _gateBuf = new Collider2D[16];
+    private static readonly Collider2D[] _gateBuf = new Collider2D[16]; // (미사용: List 버전 사용)
+    private static readonly List<Collider2D> _gateList = new List<Collider2D>(16);
     private ContactFilter2D _gateFilter;
 
     // ===== Child rotation sync (Z 회전만 동기화) =====
@@ -62,6 +63,12 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private string preferPlayerTag = "Player2";
     [SerializeField] private float alertWaitSec = 1.0f;
 
+    // === MonAttack도 적으로 간주 ===
+    [Header("Aggro Target (Players + Optional)")]
+    [SerializeField] private string attackLayerName = "MonAttack"; // MonAttack 레이어
+    [SerializeField] private bool countMonAttackAsTarget = true;   // true면 MonAttack도 표적
+    private int _attackLayer = -1;
+
     // ===== Give Up / Stuck =====
     [Header("Give Up / Stuck")]
     [SerializeField] private float lostGiveUpSec = 2.0f;
@@ -93,7 +100,19 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     // ===== Hazard (Monkill 등) =====
     [Header("Hazard")]
     [SerializeField] private string hazardLayerName = "Monkill";
-    private int _hazardLayer;
+    [SerializeField] private string hazardExtraLayerName = "MonAttack"; // ★ MonAttack도 Hazard로 취급(가드/즉사 판단용)
+    private int _hazardLayer = -1;
+    private int _hazardExtraLayer = -1;
+    private int HazardMask
+    {
+        get
+        {
+            int m = 0;
+            if (_hazardLayer >= 0) m |= (1 << _hazardLayer);
+            if (_hazardExtraLayer >= 0) m |= (1 << _hazardExtraLayer);
+            return m;
+        }
+    }
 
     // ===== AI Options =====
     [Header("AI Options")]
@@ -125,6 +144,12 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private static readonly Collider2D[] _buf = new Collider2D[12];
     private bool isDying = false;
 
+    // === AggroMask: 플레이어 + (옵션)MonAttack ===
+    private LayerMask AggroMask
+        => (countMonAttackAsTarget && _attackLayer >= 0)
+           ? (playerMask | (1 << _attackLayer))
+           : playerMask;
+
     // ===== Unity =====
     private void Reset()
     {
@@ -141,7 +166,10 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
         rb.freezeRotation = true;
         baseColor = sr ? sr.color : Color.white;
+
         _hazardLayer = LayerMask.NameToLayer(hazardLayerName);
+        _hazardExtraLayer = string.IsNullOrWhiteSpace(hazardExtraLayerName) ? -1 : LayerMask.NameToLayer(hazardExtraLayerName);
+        _attackLayer = string.IsNullOrWhiteSpace(attackLayerName) ? -1 : LayerMask.NameToLayer(attackLayerName);
 
         patrolTargetIndex = (Vector2.SqrMagnitude((Vector2)transform.position - WpA()) <=
                              Vector2.SqrMagnitude((Vector2)transform.position - WpB())) ? 0 : 1;
@@ -158,7 +186,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         _gateFilter = new ContactFilter2D
         {
             useLayerMask = true,
-            layerMask = playerMask,                // Player만
+            layerMask = playerMask,                // ★ 게이트는 "플레이어" 접촉만 체크
             useTriggers = includeTriggersForGate
         };
 
@@ -376,7 +404,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
             var hb = attackHitbox.GetComponent<OneShotMeleeHitbox>();
             hb.Configure(
                 ownerRoot: transform.root,
-                playerMask: playerMask,
+                playerMask: AggroMask,                            // ★ 플레이어 + (옵션)MonAttack
                 damage: hitboxDamage,
                 onlyTarget: damageOnlyCurrentTarget ? commitTargetRoot : null
             );
@@ -421,7 +449,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private bool TryPickTarget(out Transform best)
     {
         best = null;
-        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = AggroMask, useTriggers = true }; // ★
         int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _buf);
         if (n <= 0) return false;
 
@@ -452,7 +480,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         if (currentTarget && StillValidTarget(currentTarget) && currentTarget.root.CompareTag(player1Tag))
             return;
 
-        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = AggroMask, useTriggers = true }; // ★
         int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _buf);
         if (n <= 0) return;
 
@@ -472,7 +500,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private bool TryFindTargetInAttackWindow(out Transform best)
     {
         best = null;
-        var filter = new ContactFilter2D { useLayerMask = true, layerMask = playerMask, useTriggers = true };
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = AggroMask, useTriggers = true }; // ★
         int n = Physics2D.OverlapCircle((Vector2)transform.position, detectRadius, filter, _buf);
         if (n <= 0) return false;
 
@@ -503,7 +531,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private bool StillValidTarget(Transform t)
     {
         if (!t) return false;
-        if (((1 << t.gameObject.layer) & playerMask) == 0) return false;
+        if (((1 << t.gameObject.layer) & AggroMask) == 0) return false; // ★ 플레이어 + (옵션)MonAttack
         if (Vector2.Distance(t.position, transform.position) > detectRadius) return false;
         if (Mathf.Abs(t.position.y - transform.position.y) > detectVerticalTolerance) return false;
         return true;
@@ -553,26 +581,26 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
     public void OnHit(int damage) { }
 
-    // ===== Hazard 충돌: 게이트 우선 검사 → (있으면 즉사 / 없으면 가드) =====
+    // ===== Hazard 충돌: (Monkill + MonAttack) -> 게이트 우선 검사 → (있으면 즉사 / 없으면 가드) =====
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (state == State.Dead || isDying) return;
-        if (c.collider.gameObject.layer == _hazardLayer) HandleHazardHit(c.collider);
+        if (((1 << c.collider.gameObject.layer) & HazardMask) != 0) HandleHazardHit(c.collider); // ★
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (state == State.Dead || isDying) return;
-        if (other.gameObject.layer == _hazardLayer) HandleHazardHit(other);
+        if (((1 << other.gameObject.layer) & HazardMask) != 0) HandleHazardHit(other); // ★
     }
 
     private void HandleHazardHit(Collider2D col)
     {
         if (IsPlayerTouchingGate())
         {
-            StartDeathSequence("HazardGateKill"); // 공격 받음(즉사)
+            StartDeathSequence("HazardGateKill"); // 플레이어가 게이트에 닿아 있으면 방어 불가 → 즉사
             return;
         }
-        StartGuard(col);
+        StartGuard(col); // 플레이어 접촉이 아니면 가드
     }
 
     // ★ 가드 시작(중첩 방지 + 공격 인터럽트 + 항상 제약 복원)
@@ -587,11 +615,14 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private bool IsPlayerTouchingGate()
     {
         if (damageAcceptZones == null || damageAcceptZones.Length == 0) return false; // 엄격 모드
+
         for (int i = 0; i < damageAcceptZones.Length; i++)
         {
             var z = damageAcceptZones[i];
             if (!z || !z.enabled) continue;
-            int n = z.Overlap(_gateFilter, _gateBuf); // OverlapCollider 사용
+
+            _gateList.Clear();
+            int n = z.Overlap(_gateFilter, _gateList); // ★ 정식 API 사용
             if (n > 0) return true;
         }
         return false;
@@ -779,7 +810,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         if (cols == null || cols.Length == 0) return false;
 
         Vector2 myCenter = body.bounds.center;
-        int mask = playerMask.value;
+        int mask = AggroMask.value; // ★
 
         foreach (var tc in cols)
         {
