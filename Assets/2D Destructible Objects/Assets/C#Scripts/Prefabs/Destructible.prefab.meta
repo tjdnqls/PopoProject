@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 550c9c3d56af3cc41a2d891cc2212350
+timeCreated: 1497632723
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 93274
+  packageName: 2D Destructible Objects
+  packageVersion: 1.6
+  assetPath: Assets/2D Destructible Objects/Assets/C#Scripts/Prefabs/Destructible.prefab
+  uploadId: 411953

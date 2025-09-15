@@ -29,6 +29,8 @@ TagManager:
   - FastRun
   - SlowRun
   - Monkill
+  - Hittable
+  - Damage
   layers:
   - Default
   - TransparentFX
@@ -52,7 +54,7 @@ TagManager:
   - BackMonster
   - PoPo
   - PoPoJump
-  - 
+  - Box
   - 
   - 
   - 

@@ -27,8 +27,8 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private string groundLayerName = "Ground";
     [SerializeField] private string monsterLayerName = "Monster";
     [SerializeField] private string monkillLayerName = "Monkill";
-    [SerializeField] private string backMonsterLayerName = "BackMonster"; // ★ 추가
-
+    [SerializeField] private string backMonsterLayerName = "BackMonster";
+    [SerializeField] private string boxLayerName = "Box";
     [Header("Refs")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Collider2D body;
@@ -43,12 +43,9 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private float postAggroDetectMultiplier = 3f;
 
     [Header("Detect Rules (LOS/Height)")]
-    [SerializeField, Tooltip("Ground로 가려지면 감지 안 함")]
-    private bool requireLineOfSight = true;
-    [SerializeField, Tooltip("몬스터보다 위로 이 값(유닛) 초과면 감지 안 함")]
-    private float ignoreIfHigherThan = 5f;     // ≈ 5블럭
-    [SerializeField, Tooltip("몬스터보다 아래로 이 값(유닛) 초과면 감지 안 함")]
-    private float ignoreIfLowerThan = 1f;      // ≈ 1블럭
+    [SerializeField] private bool requireLineOfSight = true;
+    [SerializeField] private float ignoreIfHigherThan = 5f;
+    [SerializeField] private float ignoreIfLowerThan = 1f;
 
     [Header("Prepare (turn red)")]
     [SerializeField] private float prepareSeconds = 2.0f;
@@ -130,7 +127,7 @@ public class ChargerSentinelAI : MonoBehaviour
     private bool _mustDashOnce;
     private Color _baseColor = Color.white;
     private bool _stoppedThisDash;
-    private int _groundLayer, _monsterLayer, _monkillLayer, _backMonsterLayer, _myLayer;
+    private int _groundLayer, _monsterLayer, _monkillLayer, _backMonsterLayer, _myLayer, _boxLayer;
     private static readonly Collider2D[] _buf = new Collider2D[8];
     private static readonly Collider2D[] _killBuf = new Collider2D[16];
     private static readonly Collider2D[] _playerBuf = new Collider2D[16];
@@ -142,11 +139,16 @@ public class ChargerSentinelAI : MonoBehaviour
 
     private readonly HashSet<int> _hitPlayerRootsThisDash = new();
 
-    // ★ 플레이어 + BackMonster 통합 마스크
     private LayerMask AggroMask => playerMask | (1 << _backMonsterLayer);
     private float DetectRadiusNow => detectRadius * (_aggroBoosted ? Mathf.Max(1f, postAggroDetectMultiplier) : 1f);
 
-    private bool _aggroBoosted = false;  // 최초 어그로 후 반경 확대 전용 플래그
+    private bool _aggroBoosted = false;
+
+    // ====== 추가: 대시 중 중력 무효 + Y 고정 ======
+    [Header("Dash Line Lock")]
+    [SerializeField] private bool lockYWhileDashing = true;
+    private float _dashStartY;
+    private float _origGravityScale = 1f;
 
     private void Reset()
     {
@@ -162,18 +164,21 @@ public class ChargerSentinelAI : MonoBehaviour
         if (!sr) sr = GetComponentInChildren<SpriteRenderer>();
 
         rb.freezeRotation = true;
-        _baseColor = sr ? sr.color : Color.white;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        _origGravityScale = rb.gravityScale;
 
+        _baseColor = sr ? sr.color : Color.white;
+        _boxLayer = LayerMask.NameToLayer(boxLayerName);
         _groundLayer = LayerMask.NameToLayer(groundLayerName);
         _monsterLayer = LayerMask.NameToLayer(monsterLayerName);
         _monkillLayer = LayerMask.NameToLayer(monkillLayerName);
         _backMonsterLayer = LayerMask.NameToLayer(backMonsterLayerName);
         _myLayer = gameObject.layer;
 
-        // 내 레이어는 Ground & Monkill만 충돌
         for (int i = 0; i < 32; i++)
         {
-            bool allow = (i == _groundLayer) || (i == _monkillLayer);
+            bool allow = (i == _groundLayer) || (i == _monkillLayer) || (i == _boxLayer) ;
             Physics2D.IgnoreLayerCollision(_myLayer, i, !allow);
         }
 
@@ -197,6 +202,12 @@ public class ChargerSentinelAI : MonoBehaviour
         PlayAnim(idleAnim, true);
         HidePreview();
         HideIndicator();
+        RestoreGravity();
+    }
+
+    private void OnDisable()
+    {
+        RestoreGravity();
     }
 
     private void FixedUpdate()
@@ -244,7 +255,6 @@ public class ChargerSentinelAI : MonoBehaviour
     {
         StopHorizontal();
 
-        // 감지: LOS/높이 조건을 만족하는 가장 가까운 대상
         if (TryDetectNearest(out Transform t))
         {
             currentTarget = t;
@@ -276,7 +286,22 @@ public class ChargerSentinelAI : MonoBehaviour
 
     private void TickDashing()
     {
-        Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; rb.linearVelocity = v;
+        // y축 고정 + 중력 무효 상태 유지
+        if (lockYWhileDashing)
+        {
+            Vector2 v = rb.linearVelocity;
+            v.x = _dashDir * dashSpeed;
+            v.y = 0f;
+            rb.linearVelocity = v;
+
+            // 고저차 지형에서도 y를 강제로 고정
+            rb.position = new Vector2(rb.position.x, _dashStartY);
+        }
+        else
+        {
+            Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; rb.linearVelocity = v;
+        }
+
         _timer += Time.fixedDeltaTime;
         if (_timer >= dashDuration) EnterRecover();
     }
@@ -297,6 +322,7 @@ public class ChargerSentinelAI : MonoBehaviour
         state = State.Idle; _timer = 0f; _mustDashOnce = false; _plannedDashDir = 0;
         if (sr) sr.color = _baseColor;
         HidePreview(); currentTarget = null;
+        RestoreGravity();
         PlayAnim(idleAnim);
     }
 
@@ -307,6 +333,7 @@ public class ChargerSentinelAI : MonoBehaviour
         _plannedDashDir = (currentTarget && currentTarget.position.x < transform.position.x) ? -1 : +1;
         if (sr) sr.flipX = (_plannedDashDir < 0);
         ShowPreview();
+        RestoreGravity();
         PlayAnim(prepareAnim, true);
     }
 
@@ -315,11 +342,17 @@ public class ChargerSentinelAI : MonoBehaviour
         _stoppedThisDash = false;
         _hitPlayerRootsThisDash.Clear();
         if (!StillValidTarget() && !_mustDashOnce) { EnterIdle(); return; }
+
         state = State.Dashing; _timer = 0f;
         _dashDir = (_plannedDashDir != 0) ? _plannedDashDir
                  : (currentTarget && currentTarget.position.x >= transform.position.x ? +1 : -1);
         if (sr) sr.flipX = (_dashDir < 0);
-        Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; rb.linearVelocity = v;
+
+        // 대시 시작 시 중력 제거 + y 고정
+        _dashStartY = rb.position.y;
+        rb.gravityScale = 0f;
+
+        Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; v.y = 0f; rb.linearVelocity = v;
         if (sr) sr.color = _baseColor;
         _mustDashOnce = false;
         HidePreview();
@@ -331,6 +364,7 @@ public class ChargerSentinelAI : MonoBehaviour
     {
         state = State.Recover; _timer = 0f;
         StopHorizontal(); HidePreview();
+        RestoreGravity();
         PlayAnim(string.IsNullOrEmpty(animKeyOverride) ? idleAnim : animKeyOverride);
     }
 
@@ -340,21 +374,22 @@ public class ChargerSentinelAI : MonoBehaviour
         Vector2 v = rb.linearVelocity; v.x = 0f; rb.linearVelocity = v;
     }
 
-    // 높이/LOS 규칙 포함 타깃 유효성
+    private void RestoreGravity()
+    {
+        rb.gravityScale = _origGravityScale;
+    }
+
     private bool StillValidTarget()
     {
         if (!currentTarget) return false;
         if (((1 << currentTarget.gameObject.layer) & AggroMask) == 0) return false;
         if (Vector2.Distance(currentTarget.position, transform.position) > DetectRadiusNow) return false;
 
-        // 높이 규칙
         float dy = currentTarget.position.y - transform.position.y;
         if (dy > ignoreIfHigherThan) return false;
         if (dy < -ignoreIfLowerThan) return false;
 
-        // LOS 규칙
         if (requireLineOfSight && !HasLineOfSightTo(currentTarget)) return false;
-
         return true;
     }
 
@@ -372,12 +407,10 @@ public class ChargerSentinelAI : MonoBehaviour
             Transform cand = c.attachedRigidbody ? c.attachedRigidbody.transform : c.transform;
             if (!cand) continue;
 
-            // 높이 규칙 적용
             float dy = cand.position.y - transform.position.y;
             if (dy > ignoreIfHigherThan) continue;
             if (dy < -ignoreIfLowerThan) continue;
 
-            // LOS 규칙 적용
             if (requireLineOfSight && !HasLineOfSightTo(cand)) continue;
 
             float d2 = ((Vector2)cand.position - (Vector2)transform.position).sqrMagnitude;
@@ -386,7 +419,6 @@ public class ChargerSentinelAI : MonoBehaviour
         return t != null;
     }
 
-    // Ground로 가려지면 false
     private bool HasLineOfSightTo(Transform target)
     {
         if (!target) return false;
@@ -403,12 +435,11 @@ public class ChargerSentinelAI : MonoBehaviour
         if (dist < 0.001f) return true;
         dir /= dist;
 
-        int mask = 1 << _groundLayer; // Ground만 가림판정
+        int mask = 1 << _groundLayer;
         RaycastHit2D hit = Physics2D.Raycast(from, dir, dist, mask);
-        return !hit.collider; // 맞으면 가려짐
+        return !hit.collider;
     }
 
-    // ========== Monster kill sweep ==========
     private void KillSweepAhead()
     {
         if (!body) return;
@@ -437,7 +468,6 @@ public class ChargerSentinelAI : MonoBehaviour
 #endif
     }
 
-    // ========== Player/BackMonster contact while Dashing ==========
     private void DamagePlayersAhead()
     {
         if (!body) return;
@@ -494,7 +524,6 @@ public class ChargerSentinelAI : MonoBehaviour
         t.SendMessageUpwards("OnHit", dmg, SendMessageOptions.DontRequireReceiver);
     }
 
-    // ========== Death ==========
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (state == State.Dead) return;
@@ -534,6 +563,7 @@ public class ChargerSentinelAI : MonoBehaviour
         }
         if (body) body.enabled = false;
 
+        RestoreGravity();
         StartCoroutine(DeathAnimThenDespawn());
     }
 
@@ -548,7 +578,6 @@ public class ChargerSentinelAI : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // ---------- Blood helpers ----------
     private Vector3 GetBodyCenter() => body ? body.bounds.center : transform.position;
 
     private Vector3 GetFeetWorld()
@@ -615,7 +644,6 @@ public class ChargerSentinelAI : MonoBehaviour
         }
     }
 
-    // ---------- Preview (box only) ----------
     private void EnsurePreviewObject()
     {
         if (_previewGO) return;
@@ -679,7 +707,6 @@ public class ChargerSentinelAI : MonoBehaviour
         if (_previewSR) _previewSR.color = new Color(1f, 0f, 0f, previewAlpha);
     }
 
-    // ---------- Offscreen Indicator ----------
     private void EnsureIndicatorObject()
     {
         if (_indicatorGO || !_cam) return;

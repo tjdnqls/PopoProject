@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 610fb2b694aac7b448783a5d53b62b5c
+timeCreated: 1497635628
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 93274
+  packageName: 2D Destructible Objects
+  packageVersion: 1.6
+  assetPath: Assets/2D Destructible Objects/Assets/Objects/Wood/Prefabs/Box_1.prefab
+  uploadId: 411953

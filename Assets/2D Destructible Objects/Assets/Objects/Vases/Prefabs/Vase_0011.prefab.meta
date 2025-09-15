@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0fa2818732bc0414282019efb2c0cb2c
+timeCreated: 1497629916
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 93274
+  packageName: 2D Destructible Objects
+  packageVersion: 1.6
+  assetPath: Assets/2D Destructible Objects/Assets/Objects/Vases/Prefabs/Vase_0011.prefab
+  uploadId: 411953

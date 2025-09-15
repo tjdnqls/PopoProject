@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8c1e70573e3fcce4c9babb1b0201ba6e
+timeCreated: 1517471931
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 93274
+  packageName: 2D Destructible Objects
+  packageVersion: 1.6
+  assetPath: Assets/2D Destructible Objects/Assets/Documentation/Documentation 2D
+    Destructible Objects.pdf
+  uploadId: 411953

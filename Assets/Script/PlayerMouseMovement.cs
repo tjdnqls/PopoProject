@@ -18,6 +18,7 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private string trapLayerName = "Trap";
     [SerializeField] private string slimeLayerName = "Slime";
     [SerializeField] private string playerLayerName = "Player";
+    [SerializeField] private string monsterLayerName = "Monster";
 
     [Header("Carry Drop/Throw Spawn")]
     [SerializeField] private float carryDropForward = 0.4f;   // 내려놓기 시, 바라보는 방향 앞으로 얼마나 둘지
@@ -146,6 +147,8 @@ public class PlayerMouseMovement : MonoBehaviour
     private float swapSuppressUntil = -999f;
     private bool didCutThisJump = false;
     private float gravitySmoothVel = 0f;
+    private int playerLayerIndexSelf;
+    private int monsterLayerIndex; // 추가
 
     // === 더블 점프 ===
     [Header("Extra Jumps")]
@@ -225,6 +228,19 @@ public class PlayerMouseMovement : MonoBehaviour
     public int currentHP;
     public bool IsDead { get; private set; } = false;
 
+    // === Death Fall ===
+    [Header("Death Fall")]
+    [SerializeField] private float deadHorizontalDamp = 6f;   // 사망 후 가로 감쇠 속도(0이면 감쇠 안 함)
+    [SerializeField] private bool keepFallingOnDeath = true;  // 사망해도 계속 낙하
+
+    [Header("Step Up (auto climb small ledges)")]
+    [SerializeField] private bool enableStepUp = true;   // 자동 스텝업 On/Off
+    [SerializeField] private float stepUpMax = 0.18f;    // 최대 올라탈 높이(0.1~0.2 추천)
+    [SerializeField] private float stepForward = 0.10f;  // 발 앞쪽 탐색 거리
+    [SerializeField] private float stepUpSkin = 0.01f;   // 살짝 더 올려 겹침 방지
+    [SerializeField] private float stepOnlyWhenFallingVy = 0.05f; // 위로 점프중엔 스킵
+
+
     // === 내부 상태 ===
     private float lastGroundedTime = -999f;
     private float lastJumpPressedTime = -999f;
@@ -242,7 +258,6 @@ public class PlayerMouseMovement : MonoBehaviour
     private bool lefthold;
     private bool righthold;
     private bool prevSelected = false;
-    private int playerLayerIndexSelf;
     private bool lockedall;
 
     private bool touchingLeftSlime, touchingRightSlime;
@@ -314,6 +329,7 @@ public class PlayerMouseMovement : MonoBehaviour
         slimeLayerMask = slimeMask;
         trapLayerIndex = LayerMask.NameToLayer(trapLayerName.Trim());
         playerLayerIndexSelf = LayerMask.NameToLayer(playerLayerName.Trim());
+        monsterLayerIndex = LayerMask.NameToLayer(monsterLayerName.Trim());
 
         if (groundMask == 0) Debug.LogWarning($"[Player] Ground layer(s) '{groundLayerName}' not found.");
         if (eventMask == 0) Debug.LogWarning($"[Player] Event layer(s) '{eventLayerName}' not found.");
@@ -321,6 +337,7 @@ public class PlayerMouseMovement : MonoBehaviour
         if (slimeMask == 0) Debug.LogWarning($"[Player] Slime layer(s) '{slimeLayerName}' not found.");
         if (trapLayerIndex < 0) Debug.LogWarning($"[Player] Trap layer index for '{trapLayerName}' not found.");
         if (playerLayerIndexSelf < 0) Debug.LogWarning($"[Player] Player layer '{playerLayerName}' not found.");
+        if (monsterLayerIndex < 0) Debug.LogWarning($"[Player] Monster layer '{monsterLayerName}' not found.");
     }
 
     void Update()
@@ -497,6 +514,25 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // === 사망했으면 물리 낙하만 처리 ===
+        if (IsDead && keepFallingOnDeath && rb != null)
+        {
+            // 떨어질 때는 낙하용 중력 유지
+            rb.gravityScale = gravityScaleFall;
+
+            Vector2 dv = rb.linearVelocity;
+
+            // 수평은 서서히 감쇠(자연스러운 정지)
+            if (deadHorizontalDamp > 0f)
+                dv.x = Mathf.MoveTowards(dv.x, 0f, deadHorizontalDamp * Time.fixedDeltaTime);
+
+            // 최대 낙하 속도 하한 유지
+            if (dv.y < maxFallSpeed) dv.y = maxFallSpeed;
+
+            rb.linearVelocity = dv;
+            return; // 나머지 이동/점프/슬라임 로직 전부 우회
+        }
+
         bool groundedStrict = IsGroundedStrictSmall();
         Vector2 v = rb.linearVelocity;
         bool grounded = groundedStrict;
@@ -569,7 +605,7 @@ public class PlayerMouseMovement : MonoBehaviour
         bool onSlime = onSlimeRaw && allowStick;
         bool pressingIntoWall = allowStick && onSlimeRaw &&
                                 ((touchingLeftSlime && rawX < -0.01f) || (touchingRightSlime && rawX > 0.01f));
-
+        TryStepUpSmallLedge(rawX);
         if (pressingIntoWall)
         {
             rawX = 0f;
@@ -968,7 +1004,14 @@ public class PlayerMouseMovement : MonoBehaviour
     private void ApplyLayerIgnores()
     {
         if (playerLayerIndexSelf >= 0)
+        {
+            // 자기 자신끼리 충돌 무시
             Physics2D.IgnoreLayerCollision(playerLayerIndexSelf, playerLayerIndexSelf, true);
+
+            // Player vs Monster 충돌 무시
+            if (monsterLayerIndex >= 0)
+                Physics2D.IgnoreLayerCollision(playerLayerIndexSelf, monsterLayerIndex, true);
+        }
     }
 
     public void TakeDamage(int dmg = 1)
@@ -1012,6 +1055,15 @@ public class PlayerMouseMovement : MonoBehaviour
             _sceneReloading = true;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             return;
+        }
+
+        // ▼ 사망 후에도 낙하하도록 물리 상태 보장
+        if (rb)
+        {
+            rb.simulated = true; // 혹시 꺼졌을 경우 대비
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.gravityScale = gravityScaleFall; // 하강 중 중력
         }
     }
 
@@ -1086,7 +1138,53 @@ public class PlayerMouseMovement : MonoBehaviour
         }
         return 0f;
     }
+    private void TryStepUpSmallLedge(float dirInput)
+    {
+        if (!enableStepUp) return;
+        if (!bodyCollider) return;
+        if (Mathf.Abs(dirInput) < 0.01f) return;
 
+        // 위로 상승 중일 땐 스킵(계단 탈 때만)
+        if (rb && rb.linearVelocity.y > stepOnlyWhenFallingVy) return;
+
+        Bounds b = bodyCollider.bounds;
+        int sign = dirInput > 0f ? +1 : -1;
+
+        // 발 위치 기준, 발 앞쪽 위에서 아래로 레이캐스트
+        float feetY = b.min.y + 0.01f;
+        Vector2 rayOrigin = new Vector2(
+            b.center.x + sign * (b.extents.x + stepForward),
+            feetY + stepUpMax
+        );
+        float rayLen = stepUpMax + 0.06f;
+        int groundOrEvent = groundMask | eventMask; // 원웨이에도 오르고 싶지 않으면 eventMask 빼기
+
+        RaycastHit2D down = Physics2D.Raycast(rayOrigin, Vector2.down, rayLen, groundOrEvent);
+#if UNITY_EDITOR
+        Debug.DrawRay(rayOrigin, Vector2.down * rayLen, down ? Color.yellow : Color.gray, 0f);
+#endif
+        if (!down) return;
+
+        float climb = down.point.y - feetY;
+        if (climb <= 0f || climb > stepUpMax) return;
+
+        // 머리/몸통 간섭 체크: 현재 위치에서 위로 'climb' 만큼 이동이 가능한지
+        ContactFilter2D filter = new ContactFilter2D
+        {
+            useTriggers = false,
+            useLayerMask = true,
+            layerMask = groundOrEvent | trapMask   // 위가 막혀있으면 안 올라감
+        };
+        RaycastHit2D[] buf = new RaycastHit2D[2];
+        int hitCount = bodyCollider.Cast(Vector2.up, filter, buf, climb + stepUpSkin);
+        if (hitCount > 0) return;
+
+        // 안전 — 살짝 들어올리기
+        if (rb)
+            rb.position = rb.position + new Vector2(0f, climb + stepUpSkin);
+        else
+            transform.position += new Vector3(0f, climb + stepUpSkin, 0f);
+    }
     private IEnumerator LockForAnimation(float minLockSeconds, bool zeroHorizontalVelocity)
     {
         float t0 = Time.time;

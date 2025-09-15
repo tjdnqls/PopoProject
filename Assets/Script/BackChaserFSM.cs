@@ -27,6 +27,11 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private static readonly List<Collider2D> _gateList = new List<Collider2D>(16);
     private ContactFilter2D _gateFilter;
 
+    [Header("Prefer Switch to Player2")]
+    [SerializeField] private bool preferSwitchEnabled = true;          // 켜기/끄기
+    [SerializeField] private float preferSwitchRadius = 3.0f;          // 플레이어2 탐지 반경
+    [SerializeField] private bool preferSwitchRequiresLoS = true;      // 전환 시 시야(LoS)도 요구할지
+
     // ===== Child rotation sync (Z 회전만 동기화) =====
     [Header("Child Rotation Sync")]
     [SerializeField] private bool syncChildRotation = true;
@@ -275,6 +280,16 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void TickChase()
     {
         Play(runAnim);
+
+        if (preferSwitchEnabled && currentTarget && currentTarget.root.CompareTag(player1Tag))
+        {
+            if (TryImmediatePreferSwitch(out var preferT))
+            {
+                currentTarget = preferT;
+                lastSeenTime = Time.time;
+                stuckTimer = 0f;
+            }
+        }
 
         if (switchToPreferWhileChasing || currentTarget == null || !StillValidTarget(currentTarget) || currentTarget.root.CompareTag(preferPlayerTag) == false)
         {
@@ -799,6 +814,41 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     {
         Vector2 v = rb.linearVelocity; v.x = 0f; rb.linearVelocity = v;
     }
+
+    private bool TryImmediatePreferSwitch(out Transform prefer)
+    {
+        prefer = null;
+        if (!preferSwitchEnabled || string.IsNullOrEmpty(preferPlayerTag)) return false;
+
+        // 플레이어(+선택적 MonAttack) 마스크에서만 찾음
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = AggroMask, useTriggers = true };
+        int n = Physics2D.OverlapCircle((Vector2)transform.position, Mathf.Max(0.05f, preferSwitchRadius), filter, _buf);
+        if (n <= 0) return false;
+
+        float best = float.PositiveInfinity;
+        for (int i = 0; i < n; i++)
+        {
+            var c = _buf[i]; if (!c) continue;
+            var t = c.attachedRigidbody ? c.attachedRigidbody.transform : c.transform;
+            if (!t) continue;
+
+            // Player2만 고려
+            if (!t.root.CompareTag(preferPlayerTag)) continue;
+
+            // 높이 규칙(위/아래 한계)
+            float dy = t.position.y - transform.position.y;
+            if (dy > detectUpLimit) continue;
+            if (dy < -detectDownLimit) continue;
+
+            // 필요한 경우 LoS 검사
+            if (preferSwitchRequiresLoS && !HasLineOfSightTo(t)) continue;
+
+            float d2 = ((Vector2)t.position - (Vector2)transform.position).sqrMagnitude;
+            if (d2 < best) { best = d2; prefer = t; }
+        }
+        return prefer != null;
+    }
+
     private bool AlmostStopped() => Mathf.Abs(rb.linearVelocity.x) < stationarySpeedEps;
 
     private bool FrontWall(int d)
