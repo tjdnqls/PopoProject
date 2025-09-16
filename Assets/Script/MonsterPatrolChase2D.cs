@@ -17,6 +17,15 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Collider2D body;
     [SerializeField] private SpriteRenderer sr;
+   
+    [Header("Sound")]
+
+    public AudioClip AttackSound;
+    private AudioSource audioSource;
+    public AudioClip DeathSound;
+
+    [SerializeField] private State currentState;
+    public State CurrentState => currentState; // 외부에서 읽기만 가능
 
     [Header("Stop-All on Tag Hit")]
     [SerializeField] private string stopOnTag = "Monkill";
@@ -356,6 +365,14 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
         sr.color = Color.white;
         PlayOnce("Attack", "Idle");
+
+        if (AttackSound)
+        {
+            Debug.Log("공격 소리 재생됌");
+            var audioSource = GetComponent<AudioSource>();
+            if (audioSource)
+                audioSource.PlayOneShot(AttackSound);
+        }
 
         if (useHitboxDamage && meleeHitbox)
         {
@@ -901,6 +918,14 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
     private IEnumerator DeathDespawn()
     {
+        // 1. 사운드 재생 (Destroy와 상관없이 재생)
+        if (DeathSound != null) // DeathSound는 몬스터 사망시 재생할 AudioClip
+        {
+            AudioSource.PlayClipAtPoint(DeathSound, transform.position);
+            // 또는 PlaySoundIndependent(DeathSound); <- 위에서 만든 함수 사용 가능
+            Debug.Log("사망소리 재생됨");
+        }
+
         float t = 0f;
         while (t < despawnDelay)
         {

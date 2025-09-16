@@ -170,6 +170,16 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float wallJumpVertical = 11.5f;
     [SerializeField] private bool requireSpaceForWallJump = false;
     [SerializeField] private bool resetAirJumpsOnWallJump = true;
+    // --- 월점프 후 '반대키' 입력 잠금 ---
+    [Header("Wall Jump Input Lock")]
+    [SerializeField] private float wallOppositeInputLock = 0.5f; // 0.5초 잠금
+    private float oppositeInputLockUntil = -1f;
+    private int oppositeInputLockedDir = 0; // -1 = Left(A/←)을 막음, +1 = Right(D/→)을 막음
+
+    [Header("Slime Stick Grace")]
+    [SerializeField] private float slimeStickAfterLeave = 0.3f;   // 떨어진 뒤 유지 시간
+    private float lastSlimeTouchAt = -999f;                      // 마지막 접촉 시각
+    private int lastSlimeSide = 0;  // -1 = 왼쪽 벽(법선 +X), +1 = 오른쪽 벽(법선 -X)
 
     // === 내려찍기 (추가) ===
     [Header("Dive (Down Slam)")]
@@ -192,6 +202,13 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float carryFallGravityMul = 1.25f;
     private float baseGravityNormal;
     private float baseGravityFall;
+
+    // --- 월점프 직후 같은 벽 재부착 금지용 ---
+    [Tooltip("월점프 직후 같은 벽으로 재부착 금지 시간")]
+    [SerializeField] private float wallRegrabBlock = 0.30f;
+    private float wallRegrabUntil = -1f; // 이 시각 전까지 재부착 금지
+                                         // -1 = 왼쪽벽(법선 +X), +1 = 오른쪽벽(법선 -X), 0 = 없음
+    private int wallRegrabSide = 0;
 
     [Header("Health Setup")]
     [SerializeField] private int p1MaxHP = 2;
@@ -220,10 +237,11 @@ public class PlayerMouseMovement : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float attackCooldown = 1.0f; // 쿨타임 1초
     [SerializeField] private float attackDuration = 0.5f; // 공격 애니 길이(자동 종료)
+    [SerializeField] private float attackHitDelay = 0.2f;
     private float nextAttackTime = 0f; // 다음 사용 가능 시각
     private float attackEndTime = -1f; // 공격 종료 시각
     private bool attack = false;       // 공격 중 여부 (애니 bool과 동기화)
-
+    private Coroutine _attackPulseCo; // 지연 코루틴 핸들
     public int maxHP = 5;
     public int currentHP;
     public bool IsDead { get; private set; } = false;
@@ -239,8 +257,9 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float stepForward = 0.10f;  // 발 앞쪽 탐색 거리
     [SerializeField] private float stepUpSkin = 0.01f;   // 살짝 더 올려 겹침 방지
     [SerializeField] private float stepOnlyWhenFallingVy = 0.05f; // 위로 점프중엔 스킵
-
-
+                                                                  // --- 추가 파라미터 ---
+    [SerializeField] private float seamFixProbe = 0.03f;  // 발 앞 세로면 탐색 폭
+    [SerializeField] private float seamFixLift = 0.03f;  // 살짝 들어올릴 높이
     // === 내부 상태 ===
     private float lastGroundedTime = -999f;
     private float lastJumpPressedTime = -999f;
@@ -340,11 +359,20 @@ public class PlayerMouseMovement : MonoBehaviour
         if (monsterLayerIndex < 0) Debug.LogWarning($"[Player] Monster layer '{monsterLayerName}' not found.");
     }
 
+    //공격 중(P1) 입력락 여부
+    private bool AttackLocksInput()
+    {
+        return attack && playerID == SwapController.PlayerChar.P1;
+    }
+
     void Update()
     {
         bool isSelected = (swap != null && swap.charSelect == playerID);
         bool suppressed = Time.time < swapSuppressUntil;
-        bool locked = suppressed || Time.time < inputLockUntil;
+
+        // ★ 변경: 공격 중(P1)에는 입력 자체를 잠그기
+        bool attackLock = AttackLocksInput();
+        bool locked = suppressed || Time.time < inputLockUntil || attackLock;
         lockedall = locked; // 전체 트랜지션 중에는 모든 입력/조작 봉인
 
         if (SpiralBoxWipe.IsBusy || IsDead)
@@ -367,11 +395,16 @@ public class PlayerMouseMovement : MonoBehaviour
             return;
         }
 
-        // 좌/우 입력
-        float left = (!locked && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))) ? -1f : 0f;
-        float right = (!locked && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))) ? 1f : 0f;
-        lefthold = (!locked && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)));
-        righthold = (!locked && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)));
+        // 좌/우 입력 (월점프 이후 '벽쪽 키' 잠금 반영)
+        bool blockL = IsDirBlocked(-1);
+        bool blockR = IsDirBlocked(+1);
+
+        float left = (!locked && !blockL && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))) ? -1f : 0f;
+        float right = (!locked && !blockR && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))) ? +1f : 0f;
+
+        lefthold = (!locked && !blockL && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)));
+        righthold = (!locked && !blockR && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)));
+
         rawX = Mathf.Clamp(left + right, -1f, 1f);
 
         // 점프 입력 버퍼
@@ -468,28 +501,42 @@ public class PlayerMouseMovement : MonoBehaviour
         touchingLeftSlime = !groundedForWall && (castL || touchL_byCollision || touchL_byTrigger);
         touchingRightSlime = !groundedForWall && (castR || touchR_byCollision || touchR_byTrigger);
 
-        // ==== 벽점프(반대 방향키) ====
+        if (touchingLeftSlime) { lastSlimeTouchAt = Time.time; lastSlimeSide = -1; }
+        if (touchingRightSlime) { lastSlimeTouchAt = Time.time; lastSlimeSide = +1; }
+
+        bool touchingGroundAny = IsGroundedStrictSmall() || IsGrounded();
+
         bool awayLeft = touchingRightSlime && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow));
         bool awayRight = touchingLeftSlime && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow));
         bool spaceOK = requireSpaceForWallJump ? Input.GetKey(KeyCode.Space) : true;
 
-        if (!groundedForWall && spaceOK && (awayLeft || awayRight) && !(isCarrying || isCarried))
+        if (!touchingGroundAny && spaceOK && (awayLeft || awayRight) && !(isCarrying || isCarried))
         {
+            // 슬라임 재부착 억제(기존)
             ignoreSlimeUntil = Time.time + wallDetachGrace;
-            touchingLeftSlime = touchingRightSlime = false;
 
+            // 월점프 속도 설정 (기존 코드 유지)
             Vector2 v2 = rb.linearVelocity;
             if (awayLeft) v2.x = -Mathf.Abs(wallJumpHorizontal);
             if (awayRight) v2.x = Mathf.Abs(wallJumpHorizontal);
             v2.y = wallJumpVertical;
             rb.linearVelocity = v2;
+
+            // awayLeft  : 오른쪽 벽에 붙어 있다가 왼쪽으로 점프 → '오른쪽(벽쪽) 키' 잠금 => +1
+            // awayRight : 왼쪽  벽에 붙어 있다가 오른쪽으로 점프 → '왼쪽(벽쪽) 키' 잠금 => -1
+            int wallSideDir = awayLeft ? +1 : -1;
+            oppositeInputLockUntil = Time.time + wallOppositeInputLock;
+            oppositeInputLockedDir = wallSideDir;
+
+            // (선택) 완전 확실히 끊고 싶으면 재부착 억제를 잠금시간과 동기화
+            ignoreSlimeUntil = Mathf.Max(ignoreSlimeUntil, Time.time + wallOppositeInputLock);
+
         }
 
-        // === Run 애니메이션 (캐리 중 차단 없음) ===
-        if ((throwmanager && !lockedall && Input.GetKey(KeyCode.A)) ||
-            Input.GetKey(KeyCode.LeftArrow) ||
-            (!lockedall && Input.GetKey(KeyCode.D)) ||
-            Input.GetKey(KeyCode.RightArrow))
+        // === Run 애니메이션 ===
+        if (!lockedall && throwmanager &&
+            (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+             Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
         {
             RunAni();
         }
@@ -542,7 +589,12 @@ public class PlayerMouseMovement : MonoBehaviour
         if (ballisticThrowActive && !ballistic) ballisticThrowActive = false;
 
         // --- 목표 속도 & 가감속 ---
-        if (ballistic)
+        if (AttackLocksInput())
+        {
+            // ★ 공격 중(P1)에는 가로속도를 빠르게 0으로 수렴 → 좌우이동 불가 보장
+            v.x = Mathf.MoveTowards(v.x, 0f, decel * Time.fixedDeltaTime * 2f);
+        }
+        else if (ballistic)
         {
             if (Mathf.Abs(rawX) > 0.01f)
             {
@@ -564,7 +616,8 @@ public class PlayerMouseMovement : MonoBehaviour
         bool buffered = (Time.time - lastJumpPressedTime) <= jumpBuffer;
         bool canCoyote = (Time.time - lastGroundedTime) <= coyoteTime;
 
-        if (!ballistic)
+        // ★ 공격 중(P1)에는 점프 생성 금지
+        if (!ballistic && !AttackLocksInput())
         {
             if (buffered && (canCoyote || airJumpsLeft > 0))
             {
@@ -596,48 +649,64 @@ public class PlayerMouseMovement : MonoBehaviour
         }
         if (v.y < maxFallSpeed) v.y = maxFallSpeed;
 
-        bool touchingSlimeNow = !groundedStrict && (touchingLeftSlime || touchingRightSlime);
+        bool groundedAny = groundedStrict || IsGrounded();
+        bool touchingSlimeNow = !groundedAny && (touchingLeftSlime || touchingRightSlime);
+
         SetFrictionless(touchingSlimeNow);
 
-        // === SLIME STICK / SLIDE ===
-        bool onSlimeRaw = !groundedStrict && (touchingLeftSlime || touchingRightSlime);
-        bool allowStick = !IsSlimeSuppressed && !(isCarrying || isCarried);
-        bool onSlime = onSlimeRaw && allowStick;
-        bool pressingIntoWall = allowStick && onSlimeRaw &&
-                                ((touchingLeftSlime && rawX < -0.01f) || (touchingRightSlime && rawX > 0.01f));
+        // === SLIME STICK / SLIDE ==
+        bool onSlimeRaw = !groundedAny && (touchingLeftSlime || touchingRightSlime);
+
+        // (기존) 아주 작은 턱 오르기
         TryStepUpSmallLedge(rawX);
+
+        // 벽을 계속 밀고 있으면 수평입력 억제
+        bool allowStick = !IsSlimeSuppressed && !(isCarrying || isCarried);
+        bool pressingIntoWall =
+            allowStick && onSlimeRaw &&
+            ((touchingLeftSlime && rawX < -0.01f) || (touchingRightSlime && rawX > 0.01f));
         if (pressingIntoWall)
         {
             rawX = 0f;
             if (v.y > 0f) v.y = 0f;
         }
 
-        if (onSlime)
+        if (allowStick && onSlimeRaw)
         {
-            Vector2 wallNormal = touchingLeftSlime ? Vector2.right : Vector2.left;
-            rb.AddForce(-wallNormal * slimeStickPush, ForceMode2D.Force);
+            Vector2 wallNormal =
+                touchingLeftSlime ? Vector2.right :
+                touchingRightSlime ? Vector2.left : Vector2.zero;
 
-            float vn = Vector2.Dot(v, wallNormal);
-            if (vn > 0f)
+            if (wallNormal != Vector2.zero)
             {
-                float cut = Mathf.Min(vn, slimeNormalClamp);
-                v -= wallNormal * cut;
-            }
+                rb.AddForce(-wallNormal * slimeStickPush, ForceMode2D.Force);
 
-            if (v.y < wallSlideMaxFall) v.y = wallSlideMaxFall;
+                float vn = Vector2.Dot(v, wallNormal);
+                if (vn > 0f)
+                {
+                    float cut = Mathf.Min(vn, slimeNormalClamp);
+                    v -= wallNormal * cut;
+                }
+
+                if (v.y < wallSlideMaxFall) v.y = wallSlideMaxFall;
+            }
         }
         else if (onSlimeRaw && (isCarrying || isCarried))
         {
             if (v.y < carrySlideMaxFall) v.y = carrySlideMaxFall;
         }
 
+
+
+        FixVerticalSeam(rawX);
         rb.linearVelocity = v;
 
         bool groundedThisFrame = groundedStrict;
         if (!wasGrounded && groundedThisFrame)
         {
             JumpedAni();
-
+            wallRegrabUntil = -1f;
+            wallRegrabSide = 0;
             // P2가 착지하면 throwed 해제
             if (playerID == SwapController.PlayerChar.P2 && rb2)
             {
@@ -1099,12 +1168,13 @@ public class PlayerMouseMovement : MonoBehaviour
         attack = true;
         if (rb2) rb2.SetBool("attack", true);
 
-        // 히트박스/이펙트 펄스
-        if (selectedObject)
-        {
-            selectedObject.SetActive(true);
-            fPulseOffAt = Time.time + fPulseDuration;
-        }
+        // ★ 추가: 공격 시작 시 이동/점프 버퍼 초기화(버퍼 점프 방지)
+        rawX = 0f;
+        jumpHeld = false;
+        lastJumpPressedTime = -999f;
+
+        if (_attackPulseCo != null) StopCoroutine(_attackPulseCo);
+        _attackPulseCo = StartCoroutine(ActivateSelectedAfterDelay(attackHitDelay));
 
         attackEndTime = Time.time + attackDuration; // 공격 애니 자동 종료
         nextAttackTime = Time.time + attackCooldown; // 쿨타임 시작
@@ -1114,7 +1184,39 @@ public class PlayerMouseMovement : MonoBehaviour
     {
         attack = false;
         if (rb2) rb2.SetBool("attack", false);
+
+        // 지연 코루틴 취소 및 안전 비활성화
+        if (_attackPulseCo != null)
+        {
+            StopCoroutine(_attackPulseCo);
+            _attackPulseCo = null;
+        }
+        if (selectedObject) selectedObject.SetActive(false); // 펄스 타이머와 무관하게 끔
         // selectedObject는 fPulseDuration 타이머로 별도 종료됨
+    }
+
+    private IEnumerator ActivateSelectedAfterDelay(float delay)
+    {
+        // 혹시 켜져있다면 먼저 끄기
+        if (selectedObject) selectedObject.SetActive(false);
+
+        float until = Time.time + Mathf.Max(0f, delay);
+        // 공격이 유지되는 동안만 대기
+        while (Time.time < until)
+        {
+            if (!attack) yield break; // 공격이 중간에 끝나면 취소
+            yield return null;
+        }
+
+        if (!attack) yield break;
+
+        if (selectedObject)
+        {
+            selectedObject.SetActive(true);
+            fPulseOffAt = Time.time + fPulseDuration; // 기존 펄스 타이머 그대로 사용
+        }
+
+        _attackPulseCo = null;
     }
 
     // === 애니 기반 잠금 유틸 ===
@@ -1138,6 +1240,7 @@ public class PlayerMouseMovement : MonoBehaviour
         }
         return 0f;
     }
+
     private void TryStepUpSmallLedge(float dirInput)
     {
         if (!enableStepUp) return;
@@ -1185,6 +1288,41 @@ public class PlayerMouseMovement : MonoBehaviour
         else
             transform.position += new Vector3(0f, climb + stepUpSkin, 0f);
     }
+
+
+    private void FixVerticalSeam(float dirInput)
+    {
+        if (!bodyCollider) return;
+        if (!IsGroundedStrictSmall()) return;
+        if (Mathf.Abs(dirInput) < 0.01f) return;
+
+        Bounds b = bodyCollider.bounds;
+        int sign = dirInput > 0 ? +1 : -1;
+
+        // 발 앞, 아주 얇은 세로면이 있는지 검사
+        Vector2 seamCenter = new Vector2(
+            b.center.x + sign * (b.extents.x + seamFixProbe * 0.5f),
+            b.min.y + 0.02f
+        );
+        Vector2 seamSize = new Vector2(seamFixProbe, 0.04f);
+
+        bool hasVerticalFace = Physics2D.OverlapBox(seamCenter, seamSize, 0f, groundMask);
+        if (!hasVerticalFace) return;
+
+        // 현재 발 아래가 실제 바닥이면(공중 아님) '이음매'로 간주, 살짝 들어올림
+        Vector2 feetCenter = new Vector2(b.center.x, b.min.y - 0.01f);
+        Vector2 feetSize = new Vector2(b.size.x * 0.9f, 0.02f);
+        bool grounded = Physics2D.OverlapBox(feetCenter, feetSize, 0f, groundMask);
+        if (grounded)
+        {
+            rb.position = rb.position + new Vector2(0f, seamFixLift);
+        }
+    }
+    private bool IsDirBlocked(int dir)
+    {
+        return Time.time < oppositeInputLockUntil && oppositeInputLockedDir == dir;
+    }
+
     private IEnumerator LockForAnimation(float minLockSeconds, bool zeroHorizontalVelocity)
     {
         float t0 = Time.time;

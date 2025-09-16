@@ -21,6 +21,7 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private string attackOmegaAnim = "attackOmega";
     [SerializeField] private float onHitShakeAmp = 0.6f;
     [SerializeField] private float onHitShakeDur = 0.25f;
+    [SerializeField] private GameObject windEffect;
 
     // ---------- Layers / Refs ----------
     [Header("Layers")]
@@ -347,7 +348,6 @@ public class ChargerSentinelAI : MonoBehaviour
         _dashDir = (_plannedDashDir != 0) ? _plannedDashDir
                  : (currentTarget && currentTarget.position.x >= transform.position.x ? +1 : -1);
         if (sr) sr.flipX = (_dashDir < 0);
-
         // 대시 시작 시 중력 제거 + y 고정
         _dashStartY = rb.position.y;
         rb.gravityScale = 0f;
@@ -499,7 +499,6 @@ public class ChargerSentinelAI : MonoBehaviour
         if (_stoppedThisDash) return;
         _stoppedThisDash = true;
         Vector2 v = rb.linearVelocity; v.x = 0f; rb.linearVelocity = v;
-
         EnterRecover(attackOmegaAnim);
         CameraShaker.Shake(onHitShakeAmp, onHitShakeDur);
     }
@@ -544,7 +543,6 @@ public class ChargerSentinelAI : MonoBehaviour
         _deathPos = transform.position;
         _deathRot = transform.rotation;
         _deathFeetPos = GetFeetWorld();
-
         StopHorizontal();
         HidePreview();
         HideIndicator();
