@@ -21,7 +21,25 @@ public class ChargerSentinelAI : MonoBehaviour
     [SerializeField] private string attackOmegaAnim = "attackOmega";
     [SerializeField] private float onHitShakeAmp = 0.6f;
     [SerializeField] private float onHitShakeDur = 0.25f;
+
+    // === Dash Kick VFX (발쪽에서 팍) ===
+    [Header("Dash Kick VFX")]
+    [Tooltip("돌진 시작 시 발쪽에서 터질 이펙트 프리팹")]
     [SerializeField] private GameObject windEffect;
+    [Tooltip("이펙트 스폰 위치 오프셋 (x는 돌진 방향으로 곱해짐)")]
+    [SerializeField] private Vector2 dashKickOffset = new Vector2(0.06f, 0.02f);
+    [Tooltip("이펙트 자동 제거 대기 시간(프리팹이 자동 파괴 설정이면 짧게 두셔도 됩니다)")]
+    [SerializeField] private float dashKickLife = 1.0f;
+    [Tooltip("Sprite/Particle 렌더러에 적용할 소팅 레이어명")]
+    [SerializeField] private string dashKickSortingLayerName = "Effects";
+    [Tooltip("Sprite/Particle 렌더러에 적용할 소팅 오더")]
+    [SerializeField] private int dashKickSortingOrder = 250;
+    [Tooltip("프리팹을 좌우 플립으로 방향 전환(대부분 2D 스프라이트 프리팹은 이게 편합니다)")]
+    [SerializeField] private bool dashKickFlipByDir = true;
+    [Tooltip("프리팹을 회전(Z)으로 방향 전환(파티클 등 전방이 +X가 아닐 때 사용)")]
+    [SerializeField] private bool dashKickRotateByDir = false;
+    [Tooltip("프리팹의 '정방향'이 +X가 되도록 맞추는 기본 각도(rotateByDir=true일 때만 사용)")]
+    [SerializeField] private float dashKickBaseAngleDeg = 0f;
 
     // ---------- Layers / Refs ----------
     [Header("Layers")]
@@ -179,7 +197,7 @@ public class ChargerSentinelAI : MonoBehaviour
 
         for (int i = 0; i < 32; i++)
         {
-            bool allow = (i == _groundLayer) || (i == _monkillLayer) || (i == _boxLayer) ;
+            bool allow = (i == _groundLayer) || (i == _monkillLayer) || (i == _boxLayer);
             Physics2D.IgnoreLayerCollision(_myLayer, i, !allow);
         }
 
@@ -348,11 +366,17 @@ public class ChargerSentinelAI : MonoBehaviour
         _dashDir = (_plannedDashDir != 0) ? _plannedDashDir
                  : (currentTarget && currentTarget.position.x >= transform.position.x ? +1 : -1);
         if (sr) sr.flipX = (_dashDir < 0);
+
         // 대시 시작 시 중력 제거 + y 고정
         _dashStartY = rb.position.y;
         rb.gravityScale = 0f;
 
+        // 수평 속도 입력
         Vector2 v = rb.linearVelocity; v.x = _dashDir * dashSpeed; v.y = 0f; rb.linearVelocity = v;
+
+        // === 여기서 발쪽 이펙트 '팍!' ===
+        SpawnDashKickVFX();
+
         if (sr) sr.color = _baseColor;
         _mustDashOnce = false;
         HidePreview();
@@ -807,6 +831,60 @@ public class ChargerSentinelAI : MonoBehaviour
     }
 
     public void OnHit(int damage) { StartDeathSequence("OnHit"); }
+
+    // ====== 발진 VFX 스폰 ======
+    private void SpawnDashKickVFX()
+    {
+        if (!windEffect) return;
+
+        // 발 위치 기준, 돌진 방향으로 약간 앞쪽/약간 위 오프셋
+        Vector3 feet = GetFeetWorld();
+        Vector3 pos = feet + new Vector3(dashKickOffset.x * _dashDir, dashKickOffset.y, 0f);
+
+        Quaternion rot = Quaternion.identity;
+        if (dashKickRotateByDir)
+            rot = Quaternion.Euler(0f, 0f, dashKickBaseAngleDeg + (_dashDir < 0 ? 180f : 0f));
+
+        GameObject go = Instantiate(windEffect, pos, rot);
+
+        if (dashKickFlipByDir && !dashKickRotateByDir)
+        {
+            Vector3 s = go.transform.localScale;
+            s.x = Mathf.Abs(s.x) * (_dashDir >= 0 ? 1f : -1f);
+            go.transform.localScale = s;
+        }
+
+        // 소팅 적용 (Sprite/Particle 모두)
+        ApplySortingToChildren(go, dashKickSortingLayerName, dashKickSortingOrder);
+
+        // 프리팹이 자동 파괴가 아니라면 안전망으로 제거
+        if (dashKickLife > 0f) Destroy(go, dashKickLife);
+    }
+
+    private static void ApplySortingToChildren(GameObject go, string layerName, int order)
+    {
+        if (go == null) return;
+        if (!string.IsNullOrEmpty(layerName))
+        {
+            foreach (var r in go.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                r.sortingLayerName = layerName;
+                r.sortingOrder = order;
+            }
+            foreach (var pr in go.GetComponentsInChildren<ParticleSystemRenderer>(true))
+            {
+                pr.sortingLayerName = layerName;
+                pr.sortingOrder = order;
+            }
+        }
+        else
+        {
+            foreach (var r in go.GetComponentsInChildren<SpriteRenderer>(true))
+                r.sortingOrder = order;
+            foreach (var pr in go.GetComponentsInChildren<ParticleSystemRenderer>(true))
+                pr.sortingOrder = order;
+        }
+    }
 }
 
 // ---- Utility ----

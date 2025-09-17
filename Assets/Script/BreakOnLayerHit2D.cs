@@ -37,6 +37,26 @@ public class BreakOnLayerHit2D : MonoBehaviour
     [Tooltip("상대 콜라이더의 부모/루트 중 하나라도 레이어가 일치하면 히트로 인정합니다.")]
     [SerializeField] private bool acceptParentOrRootLayer = true;
 
+    // ====== 추가: 장면 제한 (Wood_Skewer_* 개수 관리) ======
+    [Header("Scene Limit (Wood_Skewer_*)")]
+    [Tooltip("파편 소환 전에 장면 내 특정 이름 접두어 오브젝트 수를 제한합니다.")]
+    [SerializeField] private bool limitWoodSkewerInScene = true;
+
+    [Tooltip("이 접두어들로 시작하는 오브젝트 수를 셉니다. (예: Wood_Skewer_0001, ..., 0005)")]
+    [SerializeField]
+    private string[] skewerNamePrefixes = new string[] {
+        "Wood_Skewer_0001","Wood_Skewer_0002","Wood_Skewer_0003","Wood_Skewer_0004","Wood_Skewer_0005"
+    };
+
+    [Tooltip("이 수 이상이면 파편 소환 전에 일부를 제거합니다.")]
+    [SerializeField] private int skewerLimitThreshold = 20;
+
+    [Tooltip("임계치 이상일 때 제거할 개수")]
+    [SerializeField] private int skewerPruneCount = 5;
+
+    [Tooltip("제거 대상을 무작위로 선택합니다.")]
+    [SerializeField] private bool pruneRandom = true;
+
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
@@ -56,7 +76,7 @@ public class BreakOnLayerHit2D : MonoBehaviour
         {
             var rb = gameObject.AddComponent<Rigidbody2D>();
             rb.bodyType = RigidbodyType2D.Kinematic;
-            rb.useFullKinematicContacts = true;     // 키네마틱끼리도 컨택 리포트
+            rb.useFullKinematicContacts = true;
             rb.interpolation = RigidbodyInterpolation2D.Interpolate;
             rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
             if (debugLogs) Debug.Log($"[BreakOnLayerHit2D] Added Kinematic RB to force contacts. ({name})");
@@ -73,6 +93,8 @@ public class BreakOnLayerHit2D : MonoBehaviour
             destroyTarget = destroyWholeRoot ? transform.root : transform;
         if (shardCount < 1) shardCount = 1;
         if (maxSpeed < minSpeed) maxSpeed = minSpeed;
+        if (skewerPruneCount < 0) skewerPruneCount = 0;
+        if (skewerLimitThreshold < 0) skewerLimitThreshold = 0;
     }
 
     private void OnCollisionEnter2D(Collision2D c)
@@ -135,6 +157,9 @@ public class BreakOnLayerHit2D : MonoBehaviour
     {
         _broken = true;
 
+        // ====== 여기서 장면 내 Wood_Skewer_* 개수 제한 & 정리 ======
+        MaybePruneSceneSkewers();
+
         Vector2 inheritVel = Vector2.zero;
         if (inheritOtherVelocity && otherRb != null) inheritVel = otherRb.linearVelocity;
 
@@ -150,7 +175,7 @@ public class BreakOnLayerHit2D : MonoBehaviour
             {
                 Vector2 dir = ComputeDirection(i, impactNormal, shardCount);
                 float speed = Random.Range(minSpeed, maxSpeed);
-                rb.linearVelocity = dir.normalized * speed + inheritVel;  // 규칙 준수
+                rb.linearVelocity = dir.normalized * speed + inheritVel;  // rb.velocity 금지 기준 준수
                 rb.angularVelocity = Random.Range(-maxAngularSpeed, maxAngularSpeed);
             }
         }
@@ -197,5 +222,67 @@ public class BreakOnLayerHit2D : MonoBehaviour
             if (id >= 0) mask |= (1 << id);
         }
         return mask;
+    }
+
+    // ====== 장면 내 Wood_Skewer_* 개수 체크 & 정리 ======
+    private void MaybePruneSceneSkewers()
+    {
+        if (!limitWoodSkewerInScene || skewerPruneCount <= 0 || skewerNamePrefixes == null || skewerNamePrefixes.Length == 0)
+            return;
+
+        var list = FindSkewerObjects();
+        int count = list.Count;
+        if (debugLogs) Debug.Log($"[SkewerLimit] Found {count} skewer-like objects in scene.");
+
+        if (count >= skewerLimitThreshold)
+        {
+            int toRemove = Mathf.Min(skewerPruneCount, count);
+            for (int i = 0; i < toRemove && list.Count > 0; i++)
+            {
+                int idx = pruneRandom ? Random.Range(0, list.Count) : list.Count - 1;
+                var victim = list[idx];
+                list.RemoveAt(idx);
+
+                if (!victim) { i--; continue; }
+                if (destroyTarget && victim == destroyTarget.gameObject) { i--; continue; } // 자기 자신 보호
+
+                if (debugLogs) Debug.Log($"[SkewerLimit] Destroy {victim.name}");
+                Destroy(victim);
+            }
+        }
+    }
+
+    private List<GameObject> FindSkewerObjects()
+    {
+        List<GameObject> res = new List<GameObject>();
+
+        // 활성 오브젝트만 스캔 (비활성은 무시)
+#if UNITY_2023_1_OR_NEWER
+        var trs = Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+#else
+        var trs = Object.FindObjectsOfType<Transform>(false);
+#endif
+        for (int i = 0; i < trs.Length; i++)
+        {
+            var go = trs[i].gameObject;
+            if (!go.activeInHierarchy) continue;
+            if (destroyTarget && go == destroyTarget.gameObject) continue;
+
+            string nm = go.name; // 예: "Wood_Skewer_0001" 또는 "Wood_Skewer_0001(Clone)"
+            if (StartsWithAny(nm, skewerNamePrefixes))
+                res.Add(go);
+        }
+        return res;
+    }
+
+    private static bool StartsWithAny(string s, string[] prefixes)
+    {
+        if (string.IsNullOrEmpty(s) || prefixes == null) return false;
+        for (int i = 0; i < prefixes.Length; i++)
+        {
+            var pre = prefixes[i];
+            if (!string.IsNullOrEmpty(pre) && s.StartsWith(pre)) return true;
+        }
+        return false;
     }
 }
