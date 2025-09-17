@@ -28,6 +28,11 @@ public class SmartCameraFollowByWall : MonoBehaviour
     private Vector3 currentVelocity;
     [SerializeField] private float arrowRotationOffsetDeg = 0f;
 
+    // === Auto select P1 when carry starts ===
+    [Header("Auto Select to P1 on Carry")]
+    [SerializeField] private bool autoSelectP1OnCarry = true;
+    private bool wasCarrying = false; // 캐리 상태 상승엣지 감지용
+
     [SerializeField] private Color nearColor = new Color(1f, 0.78f, 0.06f, 1f); // 진한 노랑(Amber #FFC107)
     [SerializeField] private Color farColor = new Color(1f, 0.97f, 0.71f, 1f); // 연한 노랑
     [SerializeField] private float nearDistance = 3f;   // 이 이하이면 거의 nearColor/nearScale
@@ -139,6 +144,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
     {
         selectmark2.SetActive(false);
         selectmark1.SetActive(true);
+        wasCarrying = (carry != null && carry.isCarrying);
     }
 
     void Update()
@@ -162,7 +168,17 @@ public class SmartCameraFollowByWall : MonoBehaviour
                 followSpeed = Mathf.Max(followSpeed, transitBoostFollowSpeed);
             }
         }
+        if (autoSelectP1OnCarry && carry != null)
+        {
+            bool nowCarrying = carry.isCarrying;
 
+            // P2 시점(swapsup == false)일 때 캐리가 '시작'되면 강제 전환
+            if (nowCarrying && !wasCarrying && !swapsup)
+            {
+                ForceToP1();
+            }
+            wasCarrying = nowCarrying;
+        }
         Transform focus = swapsup ? target1 : target2;
 
         // ===== UI 표기 =====
@@ -359,7 +375,23 @@ public class SmartCameraFollowByWall : MonoBehaviour
         hitOut = best < float.MaxValue ? bestHit : new RaycastHit2D();
         return hitOut.collider != null;
     }
+    private void ForceToP1()
+    {
+        // 카메라 대상 전환
+        swapsup = true;
 
+        // 부드러운 전환 시작(현재 네 전환 로직 재사용)
+        isTransit = true;
+        transitUntil = Time.unscaledTime + transitMaxDuration;
+        originalFollowSpeed = Mathf.Approximately(originalFollowSpeed, 0f) ? followSpeed : originalFollowSpeed;
+        followSpeed = Mathf.Max(followSpeed, transitBoostFollowSpeed);
+
+        // SwapController도 함께 갱신(있을 때)
+        if (swap != null)
+            swap.charSelect = SwapController.PlayerChar.P1;
+
+        // UI는 아래 Update의 공용 처리에서 같은 프레임에 정리됨
+    }
     void OnDrawGizmos()
     {
         Vector3 cameraPos = transform.position;

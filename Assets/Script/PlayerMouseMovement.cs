@@ -23,6 +23,48 @@ public class PlayerMouseMovement : MonoBehaviour
     [Header("Carry Drop/Throw Spawn")]
     [SerializeField] private float carryDropForward = 0.4f;   // 내려놓기 시, 바라보는 방향 앞으로 얼마나 둘지
 
+    [Header("Auto Carry (Midair Catch)")]
+    [SerializeField] private bool autoCatchEnabled = true;          // 오토 캐치 On/Off
+    [SerializeField] private Vector2 headCatchBoxSize = new(0.70f, 0.35f); // P1 머리 위 캐치 박스 크기
+    [SerializeField] private Vector2 headCatchBoxOffset = new(0f, 0.10f);  // P1 머리 위 기준 추가 오프셋(Y는 머리 윗면에서 더 올림)
+    [SerializeField] private float autoCatchMinHeightAbove = 0.05f; // P2 발이 머리보다 최소 이만큼 높아야(두 번째 조건용)
+    [SerializeField] private bool onlyCatchDuringThrowWindow = false; // true면 '던진 뒤(탄도창)'에만 캐치
+    [SerializeField] private float autoCatchCooldown = 0.15f;       // 반복 캐치 튕김 방지
+    [SerializeField] private float autoCatchBlockOnThrow = 0.2f; // 던진 직후 차단 시간
+    private float autoCatchSuppressUntil = -1f;                  // 이 시각 전엔 오토캐치 금지
+    private float nextAutoCatchAllowedAt = 0f;
+    // === Auto Catch – Whole Body ===
+    [Header("Auto Catch – Whole Body")]
+    [SerializeField] private bool autoCatchUseWholeBody = true;           // 몸 전체 판정 사용
+    [SerializeField] private Vector2 bodyCatchPadding = new(0.06f, 0.06f); // P1 바디 박스 확장량(여유)
+
+    // === Camera Auto-Focus (to P1) ===
+    [Header("Camera Auto-Focus (to P1)")]
+    [SerializeField] private bool autoForceViewToP1OnCatch = true;        // 캐치 시 카메라/시점 P1 강제
+    [SerializeField] private UnityEngine.Events.UnityEvent onForceViewToP1; // (선택) 카메라 스크립트 훅
+    // === Auto Carry Gate ===
+    [Header("Auto Carry Gate")]
+    [SerializeField] private bool autoCatchRequireP2Descending = true;         // P2가 내려오는 중일 때만
+    [SerializeField] private float autoCatchMaxHoriz = 0.60f;                  // 가로 허용 오차
+    [SerializeField] private Vector2 autoCatchVerticalRange = new(0.05f, 0.90f); // 머리 위 최소/최대 높이
+    [SerializeField] private bool autoCatchDisallowIfBlockingCeiling = true;   // 사이에 지형/트랩 있으면 금지
+    [SerializeField] private LayerMask autoCatchObstructionMask;               // Ground|Event|Trap 등
+
+    [SerializeField] private bool autoCatchDisallowIfP1Busy = true;            // P1이 바쁠 땐 금지(공격/락 등)
+    [SerializeField] private bool autoCatchDisallowIfP2Hidden = true;          // P2가 숨김상태면 금지
+
+    // Animator 파라미터 이름(오토캐치용)
+    [SerializeField] private string carryingBoolName = "carrying";             // 오토캐치 ON/OFF
+    [SerializeField] private string carryEndTriggerName = "carryEnd";          // 캐리 해제 연출용 트리거(있으면 사용)
+    [SerializeField] private string carryEndStateName = "CarryEnd";            // 없으면 이 상태로 크로스페이드
+    // 오토캐치 시 캐리 애니를 몇 프레임부터 시작할지
+    [SerializeField] private int autoCatchCarryStartFrame = 6;
+
+    // 캐리 애니메이션 상태 이름(Animator의 State 이름)
+    [SerializeField] private string carryStateName = "Carry";
+
+    // (선택) 정확한 길이/프레임을 얻고 싶으면 클립 참조도 함께 지정
+    [SerializeField] private AnimationClip carryClipRef;
     // === 던지기 시작 위치(인스펙터로 조정) ===
     [Header("Throw Start (Inspector Control)")]
     [Tooltip("던지기 시작 지연(초). 이 시간이 지난 뒤 보이면서 실제로 날아가기 시작합니다.")]
@@ -45,6 +87,20 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float slimeStickPush = 22f;
     [SerializeField] private float slimeNormalClamp = 20f;
     [SerializeField] private float carrySlideMaxFall = -11f;
+
+    // === Ceiling Slime (Head Stick) ===
+    [Header("Ceiling Slime (Head Stick)")]
+    [SerializeField] private bool enableCeilingSlime = true;
+    [SerializeField] private float ceilingStickMaxTime = 5f;      // 5초 유지
+    [SerializeField] private float ceilingReleaseFade = 0.6f;     // 서서히 떨어지는 시간
+    [SerializeField] private float ceilingKeepGap = 0.02f;        // 머리-천장 간격 유지
+    [SerializeField] private float ceilingRestickBlock = 0.25f;   // 떨어진 직후 재부착 금지 시간
+
+    private bool stickingToCeiling = false;
+    private float ceilingStickStartTime = -1f;
+    private float ceilingReleaseUntil = -1f;   // >0 이면 release 페이드 중
+    private float ignoreCeilingUntil = -1f;    // 이 시각 전엔 머리로 다시 안 붙음
+    private float lastCeilingY = 0f;           // 붙었던 천장 Y 캐시(유지용)
 
     // === Wall Detach(이탈 유예창) ===
     [SerializeField] private float wallDetachGrace = 0.13f;
@@ -110,6 +166,16 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D slimeNoFrictionMat;
     private PhysicsMaterial2D _originalMat;
     private bool _appliedNoFriction;
+    // === Ceiling Slime (Head Stick) ===
+    [Header("Ceiling Slime (Head Stick)")]
+    [SerializeField] private float headCheckDist = 0.12f;              // 머리 위 슬라임 감지 거리
+    [SerializeField] private float ceilingStickDuration = 5f;           // 붙어있는 시간
+    [SerializeField] private float ceilingReleaseBlendTime = 0.8f;      // 떨어질 때 부드럽게 전환
+    [SerializeField] private float ceilingReleaseSlideMaxFall = -2.5f;  // 해제 직후 잠깐 천천히 낙하
+    [SerializeField] private float ceilingAttachSkin = 0.01f;           // 천장에 스냅 붙일 때 여유
+
+    private float ceilingStickUntil = -1f;
+ 
 
     [Header("Ground Snap")]
     [SerializeField] private Collider2D bodyCollider;
@@ -429,6 +495,22 @@ public class PlayerMouseMovement : MonoBehaviour
                 }
             }
         }
+        // Update() 안, 입력 처리들 아래 아무 위치에 추가
+        if (!locked)
+        {
+            bool downPressed = Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow);
+
+            // 천장에 붙어있을 때 아래키 => 즉시 해제+급강하
+            if (downPressed && stickingToCeiling)
+            {
+                EndCeilingStick(forceDive: true);
+            }
+            // 일반 공중에서도 아래키로 급강하 시작
+            else if (downPressed && !IsGroundedStrictSmall())
+            {
+                isDiving = true;
+            }
+        }
 
         // --- 공격 처리 & F Pulse ---
         if (selectedObject)
@@ -581,8 +663,70 @@ public class PlayerMouseMovement : MonoBehaviour
         }
 
         bool groundedStrict = IsGroundedStrictSmall();
+      
+
         Vector2 v = rb.linearVelocity;
         bool grounded = groundedStrict;
+
+        // === Ceiling Slime: 감지 & 유지 ===
+        RaycastHit2D upHit = default;
+        bool canCeilingStick = enableCeilingSlime && !isCarrying && !isCarried && Time.time >= ignoreCeilingUntil;
+        bool headTouchesSlime = false;
+
+        // 머리 위 슬라임 감지(안전하게 out 초기화)
+        if (canCeilingStick)
+            headTouchesSlime = TouchingSlimeCeilingCast(out upHit);
+
+        // 아직 안 붙어있고 머리로 닿았으면 붙기 시작
+        if (!stickingToCeiling && headTouchesSlime)
+        {
+            StartCeilingStick(upHit);
+        }
+
+        // 붙어있는 동안 유지/해제 판정
+        if (stickingToCeiling)
+        {
+            bool downHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+            bool timeUp = (Time.time - ceilingStickStartTime) >= ceilingStickMaxTime;
+            bool lostContact = !headTouchesSlime;
+
+            // ① 아래키 즉시 급강하
+            if (downHeld) { EndCeilingStick(forceDive: true); }
+
+            // ② 시간 만료/접촉 끊김 → 서서히 해제
+            else if (timeUp || lostContact) { BeginCeilingRelease(); }
+
+            // ★ 붙어있는 프레임: Y축 고정(미끄러짐 제거), 좌우는 정상 이동
+            if (stickingToCeiling)
+            {
+                rb.gravityScale = 0f; // 중력 0 → 마찰 발생 원인 제거
+                v.y = 0f;
+
+                // 머리-천장 간격 유지(살짝 스냅)
+                float targetCeilY = (upHit.collider ? upHit.point.y : lastCeilingY);
+                float targetTopY = targetCeilY - ceilingKeepGap;
+                float top = bodyCollider.bounds.max.y;
+                float deltaY = targetTopY - top;
+                if (Mathf.Abs(deltaY) > 0.0005f)
+                    rb.position = rb.position + new Vector2(0f, deltaY);
+            }
+        }
+
+        // 해제 페이드 중이면 중력을 서서히 복원
+        if (!stickingToCeiling && ceilingReleaseUntil > 0f)
+        {
+            if (Time.time < ceilingReleaseUntil)
+            {
+                float t = 1f - ((ceilingReleaseUntil - Time.time) / ceilingReleaseFade);
+                rb.gravityScale = Mathf.Lerp(0f, baseGravityFall, t);
+            }
+            else
+            {
+                rb.gravityScale = baseGravityFall;
+                ceilingReleaseUntil = -1f;
+            }
+        }
+
 
         bool minTimeNotPassed = Time.time < ballisticThrowEndTime;
         bool ballistic = ballisticThrowActive && (minTimeNotPassed || (carryThrowHoldUntilGrounded && !groundedStrict));
@@ -639,6 +783,19 @@ public class PlayerMouseMovement : MonoBehaviour
             rb.gravityScale = diveGravityScale;
             v.y = Mathf.Min(v.y, diveSpeed);
         }
+        else if (stickingToCeiling)
+        {
+            // 천장에 붙어있는 동안엔 중력/낙하 정지
+            rb.gravityScale = 0f;
+            if (v.y < 0f) v.y = 0f;
+
+            // 지정 시간이 지나면 해제 시작(부드럽게 떨어짐 구간 세팅)
+            if (Time.time >= ceilingStickUntil)
+            {
+                stickingToCeiling = false;
+                ceilingReleaseUntil = Time.time + ceilingReleaseBlendTime;
+            }
+        }
         else
         {
             float desiredGravity = (v.y < -0.01f) ? baseGravityFall : baseGravityNormal;
@@ -647,6 +804,7 @@ public class PlayerMouseMovement : MonoBehaviour
                 desiredGravity = Mathf.Min(desiredGravity, baseGravityNormal * apexHangMultiplier);
             rb.gravityScale = Mathf.SmoothDamp(rb.gravityScale, desiredGravity, ref gravitySmoothVel, gravitySmoothTime);
         }
+
         if (v.y < maxFallSpeed) v.y = maxFallSpeed;
 
         bool groundedAny = groundedStrict || IsGrounded();
@@ -697,8 +855,14 @@ public class PlayerMouseMovement : MonoBehaviour
         }
 
 
+        // === 천장 해제 직후 잠깐 천천히 낙하(부드러운 이탈감) ===
+        if (Time.time < ceilingReleaseUntil)
+        {
+            if (v.y < ceilingReleaseSlideMaxFall) v.y = ceilingReleaseSlideMaxFall;
+        }
 
         FixVerticalSeam(rawX);
+
         rb.linearVelocity = v;
 
         bool groundedThisFrame = groundedStrict;
@@ -707,6 +871,11 @@ public class PlayerMouseMovement : MonoBehaviour
             JumpedAni();
             wallRegrabUntil = -1f;
             wallRegrabSide = 0;
+
+            // ▼ 추가: P2가 착지한 그 프레임에 ground=false
+            if (playerID == SwapController.PlayerChar.P2 && rb2)
+                rb2.SetBool("ground", false);
+
             // P2가 착지하면 throwed 해제
             if (playerID == SwapController.PlayerChar.P2 && rb2)
             {
@@ -725,6 +894,18 @@ public class PlayerMouseMovement : MonoBehaviour
 
         wasGrounded = groundedThisFrame;
         touchL_byTrigger = touchR_byTrigger = false;
+
+        // --- Midair Auto-Catch (P1 only) ---
+        if (playerID == SwapController.PlayerChar.P1 &&
+            autoCatchEnabled &&
+            !isCarrying &&
+            otherPlayer != null &&
+            Time.time >= nextAutoCatchAllowedAt &&
+            Time.time >= autoCatchSuppressUntil)   // ← 던진 직후 0.2s 차단
+        {
+            TryAutoCatchMidair();
+        }
+
     }
 
     /* ===================== 충돌/트리거에서 슬라임 판정 보강 ===================== */
@@ -877,6 +1058,7 @@ public class PlayerMouseMovement : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(delay);
         if (rb2) rb2.SetBool("carry", false);
+        if (rb2) rb2.SetBool("carrying", false);
         if (rb2) rb2.SetBool("throw", false);
     }
 
@@ -892,6 +1074,7 @@ public class PlayerMouseMovement : MonoBehaviour
         otherPlayer.rb.linearVelocity = Vector2.zero;
         otherPlayer.rb.simulated = false;
         otherPlayer.isCarried = true;
+        if (rb2) rb2.SetBool("ground", true);
         otherOriginalParent = otherPlayer.transform.parent;
 
         otherPlayer.transform.SetParent(this.transform, true);
@@ -910,6 +1093,7 @@ public class PlayerMouseMovement : MonoBehaviour
             _revealCo = null;
             lockedall = false;
         }
+        ForceViewToP1IfNeeded();
     }
 
     private void StopCarry()
@@ -935,7 +1119,7 @@ public class PlayerMouseMovement : MonoBehaviour
         // ====== 스폰 좌표 미리 계산 ======
         Vector3 dropSpawnOffset = new(spawnSign * carryDropForward, carryOffsetY + carryThrowSeparation, 1f);
         Vector3 dropPos = transform.position + dropSpawnOffset;
-
+        
         Vector3 throwPos;
         if (throwStartWorldPoint != null) throwPos = throwStartWorldPoint.position;
         else
@@ -973,7 +1157,7 @@ public class PlayerMouseMovement : MonoBehaviour
         {
             // ---- DROP: 0.6초 뒤 보이기 ----
             otherPlayer.transform.position = dropPos;
-
+            if (rb2) rb2.SetBool("ground", false);
             otherPlayer.rb.simulated = true;
             otherPlayer.isCarried = false;
             otherPlayer.rb.linearVelocity = Vector2.zero;
@@ -985,11 +1169,22 @@ public class PlayerMouseMovement : MonoBehaviour
             isCarrying = false;
             carryset = false;
 
-            if (rb2) rb2.SetBool("carry", false);
+            // 애니 상태 정리
+            if (rb2)
+            {
+                AnimatorSetBoolSafe(rb2, carryBoolName, false);      // 수동 캐리일 수도 있으니 OFF
+                AnimatorSetBoolSafe(rb2, carryingBoolName, false);   // ★ 오토캐치 OFF
+                if (!string.IsNullOrEmpty(carryEndTriggerName))      // 트리거가 있으면 사용
+                    AnimatorSetTriggerSafe(rb2, carryEndTriggerName);
+                else if (!string.IsNullOrEmpty(carryEndStateName))   // 없으면 상태로 강제 전이
+                    rb2.CrossFadeInFixedTime(carryEndStateName, 0.05f, 0, 0f);
+            }
             BeginCarryEndLock();
 
+            // P2는 0.6s 뒤 보이기(기존 로직 유지)
             if (_revealCo != null) StopCoroutine(_revealCo);
             _revealCo = StartCoroutine(RevealOtherAfter(revealDelayOnDrop));
+
             Debug.Log("[Carry] DROP");
             return;
         }
@@ -1004,8 +1199,20 @@ public class PlayerMouseMovement : MonoBehaviour
             ? new Vector2(0f, carryThrowUpSpeed)
             : new Vector2(spawnSign * carryThrowSideSpeed, carryThrowUpSpeed);
 
+        autoCatchSuppressUntil = Time.time + autoCatchBlockOnThrow;
+
         isCarrying = false;
         carryset = false;
+        // 애니 상태 정리(던질 땐 즉시 해제 연출)
+        if (rb2)
+        {
+            AnimatorSetBoolSafe(rb2, carryBoolName, false);
+            AnimatorSetBoolSafe(rb2, carryingBoolName, false);    // ★ 오토캐치 OFF
+            if (!string.IsNullOrEmpty(carryEndTriggerName))
+                AnimatorSetTriggerSafe(rb2, carryEndTriggerName);
+            else if (!string.IsNullOrEmpty(carryEndStateName))
+                rb2.CrossFadeInFixedTime(carryEndStateName, 0.05f, 0, 0f);
+        }
 
         // 지면/공중에 따라 throw / jumpthrow 선택
         bool groundedNow = IsGroundedStrictSmall();
@@ -1384,6 +1591,140 @@ public class PlayerMouseMovement : MonoBehaviour
 
     // 외부에서 쓸 수 있도록 래퍼
     public bool IsGroundedStrictSmall_Public() => IsGroundedStrictSmall();
+    // P1 머리 위 ‘캐치 영역’과 P2의 바디가 겹치면 즉시 캐리로 스냅
+
+    private bool CanEnterAutoCatchGate_Body(Bounds p1Body, Bounds p2Body)
+    {
+        if (Time.time < autoCatchSuppressUntil) return false;
+        if (Time.time < nextAutoCatchAllowedAt) return false;
+        if (otherPlayer == null || otherPlayer.rb == null) return false;
+
+        // 던지기 딜레이 중이면 금지
+        if (!otherPlayer.rb.simulated) return false;
+
+        // P1이 바쁜 상태(공격/입력락/컷씬 등)면 금지
+        if (autoCatchDisallowIfP1Busy && (AttackLocksInput() || lockedall || SpiralBoxWipe.IsBusy)) return false;
+
+        // P2가 숨김 상태면 금지
+        if (autoCatchDisallowIfP2Hidden && !AnyRendererVisible(otherPlayer.gameObject)) return false;
+
+        // 던진 뒤 창만 허용 옵션
+        if (onlyCatchDuringThrowWindow && !(otherPlayer.ballisticThrowActive && !otherPlayer.IsGroundedStrictSmall_Public()))
+            return false;
+
+        // 내려오는 중만 허용 옵션
+        if (autoCatchRequireP2Descending && otherPlayer.rb.linearVelocity.y > -0.01f) return false;
+
+        // 사이에 지형/트랩 끼임 금지(옵션)
+        if (autoCatchDisallowIfBlockingCeiling)
+        {
+            Vector2 from = p2Body.center;
+            Vector2 to = p1Body.center;
+            Vector2 dir = to - from;
+            float dist = dir.magnitude;
+            if (dist > 0.001f)
+            {
+                dir /= dist;
+                float width = Mathf.Max(0.10f, Mathf.Min(p1Body.size.x, p2Body.size.x) * 0.5f);
+                var hit = Physics2D.BoxCast(from, new Vector2(width, 0.08f), 0f, dir, dist, autoCatchObstructionMask);
+#if UNITY_EDITOR
+                Debug.DrawLine(from, to, hit ? Color.red : Color.green, 0f);
+#endif
+                if (hit.collider) return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+    private void TryAutoCatchMidair()
+    {
+        if (otherPlayer == null || bodyCollider == null || otherPlayer.bodyCollider == null) return;
+
+        // 던지기 딜레이 중(물리 off)면 금지
+        if (otherPlayer.rb != null && !otherPlayer.rb.simulated) return;
+
+        // THROW 전용 옵션이면 창 유효성 확인
+        bool throwWindow = otherPlayer.ballisticThrowActive && !otherPlayer.IsGroundedStrictSmall_Public();
+        if (onlyCatchDuringThrowWindow && !throwWindow) return;
+
+        // === 몸 전체 박스(여유 포함)로 판정 ===
+        Bounds b1 = bodyCollider.bounds;               // P1 몸
+        Bounds b2 = otherPlayer.bodyCollider.bounds;   // P2 몸
+
+        // P1의 바디 박스를 약간 확장해서 캐치 윈도우 완화
+        Bounds catchBox = new Bounds(b1.center, b1.size + new Vector3(bodyCatchPadding.x, bodyCatchPadding.y, 0f));
+        bool intersects = catchBox.Intersects(b2);
+        if (!intersects) return;
+
+        // 게이트(최소한의 안전 조건만) 통과 확인
+        if (!CanEnterAutoCatchGate_Body(b1, b2)) return;
+
+        // 스냅 캐치 & 시점 P1 강제
+        SnapCatchOtherMidair();
+        ForceViewToP1IfNeeded();
+
+        nextAutoCatchAllowedAt = Time.time + autoCatchCooldown;
+    }
+
+
+    private void ForceViewToP1IfNeeded()
+    {
+        if (!autoForceViewToP1OnCatch) return;
+
+        bool switched = false;
+        if (swap != null)
+        {
+            // 시점이 P2면 P1로 전환
+            if (swap.charSelect != SwapController.PlayerChar.P1)
+            {
+                try { swap.charSelect = SwapController.PlayerChar.P1; switched = true; }
+                catch { /* 읽기전용이면 UnityEvent로 처리 */ }
+            }
+        }
+
+        if (!switched)
+        {
+            // 카메라 컨트롤러에 직접 바인딩된 훅 호출(선택)
+            onForceViewToP1?.Invoke();
+        }
+    }
+    // 애니 없이 곧장 '캐리 상태' 세팅 (StartCarry와 유사하지만 락/모션 없음)
+    private void SnapCatchOtherMidair()
+    {
+        if (otherPlayer == null) return;
+
+        otherPlayer.rb.linearVelocity = Vector2.zero;
+        otherPlayer.rb.simulated = false;
+        otherPlayer.isCarried = true;
+        otherPlayer.ballisticThrowActive = false;
+        if (rb2) rb2.SetBool("ground", true);
+
+        if (otherPlayer.rb2)
+        {
+            AnimatorSetBoolSafe(otherPlayer.rb2, "throwe", false);
+            AnimatorSetBoolSafe(otherPlayer.rb2, "throwed", false);
+        }
+
+        SetOtherPlayerVisible(false);
+
+        otherOriginalParent = otherPlayer.transform.parent;
+        otherPlayer.transform.SetParent(this.transform, true);
+        otherPlayer.transform.position = transform.position + new Vector3(0f, carryOffsetY, 0f);
+
+        isCarrying = true;
+        carryset = true;
+
+        // ★ 오토캐치: 'carrying'만 On
+        if (rb2)
+        {
+            AnimatorSetBoolSafe(rb2, carryingBoolName, true);
+            // 수동 캐리용 'carry'는 건드리지 않음
+        }
+    }
+
 
     private void SetFrictionless(bool on)
     {
@@ -1413,6 +1754,128 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+    // 머리 위 슬라임 감지
+    private bool TouchingSlimeCeilingCast(out RaycastHit2D upHit)
+    {
+        upHit = default;
+        if (!bodyCollider) return false;
+
+        // 1) Collider.Cast로 머리 위 3~4cm 체크
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = slimeLayerMask, useTriggers = true };
+        RaycastHit2D[] hits = new RaycastHit2D[2];
+        int cnt = bodyCollider.Cast(Vector2.up, filter, hits, 0.04f);
+        if (cnt > 0) { upHit = hits[0]; return true; }
+
+        // 2) 보강: 아주 얇은 박스로 한 번 더
+        Bounds b = bodyCollider.bounds;
+        Vector2 size = new Vector2(b.size.x * 0.9f, 0.06f);
+        Vector2 center = new Vector2(b.center.x, b.max.y + size.y * 0.5f);
+        var col = Physics2D.OverlapBox(center, size, 0f, slimeMask);
+
+#if UNITY_EDITOR
+        Color c = col ? Color.green : Color.red;
+        Debug.DrawLine(new Vector2(center.x - size.x * 0.5f, center.y),
+                       new Vector2(center.x + size.x * 0.5f, center.y), c, 0f, false);
+#endif
+
+        if (col)
+        {
+            // 점만 필요하니 간단 레이로 보정
+            upHit = Physics2D.Raycast(new Vector2(b.center.x, b.max.y), Vector2.up, 0.08f, slimeMask);
+            return true;
+        }
+        return false;
+    }
+
+    private void StartCeilingStick(RaycastHit2D upHit)
+    {
+        stickingToCeiling = true;
+        ceilingStickStartTime = Time.time;
+        ceilingReleaseUntil = -1f;
+
+        lastCeilingY = upHit.collider ? upHit.point.y : bodyCollider.bounds.max.y + 0.02f;
+
+        // 중력 끄고 Y속도 0으로(슬라이드 방지)
+        rb.gravityScale = 0f;
+        var v = rb.linearVelocity;
+        v.y = 0f;
+        rb.linearVelocity = v;
+
+        // 간격 맞춰 스냅
+        float targetTop = lastCeilingY - ceilingKeepGap;
+        float top = bodyCollider.bounds.max.y;
+        float dy = targetTop - top;
+        if (Mathf.Abs(dy) > 0.0005f)
+            rb.position = rb.position + new Vector2(0f, dy);
+    }
+
+    private void BeginCeilingRelease()
+    {
+        if (!stickingToCeiling) return;
+        stickingToCeiling = false;
+
+        // 0 → baseGravityFall로 부드럽게 복원
+        ceilingReleaseUntil = Time.time + ceilingReleaseFade;
+
+        // 같은 프레임 재부착 방지 & 살짝 아래로 밀어줌
+        ignoreCeilingUntil = Time.time + ceilingRestickBlock;
+        var v = rb.linearVelocity;
+        v.y = Mathf.Min(v.y, -0.1f);
+        rb.linearVelocity = v;
+    }
+
+    private void EndCeilingStick(bool forceDive)
+    {
+        stickingToCeiling = false;
+        ceilingReleaseUntil = -1f;
+        ignoreCeilingUntil = Time.time + ceilingRestickBlock;
+
+        if (forceDive)
+        {
+            // 즉시 급강하
+            rb.gravityScale = diveGravityScale;
+            var v = rb.linearVelocity;
+            v.y = Mathf.Min(v.y, diveSpeed);
+            rb.linearVelocity = v;
+            isDiving = true;
+        }
+        else
+        {
+            // 즉시 해제(자연 낙하)
+            rb.gravityScale = baseGravityFall;
+            var v = rb.linearVelocity;
+            v.y = Mathf.Min(v.y, -0.1f);
+            rb.linearVelocity = v;
+        }
+    }
+
+
+    private static bool AnimatorHasParam(Animator a, string name, AnimatorControllerParameterType t)
+    {
+        if (!a || string.IsNullOrEmpty(name)) return false;
+        foreach (var p in a.parameters) if (p.name == name && p.type == t) return true;
+        return false;
+    }
+    private static void AnimatorSetBoolSafe(Animator a, string name, bool v)
+    {
+        if (AnimatorHasParam(a, name, AnimatorControllerParameterType.Bool)) a.SetBool(name, v);
+    }
+    private static void AnimatorSetTriggerSafe(Animator a, string name)
+    {
+        if (AnimatorHasParam(a, name, AnimatorControllerParameterType.Trigger)) a.SetTrigger(name);
+    }
+    private static bool AnyRendererVisible(GameObject go)
+    {
+        if (!go) return false;
+        var rends = go.GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < rends.Length; i++) if (rends[i].enabled) return true;
+        return false;
+    }
+
+    // 머리 위 슬라임 감지 (Ceiling)
+    
+
+    
     // === 슬라임 접촉 감지: Collider.Cast 기반 ===
     private bool TouchingSlimeSideCast(int sign)
     {
