@@ -1,0 +1,5031 @@
+fileFormatVersion: 2
+guid: c6b71fc9938c91144aba8c6d0a92ed53
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8530498889290061451
+    second: Male_spritesheet_pull_lever_0
+  - first:
+      213: -4578881983849957942
+    second: Male_spritesheet_pull_lever_1
+  - first:
+      213: 4200359629858579824
+    second: Male_spritesheet_pull_lever_2
+  - first:
+      213: -4476012860422476354
+    second: Male_spritesheet_pull_lever_3
+  - first:
+      213: -7682892653773829415
+    second: Male_spritesheet_pull_lever_4
+  - first:
+      213: -156227420983907643
+    second: Male_spritesheet_pull_lever_5
+  - first:
+      213: -2239480483695077501
+    second: Male_spritesheet_pull_lever_6
+  - first:
+      213: 7545794014194590838
+    second: Male_spritesheet_pull_lever_7
+  - first:
+      213: -4373916742895573596
+    second: Male_spritesheet_pull_lever_8
+  - first:
+      213: 6136507224211245449
+    second: Male_spritesheet_pull_lever_9
+  - first:
+      213: -6334075155179030133
+    second: Male_spritesheet_pull_lever_10
+  - first:
+      213: -1916613134984188455
+    second: Male_spritesheet_pull_lever_11
+  - first:
+      213: 2186778086258196830
+    second: Male_spritesheet_pull_lever_12
+  - first:
+      213: -4273869811891766508
+    second: Male_spritesheet_pull_lever_13
+  - first:
+      213: -4109037844943808154
+    second: Male_spritesheet_pull_lever_14
+  - first:
+      213: -6110149227737741782
+    second: Male_spritesheet_pull_lever_15
+  - first:
+      213: -8923927630702337791
+    second: Male_spritesheet_pull_lever_16
+  - first:
+      213: -5151845460824723571
+    second: Male_spritesheet_pull_lever_17
+  - first:
+      213: -9164569978846524162
+    second: Male_spritesheet_pull_lever_18
+  - first:
+      213: -8327055911970496693
+    second: Male_spritesheet_pull_lever_19
+  - first:
+      213: -746235360966775423
+    second: Male_spritesheet_pull_lever_20
+  - first:
+      213: 3737443826458114636
+    second: Male_spritesheet_pull_lever_21
+  - first:
+      213: -7893092271841238114
+    second: Male_spritesheet_pull_lever_22
+  - first:
+      213: -820396752925966866
+    second: Male_spritesheet_pull_lever_23
+  - first:
+      213: -8378435461649530056
+    second: Male_spritesheet_pull_lever_24
+  - first:
+      213: -158026153688928631
+    second: Male_spritesheet_pull_lever_25
+  - first:
+      213: -1611095390812275185
+    second: Male_spritesheet_pull_lever_26
+  - first:
+      213: 3913842505513623452
+    second: Male_spritesheet_pull_lever_27
+  - first:
+      213: -7116739347580351290
+    second: Male_spritesheet_pull_lever_28
+  - first:
+      213: -7865048357292380378
+    second: Male_spritesheet_pull_lever_29
+  - first:
+      213: -3433839666387887031
+    second: Male_spritesheet_pull_lever_30
+  - first:
+      213: 7242573017829538989
+    second: Male_spritesheet_pull_lever_31
+  - first:
+      213: 1607200195431061809
+    second: Male_spritesheet_pull_lever_32
+  - first:
+      213: -6804170407970041464
+    second: Male_spritesheet_pull_lever_33
+  - first:
+      213: 2283154681102233144
+    second: Male_spritesheet_pull_lever_34
+  - first:
+      213: 4420378231002972206
+    second: Male_spritesheet_pull_lever_35
+  - first:
+      213: -2748768635301634202
+    second: Male_spritesheet_pull_lever_36
+  - first:
+      213: 5301530567057049231
+    second: Male_spritesheet_pull_lever_37
+  - first:
+      213: -3743800131956206091
+    second: Male_spritesheet_pull_lever_38
+  - first:
+      213: 1695732830355015407
+    second: Male_spritesheet_pull_lever_39
+  - first:
+      213: -1630731229051337865
+    second: Male_spritesheet_pull_lever_40
+  - first:
+      213: -1283937328707095451
+    second: Male_spritesheet_pull_lever_41
+  - first:
+      213: -8043731797559468458
+    second: Male_spritesheet_pull_lever_42
+  - first:
+      213: -6976350348083237003
+    second: Male_spritesheet_pull_lever_43
+  - first:
+      213: 7785149023027926845
+    second: Male_spritesheet_pull_lever_44
+  - first:
+      213: 2941978735846661380
+    second: Male_spritesheet_pull_lever_45
+  - first:
+      213: 8071828239272068145
+    second: Male_spritesheet_pull_lever_46
+  - first:
+      213: -877026969978928012
+    second: Male_spritesheet_pull_lever_47
+  - first:
+      213: 2301325534373118349
+    second: Male_spritesheet_pull_lever_48
+  - first:
+      213: 9103243681567936464
+    second: Male_spritesheet_pull_lever_49
+  - first:
+      213: 3423982976924953979
+    second: Male_spritesheet_pull_lever_50
+  - first:
+      213: -6315943724079220188
+    second: Male_spritesheet_pull_lever_51
+  - first:
+      213: 5518019889080140209
+    second: Male_spritesheet_pull_lever_52
+  - first:
+      213: -4332578647190139983
+    second: Male_spritesheet_pull_lever_53
+  - first:
+      213: 7158138598849201235
+    second: Male_spritesheet_pull_lever_54
+  - first:
+      213: -7773585326716772476
+    second: Male_spritesheet_pull_lever_55
+  - first:
+      213: 5388526219242764118
+    second: Male_spritesheet_pull_lever_56
+  - first:
+      213: 2563614161529952920
+    second: Male_spritesheet_pull_lever_57
+  - first:
+      213: -6440773371838786870
+    second: Male_spritesheet_pull_lever_58
+  - first:
+      213: -4839871066479612447
+    second: Male_spritesheet_pull_lever_59
+  - first:
+      213: 2138813538267032740
+    second: Male_spritesheet_pull_lever_60
+  - first:
+      213: -8067121807175886995
+    second: Male_spritesheet_pull_lever_61
+  - first:
+      213: -5068086289584560585
+    second: Male_spritesheet_pull_lever_62
+  - first:
+      213: 4384301401416607670
+    second: Male_spritesheet_pull_lever_63
+  - first:
+      213: -1974325973918041170
+    second: Male_spritesheet_pull_lever_64
+  - first:
+      213: 30127386006777802
+    second: Male_spritesheet_pull_lever_65
+  - first:
+      213: -2464495053128190402
+    second: Male_spritesheet_pull_lever_66
+  - first:
+      213: 5522264731843773047
+    second: Male_spritesheet_pull_lever_67
+  - first:
+      213: -5271660736185928629
+    second: Male_spritesheet_pull_lever_68
+  - first:
+      213: 194265035489935655
+    second: Male_spritesheet_pull_lever_69
+  - first:
+      213: 1321036901559115182
+    second: Male_spritesheet_pull_lever_70
+  - first:
+      213: -2120381612640030103
+    second: Male_spritesheet_pull_lever_71
+  - first:
+      213: 7269880177554469111
+    second: Male_spritesheet_pull_lever_72
+  - first:
+      213: 5794168219086979127
+    second: Male_spritesheet_pull_lever_73
+  - first:
+      213: -6033255774342960664
+    second: Male_spritesheet_pull_lever_74
+  - first:
+      213: 5683231960272311031
+    second: Male_spritesheet_pull_lever_75
+  - first:
+      213: 7321786226907099012
+    second: Male_spritesheet_pull_lever_76
+  - first:
+      213: 6553235495043155768
+    second: Male_spritesheet_pull_lever_77
+  - first:
+      213: 6942921704005385405
+    second: Male_spritesheet_pull_lever_78
+  - first:
+      213: 9143139097222736164
+    second: Male_spritesheet_pull_lever_79
+  - first:
+      213: 4808855662403738240
+    second: Male_spritesheet_pull_lever_80
+  - first:
+      213: 3648417354242244573
+    second: Male_spritesheet_pull_lever_81
+  - first:
+      213: -2683483014417598345
+    second: Male_spritesheet_pull_lever_82
+  - first:
+      213: -1039961190774637024
+    second: Male_spritesheet_pull_lever_83
+  - first:
+      213: -3910262201942378980
+    second: Male_spritesheet_pull_lever_84
+  - first:
+      213: -2369940429428556160
+    second: Male_spritesheet_pull_lever_85
+  - first:
+      213: -8613643759655772421
+    second: Male_spritesheet_pull_lever_86
+  - first:
+      213: 3209777859166055685
+    second: Male_spritesheet_pull_lever_87
+  - first:
+      213: -1222487288907236484
+    second: Male_spritesheet_pull_lever_88
+  - first:
+      213: -4933690293468550627
+    second: Male_spritesheet_pull_lever_89
+  - first:
+      213: -7921820677495373673
+    second: Male_spritesheet_pull_lever_90
+  - first:
+      213: -2378041110601816080
+    second: Male_spritesheet_pull_lever_91
+  - first:
+      213: 4144654125564594401
+    second: Male_spritesheet_pull_lever_92
+  - first:
+      213: -2518830977514321222
+    second: Male_spritesheet_pull_lever_93
+  - first:
+      213: -2264462811248523715
+    second: Male_spritesheet_pull_lever_94
+  - first:
+      213: 7083902004558632541
+    second: Male_spritesheet_pull_lever_95
+  - first:
+      213: 1586030651257777413
+    second: Male_spritesheet_pull_lever_96
+  - first:
+      213: 9199801640478048571
+    second: Male_spritesheet_pull_lever_97
+  - first:
+      213: 5636811956404757765
+    second: Male_spritesheet_pull_lever_98
+  - first:
+      213: -3605601053253374775
+    second: Male_spritesheet_pull_lever_99
+  - first:
+      213: -3033100386791456852
+    second: Male_spritesheet_pull_lever_100
+  - first:
+      213: -6061898298287193690
+    second: Male_spritesheet_pull_lever_101
+  - first:
+      213: -8972173187892708436
+    second: Male_spritesheet_pull_lever_102
+  - first:
+      213: -7934405881984882645
+    second: Male_spritesheet_pull_lever_103
+  - first:
+      213: -6994362093550845808
+    second: Male_spritesheet_pull_lever_104
+  - first:
+      213: 1714703427360854457
+    second: Male_spritesheet_pull_lever_105
+  - first:
+      213: -7263010749018453635
+    second: Male_spritesheet_pull_lever_106
+  - first:
+      213: 3483635975393002786
+    second: Male_spritesheet_pull_lever_107
+  - first:
+      213: 2912549963245700591
+    second: Male_spritesheet_pull_lever_108
+  - first:
+      213: 5541593541080919296
+    second: Male_spritesheet_pull_lever_109
+  - first:
+      213: 5718811247975373411
+    second: Male_spritesheet_pull_lever_110
+  - first:
+      213: 2347372333462756593
+    second: Male_spritesheet_pull_lever_111
+  - first:
+      213: -3222509769526620902
+    second: Male_spritesheet_pull_lever_112
+  - first:
+      213: 9163240989577313229
+    second: Male_spritesheet_pull_lever_113
+  - first:
+      213: 1669680741887135495
+    second: Male_spritesheet_pull_lever_114
+  - first:
+      213: 6325267064552099603
+    second: Male_spritesheet_pull_lever_115
+  - first:
+      213: 490210211132896013
+    second: Male_spritesheet_pull_lever_116
+  - first:
+      213: -13324851869912155
+    second: Male_spritesheet_pull_lever_117
+  - first:
+      213: -338252365138419079
+    second: Male_spritesheet_pull_lever_118
+  - first:
+      213: 5703614856757677420
+    second: Male_spritesheet_pull_lever_119
+  - first:
+      213: -9210576185491848568
+    second: Male_spritesheet_pull_lever_120
+  - first:
+      213: -4356676139561569604
+    second: Male_spritesheet_pull_lever_121
+  - first:
+      213: 901737568535315669
+    second: Male_spritesheet_pull_lever_122
+  - first:
+      213: -3179194969688056289
+    second: Male_spritesheet_pull_lever_123
+  - first:
+      213: 6126661549324981101
+    second: Male_spritesheet_pull_lever_124
+  - first:
+      213: -4497764809475492966
+    second: Male_spritesheet_pull_lever_125
+  - first:
+      213: 8731326944789558738
+    second: Male_spritesheet_pull_lever_126
+  - first:
+      213: -1530028127828168244
+    second: Male_spritesheet_pull_lever_127
+  - first:
+      213: 899449705119072059
+    second: Male_spritesheet_pull_lever_128
+  - first:
+      213: 5290759621441964386
+    second: Male_spritesheet_pull_lever_129
+  - first:
+      213: 4734727633620178614
+    second: Male_spritesheet_pull_lever_130
+  - first:
+      213: 3892624873287902308
+    second: Male_spritesheet_pull_lever_131
+  - first:
+      213: 3245190819422313023
+    second: Male_spritesheet_pull_lever_132
+  - first:
+      213: -5287276217816191109
+    second: Male_spritesheet_pull_lever_133
+  - first:
+      213: -3890168979539818767
+    second: Male_spritesheet_pull_lever_134
+  - first:
+      213: -5694024322678319101
+    second: Male_spritesheet_pull_lever_135
+  - first:
+      213: 6410717580243328272
+    second: Male_spritesheet_pull_lever_136
+  - first:
+      213: 2102739298713860084
+    second: Male_spritesheet_pull_lever_137
+  - first:
+      213: 1323016692332234521
+    second: Male_spritesheet_pull_lever_138
+  - first:
+      213: -4139192014192668495
+    second: Male_spritesheet_pull_lever_139
+  - first:
+      213: -4470845600344438303
+    second: Male_spritesheet_pull_lever_140
+  - first:
+      213: 7950203896960333953
+    second: Male_spritesheet_pull_lever_141
+  - first:
+      213: -8787383650326246974
+    second: Male_spritesheet_pull_lever_142
+  - first:
+      213: -5928019957886085321
+    second: Male_spritesheet_pull_lever_143
+  - first:
+      213: -4842550300414506437
+    second: Male_spritesheet_pull_lever_144
+  - first:
+      213: -6973207522434861348
+    second: Male_spritesheet_pull_lever_145
+  - first:
+      213: -7971134334750057452
+    second: Male_spritesheet_pull_lever_146
+  - first:
+      213: -6876341355911971768
+    second: Male_spritesheet_pull_lever_147
+  - first:
+      213: 7674673778414858284
+    second: Male_spritesheet_pull_lever_148
+  - first:
+      213: -2129766805780782022
+    second: Male_spritesheet_pull_lever_149
+  - first:
+      213: -8669340745998046542
+    second: Male_spritesheet_pull_lever_150
+  - first:
+      213: 8461718996429665540
+    second: Male_spritesheet_pull_lever_151
+  - first:
+      213: -3474221833037796742
+    second: Male_spritesheet_pull_lever_152
+  - first:
+      213: -2281886768855858502
+    second: Male_spritesheet_pull_lever_153
+  - first:
+      213: 3354233975930908281
+    second: Male_spritesheet_pull_lever_154
+  - first:
+      213: -6659524678966705709
+    second: Male_spritesheet_pull_lever_155
+  - first:
+      213: -2594693030988364814
+    second: Male_spritesheet_pull_lever_156
+  - first:
+      213: -6420511994564790219
+    second: Male_spritesheet_pull_lever_157
+  - first:
+      213: 196453232108076344
+    second: Male_spritesheet_pull_lever_158
+  - first:
+      213: 4321048582007671829
+    second: Male_spritesheet_pull_lever_159
+  - first:
+      213: 7280963913496928287
+    second: Male_spritesheet_pull_lever_160
+  - first:
+      213: -3613120899637560307
+    second: Male_spritesheet_pull_lever_161
+  - first:
+      213: -2978135713055390347
+    second: Male_spritesheet_pull_lever_162
+  - first:
+      213: -1774015330858490333
+    second: Male_spritesheet_pull_lever_163
+  - first:
+      213: -7916537485270613534
+    second: Male_spritesheet_pull_lever_164
+  - first:
+      213: -6044599964061875823
+    second: Male_spritesheet_pull_lever_165
+  - first:
+      213: -3322491751128482408
+    second: Male_spritesheet_pull_lever_166
+  - first:
+      213: 5590946396516586494
+    second: Male_spritesheet_pull_lever_167
+  - first:
+      213: -143101739195548066
+    second: Male_spritesheet_pull_lever_168
+  - first:
+      213: -4453816710938617809
+    second: Male_spritesheet_pull_lever_169
+  - first:
+      213: 1065496967653036714
+    second: Male_spritesheet_pull_lever_170
+  - first:
+      213: -7227474733211872927
+    second: Male_spritesheet_pull_lever_171
+  - first:
+      213: -8625335491788904827
+    second: Male_spritesheet_pull_lever_172
+  - first:
+      213: 4588780352861407871
+    second: Male_spritesheet_pull_lever_173
+  - first:
+      213: -4376585081694127772
+    second: Male_spritesheet_pull_lever_174
+  - first:
+      213: -4084774125052717771
+    second: Male_spritesheet_pull_lever_175
+  - first:
+      213: 1349901248276251287
+    second: Male_spritesheet_pull_lever_176
+  - first:
+      213: 67421315247734760
+    second: Male_spritesheet_pull_lever_177
+  - first:
+      213: 7346209968178804773
+    second: Male_spritesheet_pull_lever_178
+  - first:
+      213: -5050526579263505206
+    second: Male_spritesheet_pull_lever_179
+  - first:
+      213: 1510174368416137104
+    second: Male_spritesheet_pull_lever_180
+  - first:
+      213: -3390581704755139542
+    second: Male_spritesheet_pull_lever_181
+  - first:
+      213: -8715518776725370558
+    second: Male_spritesheet_pull_lever_182
+  - first:
+      213: -1204771128577601389
+    second: Male_spritesheet_pull_lever_183
+  - first:
+      213: 8759527484091647477
+    second: Male_spritesheet_pull_lever_184
+  - first:
+      213: 3660143558915807346
+    second: Male_spritesheet_pull_lever_185
+  - first:
+      213: -3548620935444358787
+    second: Male_spritesheet_pull_lever_186
+  - first:
+      213: 2867735932017181271
+    second: Male_spritesheet_pull_lever_187
+  - first:
+      213: -1479694330750557435
+    second: Male_spritesheet_pull_lever_188
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_0
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 2303
+        width: 38
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b869ff41b8b626670800000000000000
+      internalID: 8530498889290061451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_1
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac5ff2c781b8470c0800000000000000
+      internalID: -4578881983849957942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_2
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 075ac9234dcaa4a30800000000000000
+      internalID: 4200359629858579824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_3
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebd2074b40202e1c0800000000000000
+      internalID: -4476012860422476354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_4
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9da4a5c46d1e06590800000000000000
+      internalID: -7682892653773829415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_5
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ca24140df7f4ddf0800000000000000
+      internalID: -156227420983907643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_6
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3875fe78d54cbe0e0800000000000000
+      internalID: -2239480483695077501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_7
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67466543dab08b860800000000000000
+      internalID: 7545794014194590838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_8
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a5639675e9bc43c0800000000000000
+      internalID: -4373916742895573596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_9
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 2303
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 989cabccec0492550800000000000000
+      internalID: 6136507224211245449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_10
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b893deaa438d818a0800000000000000
+      internalID: -6334075155179030133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_11
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dd6b652282d665e0800000000000000
+      internalID: -1916613134984188455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_12
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e51470a551ff85e10800000000000000
+      internalID: 2186778086258196830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_13
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41bfcedcc0a20b4c0800000000000000
+      internalID: -4273869811891766508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_14
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 669dc73c9d3c9f6c0800000000000000
+      internalID: -4109037844943808154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_15
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a26801c76a3643ba0800000000000000
+      internalID: -6110149227737741782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_16
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 101a1b2d917d72480800000000000000
+      internalID: -8923927630702337791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_17
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8f65d959d7f088b0800000000000000
+      internalID: -5151845460824723571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_18
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efcc4a30928e0d080800000000000000
+      internalID: -9164569978846524162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_19
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 2175
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4f9e2644ca507c80800000000000000
+      internalID: -8327055911970496693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_20
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 2047
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18d6db694e6d4a5f0800000000000000
+      internalID: -746235360966775423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_21
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4a330cbb511ed330800000000000000
+      internalID: 3737443826458114636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_22
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e93a58de56a167290800000000000000
+      internalID: -7893092271841238114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_23
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eedb6f6ff7d5d94f0800000000000000
+      internalID: -820396752925966866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_24
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83308d6a651d9bb80800000000000000
+      internalID: -8378435461649530056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_25
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98e662cec049ecdf0800000000000000
+      internalID: -158026153688928631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_26
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0e7d5b274d34a9e0800000000000000
+      internalID: -1611095390812275185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_27
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 2047
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9fd6f7b503c05630800000000000000
+      internalID: 3913842505513623452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_28
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 2047
+        width: 17
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cc8d6cf4434c3d90800000000000000
+      internalID: -7116739347580351290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_29
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 2047
+        width: 18
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62f615a903cb9d290800000000000000
+      internalID: -7865048357292380378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_30
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1919
+        width: 19
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94cdd45440d8850d0800000000000000
+      internalID: -3433839666387887031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_31
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1919
+        width: 20
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dacfe8379c9c28460800000000000000
+      internalID: 7242573017829538989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_32
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1919
+        width: 21
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1395b9bff0ced4610800000000000000
+      internalID: 1607200195431061809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_33
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1919
+        width: 23
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88198b1601bb291a0800000000000000
+      internalID: -6804170407970041464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_34
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1919
+        width: 23
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83e6e56f5156faf10800000000000000
+      internalID: 2283154681102233144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_35
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1919
+        width: 24
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e204dc7b496585d30800000000000000
+      internalID: 4420378231002972206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_36
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1919
+        width: 25
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66f5c136d796ad9d0800000000000000
+      internalID: -2748768635301634202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_37
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1919
+        width: 25
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f868f4746f1d29940800000000000000
+      internalID: 5301530567057049231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_38
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1919
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f590b09d995b0cc0800000000000000
+      internalID: -3743800131956206091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_39
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1919
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe6474b5604788710800000000000000
+      internalID: 1695732830355015407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_40
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7734240569a7e59e0800000000000000
+      internalID: -1630731229051337865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_41
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 564bc885dc98e2ee0800000000000000
+      internalID: -1283937328707095451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_42
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65e14f13c8cee5090800000000000000
+      internalID: -8043731797559468458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_43
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57f63d912560f2f90800000000000000
+      internalID: -6976350348083237003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_44
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d371f09f9c76a0c60800000000000000
+      internalID: 7785149023027926845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_45
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40d94eea21204d820800000000000000
+      internalID: 2941978735846661380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_46
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13447c96405e40070800000000000000
+      internalID: 8071828239272068145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_47
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47408f31e9c24d3f0800000000000000
+      internalID: -877026969978928012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_48
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8188dc6163ffef10800000000000000
+      internalID: 2301325534373118349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_49
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1791
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0df0da7b5e7355e70800000000000000
+      internalID: 9103243681567936464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_50
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7da890606e648f20800000000000000
+      internalID: 3423982976924953979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_51
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42a76e075a24958a0800000000000000
+      internalID: -6315943724079220188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_52
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b189287ad1f39c40800000000000000
+      internalID: 5518019889080140209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_53
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb0ac4eca69fd3c0800000000000000
+      internalID: -4332578647190139983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_54
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3544b655121d65360800000000000000
+      internalID: 7158138598849201235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_55
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f9bd1e45dae1490800000000000000
+      internalID: -7773585326716772476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_56
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 657f7d8fb04e7ca40800000000000000
+      internalID: 5388526219242764118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_57
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89a572f4f79c39320800000000000000
+      internalID: 2563614161529952920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_58
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac211c43eb6cd96a0800000000000000
+      internalID: -6440773371838786870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_59
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1663
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1edaac368e255dcb0800000000000000
+      internalID: -4839871066479612447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_60
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ace335c4979ead10800000000000000
+      internalID: 2138813538267032740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_61
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6759733573db0090800000000000000
+      internalID: -8067121807175886995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_62
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 736e84a1f5a8aa9b0800000000000000
+      internalID: -5068086289584560585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_63
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b72fa345ea28dc30800000000000000
+      internalID: 4384301401416607670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_64
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eabb9c5bcf8c994e0800000000000000
+      internalID: -1974325973918041170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_65
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1535
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acfe1fca2b80b6000800000000000000
+      internalID: 30127386006777802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_66
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e36369f7eca5ccdd0800000000000000
+      internalID: -2464495053128190402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_67
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7724731f38603ac40800000000000000
+      internalID: 5522264731843773047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_68
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b44734bad7c47d6b0800000000000000
+      internalID: -5271660736185928629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_69
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1535
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72108a0450b22b200800000000000000
+      internalID: 194265035489935655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_70
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ead1d941014455210800000000000000
+      internalID: 1321036901559115182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_71
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96232565824e292e0800000000000000
+      internalID: -2120381612640030103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_72
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f0b9c6018dc3e460800000000000000
+      internalID: 7269880177554469111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_73
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7308983eb45096050800000000000000
+      internalID: 5794168219086979127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_74
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e9a63bb6d1954ca0800000000000000
+      internalID: -6033255774342960664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_75
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f29d285b55eede40800000000000000
+      internalID: 5683231960272311031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_76
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f2528e7c53c9560800000000000000
+      internalID: 7321786226907099012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_77
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 837478356f4c1fa50800000000000000
+      internalID: 6553235495043155768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_78
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1407
+        width: 26
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbc379e21863a5060800000000000000
+      internalID: 6942921704005385405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_79
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1407
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42962f50194f2ee70800000000000000
+      internalID: 9143139097222736164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_80
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08a53bd1fbc7cb240800000000000000
+      internalID: 4808855662403738240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_81
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddfbaf7e048c1a230800000000000000
+      internalID: 3648417354242244573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_82
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77838d48a6a52cad0800000000000000
+      internalID: -2683483014417598345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_83
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02e7fa39ec05191f0800000000000000
+      internalID: -1039961190774637024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_84
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c16769aae35fbb9c0800000000000000
+      internalID: -3910262201942378980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_85
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08ef2156cb74c1fd0800000000000000
+      internalID: -2369940429428556160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_86
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfe15fb33a0367880800000000000000
+      internalID: -8613643759655772421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_87
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50da18fe4fb6b8c20800000000000000
+      internalID: 3209777859166055685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_88
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7bf04aa94ad80fe0800000000000000
+      internalID: -1222487288907236484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_89
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1279
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1aa30261d2088bb0800000000000000
+      internalID: -4933690293468550627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_90
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7904b8fb01a001290800000000000000
+      internalID: -7921820677495373673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_91
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f7ad4595308ffed0800000000000000
+      internalID: -2378041110601816080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_92
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e88227c7f4c48930800000000000000
+      internalID: 4144654125564594401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_93
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aba420042905b0dd0800000000000000
+      internalID: -2518830977514321222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_94
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d36037022130390e0800000000000000
+      internalID: -2264462811248523715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_95
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d56156d47531f4260800000000000000
+      internalID: 7083902004558632541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_96
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50de9136976b20610800000000000000
+      internalID: 1586030651257777413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_97
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1151
+        width: 27
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3100c079d24caf70800000000000000
+      internalID: 9199801640478048571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_98
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1151
+        width: 28
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5052e27fb9af93e40800000000000000
+      internalID: 5636811956404757765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_99
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1151
+        width: 28
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ccee0302f456fdc0800000000000000
+      internalID: -3605601053253374775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_100
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1023
+        width: 28
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: caff13da44348e5d0800000000000000
+      internalID: -3033100386791456852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_101
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1023
+        width: 28
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a10c027d9fcfdba0800000000000000
+      internalID: -6061898298287193690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_102
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 1023
+        width: 28
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cabfe50b5007c7380800000000000000
+      internalID: -8972173187892708436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_103
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 1023
+        width: 28
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b28658c73e353e190800000000000000
+      internalID: -7934405881984882645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_104
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 1023
+        width: 28
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 090c17fcbb80fee90800000000000000
+      internalID: -6994362093550845808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_105
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 1023
+        width: 28
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b11dfaaea9dbc710800000000000000
+      internalID: 1714703427360854457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_106
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1023
+        width: 28
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7949e0743a943b90800000000000000
+      internalID: -7263010749018453635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_107
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 1023
+        width: 28
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2254218667c585030800000000000000
+      internalID: 3483635975393002786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_108
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 1023
+        width: 27
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe546dd92c47b6820800000000000000
+      internalID: 2912549963245700591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_109
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 1023
+        width: 27
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00d2ab907f1b7ec40800000000000000
+      internalID: 5541593541080919296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_110
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 895
+        width: 26
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36a941dc78c4d5f40800000000000000
+      internalID: 5718811247975373411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_111
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 895
+        width: 26
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fc90ab43ba839020800000000000000
+      internalID: 2347372333462756593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_112
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 895
+        width: 25
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1dc32e20785743d0800000000000000
+      internalID: -3222509769526620902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_113
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 895
+        width: 24
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcbfd0f812f5a2f70800000000000000
+      internalID: 9163240989577313229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_114
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 895
+        width: 24
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70f4e74d9c5eb2710800000000000000
+      internalID: 1669680741887135495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_115
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 895
+        width: 23
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31f0b1ce1ecd7c750800000000000000
+      internalID: 6325267064552099603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_116
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 895
+        width: 23
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0378dbf6939dc600800000000000000
+      internalID: 490210211132896013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_117
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 895
+        width: 22
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a3fb992e19a0dff0800000000000000
+      internalID: -13324851869912155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_118
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 895
+        width: 21
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9722d7b14494e4bf0800000000000000
+      internalID: -338252365138419079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_119
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 895
+        width: 20
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6d8ea04e7f472f40800000000000000
+      internalID: 5703614856757677420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_120
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 767
+        width: 19
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 882061f42c57d2080800000000000000
+      internalID: -9210576185491848568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_121
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 767
+        width: 18
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb2330c322af983c0800000000000000
+      internalID: -4356676139561569604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_122
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 767
+        width: 17
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d40c2d7a8d938c00800000000000000
+      internalID: 901737568535315669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_123
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 767
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1ed808e40b31e3d0800000000000000
+      internalID: -3179194969688056289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_124
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 767
+        width: 16
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d635f8af736460550800000000000000
+      internalID: 6126661549324981101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_125
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 767
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a93f5f76cbab491c0800000000000000
+      internalID: -4497764809475492966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_126
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 767
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d57af18897eb2970800000000000000
+      internalID: 8731326944789558738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_127
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 767
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc13270368f34cae0800000000000000
+      internalID: -1530028127828168244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_128
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 767
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3fb3f6cdbc7b7c00800000000000000
+      internalID: 899449705119072059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_129
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 767
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 269470418dd8c6940800000000000000
+      internalID: 5290759621441964386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_130
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b6182672b125b140800000000000000
+      internalID: 4734727633620178614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_131
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 464ec20c2b1650630800000000000000
+      internalID: 3892624873287902308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_132
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3a96044bdb390d20800000000000000
+      internalID: 3245190819422313023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_133
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7fe1b70b42df96b0800000000000000
+      internalID: -5287276217816191109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_134
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f609429ce7530ac0800000000000000
+      internalID: -3890168979539818767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_135
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3081358fb03caf0b0800000000000000
+      internalID: -5694024322678319101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_136
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01d51cd7ca177f850800000000000000
+      internalID: 6410717580243328272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_137
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f7f71b504e6e2d10800000000000000
+      internalID: 2102739298713860084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_138
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 917006a0cac4c5210800000000000000
+      internalID: 1323016692332234521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_139
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 639
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b099e02bc2ae86c0800000000000000
+      internalID: -4139192014192668495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_140
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e90ad13d9d54f1c0800000000000000
+      internalID: -4470845600344438303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_141
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1883f32825cc45e60800000000000000
+      internalID: 7950203896960333953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_142
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c98a39a021fc0680800000000000000
+      internalID: -8787383650326246974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_143
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73716cc91417bbda0800000000000000
+      internalID: -5928019957886085321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_144
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3a05d0a82ecbccb0800000000000000
+      internalID: -4842550300414506437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_145
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd6303834b03a3f90800000000000000
+      internalID: -6973207522434861348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_146
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41c9d403e87d06190800000000000000
+      internalID: -7971134334750057452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_147
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84cf98e18f35290a0800000000000000
+      internalID: -6876341355911971768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_148
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c203c69a32be18a60800000000000000
+      internalID: 7674673778414858284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_149
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 511
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a34a407cf5c8172e0800000000000000
+      internalID: -2129766805780782022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_150
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ba67fd068050b780800000000000000
+      internalID: -8669340745998046542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_151
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4057d5b58901e6570800000000000000
+      internalID: 8461718996429665540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_152
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7a20ea66a519cfc0800000000000000
+      internalID: -3474221833037796742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_153
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab2ceacd21c1550e0800000000000000
+      internalID: -2281886768855858502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_154
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e68e49702ac8e20800000000000000
+      internalID: 3354233975930908281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_155
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d10e31969d9493a0800000000000000
+      internalID: -6659524678966705709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_156
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f3c1c28f6ccdfbd0800000000000000
+      internalID: -2594693030988364814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_157
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 538b4d7bb52c5e6a0800000000000000
+      internalID: -6420511994564790219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_158
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83d77ca7c21f9b200800000000000000
+      internalID: 196453232108076344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_159
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 383
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51cc5cb9ac277fb30800000000000000
+      internalID: 4321048582007671829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_160
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f102c666a1e2b0560800000000000000
+      internalID: 7280963913496928287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_161
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0c30965fad9bddc0800000000000000
+      internalID: -3613120899637560307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_162
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 575cd6a09598ba6d0800000000000000
+      internalID: -2978135713055390347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_163
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 326251aa47e6167e0800000000000000
+      internalID: -1774015330858490333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_164
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e1816bc91fc22290800000000000000
+      internalID: -7916537485270613534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_165
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 191c0ccbb544d1ca0800000000000000
+      internalID: -6044599964061875823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_166
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89d32dc0b5324e1d0800000000000000
+      internalID: -3322491751128482408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_167
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef31f922028079d40800000000000000
+      internalID: 5590946396516586494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_168
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5e3284f9b9930ef0800000000000000
+      internalID: -143101739195548066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_169
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 255
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f281ec97c4dd032c0800000000000000
+      internalID: -4453816710938617809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_170
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa2173ac8d769ce00800000000000000
+      internalID: 1065496967653036714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_171
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1619bcfd50ad2bb90800000000000000
+      internalID: -7227474733211872927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_172
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5866a57b117ac4880800000000000000
+      internalID: -8625335491788904827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_173
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7a88942b6f9eaf30800000000000000
+      internalID: 4588780352861407871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_174
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 469f85c6e0f3343c0800000000000000
+      internalID: -4376585081694127772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_175
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53596884397ff47c0800000000000000
+      internalID: -4084774125052717771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_176
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 792cc518800dbb210800000000000000
+      internalID: 1349901248276251287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_177
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ef71a934578fe000800000000000000
+      internalID: 67421315247734760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_178
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5283bbe4b0bf2f560800000000000000
+      internalID: 7346209968178804773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_179
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 127
+        width: 15
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acc7452c5dce8e9b0800000000000000
+      internalID: -5050526579263505206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_180
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 15
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09ff75a369735f410800000000000000
+      internalID: 1510174368416137104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_181
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 0
+        width: 15
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2ca12257eb32f0d0800000000000000
+      internalID: -3390581704755139542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_182
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 0
+        width: 15
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 249890079d14c0780800000000000000
+      internalID: -8715518776725370558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_183
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 0
+        width: 15
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3905c7daa0bc74fe0800000000000000
+      internalID: -1204771128577601389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_184
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 0
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f5cd8936d7109970800000000000000
+      internalID: 8759527484091647477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_185
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 0
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2785c10bc217bc230800000000000000
+      internalID: 3660143558915807346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_186
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 0
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7913548f04c0cec0800000000000000
+      internalID: -3548620935444358787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_187
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 0
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7520281e2ae3cc720800000000000000
+      internalID: 2867735932017181271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_pull_lever_188
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 0
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 503247f88d1177be0800000000000000
+      internalID: -1479694330750557435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_pull_lever_0: 8530498889290061451
+      Male_spritesheet_pull_lever_1: -4578881983849957942
+      Male_spritesheet_pull_lever_10: -6334075155179030133
+      Male_spritesheet_pull_lever_100: -3033100386791456852
+      Male_spritesheet_pull_lever_101: -6061898298287193690
+      Male_spritesheet_pull_lever_102: -8972173187892708436
+      Male_spritesheet_pull_lever_103: -7934405881984882645
+      Male_spritesheet_pull_lever_104: -6994362093550845808
+      Male_spritesheet_pull_lever_105: 1714703427360854457
+      Male_spritesheet_pull_lever_106: -7263010749018453635
+      Male_spritesheet_pull_lever_107: 3483635975393002786
+      Male_spritesheet_pull_lever_108: 2912549963245700591
+      Male_spritesheet_pull_lever_109: 5541593541080919296
+      Male_spritesheet_pull_lever_11: -1916613134984188455
+      Male_spritesheet_pull_lever_110: 5718811247975373411
+      Male_spritesheet_pull_lever_111: 2347372333462756593
+      Male_spritesheet_pull_lever_112: -3222509769526620902
+      Male_spritesheet_pull_lever_113: 9163240989577313229
+      Male_spritesheet_pull_lever_114: 1669680741887135495
+      Male_spritesheet_pull_lever_115: 6325267064552099603
+      Male_spritesheet_pull_lever_116: 490210211132896013
+      Male_spritesheet_pull_lever_117: -13324851869912155
+      Male_spritesheet_pull_lever_118: -338252365138419079
+      Male_spritesheet_pull_lever_119: 5703614856757677420
+      Male_spritesheet_pull_lever_12: 2186778086258196830
+      Male_spritesheet_pull_lever_120: -9210576185491848568
+      Male_spritesheet_pull_lever_121: -4356676139561569604
+      Male_spritesheet_pull_lever_122: 901737568535315669
+      Male_spritesheet_pull_lever_123: -3179194969688056289
+      Male_spritesheet_pull_lever_124: 6126661549324981101
+      Male_spritesheet_pull_lever_125: -4497764809475492966
+      Male_spritesheet_pull_lever_126: 8731326944789558738
+      Male_spritesheet_pull_lever_127: -1530028127828168244
+      Male_spritesheet_pull_lever_128: 899449705119072059
+      Male_spritesheet_pull_lever_129: 5290759621441964386
+      Male_spritesheet_pull_lever_13: -4273869811891766508
+      Male_spritesheet_pull_lever_130: 4734727633620178614
+      Male_spritesheet_pull_lever_131: 3892624873287902308
+      Male_spritesheet_pull_lever_132: 3245190819422313023
+      Male_spritesheet_pull_lever_133: -5287276217816191109
+      Male_spritesheet_pull_lever_134: -3890168979539818767
+      Male_spritesheet_pull_lever_135: -5694024322678319101
+      Male_spritesheet_pull_lever_136: 6410717580243328272
+      Male_spritesheet_pull_lever_137: 2102739298713860084
+      Male_spritesheet_pull_lever_138: 1323016692332234521
+      Male_spritesheet_pull_lever_139: -4139192014192668495
+      Male_spritesheet_pull_lever_14: -4109037844943808154
+      Male_spritesheet_pull_lever_140: -4470845600344438303
+      Male_spritesheet_pull_lever_141: 7950203896960333953
+      Male_spritesheet_pull_lever_142: -8787383650326246974
+      Male_spritesheet_pull_lever_143: -5928019957886085321
+      Male_spritesheet_pull_lever_144: -4842550300414506437
+      Male_spritesheet_pull_lever_145: -6973207522434861348
+      Male_spritesheet_pull_lever_146: -7971134334750057452
+      Male_spritesheet_pull_lever_147: -6876341355911971768
+      Male_spritesheet_pull_lever_148: 7674673778414858284
+      Male_spritesheet_pull_lever_149: -2129766805780782022
+      Male_spritesheet_pull_lever_15: -6110149227737741782
+      Male_spritesheet_pull_lever_150: -8669340745998046542
+      Male_spritesheet_pull_lever_151: 8461718996429665540
+      Male_spritesheet_pull_lever_152: -3474221833037796742
+      Male_spritesheet_pull_lever_153: -2281886768855858502
+      Male_spritesheet_pull_lever_154: 3354233975930908281
+      Male_spritesheet_pull_lever_155: -6659524678966705709
+      Male_spritesheet_pull_lever_156: -2594693030988364814
+      Male_spritesheet_pull_lever_157: -6420511994564790219
+      Male_spritesheet_pull_lever_158: 196453232108076344
+      Male_spritesheet_pull_lever_159: 4321048582007671829
+      Male_spritesheet_pull_lever_16: -8923927630702337791
+      Male_spritesheet_pull_lever_160: 7280963913496928287
+      Male_spritesheet_pull_lever_161: -3613120899637560307
+      Male_spritesheet_pull_lever_162: -2978135713055390347
+      Male_spritesheet_pull_lever_163: -1774015330858490333
+      Male_spritesheet_pull_lever_164: -7916537485270613534
+      Male_spritesheet_pull_lever_165: -6044599964061875823
+      Male_spritesheet_pull_lever_166: -3322491751128482408
+      Male_spritesheet_pull_lever_167: 5590946396516586494
+      Male_spritesheet_pull_lever_168: -143101739195548066
+      Male_spritesheet_pull_lever_169: -4453816710938617809
+      Male_spritesheet_pull_lever_17: -5151845460824723571
+      Male_spritesheet_pull_lever_170: 1065496967653036714
+      Male_spritesheet_pull_lever_171: -7227474733211872927
+      Male_spritesheet_pull_lever_172: -8625335491788904827
+      Male_spritesheet_pull_lever_173: 4588780352861407871
+      Male_spritesheet_pull_lever_174: -4376585081694127772
+      Male_spritesheet_pull_lever_175: -4084774125052717771
+      Male_spritesheet_pull_lever_176: 1349901248276251287
+      Male_spritesheet_pull_lever_177: 67421315247734760
+      Male_spritesheet_pull_lever_178: 7346209968178804773
+      Male_spritesheet_pull_lever_179: -5050526579263505206
+      Male_spritesheet_pull_lever_18: -9164569978846524162
+      Male_spritesheet_pull_lever_180: 1510174368416137104
+      Male_spritesheet_pull_lever_181: -3390581704755139542
+      Male_spritesheet_pull_lever_182: -8715518776725370558
+      Male_spritesheet_pull_lever_183: -1204771128577601389
+      Male_spritesheet_pull_lever_184: 8759527484091647477
+      Male_spritesheet_pull_lever_185: 3660143558915807346
+      Male_spritesheet_pull_lever_186: -3548620935444358787
+      Male_spritesheet_pull_lever_187: 2867735932017181271
+      Male_spritesheet_pull_lever_188: -1479694330750557435
+      Male_spritesheet_pull_lever_19: -8327055911970496693
+      Male_spritesheet_pull_lever_2: 4200359629858579824
+      Male_spritesheet_pull_lever_20: -746235360966775423
+      Male_spritesheet_pull_lever_21: 3737443826458114636
+      Male_spritesheet_pull_lever_22: -7893092271841238114
+      Male_spritesheet_pull_lever_23: -820396752925966866
+      Male_spritesheet_pull_lever_24: -8378435461649530056
+      Male_spritesheet_pull_lever_25: -158026153688928631
+      Male_spritesheet_pull_lever_26: -1611095390812275185
+      Male_spritesheet_pull_lever_27: 3913842505513623452
+      Male_spritesheet_pull_lever_28: -7116739347580351290
+      Male_spritesheet_pull_lever_29: -7865048357292380378
+      Male_spritesheet_pull_lever_3: -4476012860422476354
+      Male_spritesheet_pull_lever_30: -3433839666387887031
+      Male_spritesheet_pull_lever_31: 7242573017829538989
+      Male_spritesheet_pull_lever_32: 1607200195431061809
+      Male_spritesheet_pull_lever_33: -6804170407970041464
+      Male_spritesheet_pull_lever_34: 2283154681102233144
+      Male_spritesheet_pull_lever_35: 4420378231002972206
+      Male_spritesheet_pull_lever_36: -2748768635301634202
+      Male_spritesheet_pull_lever_37: 5301530567057049231
+      Male_spritesheet_pull_lever_38: -3743800131956206091
+      Male_spritesheet_pull_lever_39: 1695732830355015407
+      Male_spritesheet_pull_lever_4: -7682892653773829415
+      Male_spritesheet_pull_lever_40: -1630731229051337865
+      Male_spritesheet_pull_lever_41: -1283937328707095451
+      Male_spritesheet_pull_lever_42: -8043731797559468458
+      Male_spritesheet_pull_lever_43: -6976350348083237003
+      Male_spritesheet_pull_lever_44: 7785149023027926845
+      Male_spritesheet_pull_lever_45: 2941978735846661380
+      Male_spritesheet_pull_lever_46: 8071828239272068145
+      Male_spritesheet_pull_lever_47: -877026969978928012
+      Male_spritesheet_pull_lever_48: 2301325534373118349
+      Male_spritesheet_pull_lever_49: 9103243681567936464
+      Male_spritesheet_pull_lever_5: -156227420983907643
+      Male_spritesheet_pull_lever_50: 3423982976924953979
+      Male_spritesheet_pull_lever_51: -6315943724079220188
+      Male_spritesheet_pull_lever_52: 5518019889080140209
+      Male_spritesheet_pull_lever_53: -4332578647190139983
+      Male_spritesheet_pull_lever_54: 7158138598849201235
+      Male_spritesheet_pull_lever_55: -7773585326716772476
+      Male_spritesheet_pull_lever_56: 5388526219242764118
+      Male_spritesheet_pull_lever_57: 2563614161529952920
+      Male_spritesheet_pull_lever_58: -6440773371838786870
+      Male_spritesheet_pull_lever_59: -4839871066479612447
+      Male_spritesheet_pull_lever_6: -2239480483695077501
+      Male_spritesheet_pull_lever_60: 2138813538267032740
+      Male_spritesheet_pull_lever_61: -8067121807175886995
+      Male_spritesheet_pull_lever_62: -5068086289584560585
+      Male_spritesheet_pull_lever_63: 4384301401416607670
+      Male_spritesheet_pull_lever_64: -1974325973918041170
+      Male_spritesheet_pull_lever_65: 30127386006777802
+      Male_spritesheet_pull_lever_66: -2464495053128190402
+      Male_spritesheet_pull_lever_67: 5522264731843773047
+      Male_spritesheet_pull_lever_68: -5271660736185928629
+      Male_spritesheet_pull_lever_69: 194265035489935655
+      Male_spritesheet_pull_lever_7: 7545794014194590838
+      Male_spritesheet_pull_lever_70: 1321036901559115182
+      Male_spritesheet_pull_lever_71: -2120381612640030103
+      Male_spritesheet_pull_lever_72: 7269880177554469111
+      Male_spritesheet_pull_lever_73: 5794168219086979127
+      Male_spritesheet_pull_lever_74: -6033255774342960664
+      Male_spritesheet_pull_lever_75: 5683231960272311031
+      Male_spritesheet_pull_lever_76: 7321786226907099012
+      Male_spritesheet_pull_lever_77: 6553235495043155768
+      Male_spritesheet_pull_lever_78: 6942921704005385405
+      Male_spritesheet_pull_lever_79: 9143139097222736164
+      Male_spritesheet_pull_lever_8: -4373916742895573596
+      Male_spritesheet_pull_lever_80: 4808855662403738240
+      Male_spritesheet_pull_lever_81: 3648417354242244573
+      Male_spritesheet_pull_lever_82: -2683483014417598345
+      Male_spritesheet_pull_lever_83: -1039961190774637024
+      Male_spritesheet_pull_lever_84: -3910262201942378980
+      Male_spritesheet_pull_lever_85: -2369940429428556160
+      Male_spritesheet_pull_lever_86: -8613643759655772421
+      Male_spritesheet_pull_lever_87: 3209777859166055685
+      Male_spritesheet_pull_lever_88: -1222487288907236484
+      Male_spritesheet_pull_lever_89: -4933690293468550627
+      Male_spritesheet_pull_lever_9: 6136507224211245449
+      Male_spritesheet_pull_lever_90: -7921820677495373673
+      Male_spritesheet_pull_lever_91: -2378041110601816080
+      Male_spritesheet_pull_lever_92: 4144654125564594401
+      Male_spritesheet_pull_lever_93: -2518830977514321222
+      Male_spritesheet_pull_lever_94: -2264462811248523715
+      Male_spritesheet_pull_lever_95: 7083902004558632541
+      Male_spritesheet_pull_lever_96: 1586030651257777413
+      Male_spritesheet_pull_lever_97: 9199801640478048571
+      Male_spritesheet_pull_lever_98: 5636811956404757765
+      Male_spritesheet_pull_lever_99: -3605601053253374775
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,1989 @@
+fileFormatVersion: 2
+guid: 327da1e729998404a9b0cff4926c16e2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5638933230663368537
+    second: Male_spritesheet_dodge_fwd_0
+  - first:
+      213: 7391711498474084991
+    second: Male_spritesheet_dodge_fwd_1
+  - first:
+      213: 1956391866431511958
+    second: Male_spritesheet_dodge_fwd_2
+  - first:
+      213: 2294875581735801839
+    second: Male_spritesheet_dodge_fwd_3
+  - first:
+      213: 5958487174666827067
+    second: Male_spritesheet_dodge_fwd_4
+  - first:
+      213: -4705101542462209565
+    second: Male_spritesheet_dodge_fwd_5
+  - first:
+      213: 6026313087132907462
+    second: Male_spritesheet_dodge_fwd_6
+  - first:
+      213: -91497993516254977
+    second: Male_spritesheet_dodge_fwd_7
+  - first:
+      213: 1412660201958905838
+    second: Male_spritesheet_dodge_fwd_8
+  - first:
+      213: -2851044837408890328
+    second: Male_spritesheet_dodge_fwd_9
+  - first:
+      213: -1469483301957213386
+    second: Male_spritesheet_dodge_fwd_10
+  - first:
+      213: -2832437153349252950
+    second: Male_spritesheet_dodge_fwd_11
+  - first:
+      213: -8817289569767200593
+    second: Male_spritesheet_dodge_fwd_12
+  - first:
+      213: 9172883216588489698
+    second: Male_spritesheet_dodge_fwd_13
+  - first:
+      213: 5301855775657439829
+    second: Male_spritesheet_dodge_fwd_14
+  - first:
+      213: -2470045494867029824
+    second: Male_spritesheet_dodge_fwd_15
+  - first:
+      213: 7374514483788883294
+    second: Male_spritesheet_dodge_fwd_16
+  - first:
+      213: -1411818758846938043
+    second: Male_spritesheet_dodge_fwd_17
+  - first:
+      213: -2970924459340257894
+    second: Male_spritesheet_dodge_fwd_18
+  - first:
+      213: -7955013828918194956
+    second: Male_spritesheet_dodge_fwd_19
+  - first:
+      213: -5902479645303685339
+    second: Male_spritesheet_dodge_fwd_20
+  - first:
+      213: 176374599475892180
+    second: Male_spritesheet_dodge_fwd_21
+  - first:
+      213: -698015941447902309
+    second: Male_spritesheet_dodge_fwd_22
+  - first:
+      213: 2086452820038292763
+    second: Male_spritesheet_dodge_fwd_23
+  - first:
+      213: 7927981137907354010
+    second: Male_spritesheet_dodge_fwd_24
+  - first:
+      213: -471342729365678266
+    second: Male_spritesheet_dodge_fwd_25
+  - first:
+      213: 3098660416395259926
+    second: Male_spritesheet_dodge_fwd_26
+  - first:
+      213: 8283974837069079444
+    second: Male_spritesheet_dodge_fwd_27
+  - first:
+      213: -640407713728974780
+    second: Male_spritesheet_dodge_fwd_28
+  - first:
+      213: -1053432193039654352
+    second: Male_spritesheet_dodge_fwd_29
+  - first:
+      213: -8368323432769252749
+    second: Male_spritesheet_dodge_fwd_30
+  - first:
+      213: 1900313843297005100
+    second: Male_spritesheet_dodge_fwd_31
+  - first:
+      213: -4565722037753351076
+    second: Male_spritesheet_dodge_fwd_32
+  - first:
+      213: 1071493342763741233
+    second: Male_spritesheet_dodge_fwd_33
+  - first:
+      213: -6602068126336276046
+    second: Male_spritesheet_dodge_fwd_34
+  - first:
+      213: 4297215894729556209
+    second: Male_spritesheet_dodge_fwd_35
+  - first:
+      213: 3168132855075314201
+    second: Male_spritesheet_dodge_fwd_36
+  - first:
+      213: 2786027828716888666
+    second: Male_spritesheet_dodge_fwd_37
+  - first:
+      213: -971181853325729512
+    second: Male_spritesheet_dodge_fwd_38
+  - first:
+      213: 197713935201878904
+    second: Male_spritesheet_dodge_fwd_39
+  - first:
+      213: -4576317221300847130
+    second: Male_spritesheet_dodge_fwd_40
+  - first:
+      213: -2119362841991116847
+    second: Male_spritesheet_dodge_fwd_41
+  - first:
+      213: 7487976372922562453
+    second: Male_spritesheet_dodge_fwd_42
+  - first:
+      213: 1400764781039417592
+    second: Male_spritesheet_dodge_fwd_43
+  - first:
+      213: 5585319328403773810
+    second: Male_spritesheet_dodge_fwd_44
+  - first:
+      213: -7635753596661108344
+    second: Male_spritesheet_dodge_fwd_45
+  - first:
+      213: 5722687871442156565
+    second: Male_spritesheet_dodge_fwd_46
+  - first:
+      213: 4292747440456943650
+    second: Male_spritesheet_dodge_fwd_47
+  - first:
+      213: -1123442356476147275
+    second: Male_spritesheet_dodge_fwd_48
+  - first:
+      213: 844894239662932351
+    second: Male_spritesheet_dodge_fwd_49
+  - first:
+      213: 5695322299603955508
+    second: Male_spritesheet_dodge_fwd_50
+  - first:
+      213: 7279542045920616437
+    second: Male_spritesheet_dodge_fwd_51
+  - first:
+      213: 4517531246375421347
+    second: Male_spritesheet_dodge_fwd_52
+  - first:
+      213: 8869688834829038683
+    second: Male_spritesheet_dodge_fwd_53
+  - first:
+      213: -8944332564464368409
+    second: Male_spritesheet_dodge_fwd_54
+  - first:
+      213: 3397491431568666465
+    second: Male_spritesheet_dodge_fwd_55
+  - first:
+      213: -809293601132544221
+    second: Male_spritesheet_dodge_fwd_56
+  - first:
+      213: -340539596870965466
+    second: Male_spritesheet_dodge_fwd_57
+  - first:
+      213: -7235359153887766314
+    second: Male_spritesheet_dodge_fwd_58
+  - first:
+      213: 7079014237756926550
+    second: Male_spritesheet_dodge_fwd_59
+  - first:
+      213: 5802816144069616451
+    second: Male_spritesheet_dodge_fwd_60
+  - first:
+      213: -7125211707443402941
+    second: Male_spritesheet_dodge_fwd_61
+  - first:
+      213: 6039812584341575787
+    second: Male_spritesheet_dodge_fwd_62
+  - first:
+      213: 5538702874635454159
+    second: Male_spritesheet_dodge_fwd_63
+  - first:
+      213: 8071584253249594272
+    second: Male_spritesheet_dodge_fwd_64
+  - first:
+      213: 2379948255010110119
+    second: Male_spritesheet_dodge_fwd_65
+  - first:
+      213: 1756909998328371055
+    second: Male_spritesheet_dodge_fwd_66
+  - first:
+      213: -6551229399228705915
+    second: Male_spritesheet_dodge_fwd_67
+  - first:
+      213: -3201210058111799586
+    second: Male_spritesheet_dodge_fwd_68
+  - first:
+      213: -2021488877012710091
+    second: Male_spritesheet_dodge_fwd_69
+  - first:
+      213: -7487043153923876655
+    second: Male_spritesheet_dodge_fwd_70
+  - first:
+      213: -2111531747765665450
+    second: Male_spritesheet_dodge_fwd_71
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_0
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 895
+        width: 67
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95ff5dd95e3814e40800000000000000
+      internalID: 5638933230663368537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_1
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 895
+        width: 47
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7ad7b4e172a49660800000000000000
+      internalID: 7391711498474084991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_2
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 895
+        width: 47
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69d1d108900862b10800000000000000
+      internalID: 1956391866431511958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_3
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 895
+        width: 50
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe3941dce2909df10800000000000000
+      internalID: 2294875581735801839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_4
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 895
+        width: 50
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b35bcb4148cc0b250800000000000000
+      internalID: 5958487174666827067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_5
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 895
+        width: 50
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e1c569631f14beb0800000000000000
+      internalID: -4705101542462209565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_6
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 895
+        width: 50
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c738dfe2d3c1a350800000000000000
+      internalID: 6026313087132907462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_7
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 895
+        width: 51
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff87dc64f0feabef0800000000000000
+      internalID: -91497993516254977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_8
+      rect:
+        serializedVersion: 2
+        x: 1060
+        y: 895
+        width: 50
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee7971618f6ca9310800000000000000
+      internalID: 1412660201958905838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_9
+      rect:
+        serializedVersion: 2
+        x: 1185
+        y: 895
+        width: 52
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 822288b63dd0f68d0800000000000000
+      internalID: -2851044837408890328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_10
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 767
+        width: 53
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 633e877f8b85b9be0800000000000000
+      internalID: -1469483301957213386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_11
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 767
+        width: 52
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa8cff97a6921b8d0800000000000000
+      internalID: -2832437153349252950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_12
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 767
+        width: 50
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa8e4403ad1b2a580800000000000000
+      internalID: -8817289569767200593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_13
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 767
+        width: 49
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e346ea7fa0ac4f70800000000000000
+      internalID: 9172883216588489698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_14
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 767
+        width: 46
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5523a6eccb9f39940800000000000000
+      internalID: 5301855775657439829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_15
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 767
+        width: 46
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c0956395b2a8bdd0800000000000000
+      internalID: -2470045494867029824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_16
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 767
+        width: 47
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e55a535e9d9875660800000000000000
+      internalID: 7374514483788883294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_17
+      rect:
+        serializedVersion: 2
+        x: 929
+        y: 767
+        width: 47
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54402b7a156386ce0800000000000000
+      internalID: -1411818758846938043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_18
+      rect:
+        serializedVersion: 2
+        x: 1057
+        y: 767
+        width: 47
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a952182e1f725c6d0800000000000000
+      internalID: -2970924459340257894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_19
+      rect:
+        serializedVersion: 2
+        x: 1185
+        y: 767
+        width: 47
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fcc200f11d1a9190800000000000000
+      internalID: -7955013828918194956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_20
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 639
+        width: 48
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52f33b7090e261ea0800000000000000
+      internalID: -5902479645303685339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_21
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 639
+        width: 48
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4df892583cb927200800000000000000
+      internalID: 176374599475892180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_22
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 639
+        width: 49
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9b107213362056f0800000000000000
+      internalID: -698015941447902309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_23
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 639
+        width: 49
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b159efa09c194fc10800000000000000
+      internalID: 2086452820038292763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_24
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 639
+        width: 50
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9907f637d8d50e60800000000000000
+      internalID: 7927981137907354010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_25
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 639
+        width: 50
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64712b0f8447579f0800000000000000
+      internalID: -471342729365678266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_26
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 639
+        width: 51
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 610bdc63b37a00b20800000000000000
+      internalID: 3098660416395259926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_27
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 639
+        width: 51
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 493e6c3593796f270800000000000000
+      internalID: 8283974837069079444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_28
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 639
+        width: 52
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 440b3cfc390dc17f0800000000000000
+      internalID: -640407713728974780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_29
+      rect:
+        serializedVersion: 2
+        x: 1178
+        y: 639
+        width: 52
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03229e270057161f0800000000000000
+      internalID: -1053432193039654352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_30
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 511
+        width: 53
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3721638dc2ebddb80800000000000000
+      internalID: -8368323432769252749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_31
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 511
+        width: 53
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2ea9774f554f5a10800000000000000
+      internalID: 1900313843297005100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_32
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 511
+        width: 53
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c54f9843ffb43a0c0800000000000000
+      internalID: -4565722037753351076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_33
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 511
+        width: 52
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 130f0aaa485bede00800000000000000
+      internalID: 1071493342763741233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_34
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 511
+        width: 53
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b92cc2b40eb064a0800000000000000
+      internalID: -6602068126336276046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_35
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 511
+        width: 53
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f08480b617c2ab30800000000000000
+      internalID: 4297215894729556209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_36
+      rect:
+        serializedVersion: 2
+        x: 787
+        y: 511
+        width: 54
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91a1204db0877fb20800000000000000
+      internalID: 3168132855075314201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_37
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 511
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a52e5099c85f9a620800000000000000
+      internalID: 2786027828716888666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_38
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 511
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 811e63cff3ba582f0800000000000000
+      internalID: -971181853325729512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_39
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 511
+        width: 60
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8734adac6cb6eb200800000000000000
+      internalID: 197713935201878904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_40
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 383
+        width: 63
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ed3cdccbb7ad70c0800000000000000
+      internalID: -4576317221300847130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_41
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 383
+        width: 64
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d705fc59b28692e0800000000000000
+      internalID: -2119362841991116847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_42
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 383
+        width: 66
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 597319296d2aae760800000000000000
+      internalID: 7487976372922562453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_43
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 383
+        width: 68
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f87bb39524807310800000000000000
+      internalID: 1400764781039417592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_44
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 383
+        width: 71
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27951ae365a038d40800000000000000
+      internalID: 5585319328403773810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_45
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 383
+        width: 73
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8817a9e4f8a580690800000000000000
+      internalID: -7635753596661108344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_46
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 383
+        width: 76
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51cfeb98c421b6f40800000000000000
+      internalID: 5722687871442156565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_47
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 383
+        width: 79
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22847ea9d07e29b30800000000000000
+      internalID: 4292747440456943650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_48
+      rect:
+        serializedVersion: 2
+        x: 1037
+        y: 383
+        width: 80
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b98c98012bb860f0800000000000000
+      internalID: -1123442356476147275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_49
+      rect:
+        serializedVersion: 2
+        x: 1167
+        y: 383
+        width: 78
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7102e3a5daa9bb00800000000000000
+      internalID: 844894239662932351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_50
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 255
+        width: 79
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43f2145d479d90f40800000000000000
+      internalID: 5695322299603955508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_51
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 255
+        width: 80
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ff5e9e0ce0260560800000000000000
+      internalID: 7279542045920616437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_52
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 255
+        width: 77
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a54fe1dbbe71be30800000000000000
+      internalID: 4517531246375421347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_53
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 255
+        width: 74
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b54bb3c6007771b70800000000000000
+      internalID: 8869688834829038683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_54
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 255
+        width: 73
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e48426fbe85fd380800000000000000
+      internalID: -8944332564464368409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_55
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 255
+        width: 73
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16f6512d470562f20800000000000000
+      internalID: 3397491431568666465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_56
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 255
+        width: 74
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32f7f71f1cfc4c4f0800000000000000
+      internalID: -809293601132544221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_57
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 255
+        width: 75
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6272d887a09264bf0800000000000000
+      internalID: -340539596870965466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_58
+      rect:
+        serializedVersion: 2
+        x: 1043
+        y: 255
+        width: 77
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d816222f27d69b90800000000000000
+      internalID: -7235359153887766314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_59
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 255
+        width: 78
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65a2f6961f5bd3260800000000000000
+      internalID: 7079014237756926550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_60
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 127
+        width: 79
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 343eb24d98eb78050800000000000000
+      internalID: 5802816144069616451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_61
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 127
+        width: 79
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 347a16cf3b92e1d90800000000000000
+      internalID: -7125211707443402941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_62
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 127
+        width: 80
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b681d9f8b89b1d350800000000000000
+      internalID: 6039812584341575787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_63
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 127
+        width: 80
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc6c41f4bec6ddc40800000000000000
+      internalID: 5538702874635454159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_64
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 127
+        width: 79
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a3249dfc17040070800000000000000
+      internalID: 8071584253249594272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_65
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 127
+        width: 79
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aa30b31456470120800000000000000
+      internalID: 2379948255010110119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_66
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 127
+        width: 79
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f67d1b0c55cc16810800000000000000
+      internalID: 1756909998328371055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_67
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 127
+        width: 80
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58390e0429b5515a0800000000000000
+      internalID: -6551229399228705915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_68
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 127
+        width: 81
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edea6d2b9640393d0800000000000000
+      internalID: -3201210058111799586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_69
+      rect:
+        serializedVersion: 2
+        x: 1167
+        y: 127
+        width: 81
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53d0140a39a32f3e0800000000000000
+      internalID: -2021488877012710091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_70
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 0
+        width: 81
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d8d8586beda81890800000000000000
+      internalID: -7487043153923876655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_fwd_71
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 0
+        width: 81
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 651c772101552b2e0800000000000000
+      internalID: -2111531747765665450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_dodge_fwd_0: 5638933230663368537
+      Male_spritesheet_dodge_fwd_1: 7391711498474084991
+      Male_spritesheet_dodge_fwd_10: -1469483301957213386
+      Male_spritesheet_dodge_fwd_11: -2832437153349252950
+      Male_spritesheet_dodge_fwd_12: -8817289569767200593
+      Male_spritesheet_dodge_fwd_13: 9172883216588489698
+      Male_spritesheet_dodge_fwd_14: 5301855775657439829
+      Male_spritesheet_dodge_fwd_15: -2470045494867029824
+      Male_spritesheet_dodge_fwd_16: 7374514483788883294
+      Male_spritesheet_dodge_fwd_17: -1411818758846938043
+      Male_spritesheet_dodge_fwd_18: -2970924459340257894
+      Male_spritesheet_dodge_fwd_19: -7955013828918194956
+      Male_spritesheet_dodge_fwd_2: 1956391866431511958
+      Male_spritesheet_dodge_fwd_20: -5902479645303685339
+      Male_spritesheet_dodge_fwd_21: 176374599475892180
+      Male_spritesheet_dodge_fwd_22: -698015941447902309
+      Male_spritesheet_dodge_fwd_23: 2086452820038292763
+      Male_spritesheet_dodge_fwd_24: 7927981137907354010
+      Male_spritesheet_dodge_fwd_25: -471342729365678266
+      Male_spritesheet_dodge_fwd_26: 3098660416395259926
+      Male_spritesheet_dodge_fwd_27: 8283974837069079444
+      Male_spritesheet_dodge_fwd_28: -640407713728974780
+      Male_spritesheet_dodge_fwd_29: -1053432193039654352
+      Male_spritesheet_dodge_fwd_3: 2294875581735801839
+      Male_spritesheet_dodge_fwd_30: -8368323432769252749
+      Male_spritesheet_dodge_fwd_31: 1900313843297005100
+      Male_spritesheet_dodge_fwd_32: -4565722037753351076
+      Male_spritesheet_dodge_fwd_33: 1071493342763741233
+      Male_spritesheet_dodge_fwd_34: -6602068126336276046
+      Male_spritesheet_dodge_fwd_35: 4297215894729556209
+      Male_spritesheet_dodge_fwd_36: 3168132855075314201
+      Male_spritesheet_dodge_fwd_37: 2786027828716888666
+      Male_spritesheet_dodge_fwd_38: -971181853325729512
+      Male_spritesheet_dodge_fwd_39: 197713935201878904
+      Male_spritesheet_dodge_fwd_4: 5958487174666827067
+      Male_spritesheet_dodge_fwd_40: -4576317221300847130
+      Male_spritesheet_dodge_fwd_41: -2119362841991116847
+      Male_spritesheet_dodge_fwd_42: 7487976372922562453
+      Male_spritesheet_dodge_fwd_43: 1400764781039417592
+      Male_spritesheet_dodge_fwd_44: 5585319328403773810
+      Male_spritesheet_dodge_fwd_45: -7635753596661108344
+      Male_spritesheet_dodge_fwd_46: 5722687871442156565
+      Male_spritesheet_dodge_fwd_47: 4292747440456943650
+      Male_spritesheet_dodge_fwd_48: -1123442356476147275
+      Male_spritesheet_dodge_fwd_49: 844894239662932351
+      Male_spritesheet_dodge_fwd_5: -4705101542462209565
+      Male_spritesheet_dodge_fwd_50: 5695322299603955508
+      Male_spritesheet_dodge_fwd_51: 7279542045920616437
+      Male_spritesheet_dodge_fwd_52: 4517531246375421347
+      Male_spritesheet_dodge_fwd_53: 8869688834829038683
+      Male_spritesheet_dodge_fwd_54: -8944332564464368409
+      Male_spritesheet_dodge_fwd_55: 3397491431568666465
+      Male_spritesheet_dodge_fwd_56: -809293601132544221
+      Male_spritesheet_dodge_fwd_57: -340539596870965466
+      Male_spritesheet_dodge_fwd_58: -7235359153887766314
+      Male_spritesheet_dodge_fwd_59: 7079014237756926550
+      Male_spritesheet_dodge_fwd_6: 6026313087132907462
+      Male_spritesheet_dodge_fwd_60: 5802816144069616451
+      Male_spritesheet_dodge_fwd_61: -7125211707443402941
+      Male_spritesheet_dodge_fwd_62: 6039812584341575787
+      Male_spritesheet_dodge_fwd_63: 5538702874635454159
+      Male_spritesheet_dodge_fwd_64: 8071584253249594272
+      Male_spritesheet_dodge_fwd_65: 2379948255010110119
+      Male_spritesheet_dodge_fwd_66: 1756909998328371055
+      Male_spritesheet_dodge_fwd_67: -6551229399228705915
+      Male_spritesheet_dodge_fwd_68: -3201210058111799586
+      Male_spritesheet_dodge_fwd_69: -2021488877012710091
+      Male_spritesheet_dodge_fwd_7: -91497993516254977
+      Male_spritesheet_dodge_fwd_70: -7487043153923876655
+      Male_spritesheet_dodge_fwd_71: -2111531747765665450
+      Male_spritesheet_dodge_fwd_8: 1412660201958905838
+      Male_spritesheet_dodge_fwd_9: -2851044837408890328
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

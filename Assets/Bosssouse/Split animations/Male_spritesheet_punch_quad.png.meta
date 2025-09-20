@@ -1,0 +1,1339 @@
+fileFormatVersion: 2
+guid: 9c01c42cab3b44d4cbaa96b47a0beeb4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1412887294790657135
+    second: Male_spritesheet_punch_quad_0
+  - first:
+      213: 703811894920114041
+    second: Male_spritesheet_punch_quad_1
+  - first:
+      213: -1979009205285006072
+    second: Male_spritesheet_punch_quad_2
+  - first:
+      213: -8979105008471483650
+    second: Male_spritesheet_punch_quad_3
+  - first:
+      213: 267218932932858249
+    second: Male_spritesheet_punch_quad_4
+  - first:
+      213: 808227888721985887
+    second: Male_spritesheet_punch_quad_5
+  - first:
+      213: -3270022211969797816
+    second: Male_spritesheet_punch_quad_6
+  - first:
+      213: -5097958193350420304
+    second: Male_spritesheet_punch_quad_7
+  - first:
+      213: -7217885162592434676
+    second: Male_spritesheet_punch_quad_8
+  - first:
+      213: -28770896890772605
+    second: Male_spritesheet_punch_quad_9
+  - first:
+      213: -4002675563363214691
+    second: Male_spritesheet_punch_quad_10
+  - first:
+      213: -7075704785684206772
+    second: Male_spritesheet_punch_quad_11
+  - first:
+      213: 2302978502145257944
+    second: Male_spritesheet_punch_quad_12
+  - first:
+      213: 3873089670135641651
+    second: Male_spritesheet_punch_quad_13
+  - first:
+      213: 2751062420426227878
+    second: Male_spritesheet_punch_quad_14
+  - first:
+      213: 4427821638608051897
+    second: Male_spritesheet_punch_quad_15
+  - first:
+      213: 4530933872366840960
+    second: Male_spritesheet_punch_quad_16
+  - first:
+      213: 2807145863851325538
+    second: Male_spritesheet_punch_quad_17
+  - first:
+      213: 5949661788515295331
+    second: Male_spritesheet_punch_quad_18
+  - first:
+      213: -1032708658558362581
+    second: Male_spritesheet_punch_quad_19
+  - first:
+      213: 8751674607575277010
+    second: Male_spritesheet_punch_quad_20
+  - first:
+      213: -6335970612621017463
+    second: Male_spritesheet_punch_quad_21
+  - first:
+      213: -7951852704392388119
+    second: Male_spritesheet_punch_quad_22
+  - first:
+      213: -3217763926081161930
+    second: Male_spritesheet_punch_quad_23
+  - first:
+      213: -6263058045842803471
+    second: Male_spritesheet_punch_quad_24
+  - first:
+      213: -6474798944226486278
+    second: Male_spritesheet_punch_quad_25
+  - first:
+      213: 7738739275524187008
+    second: Male_spritesheet_punch_quad_26
+  - first:
+      213: -973535342140675208
+    second: Male_spritesheet_punch_quad_27
+  - first:
+      213: 4976094151354317020
+    second: Male_spritesheet_punch_quad_28
+  - first:
+      213: 5454865651437639331
+    second: Male_spritesheet_punch_quad_29
+  - first:
+      213: 1667272902187202638
+    second: Male_spritesheet_punch_quad_30
+  - first:
+      213: 231443790495725058
+    second: Male_spritesheet_punch_quad_31
+  - first:
+      213: 4878176848466287048
+    second: Male_spritesheet_punch_quad_32
+  - first:
+      213: -4940372780990959813
+    second: Male_spritesheet_punch_quad_33
+  - first:
+      213: -5379184426288085288
+    second: Male_spritesheet_punch_quad_34
+  - first:
+      213: -3891993652642472025
+    second: Male_spritesheet_punch_quad_35
+  - first:
+      213: 6979621864810439130
+    second: Male_spritesheet_punch_quad_36
+  - first:
+      213: 5449146592526139843
+    second: Male_spritesheet_punch_quad_37
+  - first:
+      213: -4123695283177279746
+    second: Male_spritesheet_punch_quad_38
+  - first:
+      213: 5308141641036243657
+    second: Male_spritesheet_punch_quad_39
+  - first:
+      213: -1153606478270895274
+    second: Male_spritesheet_punch_quad_40
+  - first:
+      213: -7987013637734839366
+    second: Male_spritesheet_punch_quad_41
+  - first:
+      213: -2729647517497042492
+    second: Male_spritesheet_punch_quad_42
+  - first:
+      213: -1031946395940009900
+    second: Male_spritesheet_punch_quad_43
+  - first:
+      213: 607006171817158581
+    second: Male_spritesheet_punch_quad_44
+  - first:
+      213: -1061242353860907913
+    second: Male_spritesheet_punch_quad_45
+  - first:
+      213: 217156785262776827
+    second: Male_spritesheet_punch_quad_46
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_0
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f64e8a142859b9310800000000000000
+      internalID: 1412887294790657135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_1
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97f6861803174c900800000000000000
+      internalID: 703811894920114041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_2
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80552cfec952984e0800000000000000
+      internalID: -1979009205285006072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_3
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efa5021719fc36380800000000000000
+      internalID: -8979105008471483650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_4
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 981d8b6243a55b300800000000000000
+      internalID: 267218932932858249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_5
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5186dc8bf6673b00800000000000000
+      internalID: 808227888721985887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_6
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84137ef9f1c8e92d0800000000000000
+      internalID: -3270022211969797816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_7
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b85e85880a6049b0800000000000000
+      internalID: -5097958193350420304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_8
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c068d16cfabe4db90800000000000000
+      internalID: -7217885162592434676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_9
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 511
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 383c4fe8509c99ff0800000000000000
+      internalID: -28770896890772605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_10
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 383
+        width: 44
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9a599e38c3a378c0800000000000000
+      internalID: -4002675563363214691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_11
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 383
+        width: 52
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4be2c17cfb0ecd90800000000000000
+      internalID: -7075704785684206772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_12
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 383
+        width: 54
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d1bab9feb2d5ff10800000000000000
+      internalID: 2302978502145257944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_13
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 383
+        width: 52
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3367ba3d88affb530800000000000000
+      internalID: 3873089670135641651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_14
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 383
+        width: 48
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a08e6412bcbd2620800000000000000
+      internalID: 2751062420426227878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_15
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 383
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9be550a1258c27d30800000000000000
+      internalID: 4427821638608051897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_16
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 383
+        width: 50
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08ce53bd95c11ee30800000000000000
+      internalID: 4530933872366840960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_17
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 383
+        width: 50
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 268b09f4a4cf4f620800000000000000
+      internalID: 2807145863851325538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_18
+      rect:
+        serializedVersion: 2
+        x: 1062
+        y: 383
+        width: 49
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3606b2ebfd1719250800000000000000
+      internalID: 5949661788515295331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_19
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 383
+        width: 46
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2c982252f41ba1f0800000000000000
+      internalID: -1032708658558362581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_20
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 255
+        width: 47
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dd945eefa1347970800000000000000
+      internalID: 8751674607575277010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_21
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 255
+        width: 51
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98ef8671c4c1218a0800000000000000
+      internalID: -6335970612621017463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_22
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 255
+        width: 52
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e16678981855a190800000000000000
+      internalID: -7951852704392388119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_23
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 255
+        width: 48
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 635bdd6f1c43853d0800000000000000
+      internalID: -3217763926081161930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_24
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 255
+        width: 44
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f433e1f3e52519a0800000000000000
+      internalID: -6263058045842803471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_25
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 255
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af75e494aa4e426a0800000000000000
+      internalID: -6474798944226486278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_26
+      rect:
+        serializedVersion: 2
+        x: 807
+        y: 255
+        width: 50
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 083abf69e56856b60800000000000000
+      internalID: 7738739275524187008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_27
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 255
+        width: 50
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87baa6ba3ce4d72f0800000000000000
+      internalID: -973535342140675208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_28
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 255
+        width: 48
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd87f542443ae0540800000000000000
+      internalID: 4976094151354317020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_29
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 255
+        width: 46
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a69b6ba86393bb40800000000000000
+      internalID: 5454865651437639331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_30
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 127
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e48b086fed7532710800000000000000
+      internalID: 1667272902187202638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_31
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 127
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 206b7f5b6e0463300800000000000000
+      internalID: 231443790495725058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_32
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 127
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c91e5c7ff3c2b340800000000000000
+      internalID: 4878176848466287048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_33
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 127
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3f66038125407bb0800000000000000
+      internalID: -4940372780990959813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_34
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 127
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d609c1b34c4955b0800000000000000
+      internalID: -5379184426288085288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_35
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 127
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7af9b22c46cdcf9c0800000000000000
+      internalID: -3891993652642472025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_36
+      rect:
+        serializedVersion: 2
+        x: 811
+        y: 127
+        width: 43
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad1639e3b199cd060800000000000000
+      internalID: 6979621864810439130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_37
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 127
+        width: 43
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c10d8084f14f9b40800000000000000
+      internalID: 5449146592526139843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_38
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 127
+        width: 43
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efea34cfcf0b5c6c0800000000000000
+      internalID: -4123695283177279746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_39
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 127
+        width: 43
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c2ac63e2be4aa940800000000000000
+      internalID: 5308141641036243657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_40
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 0
+        width: 43
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65be21425019dffe0800000000000000
+      internalID: -1153606478270895274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_41
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 0
+        width: 43
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abb4d9ad96d682190800000000000000
+      internalID: -7987013637734839366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_42
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c9df8d8b085e1ad0800000000000000
+      internalID: -2729647517497042492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_43
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 0
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45840ca683acda1f0800000000000000
+      internalID: -1031946395940009900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_44
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 0
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b7a1afa5e48c6800800000000000000
+      internalID: 607006171817158581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_45
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 0
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77c658da3b5b541f0800000000000000
+      internalID: -1061242353860907913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_punch_quad_46
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 0
+        width: 42
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf1572612fe730300800000000000000
+      internalID: 217156785262776827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_punch_quad_0: 1412887294790657135
+      Male_spritesheet_punch_quad_1: 703811894920114041
+      Male_spritesheet_punch_quad_10: -4002675563363214691
+      Male_spritesheet_punch_quad_11: -7075704785684206772
+      Male_spritesheet_punch_quad_12: 2302978502145257944
+      Male_spritesheet_punch_quad_13: 3873089670135641651
+      Male_spritesheet_punch_quad_14: 2751062420426227878
+      Male_spritesheet_punch_quad_15: 4427821638608051897
+      Male_spritesheet_punch_quad_16: 4530933872366840960
+      Male_spritesheet_punch_quad_17: 2807145863851325538
+      Male_spritesheet_punch_quad_18: 5949661788515295331
+      Male_spritesheet_punch_quad_19: -1032708658558362581
+      Male_spritesheet_punch_quad_2: -1979009205285006072
+      Male_spritesheet_punch_quad_20: 8751674607575277010
+      Male_spritesheet_punch_quad_21: -6335970612621017463
+      Male_spritesheet_punch_quad_22: -7951852704392388119
+      Male_spritesheet_punch_quad_23: -3217763926081161930
+      Male_spritesheet_punch_quad_24: -6263058045842803471
+      Male_spritesheet_punch_quad_25: -6474798944226486278
+      Male_spritesheet_punch_quad_26: 7738739275524187008
+      Male_spritesheet_punch_quad_27: -973535342140675208
+      Male_spritesheet_punch_quad_28: 4976094151354317020
+      Male_spritesheet_punch_quad_29: 5454865651437639331
+      Male_spritesheet_punch_quad_3: -8979105008471483650
+      Male_spritesheet_punch_quad_30: 1667272902187202638
+      Male_spritesheet_punch_quad_31: 231443790495725058
+      Male_spritesheet_punch_quad_32: 4878176848466287048
+      Male_spritesheet_punch_quad_33: -4940372780990959813
+      Male_spritesheet_punch_quad_34: -5379184426288085288
+      Male_spritesheet_punch_quad_35: -3891993652642472025
+      Male_spritesheet_punch_quad_36: 6979621864810439130
+      Male_spritesheet_punch_quad_37: 5449146592526139843
+      Male_spritesheet_punch_quad_38: -4123695283177279746
+      Male_spritesheet_punch_quad_39: 5308141641036243657
+      Male_spritesheet_punch_quad_4: 267218932932858249
+      Male_spritesheet_punch_quad_40: -1153606478270895274
+      Male_spritesheet_punch_quad_41: -7987013637734839366
+      Male_spritesheet_punch_quad_42: -2729647517497042492
+      Male_spritesheet_punch_quad_43: -1031946395940009900
+      Male_spritesheet_punch_quad_44: 607006171817158581
+      Male_spritesheet_punch_quad_45: -1061242353860907913
+      Male_spritesheet_punch_quad_46: 217156785262776827
+      Male_spritesheet_punch_quad_5: 808227888721985887
+      Male_spritesheet_punch_quad_6: -3270022211969797816
+      Male_spritesheet_punch_quad_7: -5097958193350420304
+      Male_spritesheet_punch_quad_8: -7217885162592434676
+      Male_spritesheet_punch_quad_9: -28770896890772605
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,2119 @@
+fileFormatVersion: 2
+guid: 8ad8fdeffabf4e04e8a085377a240a47
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3242907052743516796
+    second: Male_spritesheet_climb_rope_0
+  - first:
+      213: 4409677656352498972
+    second: Male_spritesheet_climb_rope_1
+  - first:
+      213: -2257892907446676730
+    second: Male_spritesheet_climb_rope_2
+  - first:
+      213: 6583432066536255013
+    second: Male_spritesheet_climb_rope_3
+  - first:
+      213: 3133407492848966201
+    second: Male_spritesheet_climb_rope_4
+  - first:
+      213: -7544123817849968113
+    second: Male_spritesheet_climb_rope_5
+  - first:
+      213: 945820572116754362
+    second: Male_spritesheet_climb_rope_6
+  - first:
+      213: -4767884531025003009
+    second: Male_spritesheet_climb_rope_7
+  - first:
+      213: 1593957606262521447
+    second: Male_spritesheet_climb_rope_8
+  - first:
+      213: -8256664511916864604
+    second: Male_spritesheet_climb_rope_9
+  - first:
+      213: -3153326507186439441
+    second: Male_spritesheet_climb_rope_10
+  - first:
+      213: -5502086654067752273
+    second: Male_spritesheet_climb_rope_11
+  - first:
+      213: 8202963443175675591
+    second: Male_spritesheet_climb_rope_12
+  - first:
+      213: 842390140028768855
+    second: Male_spritesheet_climb_rope_13
+  - first:
+      213: -6685386301079315044
+    second: Male_spritesheet_climb_rope_14
+  - first:
+      213: 7482827282391310696
+    second: Male_spritesheet_climb_rope_15
+  - first:
+      213: 6802983772981551776
+    second: Male_spritesheet_climb_rope_16
+  - first:
+      213: 1653800832700109092
+    second: Male_spritesheet_climb_rope_17
+  - first:
+      213: -6514965289445745729
+    second: Male_spritesheet_climb_rope_18
+  - first:
+      213: -3896531437801547951
+    second: Male_spritesheet_climb_rope_19
+  - first:
+      213: -7161676411081686053
+    second: Male_spritesheet_climb_rope_20
+  - first:
+      213: 3509624907849297285
+    second: Male_spritesheet_climb_rope_21
+  - first:
+      213: -6082123587142475254
+    second: Male_spritesheet_climb_rope_22
+  - first:
+      213: -6554630696299347992
+    second: Male_spritesheet_climb_rope_23
+  - first:
+      213: -1907270659091204141
+    second: Male_spritesheet_climb_rope_24
+  - first:
+      213: -4514328480152322041
+    second: Male_spritesheet_climb_rope_25
+  - first:
+      213: -6399668454000228993
+    second: Male_spritesheet_climb_rope_26
+  - first:
+      213: -99791172204672833
+    second: Male_spritesheet_climb_rope_27
+  - first:
+      213: -1781429017011769588
+    second: Male_spritesheet_climb_rope_28
+  - first:
+      213: 7390814625279758952
+    second: Male_spritesheet_climb_rope_29
+  - first:
+      213: 2881472656019700216
+    second: Male_spritesheet_climb_rope_30
+  - first:
+      213: -4891598064591480611
+    second: Male_spritesheet_climb_rope_31
+  - first:
+      213: -5662330609593087119
+    second: Male_spritesheet_climb_rope_32
+  - first:
+      213: -5905974294001850725
+    second: Male_spritesheet_climb_rope_33
+  - first:
+      213: -7202385734704321767
+    second: Male_spritesheet_climb_rope_34
+  - first:
+      213: -6707654534883468214
+    second: Male_spritesheet_climb_rope_35
+  - first:
+      213: -2065926328679700747
+    second: Male_spritesheet_climb_rope_36
+  - first:
+      213: 4415711205260075120
+    second: Male_spritesheet_climb_rope_37
+  - first:
+      213: 1323445744774984677
+    second: Male_spritesheet_climb_rope_38
+  - first:
+      213: -8071758847715354305
+    second: Male_spritesheet_climb_rope_39
+  - first:
+      213: 6895830720574988571
+    second: Male_spritesheet_climb_rope_40
+  - first:
+      213: 6973359158371164220
+    second: Male_spritesheet_climb_rope_41
+  - first:
+      213: 4280225625658320912
+    second: Male_spritesheet_climb_rope_42
+  - first:
+      213: -33449572557364624
+    second: Male_spritesheet_climb_rope_43
+  - first:
+      213: -6009590092781152997
+    second: Male_spritesheet_climb_rope_44
+  - first:
+      213: 1770032453609276468
+    second: Male_spritesheet_climb_rope_45
+  - first:
+      213: 8457309181340495729
+    second: Male_spritesheet_climb_rope_46
+  - first:
+      213: -9096059838351981533
+    second: Male_spritesheet_climb_rope_47
+  - first:
+      213: 4460627888867760461
+    second: Male_spritesheet_climb_rope_48
+  - first:
+      213: 3291640721959741964
+    second: Male_spritesheet_climb_rope_49
+  - first:
+      213: -982124882237088455
+    second: Male_spritesheet_climb_rope_50
+  - first:
+      213: 2703391688633373032
+    second: Male_spritesheet_climb_rope_51
+  - first:
+      213: 7270257819231973009
+    second: Male_spritesheet_climb_rope_52
+  - first:
+      213: -7051365766907678596
+    second: Male_spritesheet_climb_rope_53
+  - first:
+      213: -7109606843135005003
+    second: Male_spritesheet_climb_rope_54
+  - first:
+      213: -5146575537517923833
+    second: Male_spritesheet_climb_rope_55
+  - first:
+      213: 4053235763212498624
+    second: Male_spritesheet_climb_rope_56
+  - first:
+      213: 8369514752197512280
+    second: Male_spritesheet_climb_rope_57
+  - first:
+      213: 6758649328057768393
+    second: Male_spritesheet_climb_rope_58
+  - first:
+      213: -5610299379819920673
+    second: Male_spritesheet_climb_rope_59
+  - first:
+      213: 3265682417544244279
+    second: Male_spritesheet_climb_rope_60
+  - first:
+      213: 5398988553346068624
+    second: Male_spritesheet_climb_rope_61
+  - first:
+      213: -7162849658762398314
+    second: Male_spritesheet_climb_rope_62
+  - first:
+      213: -7832072333184536618
+    second: Male_spritesheet_climb_rope_63
+  - first:
+      213: -7301727304852678601
+    second: Male_spritesheet_climb_rope_64
+  - first:
+      213: 2789686717238778413
+    second: Male_spritesheet_climb_rope_65
+  - first:
+      213: -9007729424654707491
+    second: Male_spritesheet_climb_rope_66
+  - first:
+      213: 1180524273364497991
+    second: Male_spritesheet_climb_rope_67
+  - first:
+      213: -5345988799372046267
+    second: Male_spritesheet_climb_rope_68
+  - first:
+      213: -6260877370665914463
+    second: Male_spritesheet_climb_rope_69
+  - first:
+      213: -9187500215182128150
+    second: Male_spritesheet_climb_rope_70
+  - first:
+      213: -1772414798754283065
+    second: Male_spritesheet_climb_rope_71
+  - first:
+      213: -7352979550076994830
+    second: Male_spritesheet_climb_rope_72
+  - first:
+      213: -3160347381116495414
+    second: Male_spritesheet_climb_rope_73
+  - first:
+      213: -3148739031621804388
+    second: Male_spritesheet_climb_rope_74
+  - first:
+      213: 1892825997148480950
+    second: Male_spritesheet_climb_rope_75
+  - first:
+      213: -1423828190710022317
+    second: Male_spritesheet_climb_rope_76
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_0
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 896
+        width: 32
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c72e26668ce110d20800000000000000
+      internalID: 3242907052743516796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 908
+        width: 24
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c152ed80772523d30800000000000000
+      internalID: 4409677656352498972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_2
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 907
+        width: 23
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60354ce0d5a5aa0e0800000000000000
+      internalID: -2257892907446676730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_3
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 907
+        width: 23
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52e2fc0859c0d5b50800000000000000
+      internalID: 6583432066536255013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_4
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 906
+        width: 24
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93a5fc363891c7b20800000000000000
+      internalID: 3133407492848966201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_5
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 906
+        width: 24
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0a2d7fab53ed4790800000000000000
+      internalID: -7544123817849968113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_6
+      rect:
+        serializedVersion: 2
+        x: 817
+        y: 906
+        width: 24
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abf96469cca302d00800000000000000
+      internalID: 945820572116754362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_7
+      rect:
+        serializedVersion: 2
+        x: 945
+        y: 905
+        width: 24
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffdbc26c74215ddb0800000000000000
+      internalID: -4767884531025003009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_8
+      rect:
+        serializedVersion: 2
+        x: 1073
+        y: 905
+        width: 25
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76e3f4c6fffde1610800000000000000
+      internalID: 1593957606262521447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_9
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 905
+        width: 27
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab0f914f5f6a6d80800000000000000
+      internalID: -8256664511916864604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 778
+        width: 29
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fea345eaf322d34d0800000000000000
+      internalID: -3153326507186439441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_11
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 779
+        width: 30
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2cfd4e659a4a3b0800000000000000
+      internalID: -5502086654067752273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_12
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 780
+        width: 32
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c650085ac7c6d170800000000000000
+      internalID: 8202963443175675591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_13
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 783
+        width: 33
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 752d4b28e55c0bb00800000000000000
+      internalID: 842390140028768855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_14
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 786
+        width: 34
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9d97e1749cb833a0800000000000000
+      internalID: -6685386301079315044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_15
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 787
+        width: 36
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 861298284c758d760800000000000000
+      internalID: 7482827282391310696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_16
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 789
+        width: 38
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a2ef41a2bd096e50800000000000000
+      internalID: 6802983772981551776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_17
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 790
+        width: 41
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 421d55a581b73f610800000000000000
+      internalID: 1653800832700109092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_18
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 790
+        width: 45
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbb169646913695a0800000000000000
+      internalID: -6514965289445745729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_19
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 790
+        width: 48
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15752b15d4dbce9c0800000000000000
+      internalID: -3896531437801547951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_20
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 661
+        width: 51
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd38e219f3d9c9c90800000000000000
+      internalID: -7161676411081686053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_21
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 661
+        width: 54
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58d68374241b4b030800000000000000
+      internalID: 3509624907849297285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_22
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 661
+        width: 55
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a02295c62d4f79ba0800000000000000
+      internalID: -6082123587142475254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_23
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 661
+        width: 57
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8efb4311c164905a0800000000000000
+      internalID: -6554630696299347992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_24
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 662
+        width: 58
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d7f752d0730885e0800000000000000
+      internalID: -1907270659091204141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_25
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 664
+        width: 59
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 700871d4a22e951c0800000000000000
+      internalID: -4514328480152322041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_26
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 665
+        width: 60
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f750b0fa27fcf27a0800000000000000
+      internalID: -6399668454000228993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_27
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 665
+        width: 60
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8450525787d9ef0800000000000000
+      internalID: -99791172204672833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_28
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 666
+        width: 62
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0fa0785fb71747e0800000000000000
+      internalID: -1781429017011769588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_29
+      rect:
+        serializedVersion: 2
+        x: 1192
+        y: 666
+        width: 62
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 862df845eb2719660800000000000000
+      internalID: 7390814625279758952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_30
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 538
+        width: 62
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f93e0c2d1c0df720800000000000000
+      internalID: 2881472656019700216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_31
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 537
+        width: 60
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd859002a7d8d1cb0800000000000000
+      internalID: -4891598064591480611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_32
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 537
+        width: 60
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17b02669f4c5b61b0800000000000000
+      internalID: -5662330609593087119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_33
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 536
+        width: 59
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b966e69bba3c90ea0800000000000000
+      internalID: -5905974294001850725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_34
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 535
+        width: 57
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91bab9b855cfb0c90800000000000000
+      internalID: -7202385734704321767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_35
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 535
+        width: 56
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4c9b3c3dbf99e2a0800000000000000
+      internalID: -6707654534883468214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_36
+      rect:
+        serializedVersion: 2
+        x: 811
+        y: 534
+        width: 54
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f66be623fa5453e0800000000000000
+      internalID: -2065926328679700747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_37
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 534
+        width: 53
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0702d3c12f1c74d30800000000000000
+      internalID: 4415711205260075120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_38
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 533
+        width: 50
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e3b0d894e2dd5210800000000000000
+      internalID: 1323445744774984677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_39
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 533
+        width: 49
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f395f41181a5bff80800000000000000
+      internalID: -8071758847715354305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_40
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 405
+        width: 46
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1129133189e2bf50800000000000000
+      internalID: 6895830720574988571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_41
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 406
+        width: 43
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c302ee5453956c060800000000000000
+      internalID: 6973359158371164220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_42
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 407
+        width: 40
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01863e7678a666b30800000000000000
+      internalID: 4280225625658320912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_43
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 409
+        width: 38
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07264dd7ac9298ff0800000000000000
+      internalID: -33449572557364624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_44
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 412
+        width: 38
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b15921a96a5a99ca0800000000000000
+      internalID: -6009590092781152997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_45
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 415
+        width: 39
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4344b46732b609810800000000000000
+      internalID: 1770032453609276468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_46
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 418
+        width: 39
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17f237544e56e5570800000000000000
+      internalID: 8457309181340495729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_47
+      rect:
+        serializedVersion: 2
+        x: 941
+        y: 421
+        width: 40
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 324455f15cd44c180800000000000000
+      internalID: -9096059838351981533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_48
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 424
+        width: 41
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d49d9277e6557ed30800000000000000
+      internalID: 4460627888867760461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_49
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 427
+        width: 41
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0aee98fbc14ead20800000000000000
+      internalID: 3291640721959741964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_50
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 302
+        width: 42
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93d9f258f9ace52f0800000000000000
+      internalID: -982124882237088455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_51
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 305
+        width: 42
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8615cb9ea60648520800000000000000
+      internalID: 2703391688633373032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_52
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 306
+        width: 43
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19ee3d497f425e460800000000000000
+      internalID: 7270257819231973009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_53
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 305
+        width: 44
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c703e1ad134842e90800000000000000
+      internalID: -7051365766907678596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_54
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 302
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5be60469e3a955d90800000000000000
+      internalID: -7109606843135005003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_55
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 298
+        width: 44
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 702778cf0d0b398b0800000000000000
+      internalID: -5146575537517923833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_56
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 295
+        width: 47
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c6b031a37cff3830800000000000000
+      internalID: 4053235763212498624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_57
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 293
+        width: 52
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85ccf13d25d762470800000000000000
+      internalID: 8369514752197512280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_58
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 290
+        width: 54
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c9d05841cb8bcd50800000000000000
+      internalID: 6758649328057768393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_59
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 287
+        width: 57
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd24d3e40763422b0800000000000000
+      internalID: -5610299379819920673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_60
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 157
+        width: 59
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73ca6fe3bd8025d20800000000000000
+      internalID: 3265682417544244279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_61
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 154
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 090b794fb7f0dea40800000000000000
+      internalID: 5398988553346068624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_62
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 152
+        width: 60
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69570fd8f22789c90800000000000000
+      internalID: -7162849658762398314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_63
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 151
+        width: 59
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dfee5585b3ee4390800000000000000
+      internalID: -7832072333184536618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_64
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 149
+        width: 58
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7385c73d3bd0baa90800000000000000
+      internalID: -7301727304852678601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_65
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 148
+        width: 56
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2a94a7f945f6b620800000000000000
+      internalID: 2789686717238778413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_66
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 147
+        width: 54
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd45f9230dd1ef280800000000000000
+      internalID: -9007729424654707491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_67
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 145
+        width: 51
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746fd9a6290126010800000000000000
+      internalID: 1180524273364497991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_68
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 144
+        width: 48
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5405630e28b3fc5b0800000000000000
+      internalID: -5345988799372046267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_69
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 143
+        width: 45
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1af2d23f335ec19a0800000000000000
+      internalID: -6260877370665914463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_70
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 15
+        width: 42
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeb8e345b317f7080800000000000000
+      internalID: -9187500215182128150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_71
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 14
+        width: 38
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c10b95912e1767e0800000000000000
+      internalID: -1772414798754283065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_72
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 14
+        width: 34
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2faf2f49e08f4f990800000000000000
+      internalID: -7352979550076994830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_73
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 13
+        width: 31
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac917b51dc03424d0800000000000000
+      internalID: -3160347381116495414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_74
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 13
+        width: 26
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9e56c1988e6d44d0800000000000000
+      internalID: -3148739031621804388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_75
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 13
+        width: 24
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5e8ad373ba44a10800000000000000
+      internalID: 1892825997148480950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_climb_rope_76
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 13
+        width: 25
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35fba87edcb8d3ce0800000000000000
+      internalID: -1423828190710022317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_climb_rope_0: 3242907052743516796
+      Male_spritesheet_climb_rope_1: 4409677656352498972
+      Male_spritesheet_climb_rope_10: -3153326507186439441
+      Male_spritesheet_climb_rope_11: -5502086654067752273
+      Male_spritesheet_climb_rope_12: 8202963443175675591
+      Male_spritesheet_climb_rope_13: 842390140028768855
+      Male_spritesheet_climb_rope_14: -6685386301079315044
+      Male_spritesheet_climb_rope_15: 7482827282391310696
+      Male_spritesheet_climb_rope_16: 6802983772981551776
+      Male_spritesheet_climb_rope_17: 1653800832700109092
+      Male_spritesheet_climb_rope_18: -6514965289445745729
+      Male_spritesheet_climb_rope_19: -3896531437801547951
+      Male_spritesheet_climb_rope_2: -2257892907446676730
+      Male_spritesheet_climb_rope_20: -7161676411081686053
+      Male_spritesheet_climb_rope_21: 3509624907849297285
+      Male_spritesheet_climb_rope_22: -6082123587142475254
+      Male_spritesheet_climb_rope_23: -6554630696299347992
+      Male_spritesheet_climb_rope_24: -1907270659091204141
+      Male_spritesheet_climb_rope_25: -4514328480152322041
+      Male_spritesheet_climb_rope_26: -6399668454000228993
+      Male_spritesheet_climb_rope_27: -99791172204672833
+      Male_spritesheet_climb_rope_28: -1781429017011769588
+      Male_spritesheet_climb_rope_29: 7390814625279758952
+      Male_spritesheet_climb_rope_3: 6583432066536255013
+      Male_spritesheet_climb_rope_30: 2881472656019700216
+      Male_spritesheet_climb_rope_31: -4891598064591480611
+      Male_spritesheet_climb_rope_32: -5662330609593087119
+      Male_spritesheet_climb_rope_33: -5905974294001850725
+      Male_spritesheet_climb_rope_34: -7202385734704321767
+      Male_spritesheet_climb_rope_35: -6707654534883468214
+      Male_spritesheet_climb_rope_36: -2065926328679700747
+      Male_spritesheet_climb_rope_37: 4415711205260075120
+      Male_spritesheet_climb_rope_38: 1323445744774984677
+      Male_spritesheet_climb_rope_39: -8071758847715354305
+      Male_spritesheet_climb_rope_4: 3133407492848966201
+      Male_spritesheet_climb_rope_40: 6895830720574988571
+      Male_spritesheet_climb_rope_41: 6973359158371164220
+      Male_spritesheet_climb_rope_42: 4280225625658320912
+      Male_spritesheet_climb_rope_43: -33449572557364624
+      Male_spritesheet_climb_rope_44: -6009590092781152997
+      Male_spritesheet_climb_rope_45: 1770032453609276468
+      Male_spritesheet_climb_rope_46: 8457309181340495729
+      Male_spritesheet_climb_rope_47: -9096059838351981533
+      Male_spritesheet_climb_rope_48: 4460627888867760461
+      Male_spritesheet_climb_rope_49: 3291640721959741964
+      Male_spritesheet_climb_rope_5: -7544123817849968113
+      Male_spritesheet_climb_rope_50: -982124882237088455
+      Male_spritesheet_climb_rope_51: 2703391688633373032
+      Male_spritesheet_climb_rope_52: 7270257819231973009
+      Male_spritesheet_climb_rope_53: -7051365766907678596
+      Male_spritesheet_climb_rope_54: -7109606843135005003
+      Male_spritesheet_climb_rope_55: -5146575537517923833
+      Male_spritesheet_climb_rope_56: 4053235763212498624
+      Male_spritesheet_climb_rope_57: 8369514752197512280
+      Male_spritesheet_climb_rope_58: 6758649328057768393
+      Male_spritesheet_climb_rope_59: -5610299379819920673
+      Male_spritesheet_climb_rope_6: 945820572116754362
+      Male_spritesheet_climb_rope_60: 3265682417544244279
+      Male_spritesheet_climb_rope_61: 5398988553346068624
+      Male_spritesheet_climb_rope_62: -7162849658762398314
+      Male_spritesheet_climb_rope_63: -7832072333184536618
+      Male_spritesheet_climb_rope_64: -7301727304852678601
+      Male_spritesheet_climb_rope_65: 2789686717238778413
+      Male_spritesheet_climb_rope_66: -9007729424654707491
+      Male_spritesheet_climb_rope_67: 1180524273364497991
+      Male_spritesheet_climb_rope_68: -5345988799372046267
+      Male_spritesheet_climb_rope_69: -6260877370665914463
+      Male_spritesheet_climb_rope_7: -4767884531025003009
+      Male_spritesheet_climb_rope_70: -9187500215182128150
+      Male_spritesheet_climb_rope_71: -1772414798754283065
+      Male_spritesheet_climb_rope_72: -7352979550076994830
+      Male_spritesheet_climb_rope_73: -3160347381116495414
+      Male_spritesheet_climb_rope_74: -3148739031621804388
+      Male_spritesheet_climb_rope_75: 1892825997148480950
+      Male_spritesheet_climb_rope_76: -1423828190710022317
+      Male_spritesheet_climb_rope_8: 1593957606262521447
+      Male_spritesheet_climb_rope_9: -8256664511916864604
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

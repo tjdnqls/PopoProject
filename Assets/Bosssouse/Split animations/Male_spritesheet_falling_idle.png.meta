@@ -1,0 +1,689 @@
+fileFormatVersion: 2
+guid: 112fd907bfcea7a42bb110eac1a1f855
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2410226938207115010
+    second: Male_spritesheet_falling_idle_0
+  - first:
+      213: 7260526679377132482
+    second: Male_spritesheet_falling_idle_1
+  - first:
+      213: -8865759489901735280
+    second: Male_spritesheet_falling_idle_2
+  - first:
+      213: -7229355591617141215
+    second: Male_spritesheet_falling_idle_3
+  - first:
+      213: -11274384108244609
+    second: Male_spritesheet_falling_idle_4
+  - first:
+      213: 5191851847576242144
+    second: Male_spritesheet_falling_idle_5
+  - first:
+      213: 2559307102853031945
+    second: Male_spritesheet_falling_idle_6
+  - first:
+      213: -161882898539993628
+    second: Male_spritesheet_falling_idle_7
+  - first:
+      213: -6697320031832981508
+    second: Male_spritesheet_falling_idle_8
+  - first:
+      213: 5902954144911282429
+    second: Male_spritesheet_falling_idle_9
+  - first:
+      213: 1283482342542927070
+    second: Male_spritesheet_falling_idle_10
+  - first:
+      213: 8864610461466490895
+    second: Male_spritesheet_falling_idle_11
+  - first:
+      213: 8898626730765539767
+    second: Male_spritesheet_falling_idle_12
+  - first:
+      213: -7183590034092963357
+    second: Male_spritesheet_falling_idle_13
+  - first:
+      213: -7530799978774203294
+    second: Male_spritesheet_falling_idle_14
+  - first:
+      213: -214565939897494907
+    second: Male_spritesheet_falling_idle_15
+  - first:
+      213: -9090842545821862771
+    second: Male_spritesheet_falling_idle_16
+  - first:
+      213: 7790309643797173465
+    second: Male_spritesheet_falling_idle_17
+  - first:
+      213: 6532580461958084803
+    second: Male_spritesheet_falling_idle_18
+  - first:
+      213: 7464314236316666794
+    second: Male_spritesheet_falling_idle_19
+  - first:
+      213: -8108497576394680497
+    second: Male_spritesheet_falling_idle_20
+  - first:
+      213: -2188330801438357993
+    second: Male_spritesheet_falling_idle_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_0
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 255
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef86610ae572d8ed0800000000000000
+      internalID: -2410226938207115010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_1
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 266
+        width: 43
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cb35860c8292c460800000000000000
+      internalID: 7260526679377132482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_2
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 266
+        width: 43
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 092db5c77be76f480800000000000000
+      internalID: -8865759489901735280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_3
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 267
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1262da6646b2cab90800000000000000
+      internalID: -7229355591617141215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_4
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 267
+        width: 42
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f71ba24e102f7dff0800000000000000
+      internalID: -11274384108244609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_5
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 267
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e7cc3d6fb92d0840800000000000000
+      internalID: 5191851847576242144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_6
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 267
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90860b0104c748320800000000000000
+      internalID: 2559307102853031945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_7
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 267
+        width: 43
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e520598c50e0cdf0800000000000000
+      internalID: -161882898539993628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_8
+      rect:
+        serializedVersion: 2
+        x: 1077
+        y: 267
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cffbc7b3ae65e03a0800000000000000
+      internalID: -6697320031832981508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_9
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 267
+        width: 43
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df05bd405818be150800000000000000
+      internalID: 5902954144911282429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_10
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 139
+        width: 43
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed4e1cee368dfc110800000000000000
+      internalID: 1283482342542927070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_11
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 139
+        width: 43
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08fbeb7f3c650b70800000000000000
+      internalID: 8864610461466490895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_12
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 139
+        width: 43
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b9531c5dd54e7b70800000000000000
+      internalID: 8898626730765539767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_13
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 139
+        width: 43
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e94add9ce2ce4c90800000000000000
+      internalID: -7183590034092963357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_14
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 139
+        width: 45
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 264f4a6b1593d7790800000000000000
+      internalID: -7530799978774203294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_15
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 139
+        width: 45
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 582138b1a65b50df0800000000000000
+      internalID: -214565939897494907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_16
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 139
+        width: 45
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84b743bed6d6d180800000000000000
+      internalID: -9090842545821862771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_17
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 138
+        width: 45
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d494d0a85dbc1c60800000000000000
+      internalID: 7790309643797173465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_18
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 138
+        width: 44
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c83bada15368aa50800000000000000
+      internalID: 6532580461958084803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_19
+      rect:
+        serializedVersion: 2
+        x: 1203
+        y: 139
+        width: 45
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aabcb831042969760800000000000000
+      internalID: 7464314236316666794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_20
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 10
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4711e83a64d87f80800000000000000
+      internalID: -8108497576394680497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_idle_21
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 10
+        width: 43
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7168839fabc71a1e0800000000000000
+      internalID: -2188330801438357993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_falling_idle_0: -2410226938207115010
+      Male_spritesheet_falling_idle_1: 7260526679377132482
+      Male_spritesheet_falling_idle_10: 1283482342542927070
+      Male_spritesheet_falling_idle_11: 8864610461466490895
+      Male_spritesheet_falling_idle_12: 8898626730765539767
+      Male_spritesheet_falling_idle_13: -7183590034092963357
+      Male_spritesheet_falling_idle_14: -7530799978774203294
+      Male_spritesheet_falling_idle_15: -214565939897494907
+      Male_spritesheet_falling_idle_16: -9090842545821862771
+      Male_spritesheet_falling_idle_17: 7790309643797173465
+      Male_spritesheet_falling_idle_18: 6532580461958084803
+      Male_spritesheet_falling_idle_19: 7464314236316666794
+      Male_spritesheet_falling_idle_2: -8865759489901735280
+      Male_spritesheet_falling_idle_20: -8108497576394680497
+      Male_spritesheet_falling_idle_21: -2188330801438357993
+      Male_spritesheet_falling_idle_3: -7229355591617141215
+      Male_spritesheet_falling_idle_4: -11274384108244609
+      Male_spritesheet_falling_idle_5: 5191851847576242144
+      Male_spritesheet_falling_idle_6: 2559307102853031945
+      Male_spritesheet_falling_idle_7: -161882898539993628
+      Male_spritesheet_falling_idle_8: -6697320031832981508
+      Male_spritesheet_falling_idle_9: 5902954144911282429
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

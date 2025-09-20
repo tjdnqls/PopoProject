@@ -1,0 +1,3783 @@
+fileFormatVersion: 2
+guid: 57ed01e142468a9479736f4d40c8cf98
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5125924080277832538
+    second: Male_spritesheet_edge_hang_0
+  - first:
+      213: 7618079227444679966
+    second: Male_spritesheet_edge_hang_1
+  - first:
+      213: 7634486889937509026
+    second: Male_spritesheet_edge_hang_2
+  - first:
+      213: 7915596854452431297
+    second: Male_spritesheet_edge_hang_3
+  - first:
+      213: -8852466022200976808
+    second: Male_spritesheet_edge_hang_4
+  - first:
+      213: 1743846714342812094
+    second: Male_spritesheet_edge_hang_5
+  - first:
+      213: 1053347045996029792
+    second: Male_spritesheet_edge_hang_6
+  - first:
+      213: 5897525732241567368
+    second: Male_spritesheet_edge_hang_7
+  - first:
+      213: 2497164844741865622
+    second: Male_spritesheet_edge_hang_8
+  - first:
+      213: 3743928297298872894
+    second: Male_spritesheet_edge_hang_9
+  - first:
+      213: 3634227280890468870
+    second: Male_spritesheet_edge_hang_10
+  - first:
+      213: 3464970131934755711
+    second: Male_spritesheet_edge_hang_11
+  - first:
+      213: -3511971244907280599
+    second: Male_spritesheet_edge_hang_12
+  - first:
+      213: 6803959019778489805
+    second: Male_spritesheet_edge_hang_13
+  - first:
+      213: 9015333248988679490
+    second: Male_spritesheet_edge_hang_14
+  - first:
+      213: -625217190413012809
+    second: Male_spritesheet_edge_hang_15
+  - first:
+      213: 7518695990703925277
+    second: Male_spritesheet_edge_hang_16
+  - first:
+      213: 6437282986088984586
+    second: Male_spritesheet_edge_hang_17
+  - first:
+      213: -3122163252476106715
+    second: Male_spritesheet_edge_hang_18
+  - first:
+      213: 2795841547780275014
+    second: Male_spritesheet_edge_hang_19
+  - first:
+      213: 4441461778327642300
+    second: Male_spritesheet_edge_hang_20
+  - first:
+      213: 6759653319472825076
+    second: Male_spritesheet_edge_hang_21
+  - first:
+      213: -2652495031768582949
+    second: Male_spritesheet_edge_hang_22
+  - first:
+      213: -3447564231067891754
+    second: Male_spritesheet_edge_hang_23
+  - first:
+      213: 1344972642906425890
+    second: Male_spritesheet_edge_hang_24
+  - first:
+      213: 3602670905895641760
+    second: Male_spritesheet_edge_hang_25
+  - first:
+      213: 3505909331509844629
+    second: Male_spritesheet_edge_hang_26
+  - first:
+      213: -5914761881251234229
+    second: Male_spritesheet_edge_hang_27
+  - first:
+      213: 7286171663200276282
+    second: Male_spritesheet_edge_hang_28
+  - first:
+      213: 7970564849700768746
+    second: Male_spritesheet_edge_hang_29
+  - first:
+      213: -2633051490798102174
+    second: Male_spritesheet_edge_hang_30
+  - first:
+      213: 5789247588644067448
+    second: Male_spritesheet_edge_hang_31
+  - first:
+      213: 3884524337644833176
+    second: Male_spritesheet_edge_hang_32
+  - first:
+      213: 6506335194701223556
+    second: Male_spritesheet_edge_hang_33
+  - first:
+      213: 717528332832539128
+    second: Male_spritesheet_edge_hang_34
+  - first:
+      213: -5955913475360269773
+    second: Male_spritesheet_edge_hang_35
+  - first:
+      213: -2708472930724832753
+    second: Male_spritesheet_edge_hang_36
+  - first:
+      213: 4787113650420077560
+    second: Male_spritesheet_edge_hang_37
+  - first:
+      213: 708114787290363059
+    second: Male_spritesheet_edge_hang_38
+  - first:
+      213: -6663478763398149029
+    second: Male_spritesheet_edge_hang_39
+  - first:
+      213: 6728220213165117572
+    second: Male_spritesheet_edge_hang_40
+  - first:
+      213: 4720358748958898754
+    second: Male_spritesheet_edge_hang_41
+  - first:
+      213: -3859058785151569038
+    second: Male_spritesheet_edge_hang_42
+  - first:
+      213: 7577219477072866132
+    second: Male_spritesheet_edge_hang_43
+  - first:
+      213: 7683002386234373462
+    second: Male_spritesheet_edge_hang_44
+  - first:
+      213: -203413130872539372
+    second: Male_spritesheet_edge_hang_45
+  - first:
+      213: 2463246065010287296
+    second: Male_spritesheet_edge_hang_46
+  - first:
+      213: -2967402384012076171
+    second: Male_spritesheet_edge_hang_47
+  - first:
+      213: -5719242379576180156
+    second: Male_spritesheet_edge_hang_48
+  - first:
+      213: 5640228489227146147
+    second: Male_spritesheet_edge_hang_49
+  - first:
+      213: -9081689679287837484
+    second: Male_spritesheet_edge_hang_50
+  - first:
+      213: 8225712703064261878
+    second: Male_spritesheet_edge_hang_51
+  - first:
+      213: -4074210937965788195
+    second: Male_spritesheet_edge_hang_52
+  - first:
+      213: 5865053080336761656
+    second: Male_spritesheet_edge_hang_53
+  - first:
+      213: 4701775866258409795
+    second: Male_spritesheet_edge_hang_54
+  - first:
+      213: -7683441123570363750
+    second: Male_spritesheet_edge_hang_55
+  - first:
+      213: 6715780509771764089
+    second: Male_spritesheet_edge_hang_56
+  - first:
+      213: 1999740188474086893
+    second: Male_spritesheet_edge_hang_57
+  - first:
+      213: -5730961220941230836
+    second: Male_spritesheet_edge_hang_58
+  - first:
+      213: 3905408162168518314
+    second: Male_spritesheet_edge_hang_59
+  - first:
+      213: 1434744745100532182
+    second: Male_spritesheet_edge_hang_60
+  - first:
+      213: 1492990100195252869
+    second: Male_spritesheet_edge_hang_61
+  - first:
+      213: 5316988663046455219
+    second: Male_spritesheet_edge_hang_62
+  - first:
+      213: 4248731730135236239
+    second: Male_spritesheet_edge_hang_63
+  - first:
+      213: -322598268513505076
+    second: Male_spritesheet_edge_hang_64
+  - first:
+      213: 5434750441698552676
+    second: Male_spritesheet_edge_hang_65
+  - first:
+      213: -1326372886931184700
+    second: Male_spritesheet_edge_hang_66
+  - first:
+      213: 6398085927688275677
+    second: Male_spritesheet_edge_hang_67
+  - first:
+      213: -96741396915381271
+    second: Male_spritesheet_edge_hang_68
+  - first:
+      213: 3827835202271611463
+    second: Male_spritesheet_edge_hang_69
+  - first:
+      213: -5914440994276170923
+    second: Male_spritesheet_edge_hang_70
+  - first:
+      213: -8320308763521874272
+    second: Male_spritesheet_edge_hang_71
+  - first:
+      213: 5564938320891533162
+    second: Male_spritesheet_edge_hang_72
+  - first:
+      213: -864011491377717291
+    second: Male_spritesheet_edge_hang_73
+  - first:
+      213: -4349533335376195115
+    second: Male_spritesheet_edge_hang_74
+  - first:
+      213: -681912538680243778
+    second: Male_spritesheet_edge_hang_75
+  - first:
+      213: 8546413108063397757
+    second: Male_spritesheet_edge_hang_76
+  - first:
+      213: 5488330182530609486
+    second: Male_spritesheet_edge_hang_77
+  - first:
+      213: 7875360155218794100
+    second: Male_spritesheet_edge_hang_78
+  - first:
+      213: 4616283516428954326
+    second: Male_spritesheet_edge_hang_79
+  - first:
+      213: -1670191464688535118
+    second: Male_spritesheet_edge_hang_80
+  - first:
+      213: -4205058540441145016
+    second: Male_spritesheet_edge_hang_81
+  - first:
+      213: 9212825992778925993
+    second: Male_spritesheet_edge_hang_82
+  - first:
+      213: -4020143007985917167
+    second: Male_spritesheet_edge_hang_83
+  - first:
+      213: -8833987490368233485
+    second: Male_spritesheet_edge_hang_84
+  - first:
+      213: 1838388780350356000
+    second: Male_spritesheet_edge_hang_85
+  - first:
+      213: 1038181441807617857
+    second: Male_spritesheet_edge_hang_86
+  - first:
+      213: 3719800572346742565
+    second: Male_spritesheet_edge_hang_87
+  - first:
+      213: 4596436949826002118
+    second: Male_spritesheet_edge_hang_88
+  - first:
+      213: 5652586647242447252
+    second: Male_spritesheet_edge_hang_89
+  - first:
+      213: 3959323243570425393
+    second: Male_spritesheet_edge_hang_90
+  - first:
+      213: 5511444137930730406
+    second: Male_spritesheet_edge_hang_91
+  - first:
+      213: 4759443330660238582
+    second: Male_spritesheet_edge_hang_92
+  - first:
+      213: -16790422075089999
+    second: Male_spritesheet_edge_hang_93
+  - first:
+      213: 9205846918036202908
+    second: Male_spritesheet_edge_hang_94
+  - first:
+      213: -7166293823456989789
+    second: Male_spritesheet_edge_hang_95
+  - first:
+      213: -1722382387684047570
+    second: Male_spritesheet_edge_hang_96
+  - first:
+      213: -2286346507810124888
+    second: Male_spritesheet_edge_hang_97
+  - first:
+      213: -7587521012477052247
+    second: Male_spritesheet_edge_hang_98
+  - first:
+      213: 3379615804835352615
+    second: Male_spritesheet_edge_hang_99
+  - first:
+      213: -6169603577352133163
+    second: Male_spritesheet_edge_hang_100
+  - first:
+      213: -1599847200863382096
+    second: Male_spritesheet_edge_hang_101
+  - first:
+      213: 1756507251172087174
+    second: Male_spritesheet_edge_hang_102
+  - first:
+      213: 7954111050063301268
+    second: Male_spritesheet_edge_hang_103
+  - first:
+      213: 4640934684426355879
+    second: Male_spritesheet_edge_hang_104
+  - first:
+      213: 8189419177193190461
+    second: Male_spritesheet_edge_hang_105
+  - first:
+      213: -5819514939323255587
+    second: Male_spritesheet_edge_hang_106
+  - first:
+      213: 8388689667810559576
+    second: Male_spritesheet_edge_hang_107
+  - first:
+      213: -3671305722187130261
+    second: Male_spritesheet_edge_hang_108
+  - first:
+      213: -6890901156537160018
+    second: Male_spritesheet_edge_hang_109
+  - first:
+      213: -8202529207556969615
+    second: Male_spritesheet_edge_hang_110
+  - first:
+      213: -7233912117584512631
+    second: Male_spritesheet_edge_hang_111
+  - first:
+      213: 559207413822437680
+    second: Male_spritesheet_edge_hang_112
+  - first:
+      213: 2457840939267171402
+    second: Male_spritesheet_edge_hang_113
+  - first:
+      213: -4124341959061272800
+    second: Male_spritesheet_edge_hang_114
+  - first:
+      213: 6686752914421231899
+    second: Male_spritesheet_edge_hang_115
+  - first:
+      213: 862083224657567967
+    second: Male_spritesheet_edge_hang_116
+  - first:
+      213: -5651837917293082127
+    second: Male_spritesheet_edge_hang_117
+  - first:
+      213: -8520826546399237696
+    second: Male_spritesheet_edge_hang_118
+  - first:
+      213: 5586879496684843305
+    second: Male_spritesheet_edge_hang_119
+  - first:
+      213: -1786459393503283515
+    second: Male_spritesheet_edge_hang_120
+  - first:
+      213: -619177429366029834
+    second: Male_spritesheet_edge_hang_121
+  - first:
+      213: 7770640877431816139
+    second: Male_spritesheet_edge_hang_122
+  - first:
+      213: 3117302405277183144
+    second: Male_spritesheet_edge_hang_123
+  - first:
+      213: 824478274884316629
+    second: Male_spritesheet_edge_hang_124
+  - first:
+      213: 123700408924710754
+    second: Male_spritesheet_edge_hang_125
+  - first:
+      213: -5454394589497258769
+    second: Male_spritesheet_edge_hang_126
+  - first:
+      213: 4680421648201261583
+    second: Male_spritesheet_edge_hang_127
+  - first:
+      213: -8038107233445698853
+    second: Male_spritesheet_edge_hang_128
+  - first:
+      213: 5996079523301960460
+    second: Male_spritesheet_edge_hang_129
+  - first:
+      213: -7234352202826070589
+    second: Male_spritesheet_edge_hang_130
+  - first:
+      213: -3406896912237998285
+    second: Male_spritesheet_edge_hang_131
+  - first:
+      213: 1016176731872631801
+    second: Male_spritesheet_edge_hang_132
+  - first:
+      213: 2096518950592392345
+    second: Male_spritesheet_edge_hang_133
+  - first:
+      213: 3974805477901106122
+    second: Male_spritesheet_edge_hang_134
+  - first:
+      213: -5939563748467353954
+    second: Male_spritesheet_edge_hang_135
+  - first:
+      213: -3548097547707055241
+    second: Male_spritesheet_edge_hang_136
+  - first:
+      213: 4542034204493930679
+    second: Male_spritesheet_edge_hang_137
+  - first:
+      213: -7677020572478762923
+    second: Male_spritesheet_edge_hang_138
+  - first:
+      213: 1166699101194067592
+    second: Male_spritesheet_edge_hang_139
+  - first:
+      213: -1921352377004863745
+    second: Male_spritesheet_edge_hang_140
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_0
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 1802
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ac3b61153f0dd8b0800000000000000
+      internalID: -5125924080277832538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_1
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 1794
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e155f9ee1bad8b960800000000000000
+      internalID: 7618079227444679966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_2
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 1794
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2aa1a1d806523f960800000000000000
+      internalID: 7634486889937509026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c926d68669d9dd60800000000000000
+      internalID: 7915596854452431297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_4
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85ade702e09b52580800000000000000
+      internalID: -8852466022200976808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_5
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb9a22fe853633810800000000000000
+      internalID: 1743846714342812094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_6
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 067ecc5be8d3e9e00800000000000000
+      internalID: 1053347045996029792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_7
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88eebf3386838d150800000000000000
+      internalID: 5897525732241567368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_8
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 690be6c1236b7a220800000000000000
+      internalID: 2497164844741865622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_9
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 1794
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3a480143fa15f330800000000000000
+      internalID: 3743928297298872894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_10
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60a928ef47e5f6230800000000000000
+      internalID: 3634227280890468870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_11
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7b3f4f0afb061030800000000000000
+      internalID: 3464970131934755711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_12
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9274aed82c8f24fc0800000000000000
+      internalID: -3511971244907280599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_13
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcd3638fda48c6e50800000000000000
+      internalID: 6803959019778489805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_14
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24d0dbd13d5ec1d70800000000000000
+      internalID: 9015333248988679490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_15
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b0f6f12748c257f0800000000000000
+      internalID: -625217190413012809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_16
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d18af04fa26c75860800000000000000
+      internalID: 7518695990703925277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_17
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a00ff7805c2d55950800000000000000
+      internalID: 6437282986088984586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_18
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52822655019dba4d0800000000000000
+      internalID: -3122163252476106715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_19
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 1666
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64bb8bf1313dcc620800000000000000
+      internalID: 2795841547780275014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_20
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb0a1bc94fd33ad30800000000000000
+      internalID: 4441461778327642300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_21
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f2c7ff31ec1fcd50800000000000000
+      internalID: 6759653319472825076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_22
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd4f1f672d1703bd0800000000000000
+      internalID: -2652495031768582949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_23
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d70bda099ac720d0800000000000000
+      internalID: -3447564231067891754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_24
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22a4e052e7d4aa210800000000000000
+      internalID: 1344972642906425890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_25
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a26b84e9124ff130800000000000000
+      internalID: 3602670905895641760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_26
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59a1f5f36fd77a030800000000000000
+      internalID: 3505909331509844629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_27
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4ebff0286b8aeda0800000000000000
+      internalID: -5914761881251234229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_28
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3fc19d168ead1560800000000000000
+      internalID: 7286171663200276282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_29
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 1538
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeb01ad30822d9e60800000000000000
+      internalID: 7970564849700768746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_30
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2699aaf9e95857bd0800000000000000
+      internalID: -2633051490798102174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_31
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8789ae5520a875050800000000000000
+      internalID: 5789247588644067448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_32
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8990ea2dd4a98e530800000000000000
+      internalID: 3884524337644833176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_33
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 486d9c533652b4a50800000000000000
+      internalID: 6506335194701223556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_34
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f103c2973c25f900800000000000000
+      internalID: 717528332832539128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_35
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33a503cff38585da0800000000000000
+      internalID: -5955913475360269773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_36
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0a92683832996ad0800000000000000
+      internalID: -2708472930724832753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_37
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f356b8708e3f6240800000000000000
+      internalID: 4787113650420077560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_38
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 1410
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b4b4a4b5aab3d900800000000000000
+      internalID: 708114787290363059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_39
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 1410
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5c4b4b8e519683a0800000000000000
+      internalID: -6663478763398149029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_40
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1282
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4805f40e2a07f5d50800000000000000
+      internalID: 6728220213165117572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_41
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1282
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24a3a1cc545128140800000000000000
+      internalID: 4720358748958898754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_42
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1282
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 273b0b72b7ed17ac0800000000000000
+      internalID: -3859058785151569038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_43
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1282
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45b6914f7f0b72960800000000000000
+      internalID: 7577219477072866132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_44
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1282
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6557af7c6f18f9a60800000000000000
+      internalID: 7683002386234373462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_45
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 1282
+        width: 15
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41731bfc5d45d2df0800000000000000
+      internalID: -203413130872539372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_46
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1282
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c2215bce353f2220800000000000000
+      internalID: 2463246065010287296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_47
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 1282
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57b1053f04ba1d6d0800000000000000
+      internalID: -2967402384012076171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_48
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 1282
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 442800d8b5b21a0b0800000000000000
+      internalID: -5719242379576180156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_49
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 1282
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a31c608ded164e40800000000000000
+      internalID: 5640228489227146147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_50
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dc97b18a5b57f180800000000000000
+      internalID: -9081689679287837484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_51
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f4409a2f1a972270800000000000000
+      internalID: 8225712703064261878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_52
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd3c98eecbe7577c0800000000000000
+      internalID: -4074210937965788195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_53
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8338842c3bad46150800000000000000
+      internalID: 5865053080336761656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_54
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34946d14d30104140800000000000000
+      internalID: 4701775866258409795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_55
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a92d5f8b10fee5590800000000000000
+      internalID: -7683441123570363750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_56
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 971107abace333d50800000000000000
+      internalID: 6715780509771764089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_57
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de512193b1180cb10800000000000000
+      internalID: 1999740188474086893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_58
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0d424c22298770b0800000000000000
+      internalID: -5730961220941230836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_59
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 1154
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa637f0280cc23630800000000000000
+      internalID: 3905408162168518314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_60
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1026
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d9531b7ebc39e310800000000000000
+      internalID: 1434744745100532182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_61
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 1026
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58a105ff59a28b410800000000000000
+      internalID: 1492990100195252869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_62
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1026
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bfb9a7b40db9c940800000000000000
+      internalID: 5316988663046455219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_63
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1026
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8e34a07ff686fa30800000000000000
+      internalID: 4248731730135236239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_64
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 1026
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc0b8108596e58bf0800000000000000
+      internalID: -322598268513505076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_65
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 1026
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46be6507bbc1c6b40800000000000000
+      internalID: 5434750441698552676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_66
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 1026
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c3e1c203e6c79de0800000000000000
+      internalID: -1326372886931184700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_67
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 1026
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd60942b0419ac850800000000000000
+      internalID: 6398085927688275677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_68
+      rect:
+        serializedVersion: 2
+        x: 1077
+        y: 1026
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9eb98c9463e48aef0800000000000000
+      internalID: -96741396915381271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_69
+      rect:
+        serializedVersion: 2
+        x: 1205
+        y: 1026
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74a8222f5d33f1530800000000000000
+      internalID: 3827835202271611463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_70
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 898
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5532923704fabeda0800000000000000
+      internalID: -5914440994276170923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_71
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 898
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a685b03343588c80800000000000000
+      internalID: -8320308763521874272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_72
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 898
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a67d2b52be1aa3d40800000000000000
+      internalID: 5564938320891533162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_73
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5df5396502a6204f0800000000000000
+      internalID: -864011491377717291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_74
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d19e2ee97a53a3c0800000000000000
+      internalID: -4349533335376195115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_75
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb94414b82c5986f0800000000000000
+      internalID: -681912538680243778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_76
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d776cd1e075fa9670800000000000000
+      internalID: 8546413108063397757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_77
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e41bacbf8377a2c40800000000000000
+      internalID: 5488330182530609486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_78
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 476d412f556ea4d60800000000000000
+      internalID: 7875360155218794100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_79
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 898
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6da2d3b6665501040800000000000000
+      internalID: 4616283516428954326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_80
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b9b95046b942d8e0800000000000000
+      internalID: -1670191464688535118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_81
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 841784d6981a4a5c0800000000000000
+      internalID: -4205058540441145016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_82
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a7c215cd688adf70800000000000000
+      internalID: 9212825992778925993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_83
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 113aabedb359538c0800000000000000
+      internalID: -4020143007985917167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_84
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ff5b569e2f576580800000000000000
+      internalID: -8833987490368233485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_85
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02ab8d30bd4438910800000000000000
+      internalID: 1838388780350356000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_86
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14f8853558c586e00800000000000000
+      internalID: 1038181441807617857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_87
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 527b50689e26f9330800000000000000
+      internalID: 3719800572346742565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_88
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ccdbda8d03d9cf30800000000000000
+      internalID: 4596436949826002118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_89
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 770
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49990036b95027e40800000000000000
+      internalID: 5652586647242447252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_90
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13e66fb338752f630800000000000000
+      internalID: 3959323243570425393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_91
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ab25c81e359c7c40800000000000000
+      internalID: 5511444137930730406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_92
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f40b9c1e70fc0240800000000000000
+      internalID: 4759443330660238582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_93
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bbd598333954cff0800000000000000
+      internalID: -16790422075089999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_94
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c952c2e4ffcb1cf70800000000000000
+      internalID: 9205846918036202908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_95
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ad25c87cb53c8c90800000000000000
+      internalID: -7166293823456989789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_96
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2504be085ed818e0800000000000000
+      internalID: -1722382387684047570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_97
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8abc588f6f34540e0800000000000000
+      internalID: -2286346507810124888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_98
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aa3e7de6d5b3b690800000000000000
+      internalID: -7587521012477052247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_99
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 642
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 720d1842baec6ee20800000000000000
+      internalID: 3379615804835352615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_100
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d562fefb3a216aa0800000000000000
+      internalID: -6169603577352133163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_101
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b592a972733cc9e0800000000000000
+      internalID: -1599847200863382096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_102
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 685928fd90e506810800000000000000
+      internalID: 1756507251172087174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_103
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49a480b7bdda26e60800000000000000
+      internalID: 7954111050063301268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_104
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a4c50bb189e76040800000000000000
+      internalID: 4640934684426355879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_105
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d343f5d2a59a6a170800000000000000
+      internalID: 8189419177193190461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_106
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd4fe8ceefdec3fa0800000000000000
+      internalID: -5819514939323255587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_107
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85686d4cecc9a6470800000000000000
+      internalID: 8388689667810559576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_108
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6a5d27a5e6ec0dc0800000000000000
+      internalID: -3671305722187130261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_109
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 514
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eae264e58e99e50a0800000000000000
+      internalID: -6890901156537160018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_110
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17becc30523ca2e80800000000000000
+      internalID: -8202529207556969615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_111
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9893bf6814bfb9b90800000000000000
+      internalID: -7233912117584512631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_112
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 039b6a81e24b2c700800000000000000
+      internalID: 559207413822437680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_113
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a44ae63ef410c1220800000000000000
+      internalID: 2457840939267171402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_114
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0270ae507d463c6c0800000000000000
+      internalID: -4124341959061272800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_115
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b11b2e4095e1ccc50800000000000000
+      internalID: 6686752914421231899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_116
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd0a984102cb6fb00800000000000000
+      internalID: 862083224657567967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_117
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f989a3eb53a091b0800000000000000
+      internalID: -5651837917293082127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_118
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c9a72db661ffb980800000000000000
+      internalID: -8520826546399237696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_119
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 386
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92130da3d45988d40800000000000000
+      internalID: 5586879496684843305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_120
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c6b39c85a83537e0800000000000000
+      internalID: -1786459393503283515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_121
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f1c2b5986d3867f0800000000000000
+      internalID: -619177429366029834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_122
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcff37815bcd6db60800000000000000
+      internalID: 7770640877431816139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_123
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ac640c7502e24b20800000000000000
+      internalID: 3117302405277183144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_124
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dda18b6f92217b00800000000000000
+      internalID: 824478274884316629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_125
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2672784ddd877b100800000000000000
+      internalID: 123700408924710754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_126
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fec043cf4091e44b0800000000000000
+      internalID: -5454394589497258769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_127
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f02a51ce0b234f040800000000000000
+      internalID: 4680421648201261583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_128
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd2a8f31f08e27090800000000000000
+      internalID: -8038107233445698853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_129
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 258
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0b286fce8a563350800000000000000
+      internalID: 5996079523301960460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_130
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c5cc72300b6a9b90800000000000000
+      internalID: -7234352202826070589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_131
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33fcdaf0f4548b0d0800000000000000
+      internalID: -3406896912237998285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_132
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fb194c8a5f2a1e00800000000000000
+      internalID: 1016176731872631801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_133
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99c2fe2b0e4581d10800000000000000
+      internalID: 2096518950592392345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_134
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acb7291d588592730800000000000000
+      internalID: 3974805477901106122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_135
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e96d0db6d3e629da0800000000000000
+      internalID: -5939563748467353954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_136
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7738c783410a2cec0800000000000000
+      internalID: -3548097547707055241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_137
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b0e8845b0c880f30800000000000000
+      internalID: 4542034204493930679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_138
+      rect:
+        serializedVersion: 2
+        x: 1078
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5509904c67eb57590800000000000000
+      internalID: -7677020572478762923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_139
+      rect:
+        serializedVersion: 2
+        x: 1206
+        y: 130
+        width: 16
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88e907ea6a2f03010800000000000000
+      internalID: 1166699101194067592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_edge_hang_140
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 2
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffec540613cf555e0800000000000000
+      internalID: -1921352377004863745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_edge_hang_0: -5125924080277832538
+      Male_spritesheet_edge_hang_1: 7618079227444679966
+      Male_spritesheet_edge_hang_10: 3634227280890468870
+      Male_spritesheet_edge_hang_100: -6169603577352133163
+      Male_spritesheet_edge_hang_101: -1599847200863382096
+      Male_spritesheet_edge_hang_102: 1756507251172087174
+      Male_spritesheet_edge_hang_103: 7954111050063301268
+      Male_spritesheet_edge_hang_104: 4640934684426355879
+      Male_spritesheet_edge_hang_105: 8189419177193190461
+      Male_spritesheet_edge_hang_106: -5819514939323255587
+      Male_spritesheet_edge_hang_107: 8388689667810559576
+      Male_spritesheet_edge_hang_108: -3671305722187130261
+      Male_spritesheet_edge_hang_109: -6890901156537160018
+      Male_spritesheet_edge_hang_11: 3464970131934755711
+      Male_spritesheet_edge_hang_110: -8202529207556969615
+      Male_spritesheet_edge_hang_111: -7233912117584512631
+      Male_spritesheet_edge_hang_112: 559207413822437680
+      Male_spritesheet_edge_hang_113: 2457840939267171402
+      Male_spritesheet_edge_hang_114: -4124341959061272800
+      Male_spritesheet_edge_hang_115: 6686752914421231899
+      Male_spritesheet_edge_hang_116: 862083224657567967
+      Male_spritesheet_edge_hang_117: -5651837917293082127
+      Male_spritesheet_edge_hang_118: -8520826546399237696
+      Male_spritesheet_edge_hang_119: 5586879496684843305
+      Male_spritesheet_edge_hang_12: -3511971244907280599
+      Male_spritesheet_edge_hang_120: -1786459393503283515
+      Male_spritesheet_edge_hang_121: -619177429366029834
+      Male_spritesheet_edge_hang_122: 7770640877431816139
+      Male_spritesheet_edge_hang_123: 3117302405277183144
+      Male_spritesheet_edge_hang_124: 824478274884316629
+      Male_spritesheet_edge_hang_125: 123700408924710754
+      Male_spritesheet_edge_hang_126: -5454394589497258769
+      Male_spritesheet_edge_hang_127: 4680421648201261583
+      Male_spritesheet_edge_hang_128: -8038107233445698853
+      Male_spritesheet_edge_hang_129: 5996079523301960460
+      Male_spritesheet_edge_hang_13: 6803959019778489805
+      Male_spritesheet_edge_hang_130: -7234352202826070589
+      Male_spritesheet_edge_hang_131: -3406896912237998285
+      Male_spritesheet_edge_hang_132: 1016176731872631801
+      Male_spritesheet_edge_hang_133: 2096518950592392345
+      Male_spritesheet_edge_hang_134: 3974805477901106122
+      Male_spritesheet_edge_hang_135: -5939563748467353954
+      Male_spritesheet_edge_hang_136: -3548097547707055241
+      Male_spritesheet_edge_hang_137: 4542034204493930679
+      Male_spritesheet_edge_hang_138: -7677020572478762923
+      Male_spritesheet_edge_hang_139: 1166699101194067592
+      Male_spritesheet_edge_hang_14: 9015333248988679490
+      Male_spritesheet_edge_hang_140: -1921352377004863745
+      Male_spritesheet_edge_hang_15: -625217190413012809
+      Male_spritesheet_edge_hang_16: 7518695990703925277
+      Male_spritesheet_edge_hang_17: 6437282986088984586
+      Male_spritesheet_edge_hang_18: -3122163252476106715
+      Male_spritesheet_edge_hang_19: 2795841547780275014
+      Male_spritesheet_edge_hang_2: 7634486889937509026
+      Male_spritesheet_edge_hang_20: 4441461778327642300
+      Male_spritesheet_edge_hang_21: 6759653319472825076
+      Male_spritesheet_edge_hang_22: -2652495031768582949
+      Male_spritesheet_edge_hang_23: -3447564231067891754
+      Male_spritesheet_edge_hang_24: 1344972642906425890
+      Male_spritesheet_edge_hang_25: 3602670905895641760
+      Male_spritesheet_edge_hang_26: 3505909331509844629
+      Male_spritesheet_edge_hang_27: -5914761881251234229
+      Male_spritesheet_edge_hang_28: 7286171663200276282
+      Male_spritesheet_edge_hang_29: 7970564849700768746
+      Male_spritesheet_edge_hang_3: 7915596854452431297
+      Male_spritesheet_edge_hang_30: -2633051490798102174
+      Male_spritesheet_edge_hang_31: 5789247588644067448
+      Male_spritesheet_edge_hang_32: 3884524337644833176
+      Male_spritesheet_edge_hang_33: 6506335194701223556
+      Male_spritesheet_edge_hang_34: 717528332832539128
+      Male_spritesheet_edge_hang_35: -5955913475360269773
+      Male_spritesheet_edge_hang_36: -2708472930724832753
+      Male_spritesheet_edge_hang_37: 4787113650420077560
+      Male_spritesheet_edge_hang_38: 708114787290363059
+      Male_spritesheet_edge_hang_39: -6663478763398149029
+      Male_spritesheet_edge_hang_4: -8852466022200976808
+      Male_spritesheet_edge_hang_40: 6728220213165117572
+      Male_spritesheet_edge_hang_41: 4720358748958898754
+      Male_spritesheet_edge_hang_42: -3859058785151569038
+      Male_spritesheet_edge_hang_43: 7577219477072866132
+      Male_spritesheet_edge_hang_44: 7683002386234373462
+      Male_spritesheet_edge_hang_45: -203413130872539372
+      Male_spritesheet_edge_hang_46: 2463246065010287296
+      Male_spritesheet_edge_hang_47: -2967402384012076171
+      Male_spritesheet_edge_hang_48: -5719242379576180156
+      Male_spritesheet_edge_hang_49: 5640228489227146147
+      Male_spritesheet_edge_hang_5: 1743846714342812094
+      Male_spritesheet_edge_hang_50: -9081689679287837484
+      Male_spritesheet_edge_hang_51: 8225712703064261878
+      Male_spritesheet_edge_hang_52: -4074210937965788195
+      Male_spritesheet_edge_hang_53: 5865053080336761656
+      Male_spritesheet_edge_hang_54: 4701775866258409795
+      Male_spritesheet_edge_hang_55: -7683441123570363750
+      Male_spritesheet_edge_hang_56: 6715780509771764089
+      Male_spritesheet_edge_hang_57: 1999740188474086893
+      Male_spritesheet_edge_hang_58: -5730961220941230836
+      Male_spritesheet_edge_hang_59: 3905408162168518314
+      Male_spritesheet_edge_hang_6: 1053347045996029792
+      Male_spritesheet_edge_hang_60: 1434744745100532182
+      Male_spritesheet_edge_hang_61: 1492990100195252869
+      Male_spritesheet_edge_hang_62: 5316988663046455219
+      Male_spritesheet_edge_hang_63: 4248731730135236239
+      Male_spritesheet_edge_hang_64: -322598268513505076
+      Male_spritesheet_edge_hang_65: 5434750441698552676
+      Male_spritesheet_edge_hang_66: -1326372886931184700
+      Male_spritesheet_edge_hang_67: 6398085927688275677
+      Male_spritesheet_edge_hang_68: -96741396915381271
+      Male_spritesheet_edge_hang_69: 3827835202271611463
+      Male_spritesheet_edge_hang_7: 5897525732241567368
+      Male_spritesheet_edge_hang_70: -5914440994276170923
+      Male_spritesheet_edge_hang_71: -8320308763521874272
+      Male_spritesheet_edge_hang_72: 5564938320891533162
+      Male_spritesheet_edge_hang_73: -864011491377717291
+      Male_spritesheet_edge_hang_74: -4349533335376195115
+      Male_spritesheet_edge_hang_75: -681912538680243778
+      Male_spritesheet_edge_hang_76: 8546413108063397757
+      Male_spritesheet_edge_hang_77: 5488330182530609486
+      Male_spritesheet_edge_hang_78: 7875360155218794100
+      Male_spritesheet_edge_hang_79: 4616283516428954326
+      Male_spritesheet_edge_hang_8: 2497164844741865622
+      Male_spritesheet_edge_hang_80: -1670191464688535118
+      Male_spritesheet_edge_hang_81: -4205058540441145016
+      Male_spritesheet_edge_hang_82: 9212825992778925993
+      Male_spritesheet_edge_hang_83: -4020143007985917167
+      Male_spritesheet_edge_hang_84: -8833987490368233485
+      Male_spritesheet_edge_hang_85: 1838388780350356000
+      Male_spritesheet_edge_hang_86: 1038181441807617857
+      Male_spritesheet_edge_hang_87: 3719800572346742565
+      Male_spritesheet_edge_hang_88: 4596436949826002118
+      Male_spritesheet_edge_hang_89: 5652586647242447252
+      Male_spritesheet_edge_hang_9: 3743928297298872894
+      Male_spritesheet_edge_hang_90: 3959323243570425393
+      Male_spritesheet_edge_hang_91: 5511444137930730406
+      Male_spritesheet_edge_hang_92: 4759443330660238582
+      Male_spritesheet_edge_hang_93: -16790422075089999
+      Male_spritesheet_edge_hang_94: 9205846918036202908
+      Male_spritesheet_edge_hang_95: -7166293823456989789
+      Male_spritesheet_edge_hang_96: -1722382387684047570
+      Male_spritesheet_edge_hang_97: -2286346507810124888
+      Male_spritesheet_edge_hang_98: -7587521012477052247
+      Male_spritesheet_edge_hang_99: 3379615804835352615
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

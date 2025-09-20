@@ -1,0 +1,1937 @@
+fileFormatVersion: 2
+guid: 47d742b1ed963ac458043a22adff9848
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1140940887101988508
+    second: Male_spritesheet_wall_hang_0
+  - first:
+      213: -5958140959929031945
+    second: Male_spritesheet_wall_hang_1
+  - first:
+      213: 2956732052770691073
+    second: Male_spritesheet_wall_hang_2
+  - first:
+      213: -6809789474253365549
+    second: Male_spritesheet_wall_hang_3
+  - first:
+      213: -5776933589771008135
+    second: Male_spritesheet_wall_hang_4
+  - first:
+      213: -4003237103533409074
+    second: Male_spritesheet_wall_hang_5
+  - first:
+      213: 347266553947298886
+    second: Male_spritesheet_wall_hang_6
+  - first:
+      213: -7606525577565049876
+    second: Male_spritesheet_wall_hang_7
+  - first:
+      213: -7720633132210372262
+    second: Male_spritesheet_wall_hang_8
+  - first:
+      213: 7786151581451573793
+    second: Male_spritesheet_wall_hang_9
+  - first:
+      213: 3997001396189616492
+    second: Male_spritesheet_wall_hang_10
+  - first:
+      213: -7030187756301875543
+    second: Male_spritesheet_wall_hang_11
+  - first:
+      213: 1645042227452909601
+    second: Male_spritesheet_wall_hang_12
+  - first:
+      213: -3262234928219201315
+    second: Male_spritesheet_wall_hang_13
+  - first:
+      213: 403011708379726834
+    second: Male_spritesheet_wall_hang_14
+  - first:
+      213: 6570892628646425401
+    second: Male_spritesheet_wall_hang_15
+  - first:
+      213: -6337640005404503591
+    second: Male_spritesheet_wall_hang_16
+  - first:
+      213: 1604870566229963592
+    second: Male_spritesheet_wall_hang_17
+  - first:
+      213: 4133509301063516266
+    second: Male_spritesheet_wall_hang_18
+  - first:
+      213: 6471587681497187928
+    second: Male_spritesheet_wall_hang_19
+  - first:
+      213: 4508396763617269999
+    second: Male_spritesheet_wall_hang_20
+  - first:
+      213: -7288832012174052313
+    second: Male_spritesheet_wall_hang_21
+  - first:
+      213: 871004940137015920
+    second: Male_spritesheet_wall_hang_22
+  - first:
+      213: -423869080999634771
+    second: Male_spritesheet_wall_hang_23
+  - first:
+      213: 324574946104021742
+    second: Male_spritesheet_wall_hang_24
+  - first:
+      213: 1093906447831633953
+    second: Male_spritesheet_wall_hang_25
+  - first:
+      213: 2332361133224772181
+    second: Male_spritesheet_wall_hang_26
+  - first:
+      213: 639792967959295909
+    second: Male_spritesheet_wall_hang_27
+  - first:
+      213: 1983102695292209963
+    second: Male_spritesheet_wall_hang_28
+  - first:
+      213: 2572933891048608109
+    second: Male_spritesheet_wall_hang_29
+  - first:
+      213: -2076700963173875130
+    second: Male_spritesheet_wall_hang_30
+  - first:
+      213: 6285970716788010084
+    second: Male_spritesheet_wall_hang_31
+  - first:
+      213: -253789083961976191
+    second: Male_spritesheet_wall_hang_32
+  - first:
+      213: -6462542430686869741
+    second: Male_spritesheet_wall_hang_33
+  - first:
+      213: 6569757357665669361
+    second: Male_spritesheet_wall_hang_34
+  - first:
+      213: 4612755873568009827
+    second: Male_spritesheet_wall_hang_35
+  - first:
+      213: -9214531772373800666
+    second: Male_spritesheet_wall_hang_36
+  - first:
+      213: 7826537367741839529
+    second: Male_spritesheet_wall_hang_37
+  - first:
+      213: 4431590542826543441
+    second: Male_spritesheet_wall_hang_38
+  - first:
+      213: 3780166711342159513
+    second: Male_spritesheet_wall_hang_39
+  - first:
+      213: 8985748536720561961
+    second: Male_spritesheet_wall_hang_40
+  - first:
+      213: -8824863536689108490
+    second: Male_spritesheet_wall_hang_41
+  - first:
+      213: 4392089797663383654
+    second: Male_spritesheet_wall_hang_42
+  - first:
+      213: 7545267431231517975
+    second: Male_spritesheet_wall_hang_43
+  - first:
+      213: -6455698413256101337
+    second: Male_spritesheet_wall_hang_44
+  - first:
+      213: -6913154640568203252
+    second: Male_spritesheet_wall_hang_45
+  - first:
+      213: 3366335648584117245
+    second: Male_spritesheet_wall_hang_46
+  - first:
+      213: -5328116753420260931
+    second: Male_spritesheet_wall_hang_47
+  - first:
+      213: 5986444285712826210
+    second: Male_spritesheet_wall_hang_48
+  - first:
+      213: -5263815472438984214
+    second: Male_spritesheet_wall_hang_49
+  - first:
+      213: -7112492845250185871
+    second: Male_spritesheet_wall_hang_50
+  - first:
+      213: 6002501078935955315
+    second: Male_spritesheet_wall_hang_51
+  - first:
+      213: -2312630895702943916
+    second: Male_spritesheet_wall_hang_52
+  - first:
+      213: -1581706812516253805
+    second: Male_spritesheet_wall_hang_53
+  - first:
+      213: 5386259273123286151
+    second: Male_spritesheet_wall_hang_54
+  - first:
+      213: -4631278445543022808
+    second: Male_spritesheet_wall_hang_55
+  - first:
+      213: -1806731338477769543
+    second: Male_spritesheet_wall_hang_56
+  - first:
+      213: 5945962830408522497
+    second: Male_spritesheet_wall_hang_57
+  - first:
+      213: 7487764899412173476
+    second: Male_spritesheet_wall_hang_58
+  - first:
+      213: 6927222570306963068
+    second: Male_spritesheet_wall_hang_59
+  - first:
+      213: -7284508997716766769
+    second: Male_spritesheet_wall_hang_60
+  - first:
+      213: 1373532740027544596
+    second: Male_spritesheet_wall_hang_61
+  - first:
+      213: -9146882349912768774
+    second: Male_spritesheet_wall_hang_62
+  - first:
+      213: 2705439912104891440
+    second: Male_spritesheet_wall_hang_63
+  - first:
+      213: -5705938903012422895
+    second: Male_spritesheet_wall_hang_64
+  - first:
+      213: 4209686827057042638
+    second: Male_spritesheet_wall_hang_65
+  - first:
+      213: -2557051067482287501
+    second: Male_spritesheet_wall_hang_66
+  - first:
+      213: -6243685463156469388
+    second: Male_spritesheet_wall_hang_67
+  - first:
+      213: 6331425613660555822
+    second: Male_spritesheet_wall_hang_68
+  - first:
+      213: 6215762033769945700
+    second: Male_spritesheet_wall_hang_69
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 770
+        width: 17
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4612192ee409a20f0800000000000000
+      internalID: -1140940887101988508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_1
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f2a9b15d5e605da0800000000000000
+      internalID: -5958140959929031945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_2
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1089865f22c680920800000000000000
+      internalID: 2956732052770691073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_3
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3de1fef8d84ce71a0800000000000000
+      internalID: -6809789474253365549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_4
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9774da2f18534dfa0800000000000000
+      internalID: -5776933589771008135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_5
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecc3a3c7015a178c0800000000000000
+      internalID: -4003237103533409074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_6
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64c1766471db1d400800000000000000
+      internalID: 347266553947298886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_7
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cebef4ec941307690800000000000000
+      internalID: -7606525577565049876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_8
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a514d79621dcad490800000000000000
+      internalID: -7720633132210372262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_9
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 796
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12a54cb4c97fd0c60800000000000000
+      internalID: 7786151581451573793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_10
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c695f92c793387730800000000000000
+      internalID: 3997001396189616492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_11
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a68351bb71cf6e90800000000000000
+      internalID: -7030187756301875543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_12
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12819d7a03d54d610800000000000000
+      internalID: 1645042227452909601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_13
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd06f99ed963ab2d0800000000000000
+      internalID: -3262234928219201315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_14
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f30c467309c79500800000000000000
+      internalID: 403011708379726834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_15
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 933f3bb1800803b50800000000000000
+      internalID: 6570892628646425401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_16
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d15f8b4efd2c08a0800000000000000
+      internalID: -6337640005404503591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_17
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 843fd9ae645a54610800000000000000
+      internalID: 1604870566229963592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_18
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a600aad1fcc2d5930800000000000000
+      internalID: 4133509301063516266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_19
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 668
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8560f6855b2bfc950800000000000000
+      internalID: 6471587681497187928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_20
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe89de158fa019e30800000000000000
+      internalID: 4508396763617269999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_21
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 724bede17edd8da90800000000000000
+      internalID: -7288832012174052313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_22
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07a2a76d06e661c00800000000000000
+      internalID: 871004940137015920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_23
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da8debb015d1e1af0800000000000000
+      internalID: -423869080999634771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_24
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee2958d913f118400800000000000000
+      internalID: 324574946104021742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_25
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12093885e165e2f00800000000000000
+      internalID: 1093906447831633953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_26
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5524ac1e7163e5020800000000000000
+      internalID: 2332361133224772181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_27
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a7b109805001e800800000000000000
+      internalID: 639792967959295909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_28
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2b030af465658b10800000000000000
+      internalID: 1983102695292209963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_29
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 540
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d61148eedb5e4b320800000000000000
+      internalID: 2572933891048608109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_30
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6424f411a731e23e0800000000000000
+      internalID: -2076700963173875130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_31
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46c28aaff014c3750800000000000000
+      internalID: 6285970716788010084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_32
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18a139a3c2c5a7cf0800000000000000
+      internalID: -253789083961976191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_33
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 317050936ef6056a0800000000000000
+      internalID: -6462542430686869741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_34
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f0db2c32877c2b50800000000000000
+      internalID: 6569757357665669361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_35
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36e2e9f070dc30040800000000000000
+      internalID: 4612755873568009827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_36
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 629eb187c286f1080800000000000000
+      internalID: -9214531772373800666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_37
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a8b299e4427d9c60800000000000000
+      internalID: 7826537367741839529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_38
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 159182f7e1c208d30800000000000000
+      internalID: 4431590542826543441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_39
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 412
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9965e458899d57430800000000000000
+      internalID: 3780166711342159513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_40
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92717348faac3bc70800000000000000
+      internalID: 8985748536720561961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_41
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f929589e59c78580800000000000000
+      internalID: -8824863536689108490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_42
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 660e7539666d3fc30800000000000000
+      internalID: 4392089797663383654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_43
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 715f0ed80cc26b860800000000000000
+      internalID: 7545267431231517975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_44
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72231d43f70c866a0800000000000000
+      internalID: -6455698413256101337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_45
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c08c69b5b7a8f00a0800000000000000
+      internalID: -6913154640568203252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_46
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfb2790df60a7be20800000000000000
+      internalID: 3366335648584117245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_47
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db9e396da0abe06b0800000000000000
+      internalID: -5328116753420260931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_48
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26f749d3c5f141350800000000000000
+      internalID: 5986444285712826210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_49
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 284
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae1c11a77bb23f6b0800000000000000
+      internalID: -5263815472438984214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_50
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 175fa5bd0795b4d90800000000000000
+      internalID: -7112492845250185871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_51
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37760edbdea2d4350800000000000000
+      internalID: 6002501078935955315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_52
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45758050472e7efd0800000000000000
+      internalID: -2312630895702943916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_53
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39f3725c806ac0ae0800000000000000
+      internalID: -1581706812516253805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_54
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78ccaa27546dfba40800000000000000
+      internalID: 5386259273123286151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_55
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82f1c759ac46abfb0800000000000000
+      internalID: -4631278445543022808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_56
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bc677d8b633de6e0800000000000000
+      internalID: -1806731338477769543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_57
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10b1d22f0bd448250800000000000000
+      internalID: 5945962830408522497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_58
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a2e91f0182e9e760800000000000000
+      internalID: 7487764899412173476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_59
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 156
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c760737c930722060800000000000000
+      internalID: 6927222570306963068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_60
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcf84fb59a938ea90800000000000000
+      internalID: -7284508997716766769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_61
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 414f5b0ffb4cf0310800000000000000
+      internalID: 1373532740027544596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_62
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afeb82b07febf0180800000000000000
+      internalID: -9146882349912768774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_63
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0341d2a1447ab8520800000000000000
+      internalID: 2705439912104891440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_64
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11bccdf8cce60d0b0800000000000000
+      internalID: -5705938903012422895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_65
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec450668ddfcb6a30800000000000000
+      internalID: 4209686827057042638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_66
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3725f2a1a97838cd0800000000000000
+      internalID: -2557051067482287501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_67
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 471d947d629f959a0800000000000000
+      internalID: -6243685463156469388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_68
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2a0c00ec0ebdd750800000000000000
+      internalID: 6331425613660555822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_wall_hang_69
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 28
+        width: 32
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46a973f13a2d24650800000000000000
+      internalID: 6215762033769945700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_wall_hang_0: -1140940887101988508
+      Male_spritesheet_wall_hang_1: -5958140959929031945
+      Male_spritesheet_wall_hang_10: 3997001396189616492
+      Male_spritesheet_wall_hang_11: -7030187756301875543
+      Male_spritesheet_wall_hang_12: 1645042227452909601
+      Male_spritesheet_wall_hang_13: -3262234928219201315
+      Male_spritesheet_wall_hang_14: 403011708379726834
+      Male_spritesheet_wall_hang_15: 6570892628646425401
+      Male_spritesheet_wall_hang_16: -6337640005404503591
+      Male_spritesheet_wall_hang_17: 1604870566229963592
+      Male_spritesheet_wall_hang_18: 4133509301063516266
+      Male_spritesheet_wall_hang_19: 6471587681497187928
+      Male_spritesheet_wall_hang_2: 2956732052770691073
+      Male_spritesheet_wall_hang_20: 4508396763617269999
+      Male_spritesheet_wall_hang_21: -7288832012174052313
+      Male_spritesheet_wall_hang_22: 871004940137015920
+      Male_spritesheet_wall_hang_23: -423869080999634771
+      Male_spritesheet_wall_hang_24: 324574946104021742
+      Male_spritesheet_wall_hang_25: 1093906447831633953
+      Male_spritesheet_wall_hang_26: 2332361133224772181
+      Male_spritesheet_wall_hang_27: 639792967959295909
+      Male_spritesheet_wall_hang_28: 1983102695292209963
+      Male_spritesheet_wall_hang_29: 2572933891048608109
+      Male_spritesheet_wall_hang_3: -6809789474253365549
+      Male_spritesheet_wall_hang_30: -2076700963173875130
+      Male_spritesheet_wall_hang_31: 6285970716788010084
+      Male_spritesheet_wall_hang_32: -253789083961976191
+      Male_spritesheet_wall_hang_33: -6462542430686869741
+      Male_spritesheet_wall_hang_34: 6569757357665669361
+      Male_spritesheet_wall_hang_35: 4612755873568009827
+      Male_spritesheet_wall_hang_36: -9214531772373800666
+      Male_spritesheet_wall_hang_37: 7826537367741839529
+      Male_spritesheet_wall_hang_38: 4431590542826543441
+      Male_spritesheet_wall_hang_39: 3780166711342159513
+      Male_spritesheet_wall_hang_4: -5776933589771008135
+      Male_spritesheet_wall_hang_40: 8985748536720561961
+      Male_spritesheet_wall_hang_41: -8824863536689108490
+      Male_spritesheet_wall_hang_42: 4392089797663383654
+      Male_spritesheet_wall_hang_43: 7545267431231517975
+      Male_spritesheet_wall_hang_44: -6455698413256101337
+      Male_spritesheet_wall_hang_45: -6913154640568203252
+      Male_spritesheet_wall_hang_46: 3366335648584117245
+      Male_spritesheet_wall_hang_47: -5328116753420260931
+      Male_spritesheet_wall_hang_48: 5986444285712826210
+      Male_spritesheet_wall_hang_49: -5263815472438984214
+      Male_spritesheet_wall_hang_5: -4003237103533409074
+      Male_spritesheet_wall_hang_50: -7112492845250185871
+      Male_spritesheet_wall_hang_51: 6002501078935955315
+      Male_spritesheet_wall_hang_52: -2312630895702943916
+      Male_spritesheet_wall_hang_53: -1581706812516253805
+      Male_spritesheet_wall_hang_54: 5386259273123286151
+      Male_spritesheet_wall_hang_55: -4631278445543022808
+      Male_spritesheet_wall_hang_56: -1806731338477769543
+      Male_spritesheet_wall_hang_57: 5945962830408522497
+      Male_spritesheet_wall_hang_58: 7487764899412173476
+      Male_spritesheet_wall_hang_59: 6927222570306963068
+      Male_spritesheet_wall_hang_6: 347266553947298886
+      Male_spritesheet_wall_hang_60: -7284508997716766769
+      Male_spritesheet_wall_hang_61: 1373532740027544596
+      Male_spritesheet_wall_hang_62: -9146882349912768774
+      Male_spritesheet_wall_hang_63: 2705439912104891440
+      Male_spritesheet_wall_hang_64: -5705938903012422895
+      Male_spritesheet_wall_hang_65: 4209686827057042638
+      Male_spritesheet_wall_hang_66: -2557051067482287501
+      Male_spritesheet_wall_hang_67: -6243685463156469388
+      Male_spritesheet_wall_hang_68: 6331425613660555822
+      Male_spritesheet_wall_hang_69: 6215762033769945700
+      Male_spritesheet_wall_hang_7: -7606525577565049876
+      Male_spritesheet_wall_hang_8: -7720633132210372262
+      Male_spritesheet_wall_hang_9: 7786151581451573793
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

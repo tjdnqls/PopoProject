@@ -1,0 +1,975 @@
+fileFormatVersion: 2
+guid: 84485ac191de4ba46b292060fb762ed0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5775408365078218078
+    second: Male_spritesheet_falling_landing_0
+  - first:
+      213: -2005810873397819971
+    second: Male_spritesheet_falling_landing_1
+  - first:
+      213: -1988978764137404557
+    second: Male_spritesheet_falling_landing_2
+  - first:
+      213: -2977801344905619279
+    second: Male_spritesheet_falling_landing_3
+  - first:
+      213: 1135093217934932042
+    second: Male_spritesheet_falling_landing_4
+  - first:
+      213: 7763577017424151547
+    second: Male_spritesheet_falling_landing_5
+  - first:
+      213: -3749010510379969007
+    second: Male_spritesheet_falling_landing_6
+  - first:
+      213: -8966522849993833792
+    second: Male_spritesheet_falling_landing_7
+  - first:
+      213: -6128405106920021709
+    second: Male_spritesheet_falling_landing_8
+  - first:
+      213: 3208541424192351456
+    second: Male_spritesheet_falling_landing_9
+  - first:
+      213: 9196753971697744712
+    second: Male_spritesheet_falling_landing_10
+  - first:
+      213: 8803082377057569579
+    second: Male_spritesheet_falling_landing_11
+  - first:
+      213: -3789774685444833183
+    second: Male_spritesheet_falling_landing_12
+  - first:
+      213: -8754842612897941750
+    second: Male_spritesheet_falling_landing_13
+  - first:
+      213: 9185978491912524043
+    second: Male_spritesheet_falling_landing_14
+  - first:
+      213: -174660445662512460
+    second: Male_spritesheet_falling_landing_15
+  - first:
+      213: -540323671615014770
+    second: Male_spritesheet_falling_landing_16
+  - first:
+      213: 1875456970306874991
+    second: Male_spritesheet_falling_landing_17
+  - first:
+      213: 1208495294491874846
+    second: Male_spritesheet_falling_landing_18
+  - first:
+      213: 1232815678916674584
+    second: Male_spritesheet_falling_landing_19
+  - first:
+      213: 6470527274784863285
+    second: Male_spritesheet_falling_landing_20
+  - first:
+      213: 3402850461989162563
+    second: Male_spritesheet_falling_landing_21
+  - first:
+      213: -8263158272189992390
+    second: Male_spritesheet_falling_landing_22
+  - first:
+      213: -4929798587192206868
+    second: Male_spritesheet_falling_landing_23
+  - first:
+      213: 8280684364770383330
+    second: Male_spritesheet_falling_landing_24
+  - first:
+      213: -467061031925834578
+    second: Male_spritesheet_falling_landing_25
+  - first:
+      213: 7832744319578284501
+    second: Male_spritesheet_falling_landing_26
+  - first:
+      213: -4027690720925601234
+    second: Male_spritesheet_falling_landing_27
+  - first:
+      213: 7443949929215352215
+    second: Male_spritesheet_falling_landing_28
+  - first:
+      213: -2197642987227152818
+    second: Male_spritesheet_falling_landing_29
+  - first:
+      213: -3787516306621978037
+    second: Male_spritesheet_falling_landing_30
+  - first:
+      213: -7552239469265013430
+    second: Male_spritesheet_falling_landing_31
+  - first:
+      213: 4472123052293738572
+    second: Male_spritesheet_falling_landing_32
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 394
+        width: 43
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2aa71bef0b0a9dfa0800000000000000
+      internalID: -5775408365078218078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_1
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 423
+        width: 42
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db5c18c43ade924e0800000000000000
+      internalID: -2005810873397819971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_2
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 420
+        width: 42
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3776bc12a5ab564e0800000000000000
+      internalID: -1988978764137404557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_3
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 416
+        width: 45
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b858313479bca6d0800000000000000
+      internalID: -2977801344905619279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_4
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 410
+        width: 45
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4877f98449a0cf00800000000000000
+      internalID: 1135093217934932042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_5
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 402
+        width: 48
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf304f50a24cdbb60800000000000000
+      internalID: 7763577017424151547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_6
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 394
+        width: 47
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 116989dcdc6d8fbc0800000000000000
+      internalID: -3749010510379969007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_7
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 386
+        width: 48
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c2c1bf79f2809380800000000000000
+      internalID: -8966522849993833792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_8
+      rect:
+        serializedVersion: 2
+        x: 1067
+        y: 383
+        width: 51
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 331a752660883faa0800000000000000
+      internalID: -6128405106920021709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_9
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 383
+        width: 52
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ec6c1cfc67078c20800000000000000
+      internalID: 3208541424192351456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_10
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 255
+        width: 52
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84bf4b1c20f61af70800000000000000
+      internalID: 9196753971697744712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_11
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 255
+        width: 52
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2b840df7c4da2a70800000000000000
+      internalID: 8803082377057569579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_12
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 255
+        width: 50
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1600b4fa004086bc0800000000000000
+      internalID: -3789774685444833183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_13
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 255
+        width: 48
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a07f3c9570d808680800000000000000
+      internalID: -8754842612897941750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_14
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 255
+        width: 46
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0113dcd4c62b7f70800000000000000
+      internalID: 9185978491912524043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_15
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 255
+        width: 44
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ba79f3004b739df0800000000000000
+      internalID: -174660445662512460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_16
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 255
+        width: 42
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e88f6a1cb726088f0800000000000000
+      internalID: -540323671615014770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_17
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 255
+        width: 41
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6eebaa8d26f60a10800000000000000
+      internalID: 1875456970306874991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_18
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 255
+        width: 38
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e165be4411075c010800000000000000
+      internalID: 1208495294491874846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_19
+      rect:
+        serializedVersion: 2
+        x: 1197
+        y: 255
+        width: 38
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8144c570457db1110800000000000000
+      internalID: 1232815678916674584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_20
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 127
+        width: 37
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 534370b264eebc950800000000000000
+      internalID: 6470527274784863285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_21
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 127
+        width: 36
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34e43a2577a593f20800000000000000
+      internalID: 3402850461989162563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_22
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 127
+        width: 36
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a32f84fd45d535d80800000000000000
+      internalID: -8263158272189992390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_23
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 127
+        width: 36
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce99f2cdd46d59bb0800000000000000
+      internalID: -4929798587192206868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_24
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 127
+        width: 36
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e5154b8e86eae270800000000000000
+      internalID: 8280684364770383330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_25
+      rect:
+        serializedVersion: 2
+        x: 686
+        y: 127
+        width: 37
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eac12af477aa489f0800000000000000
+      internalID: -467061031925834578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_26
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 127
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d12ce0857f73bc60800000000000000
+      internalID: 7832744319578284501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_27
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 127
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e22b71201a4ca18c0800000000000000
+      internalID: -4027690720925601234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_28
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79ddca855093e4760800000000000000
+      internalID: 7443949929215352215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_29
+      rect:
+        serializedVersion: 2
+        x: 1198
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4e7233c8576081e0800000000000000
+      internalID: -2197642987227152818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_30
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 0
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4a2cca7cf9007bc0800000000000000
+      internalID: -3787516306621978037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_31
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 0
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4536c7573e013790800000000000000
+      internalID: -7552239469265013430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_falling_landing_32
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 0
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c40ddc3c83c201e30800000000000000
+      internalID: 4472123052293738572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_falling_landing_0: -5775408365078218078
+      Male_spritesheet_falling_landing_1: -2005810873397819971
+      Male_spritesheet_falling_landing_10: 9196753971697744712
+      Male_spritesheet_falling_landing_11: 8803082377057569579
+      Male_spritesheet_falling_landing_12: -3789774685444833183
+      Male_spritesheet_falling_landing_13: -8754842612897941750
+      Male_spritesheet_falling_landing_14: 9185978491912524043
+      Male_spritesheet_falling_landing_15: -174660445662512460
+      Male_spritesheet_falling_landing_16: -540323671615014770
+      Male_spritesheet_falling_landing_17: 1875456970306874991
+      Male_spritesheet_falling_landing_18: 1208495294491874846
+      Male_spritesheet_falling_landing_19: 1232815678916674584
+      Male_spritesheet_falling_landing_2: -1988978764137404557
+      Male_spritesheet_falling_landing_20: 6470527274784863285
+      Male_spritesheet_falling_landing_21: 3402850461989162563
+      Male_spritesheet_falling_landing_22: -8263158272189992390
+      Male_spritesheet_falling_landing_23: -4929798587192206868
+      Male_spritesheet_falling_landing_24: 8280684364770383330
+      Male_spritesheet_falling_landing_25: -467061031925834578
+      Male_spritesheet_falling_landing_26: 7832744319578284501
+      Male_spritesheet_falling_landing_27: -4027690720925601234
+      Male_spritesheet_falling_landing_28: 7443949929215352215
+      Male_spritesheet_falling_landing_29: -2197642987227152818
+      Male_spritesheet_falling_landing_3: -2977801344905619279
+      Male_spritesheet_falling_landing_30: -3787516306621978037
+      Male_spritesheet_falling_landing_31: -7552239469265013430
+      Male_spritesheet_falling_landing_32: 4472123052293738572
+      Male_spritesheet_falling_landing_4: 1135093217934932042
+      Male_spritesheet_falling_landing_5: 7763577017424151547
+      Male_spritesheet_falling_landing_6: -3749010510379969007
+      Male_spritesheet_falling_landing_7: -8966522849993833792
+      Male_spritesheet_falling_landing_8: -6128405106920021709
+      Male_spritesheet_falling_landing_9: 3208541424192351456
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

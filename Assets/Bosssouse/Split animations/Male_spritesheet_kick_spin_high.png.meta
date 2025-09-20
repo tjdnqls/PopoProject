@@ -1,0 +1,1443 @@
+fileFormatVersion: 2
+guid: b8bda327ffc23964395144dd5ccf65da
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 46686474097609146
+    second: Male_spritesheet_kick_spin_high_0
+  - first:
+      213: -6386670269646101791
+    second: Male_spritesheet_kick_spin_high_1
+  - first:
+      213: 2072562245723973286
+    second: Male_spritesheet_kick_spin_high_2
+  - first:
+      213: 5551602812131906707
+    second: Male_spritesheet_kick_spin_high_3
+  - first:
+      213: 648260757917154967
+    second: Male_spritesheet_kick_spin_high_4
+  - first:
+      213: -9200253607306827501
+    second: Male_spritesheet_kick_spin_high_5
+  - first:
+      213: 7751703970048932430
+    second: Male_spritesheet_kick_spin_high_6
+  - first:
+      213: -491456727490826344
+    second: Male_spritesheet_kick_spin_high_7
+  - first:
+      213: -942104893348890041
+    second: Male_spritesheet_kick_spin_high_8
+  - first:
+      213: 5452403554387282072
+    second: Male_spritesheet_kick_spin_high_9
+  - first:
+      213: -2053069108000394910
+    second: Male_spritesheet_kick_spin_high_10
+  - first:
+      213: -2808793566187380208
+    second: Male_spritesheet_kick_spin_high_11
+  - first:
+      213: -3421875283601757720
+    second: Male_spritesheet_kick_spin_high_12
+  - first:
+      213: 4062540025230146737
+    second: Male_spritesheet_kick_spin_high_13
+  - first:
+      213: 7479390128136393428
+    second: Male_spritesheet_kick_spin_high_14
+  - first:
+      213: -8152946457029915833
+    second: Male_spritesheet_kick_spin_high_15
+  - first:
+      213: 6264907323224300157
+    second: Male_spritesheet_kick_spin_high_16
+  - first:
+      213: -9172365201666696282
+    second: Male_spritesheet_kick_spin_high_17
+  - first:
+      213: -1977346149619199616
+    second: Male_spritesheet_kick_spin_high_18
+  - first:
+      213: -2756478750458990541
+    second: Male_spritesheet_kick_spin_high_19
+  - first:
+      213: -4334909867928371160
+    second: Male_spritesheet_kick_spin_high_20
+  - first:
+      213: -1595748454596259239
+    second: Male_spritesheet_kick_spin_high_21
+  - first:
+      213: 6949341298798328344
+    second: Male_spritesheet_kick_spin_high_22
+  - first:
+      213: -7908033577169234468
+    second: Male_spritesheet_kick_spin_high_23
+  - first:
+      213: -2867925519377557273
+    second: Male_spritesheet_kick_spin_high_24
+  - first:
+      213: -2187016729613099674
+    second: Male_spritesheet_kick_spin_high_25
+  - first:
+      213: 6635037427180891756
+    second: Male_spritesheet_kick_spin_high_26
+  - first:
+      213: 1383120718838501328
+    second: Male_spritesheet_kick_spin_high_27
+  - first:
+      213: -7884953328408416127
+    second: Male_spritesheet_kick_spin_high_28
+  - first:
+      213: 1937940381179385969
+    second: Male_spritesheet_kick_spin_high_29
+  - first:
+      213: -3465099048765630974
+    second: Male_spritesheet_kick_spin_high_30
+  - first:
+      213: -2890619208767245688
+    second: Male_spritesheet_kick_spin_high_31
+  - first:
+      213: 6660271101762385569
+    second: Male_spritesheet_kick_spin_high_32
+  - first:
+      213: 6821769922397514574
+    second: Male_spritesheet_kick_spin_high_33
+  - first:
+      213: 6063316163101280005
+    second: Male_spritesheet_kick_spin_high_34
+  - first:
+      213: 1981023541819653523
+    second: Male_spritesheet_kick_spin_high_35
+  - first:
+      213: -1498323136569863736
+    second: Male_spritesheet_kick_spin_high_36
+  - first:
+      213: -9085341912881920554
+    second: Male_spritesheet_kick_spin_high_37
+  - first:
+      213: 4990576674721593615
+    second: Male_spritesheet_kick_spin_high_38
+  - first:
+      213: 6356059602365494780
+    second: Male_spritesheet_kick_spin_high_39
+  - first:
+      213: -7894741896409673267
+    second: Male_spritesheet_kick_spin_high_40
+  - first:
+      213: -4698189881657155133
+    second: Male_spritesheet_kick_spin_high_41
+  - first:
+      213: 6260231437219021691
+    second: Male_spritesheet_kick_spin_high_42
+  - first:
+      213: 5608115442684421901
+    second: Male_spritesheet_kick_spin_high_43
+  - first:
+      213: 3742911627553269075
+    second: Male_spritesheet_kick_spin_high_44
+  - first:
+      213: 8285288051668568031
+    second: Male_spritesheet_kick_spin_high_45
+  - first:
+      213: -8024634623233987953
+    second: Male_spritesheet_kick_spin_high_46
+  - first:
+      213: -4228448451957088390
+    second: Male_spritesheet_kick_spin_high_47
+  - first:
+      213: 6790439377286709140
+    second: Male_spritesheet_kick_spin_high_48
+  - first:
+      213: 1636461526084786782
+    second: Male_spritesheet_kick_spin_high_49
+  - first:
+      213: 2795313571746334557
+    second: Male_spritesheet_kick_spin_high_50
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_0
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 639
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab94760d91dd5a000800000000000000
+      internalID: 46686474097609146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_1
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 639
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e222305a3dfd57a0800000000000000
+      internalID: -6386670269646101791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_2
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 639
+        width: 44
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a6634fa16833cc10800000000000000
+      internalID: 2072562245723973286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_3
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 639
+        width: 43
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3949e2f08514b0d40800000000000000
+      internalID: 5551602812131906707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_4
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 639
+        width: 43
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79e3a7589b51ff800800000000000000
+      internalID: 648260757917154967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_5
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 639
+        width: 44
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31968f4d612225080800000000000000
+      internalID: -9200253607306827501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_6
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 639
+        width: 48
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4a70c2c0b5939b60800000000000000
+      internalID: 7751703970048932430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_7
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 639
+        width: 50
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89fee6fc5befd29f0800000000000000
+      internalID: -491456727490826344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_8
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 639
+        width: 54
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74a38ca4798fce2f0800000000000000
+      internalID: -942104893348890041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_9
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 639
+        width: 53
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 898c4570524daab40800000000000000
+      internalID: 5452403554387282072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_10
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 511
+        width: 48
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 261fe4e16880283e0800000000000000
+      internalID: -2053069108000394910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_11
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 511
+        width: 48
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 012aff712292509d0800000000000000
+      internalID: -2808793566187380208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_12
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 511
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e96a373f8e0380d0800000000000000
+      internalID: -3421875283601757720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_13
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 511
+        width: 43
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bc36a1f0aa016830800000000000000
+      internalID: 4062540025230146737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_14
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 511
+        width: 41
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d2122ca1b12cc760800000000000000
+      internalID: 7479390128136393428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_15
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 511
+        width: 45
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74bc3fbb46aeade80800000000000000
+      internalID: -8152946457029915833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_16
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 511
+        width: 43
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7a178f740c61f650800000000000000
+      internalID: 6264907323224300157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_17
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 511
+        width: 41
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ab9084427635b080800000000000000
+      internalID: -9172365201666696282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_18
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 511
+        width: 45
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08116f1472e0f84e0800000000000000
+      internalID: -1977346149619199616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_19
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 511
+        width: 48
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 330baff4e250fb9d0800000000000000
+      internalID: -2756478750458990541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_20
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 383
+        width: 51
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8204bc4417e47d3c0800000000000000
+      internalID: -4334909867928371160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_21
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 383
+        width: 62
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95259e43c33cad9e0800000000000000
+      internalID: -1595748454596259239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_22
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 383
+        width: 67
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81a73d19715017060800000000000000
+      internalID: 6949341298798328344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_23
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 383
+        width: 67
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd557f03c55014290800000000000000
+      internalID: -7908033577169234468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_24
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 383
+        width: 61
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e8193f5fe41338d0800000000000000
+      internalID: -2867925519377557273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_25
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 383
+        width: 59
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66d13992fd726a1e0800000000000000
+      internalID: -2187016729613099674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_26
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 383
+        width: 55
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6ee986d263641c50800000000000000
+      internalID: 6635037427180891756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_27
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 383
+        width: 50
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0df0ad737f4d13310800000000000000
+      internalID: 1383120718838501328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_28
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 383
+        width: 44
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 180bead59b4039290800000000000000
+      internalID: -7884953328408416127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_29
+      rect:
+        serializedVersion: 2
+        x: 1183
+        y: 383
+        width: 44
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17815105282f4ea10800000000000000
+      internalID: 1937940381179385969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_30
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 255
+        width: 44
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 206d7c626ce79efc0800000000000000
+      internalID: -3465099048765630974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_31
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 255
+        width: 43
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 882f180152572e7d0800000000000000
+      internalID: -2890619208767245688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_32
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 255
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a6b85887490e6c50800000000000000
+      internalID: 6660271101762385569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_33
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 255
+        width: 45
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4ba2f3e99bcbae50800000000000000
+      internalID: 6821769922397514574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_34
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 255
+        width: 44
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 507498eece9352450800000000000000
+      internalID: 6063316163101280005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_35
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 255
+        width: 41
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39db8d55a620e7b10800000000000000
+      internalID: 1981023541819653523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_36
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 255
+        width: 38
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c11106bb03e43be0800000000000000
+      internalID: -1498323136569863736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_37
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 255
+        width: 36
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d584bb9aa16ae180800000000000000
+      internalID: -9085341912881920554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_38
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 255
+        width: 34
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0971216b07124540800000000000000
+      internalID: 4990576674721593615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_39
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 255
+        width: 32
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf5b4325882453850800000000000000
+      internalID: 6356059602365494780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_40
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 127
+        width: 30
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc19b17c21e307290800000000000000
+      internalID: -7894741896409673267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_41
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 127
+        width: 32
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c1ad78d13dacceb0800000000000000
+      internalID: -4698189881657155133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_42
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 127
+        width: 37
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b734c23f25fc0e650800000000000000
+      internalID: 6260231437219021691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_43
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 127
+        width: 42
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d076694384704dd40800000000000000
+      internalID: 5608115442684421901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_44
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 127
+        width: 44
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 355edf16b4e71f330800000000000000
+      internalID: 3742911627553269075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_45
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 127
+        width: 45
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd74e7de5914bf270800000000000000
+      internalID: 8285288051668568031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_46
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 127
+        width: 45
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8a66d59355c2a090800000000000000
+      internalID: -8024634623233987953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_47
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 127
+        width: 46
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7f1c0649888155c0800000000000000
+      internalID: -4228448451957088390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_48
+      rect:
+        serializedVersion: 2
+        x: 1065
+        y: 127
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49fbff7e2ac7c3e50800000000000000
+      internalID: 6790439377286709140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_49
+      rect:
+        serializedVersion: 2
+        x: 1193
+        y: 127
+        width: 46
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5a90ee6611e5b610800000000000000
+      internalID: 1636461526084786782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_kick_spin_high_50
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 0
+        width: 45
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d57c4cf12e2fac620800000000000000
+      internalID: 2795313571746334557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_kick_spin_high_0: 46686474097609146
+      Male_spritesheet_kick_spin_high_1: -6386670269646101791
+      Male_spritesheet_kick_spin_high_10: -2053069108000394910
+      Male_spritesheet_kick_spin_high_11: -2808793566187380208
+      Male_spritesheet_kick_spin_high_12: -3421875283601757720
+      Male_spritesheet_kick_spin_high_13: 4062540025230146737
+      Male_spritesheet_kick_spin_high_14: 7479390128136393428
+      Male_spritesheet_kick_spin_high_15: -8152946457029915833
+      Male_spritesheet_kick_spin_high_16: 6264907323224300157
+      Male_spritesheet_kick_spin_high_17: -9172365201666696282
+      Male_spritesheet_kick_spin_high_18: -1977346149619199616
+      Male_spritesheet_kick_spin_high_19: -2756478750458990541
+      Male_spritesheet_kick_spin_high_2: 2072562245723973286
+      Male_spritesheet_kick_spin_high_20: -4334909867928371160
+      Male_spritesheet_kick_spin_high_21: -1595748454596259239
+      Male_spritesheet_kick_spin_high_22: 6949341298798328344
+      Male_spritesheet_kick_spin_high_23: -7908033577169234468
+      Male_spritesheet_kick_spin_high_24: -2867925519377557273
+      Male_spritesheet_kick_spin_high_25: -2187016729613099674
+      Male_spritesheet_kick_spin_high_26: 6635037427180891756
+      Male_spritesheet_kick_spin_high_27: 1383120718838501328
+      Male_spritesheet_kick_spin_high_28: -7884953328408416127
+      Male_spritesheet_kick_spin_high_29: 1937940381179385969
+      Male_spritesheet_kick_spin_high_3: 5551602812131906707
+      Male_spritesheet_kick_spin_high_30: -3465099048765630974
+      Male_spritesheet_kick_spin_high_31: -2890619208767245688
+      Male_spritesheet_kick_spin_high_32: 6660271101762385569
+      Male_spritesheet_kick_spin_high_33: 6821769922397514574
+      Male_spritesheet_kick_spin_high_34: 6063316163101280005
+      Male_spritesheet_kick_spin_high_35: 1981023541819653523
+      Male_spritesheet_kick_spin_high_36: -1498323136569863736
+      Male_spritesheet_kick_spin_high_37: -9085341912881920554
+      Male_spritesheet_kick_spin_high_38: 4990576674721593615
+      Male_spritesheet_kick_spin_high_39: 6356059602365494780
+      Male_spritesheet_kick_spin_high_4: 648260757917154967
+      Male_spritesheet_kick_spin_high_40: -7894741896409673267
+      Male_spritesheet_kick_spin_high_41: -4698189881657155133
+      Male_spritesheet_kick_spin_high_42: 6260231437219021691
+      Male_spritesheet_kick_spin_high_43: 5608115442684421901
+      Male_spritesheet_kick_spin_high_44: 3742911627553269075
+      Male_spritesheet_kick_spin_high_45: 8285288051668568031
+      Male_spritesheet_kick_spin_high_46: -8024634623233987953
+      Male_spritesheet_kick_spin_high_47: -4228448451957088390
+      Male_spritesheet_kick_spin_high_48: 6790439377286709140
+      Male_spritesheet_kick_spin_high_49: 1636461526084786782
+      Male_spritesheet_kick_spin_high_5: -9200253607306827501
+      Male_spritesheet_kick_spin_high_50: 2795313571746334557
+      Male_spritesheet_kick_spin_high_6: 7751703970048932430
+      Male_spritesheet_kick_spin_high_7: -491456727490826344
+      Male_spritesheet_kick_spin_high_8: -942104893348890041
+      Male_spritesheet_kick_spin_high_9: 5452403554387282072
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

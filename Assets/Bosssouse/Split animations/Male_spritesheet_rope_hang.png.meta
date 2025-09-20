@@ -1,0 +1,1807 @@
+fileFormatVersion: 2
+guid: 5e9c4633e54de394f909da76a2ad35d1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 145540355897459726
+    second: Male_spritesheet_rope_hang_0
+  - first:
+      213: 1766606368426245742
+    second: Male_spritesheet_rope_hang_1
+  - first:
+      213: -6611266052338181716
+    second: Male_spritesheet_rope_hang_2
+  - first:
+      213: -3093153080645015332
+    second: Male_spritesheet_rope_hang_3
+  - first:
+      213: 5992286511154987427
+    second: Male_spritesheet_rope_hang_4
+  - first:
+      213: 9018946225106158943
+    second: Male_spritesheet_rope_hang_5
+  - first:
+      213: 6887944120544058182
+    second: Male_spritesheet_rope_hang_6
+  - first:
+      213: -8638074682767362166
+    second: Male_spritesheet_rope_hang_7
+  - first:
+      213: -792588468699805164
+    second: Male_spritesheet_rope_hang_8
+  - first:
+      213: -8808686999156700588
+    second: Male_spritesheet_rope_hang_9
+  - first:
+      213: 4942057539451095857
+    second: Male_spritesheet_rope_hang_10
+  - first:
+      213: -7421958833202997029
+    second: Male_spritesheet_rope_hang_11
+  - first:
+      213: 647921186079560943
+    second: Male_spritesheet_rope_hang_12
+  - first:
+      213: 2673125390191756600
+    second: Male_spritesheet_rope_hang_13
+  - first:
+      213: 4562796999320736258
+    second: Male_spritesheet_rope_hang_14
+  - first:
+      213: -2696345177923995765
+    second: Male_spritesheet_rope_hang_15
+  - first:
+      213: -6104150380423620245
+    second: Male_spritesheet_rope_hang_16
+  - first:
+      213: 1376321511419120820
+    second: Male_spritesheet_rope_hang_17
+  - first:
+      213: 2809871408505518208
+    second: Male_spritesheet_rope_hang_18
+  - first:
+      213: 3142086852069251459
+    second: Male_spritesheet_rope_hang_19
+  - first:
+      213: 5824673567311913507
+    second: Male_spritesheet_rope_hang_20
+  - first:
+      213: 358245184140962808
+    second: Male_spritesheet_rope_hang_21
+  - first:
+      213: -6033857456571461673
+    second: Male_spritesheet_rope_hang_22
+  - first:
+      213: 7877575065992103583
+    second: Male_spritesheet_rope_hang_23
+  - first:
+      213: 2433316933731541119
+    second: Male_spritesheet_rope_hang_24
+  - first:
+      213: -7848861850632144309
+    second: Male_spritesheet_rope_hang_25
+  - first:
+      213: -6231034298195856237
+    second: Male_spritesheet_rope_hang_26
+  - first:
+      213: -6219626988460191529
+    second: Male_spritesheet_rope_hang_27
+  - first:
+      213: -696870719165355305
+    second: Male_spritesheet_rope_hang_28
+  - first:
+      213: -2005523468482866949
+    second: Male_spritesheet_rope_hang_29
+  - first:
+      213: -2092879519432237514
+    second: Male_spritesheet_rope_hang_30
+  - first:
+      213: 6522822050313461554
+    second: Male_spritesheet_rope_hang_31
+  - first:
+      213: 4851030865606233675
+    second: Male_spritesheet_rope_hang_32
+  - first:
+      213: -5806192552879968463
+    second: Male_spritesheet_rope_hang_33
+  - first:
+      213: 5207182514265739196
+    second: Male_spritesheet_rope_hang_34
+  - first:
+      213: -4510892112858260044
+    second: Male_spritesheet_rope_hang_35
+  - first:
+      213: -641211363783139014
+    second: Male_spritesheet_rope_hang_36
+  - first:
+      213: 1380356392951426777
+    second: Male_spritesheet_rope_hang_37
+  - first:
+      213: -2783580877751093813
+    second: Male_spritesheet_rope_hang_38
+  - first:
+      213: -47731570028058898
+    second: Male_spritesheet_rope_hang_39
+  - first:
+      213: 7766842046195990203
+    second: Male_spritesheet_rope_hang_40
+  - first:
+      213: -2362337290405352176
+    second: Male_spritesheet_rope_hang_41
+  - first:
+      213: -8731658629832435012
+    second: Male_spritesheet_rope_hang_42
+  - first:
+      213: -1585490349457108770
+    second: Male_spritesheet_rope_hang_43
+  - first:
+      213: -5831297412351766955
+    second: Male_spritesheet_rope_hang_44
+  - first:
+      213: -8566334596331207630
+    second: Male_spritesheet_rope_hang_45
+  - first:
+      213: -3278248116017442608
+    second: Male_spritesheet_rope_hang_46
+  - first:
+      213: -5834831193099984157
+    second: Male_spritesheet_rope_hang_47
+  - first:
+      213: -9027784402967282399
+    second: Male_spritesheet_rope_hang_48
+  - first:
+      213: -8884512584135106215
+    second: Male_spritesheet_rope_hang_49
+  - first:
+      213: 7182968694968733418
+    second: Male_spritesheet_rope_hang_50
+  - first:
+      213: 7550223959162342371
+    second: Male_spritesheet_rope_hang_51
+  - first:
+      213: 6370463002693241157
+    second: Male_spritesheet_rope_hang_52
+  - first:
+      213: -4985625199359824905
+    second: Male_spritesheet_rope_hang_53
+  - first:
+      213: -8225390236420407665
+    second: Male_spritesheet_rope_hang_54
+  - first:
+      213: -2377653465031256336
+    second: Male_spritesheet_rope_hang_55
+  - first:
+      213: 4918247242907743554
+    second: Male_spritesheet_rope_hang_56
+  - first:
+      213: 4278585269905290279
+    second: Male_spritesheet_rope_hang_57
+  - first:
+      213: -6738518893407550753
+    second: Male_spritesheet_rope_hang_58
+  - first:
+      213: -6164642240396398134
+    second: Male_spritesheet_rope_hang_59
+  - first:
+      213: -890854934805991180
+    second: Male_spritesheet_rope_hang_60
+  - first:
+      213: 563913998830491186
+    second: Male_spritesheet_rope_hang_61
+  - first:
+      213: -4132487011254557597
+    second: Male_spritesheet_rope_hang_62
+  - first:
+      213: 243682479794856794
+    second: Male_spritesheet_rope_hang_63
+  - first:
+      213: -6659043678126277894
+    second: Male_spritesheet_rope_hang_64
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 767
+        width: 16
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0480cdbe20150200800000000000000
+      internalID: 145540355897459726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_1
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 779
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6e3df7d12f348810800000000000000
+      internalID: 1766606368426245742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_2
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca998caad801044a0800000000000000
+      internalID: -6611266052338181716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_3
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd8af3059a9e215d0800000000000000
+      internalID: -3093153080645015332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_4
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a102c955d0e82350800000000000000
+      internalID: 5992286511154987427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_5
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f558dcbaecbb92d70800000000000000
+      internalID: 9018946225106158943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_6
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64bd4c90fa4e69f50800000000000000
+      internalID: 6887944120544058182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_7
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a873b5ea7d46f1880800000000000000
+      internalID: -8638074682767362166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_8
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 779
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41ac31eacf82005f0800000000000000
+      internalID: -792588468699805164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_9
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 779
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45ac9ad38d141c580800000000000000
+      internalID: -8808686999156700588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_10
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 651
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13b0682e527b59440800000000000000
+      internalID: 4942057539451095857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_11
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 651
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd8dc51b3c7eff890800000000000000
+      internalID: -7421958833202997029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_12
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 651
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe4d8bac2e0edf800800000000000000
+      internalID: 647921186079560943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_13
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 651
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 835057a2169d81520800000000000000
+      internalID: 2673125390191756600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_14
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 651
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2021bb632bf425f30800000000000000
+      internalID: 4562796999320736258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_15
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 651
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b87b006b858a49ad0800000000000000
+      internalID: -2696345177923995765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_16
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 650
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b69d847f193b94ba0800000000000000
+      internalID: -6104150380423620245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_17
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 650
+        width: 30
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bc8dd06f1da91310800000000000000
+      internalID: 1376321511419120820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_18
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 650
+        width: 30
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0887f70a82baef620800000000000000
+      internalID: 2809871408505518208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_19
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 650
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 389530f285fea9b20800000000000000
+      internalID: 3142086852069251459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_20
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 322eb30cfb565d050800000000000000
+      internalID: 5824673567311913507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_21
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fb673fc81eb8f400800000000000000
+      internalID: 358245184140962808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_22
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7df47bbac9e634ca0800000000000000
+      internalID: -6033857456571461673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_23
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f960feb09c4c25d60800000000000000
+      internalID: 7877575065992103583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_24
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f70e205ebd0e4c120800000000000000
+      internalID: 2433316933731541119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_25
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4ab4fd5bbd331390800000000000000
+      internalID: -7848861850632144309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_26
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 523
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 394b2c8b15be689a0800000000000000
+      internalID: -6231034298195856237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_27
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 523
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d0d56df4327fa9a0800000000000000
+      internalID: -6219626988460191529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_28
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 523
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7da27c9e5c73456f0800000000000000
+      internalID: -696870719165355305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_29
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 523
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf09e58f703fa24e0800000000000000
+      internalID: -2005523468482866949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_30
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 395
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63e1d866a2994f2e0800000000000000
+      internalID: -2092879519432237514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_31
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 395
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23fd40a6818b58a50800000000000000
+      internalID: 6522822050313461554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_32
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 395
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4e4ae2ded2525340800000000000000
+      internalID: 4851030865606233675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_33
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 395
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13f221cb2a24c6fa0800000000000000
+      internalID: -5806192552879968463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_34
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 395
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbf4f6b68e0a34840800000000000000
+      internalID: 5207182514265739196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_35
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 395
+        width: 32
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bdd8f8e5871661c0800000000000000
+      internalID: -4510892112858260044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_36
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 395
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3123c379a5f917f0800000000000000
+      internalID: -641211363783139014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_37
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 395
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9de2f4173d2082310800000000000000
+      internalID: 1380356392951426777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_38
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 395
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc5731290fbbe59d0800000000000000
+      internalID: -2783580877751093813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_39
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 395
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee6e7e3d36c665ff0800000000000000
+      internalID: -47731570028058898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_40
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbe7416c0bd59cb60800000000000000
+      internalID: 7766842046195990203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_41
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01deab520ca473fd0800000000000000
+      internalID: -2362337290405352176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_42
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cba1ddc0dbae2d680800000000000000
+      internalID: -8731658629832435012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_43
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed09ccd6de43ff9e0800000000000000
+      internalID: -1585490349457108770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_44
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55e4e1526e1131fa0800000000000000
+      internalID: -5831297412351766955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_45
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2340a8e22144e1980800000000000000
+      internalID: -8566334596331207630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_46
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d0df2715b25182d0800000000000000
+      internalID: -3278248116017442608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_47
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e228e2b1f3860fa0800000000000000
+      internalID: -5834831193099984157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_48
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 267
+        width: 31
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12db250baedd6b280800000000000000
+      internalID: -9027784402967282399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_49
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 267
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 951a32c70eed3b480800000000000000
+      internalID: -8884512584135106215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_50
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 139
+        width: 30
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeecc5898f70fa360800000000000000
+      internalID: 7182968694968733418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_51
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 139
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ebc38420b8c7c860800000000000000
+      internalID: 7550223959162342371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_52
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 139
+        width: 29
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5498c4a495e686850800000000000000
+      internalID: 6370463002693241157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_53
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 138
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fbebe0db408fcab0800000000000000
+      internalID: -4985625199359824905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_54
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 138
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8ef133f82b89dd80800000000000000
+      internalID: -8225390236420407665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_55
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 138
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f6d5d955c0e00fd0800000000000000
+      internalID: -2377653465031256336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_56
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 138
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2457f073fcf114440800000000000000
+      internalID: 4918247242907743554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_57
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 138
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7247ce152a6906b30800000000000000
+      internalID: 4278585269905290279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_58
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 138
+        width: 29
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd24f26c4c8fb72a0800000000000000
+      internalID: -6738518893407550753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_59
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 138
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac1fdc54b8ac27aa0800000000000000
+      internalID: -6164642240396398134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_60
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 10
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f03c70282c03a3f0800000000000000
+      internalID: -890854934805991180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_61
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 10
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23659205bcc63d700800000000000000
+      internalID: 563913998830491186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_62
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 10
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 364a14745f476a6c0800000000000000
+      internalID: -4132487011254557597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_63
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 10
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a53a82e9cebb16300800000000000000
+      internalID: 243682479794856794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_rope_hang_64
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 10
+        width: 28
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afaf87d4e035693a0800000000000000
+      internalID: -6659043678126277894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_rope_hang_0: 145540355897459726
+      Male_spritesheet_rope_hang_1: 1766606368426245742
+      Male_spritesheet_rope_hang_10: 4942057539451095857
+      Male_spritesheet_rope_hang_11: -7421958833202997029
+      Male_spritesheet_rope_hang_12: 647921186079560943
+      Male_spritesheet_rope_hang_13: 2673125390191756600
+      Male_spritesheet_rope_hang_14: 4562796999320736258
+      Male_spritesheet_rope_hang_15: -2696345177923995765
+      Male_spritesheet_rope_hang_16: -6104150380423620245
+      Male_spritesheet_rope_hang_17: 1376321511419120820
+      Male_spritesheet_rope_hang_18: 2809871408505518208
+      Male_spritesheet_rope_hang_19: 3142086852069251459
+      Male_spritesheet_rope_hang_2: -6611266052338181716
+      Male_spritesheet_rope_hang_20: 5824673567311913507
+      Male_spritesheet_rope_hang_21: 358245184140962808
+      Male_spritesheet_rope_hang_22: -6033857456571461673
+      Male_spritesheet_rope_hang_23: 7877575065992103583
+      Male_spritesheet_rope_hang_24: 2433316933731541119
+      Male_spritesheet_rope_hang_25: -7848861850632144309
+      Male_spritesheet_rope_hang_26: -6231034298195856237
+      Male_spritesheet_rope_hang_27: -6219626988460191529
+      Male_spritesheet_rope_hang_28: -696870719165355305
+      Male_spritesheet_rope_hang_29: -2005523468482866949
+      Male_spritesheet_rope_hang_3: -3093153080645015332
+      Male_spritesheet_rope_hang_30: -2092879519432237514
+      Male_spritesheet_rope_hang_31: 6522822050313461554
+      Male_spritesheet_rope_hang_32: 4851030865606233675
+      Male_spritesheet_rope_hang_33: -5806192552879968463
+      Male_spritesheet_rope_hang_34: 5207182514265739196
+      Male_spritesheet_rope_hang_35: -4510892112858260044
+      Male_spritesheet_rope_hang_36: -641211363783139014
+      Male_spritesheet_rope_hang_37: 1380356392951426777
+      Male_spritesheet_rope_hang_38: -2783580877751093813
+      Male_spritesheet_rope_hang_39: -47731570028058898
+      Male_spritesheet_rope_hang_4: 5992286511154987427
+      Male_spritesheet_rope_hang_40: 7766842046195990203
+      Male_spritesheet_rope_hang_41: -2362337290405352176
+      Male_spritesheet_rope_hang_42: -8731658629832435012
+      Male_spritesheet_rope_hang_43: -1585490349457108770
+      Male_spritesheet_rope_hang_44: -5831297412351766955
+      Male_spritesheet_rope_hang_45: -8566334596331207630
+      Male_spritesheet_rope_hang_46: -3278248116017442608
+      Male_spritesheet_rope_hang_47: -5834831193099984157
+      Male_spritesheet_rope_hang_48: -9027784402967282399
+      Male_spritesheet_rope_hang_49: -8884512584135106215
+      Male_spritesheet_rope_hang_5: 9018946225106158943
+      Male_spritesheet_rope_hang_50: 7182968694968733418
+      Male_spritesheet_rope_hang_51: 7550223959162342371
+      Male_spritesheet_rope_hang_52: 6370463002693241157
+      Male_spritesheet_rope_hang_53: -4985625199359824905
+      Male_spritesheet_rope_hang_54: -8225390236420407665
+      Male_spritesheet_rope_hang_55: -2377653465031256336
+      Male_spritesheet_rope_hang_56: 4918247242907743554
+      Male_spritesheet_rope_hang_57: 4278585269905290279
+      Male_spritesheet_rope_hang_58: -6738518893407550753
+      Male_spritesheet_rope_hang_59: -6164642240396398134
+      Male_spritesheet_rope_hang_6: 6887944120544058182
+      Male_spritesheet_rope_hang_60: -890854934805991180
+      Male_spritesheet_rope_hang_61: 563913998830491186
+      Male_spritesheet_rope_hang_62: -4132487011254557597
+      Male_spritesheet_rope_hang_63: 243682479794856794
+      Male_spritesheet_rope_hang_64: -6659043678126277894
+      Male_spritesheet_rope_hang_7: -8638074682767362166
+      Male_spritesheet_rope_hang_8: -792588468699805164
+      Male_spritesheet_rope_hang_9: -8808686999156700588
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

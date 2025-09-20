@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -101,6 +102,69 @@ public class PlayerMouseMovement : MonoBehaviour
     private float ceilingReleaseUntil = -1f;   // >0 이면 release 페이드 중
     private float ignoreCeilingUntil = -1f;    // 이 시각 전엔 머리로 다시 안 붙음
     private float lastCeilingY = 0f;           // 붙었던 천장 Y 캐시(유지용)
+
+    // === P2 Laser Tether ===
+    [Header("P2 Laser Tether")]
+    [SerializeField] private string boxLayerName = "Box";   // 연결 대상 레이어(쉼표로 여러 개 가능)
+    [SerializeField] private float p2LaserMaxDist = 10f;    // 조준/히트 최대 거리
+    [SerializeField] private float p2LaserBreakDist = 11.5f;// 이 거리 넘으면 자동 해제
+    [SerializeField] private float p2PullForce = 20f;       // AddForce 끌어오기 힘
+    [SerializeField] private float p2PullSpeed = 4.0f;      // 끌려오는 속도 상한
+    [SerializeField] private float p2StopPullContactGap = 0.005f; // P2와 접촉 시 끌기 정지
+    [SerializeField] private float p2LaserCooldown = 0.05f; // 토글 스팸 방지
+    [SerializeField] private float p2LaserBoxCastHalfHeight = 0.35f; // 히트 편의 위해 얇은 BoxCast 높이
+    [SerializeField] private LineRenderer p2LaserLine;      // (선택) 시각화 라인
+    [SerializeField] private Transform p2LaserMuzzle;       // (선택) 레이저 시작 위치
+                                                            // === P2 Wire Anchor ===
+    [Header("P2 Wire Anchor")]
+    [SerializeField] private string anchorLayerName = "WireAnchor"; // 선택: 레이어로도 구분하고 싶다면 사용
+    private int anchorMask;
+    private bool p2AnchorMode = false;       // true면 와이어 모드
+    private Collider2D p2AnchorCol;          // 앵커 대상
+    [SerializeField] private bool p2AnchorUseBoxBreakDist = true; // 박스 끊김 길이 재사용
+    [SerializeField] private float p2AnchorMaxDist = 11.5f;       // 기본값(재사용 안할 때)
+
+    // === P2 Laser Tether (Visual) ===
+    [Header("P2 Laser Visual")]
+    [SerializeField] private Sprite impactSprite;              // 끝점 반짝이(작은 원형 스프라이트 추천)
+    [SerializeField] private float beamBaseWidth = 0.08f;      // 기본 굵기
+    [SerializeField] private float beamPulseAmp = 0.12f;       // 굵기 펄스 진폭(비율)
+    [SerializeField] private float beamPulseHz = 12f;          // 펄스 속도
+    [SerializeField] private int beamSortingOrderOffset = 2;   // 플레이어보다 얼마나 위에 그릴지
+
+    // === P2 Laser Tether (Stop on Release) ===
+    [Header("P2 Laser Stop-On-Release")]
+    [SerializeField] private PhysicsMaterial2D boxHighFrictionMat; // friction=1, bounciness=0 권장(없으면 런타임 생성)
+    [SerializeField] private float onReleaseExtraDrag = 10f;        // 해제 직후 드래그 임시 상승
+    [SerializeField] private float onReleaseExtraAngDrag = 2f;
+    [SerializeField] private float onReleaseDragDuration = 0.35f;   // 임시 드래그 유지 시간
+    [SerializeField] private bool restoreMatAfter = true;           // 일정 시간 뒤 원복
+    [SerializeField] private float restoreMatAfterSec = 0.6f;
+
+    // === P2 Laser Auto-Connect (Nearest & LoS) ===
+    [Header("P2 Laser Auto-Connect")]
+    [SerializeField] private float p2LaserAutoRadius = 10f;      // 자동 탐색 반경
+    [SerializeField] private float p2LoSBoxWidth = 0.18f;        // 시야 박스캐스트 두께
+    [SerializeField] private LayerMask p2ObstructionMask;        // 기본값: Ground|Event|Trap
+    private readonly Collider2D[] p2BoxScanBuf = new Collider2D[32]; // NonAlloc 버퍼
+
+
+    private List<(Collider2D col, PhysicsMaterial2D orig)> p2LastCols = new();
+    private float p2PrevDrag = -1f, p2PrevAngDrag = -1f;
+    private Coroutine p2RestoreCo;
+
+
+    private Transform p2ImpactFx;    // 끝점 글로우
+    private SpriteRenderer p2ImpactSr;
+    private float p2BeamPulseTimer = 0f;
+
+
+    private int boxMask;
+    private bool p2LaserActive = false;
+    private Collider2D p2TetherCol;
+    private Rigidbody2D p2TetherRb;
+    private float p2LaserNextToggleAt = 0f;
+
 
     // === Wall Detach(이탈 유예창) ===
     [SerializeField] private float wallDetachGrace = 0.13f;
@@ -326,6 +390,15 @@ public class PlayerMouseMovement : MonoBehaviour
                                                                   // --- 추가 파라미터 ---
     [SerializeField] private float seamFixProbe = 0.03f;  // 발 앞 세로면 탐색 폭
     [SerializeField] private float seamFixLift = 0.03f;  // 살짝 들어올릴 높이
+
+    // Box 전용 스텝업 게이트(이중 레이)
+    [Header("Step Up (Box gate)")]
+    [SerializeField] private bool enableBoxGateForStepUp = true;
+    [SerializeField] private float boxGateLowerY = 0.05f;   // 발밑 기준 낮은 레이 높이
+    [SerializeField] private float boxGateUpperY = 0.28f;   // 높은 레이 높이(여기서 맞으면 '높은 박스')
+    [SerializeField] private float boxGateDepth = 0.12f;   // 전방 탐색 깊이(=가로 길이)
+    [SerializeField] private float boxGateThickness = 0.02f;// 레이 두께(얇은 띠)
+
     // === 내부 상태 ===
     private float lastGroundedTime = -999f;
     private float lastJumpPressedTime = -999f;
@@ -384,6 +457,8 @@ public class PlayerMouseMovement : MonoBehaviour
         TryResolveSwap();
         ResolveLayerMasks();
         ApplyLayerIgnores();
+        EnsureP2LaserLine();
+        EnsureP2ImpactFx();
     }
 
     void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
@@ -410,6 +485,10 @@ public class PlayerMouseMovement : MonoBehaviour
         eventMask = GetMaskFromCsv(eventLayerName);
         trapMask = GetMaskFromCsv(trapLayerName);
         slimeMask = GetMaskFromCsv(slimeLayerName);
+        boxMask = GetMaskFromCsv(boxLayerName);
+        anchorMask = GetMaskFromCsv(anchorLayerName);
+        
+
 
         slimeLayerMask = slimeMask;
         trapLayerIndex = LayerMask.NameToLayer(trapLayerName.Trim());
@@ -423,6 +502,15 @@ public class PlayerMouseMovement : MonoBehaviour
         if (trapLayerIndex < 0) Debug.LogWarning($"[Player] Trap layer index for '{trapLayerName}' not found.");
         if (playerLayerIndexSelf < 0) Debug.LogWarning($"[Player] Player layer '{playerLayerName}' not found.");
         if (monsterLayerIndex < 0) Debug.LogWarning($"[Player] Monster layer '{monsterLayerName}' not found.");
+        if (boxMask == 0) Debug.LogWarning($"[Player] Box layer(s) '{boxLayerName}' not found.");
+        if (anchorMask == 0) { /* 레이어 안 쓸거면 경고 생략 가능 */ }
+
+        if (p2ObstructionMask.value == 0)
+        {
+            // Ground|Event|Trap을 가림막으로 사용
+            int mask = groundMask | eventMask | trapMask;
+            p2ObstructionMask = mask;
+        }
     }
 
     //공격 중(P1) 입력락 여부
@@ -529,6 +617,28 @@ public class PlayerMouseMovement : MonoBehaviour
             if (selectedObject.activeSelf && Time.time >= fPulseOffAt)
             {
                 selectedObject.SetActive(false);
+            }
+        }
+        // --- P2 전용: 레이저 테더 토글 ---
+        if (playerID == SwapController.PlayerChar.P2 && !locked && !isCarrying && !isCarried)
+        {
+            if (Input.GetKeyDown(KeyCode.F) && Time.time >= p2LaserNextToggleAt)
+            {
+                if (p2LaserActive) EndP2Laser();
+                else TryBeginP2Laser();
+                p2LaserNextToggleAt = Time.time + p2LaserCooldown;
+            }
+        }
+
+        if (p2LaserActive)
+        {
+            if (p2AnchorMode)
+            {
+                if (p2AnchorCol == null) EndP2Laser(); // 대상 사라지면만 해제
+            }
+            else
+            {
+                if (p2TetherCol == null || IsP2LaserTooFar()) EndP2Laser();
             }
         }
 
@@ -862,8 +972,17 @@ public class PlayerMouseMovement : MonoBehaviour
         }
 
         FixVerticalSeam(rawX);
-
+        if (playerID == SwapController.PlayerChar.P2 && p2LaserActive && p2AnchorMode && p2AnchorCol)
+        {
+            ApplyAnchorConstraint(ref v);
+        }
         rb.linearVelocity = v;
+        rb.linearVelocity = v;
+        // --- P2 레이저 물리 끌어오기 ---
+        if (playerID == SwapController.PlayerChar.P2 && p2LaserActive)
+        {
+            UpdateP2LaserPhysics();
+        }
 
         bool groundedThisFrame = groundedStrict;
         if (!wasGrounded && groundedThisFrame)
@@ -1460,16 +1579,66 @@ public class PlayerMouseMovement : MonoBehaviour
         Bounds b = bodyCollider.bounds;
         int sign = dirInput > 0f ? +1 : -1;
 
-        // 발 위치 기준, 발 앞쪽 위에서 아래로 레이캐스트
+        // ========== 🔵 Box 스텝업 게이트 (이중 레이) ==========
+        bool allowBoxSurface = false;
+        if (enableBoxGateForStepUp && boxMask != 0)
+        {
+            float cx = b.center.x + sign * (b.extents.x + boxGateDepth * 0.5f);
+            Vector2 size = new Vector2(boxGateDepth, boxGateThickness);
+
+            Vector2 lowCenter = new Vector2(cx, b.min.y + boxGateLowerY);
+            Vector2 upCenter = new Vector2(cx, b.min.y + boxGateUpperY);
+
+            bool lowHit = Physics2D.OverlapBox(lowCenter, size, 0f, boxMask);
+            bool upHit = Physics2D.OverlapBox(upCenter, size, 0f, boxMask);
+
+#if UNITY_EDITOR
+            // 디버그 시각화
+            Debug.DrawLine(lowCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
+                           lowCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
+                           lowHit ? Color.cyan : Color.gray, 0f);
+            Debug.DrawLine(lowCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
+                           lowCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
+                           lowHit ? Color.cyan : Color.gray, 0f);
+            Debug.DrawLine(lowCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
+                           lowCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
+                           lowHit ? Color.cyan : Color.gray, 0f);
+            Debug.DrawLine(lowCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
+                           lowCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
+                           lowHit ? Color.cyan : Color.gray, 0f);
+
+            Debug.DrawLine(upCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
+                           upCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
+                           upHit ? Color.blue : Color.gray, 0f);
+            Debug.DrawLine(upCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
+                           upCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
+                           upHit ? Color.blue : Color.gray, 0f);
+            Debug.DrawLine(upCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
+                           upCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
+                           upHit ? Color.blue : Color.gray, 0f);
+            Debug.DrawLine(upCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
+                           upCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
+                           upHit ? Color.blue : Color.gray, 0f);
+#endif
+            // 규칙:
+            //  - 낮은 레이만 맞고, 높은 레이는 안 맞으면 → 낮은 박스 → 스텝업 허용
+            //  - 높은 레이도 맞으면 → 높은 박스 → 스텝업 금지
+            if (upHit) return;                // 높다 → 금지
+            allowBoxSurface = lowHit && !upHit;
+        }
+
+        // ===== 발 앞쪽에서 '올라탈 표면' 높이 측정 =====
         float feetY = b.min.y + 0.01f;
         Vector2 rayOrigin = new Vector2(
             b.center.x + sign * (b.extents.x + stepForward),
             feetY + stepUpMax
         );
         float rayLen = stepUpMax + 0.06f;
-        int groundOrEvent = groundMask | eventMask; // 원웨이에도 오르고 싶지 않으면 eventMask 빼기
 
-        RaycastHit2D down = Physics2D.Raycast(rayOrigin, Vector2.down, rayLen, groundOrEvent);
+        //Box 표면도 허용해야 Box 위로 올라간다
+        int surfaceMask = groundMask | eventMask | (allowBoxSurface ? boxMask : 0);
+
+        RaycastHit2D down = Physics2D.Raycast(rayOrigin, Vector2.down, rayLen, surfaceMask);
 #if UNITY_EDITOR
         Debug.DrawRay(rayOrigin, Vector2.down * rayLen, down ? Color.yellow : Color.gray, 0f);
 #endif
@@ -1478,24 +1647,52 @@ public class PlayerMouseMovement : MonoBehaviour
         float climb = down.point.y - feetY;
         if (climb <= 0f || climb > stepUpMax) return;
 
-        // 머리/몸통 간섭 체크: 현재 위치에서 위로 'climb' 만큼 이동이 가능한지
+        // 머리/몸통 간섭 체크
         ContactFilter2D filter = new ContactFilter2D
         {
             useTriggers = false,
             useLayerMask = true,
-            layerMask = groundOrEvent | trapMask   // 위가 막혀있으면 안 올라감
+            layerMask = surfaceMask | trapMask
         };
         RaycastHit2D[] buf = new RaycastHit2D[2];
         int hitCount = bodyCollider.Cast(Vector2.up, filter, buf, climb + stepUpSkin);
         if (hitCount > 0) return;
 
-        // 안전 — 살짝 들어올리기
+        // 안전 상승
         if (rb)
             rb.position = rb.position + new Vector2(0f, climb + stepUpSkin);
         else
             transform.position += new Vector3(0f, climb + stepUpSkin, 0f);
     }
 
+
+    private void ApplyAnchorConstraint(ref Vector2 v)
+    {
+        // 앵커 중심과 플레이어 몸 중심
+        Vector2 anchor = p2AnchorCol.bounds.center;
+        Vector2 center = bodyCollider.bounds.center;
+
+        float max = p2AnchorUseBoxBreakDist ? p2LaserBreakDist : p2AnchorMaxDist;
+
+        // LaserAnchor가 길이 오버라이드하면 적용
+        var la = p2AnchorCol.GetComponentInParent<LaserAnchor>();
+        if (la && la.maxDistanceOverride > 0f) max = la.maxDistanceOverride;
+
+        Vector2 r = center - anchor;
+        float dist = r.magnitude;
+        if (dist <= max + 0.0001f) return;
+
+        Vector2 dir = r / dist;
+
+        // 1) 바깥쪽 속도 성분 제거(더 멀어지지 않게)
+        float outV = Vector2.Dot(v, dir);
+        if (outV > 0f) v -= dir * outV;
+
+        // 2) 위치 스냅(원주 위로)
+        Vector2 targetCenter = anchor + dir * max;
+        Vector2 delta = targetCenter - center;
+        rb.position += delta; // bounds.center 기준 보정
+    }
 
     private void FixVerticalSeam(float dirInput)
     {
@@ -1561,6 +1758,275 @@ public class PlayerMouseMovement : MonoBehaviour
         float planned = Time.time + Mathf.Max(carryEndMinLock, useAnimDrivenCarry ? GetCurrentClipLengthSec() : 0f) + carryCooldown;
         nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, planned);
     }
+
+    private void TryBeginP2Laser()
+    {
+        bool anchor;
+        var best = FindNearestVisibleTarget(out anchor);
+        if (best == null) return;
+
+        p2AnchorMode = anchor;
+        if (p2AnchorMode)
+        {
+            p2AnchorCol = best;
+            p2TetherCol = null;
+            p2TetherRb = null;
+        }
+        else
+        {
+            p2TetherCol = best;
+            p2TetherRb = best.attachedRigidbody;
+            p2AnchorCol = null;
+        }
+
+        p2LaserActive = true;
+        UpdateP2LaserRenderer(true);
+    }
+
+    private Collider2D FindNearestVisibleTarget(out bool isAnchor)
+    {
+        isAnchor = false;
+        Vector2 origin = p2LaserMuzzle ? (Vector2)p2LaserMuzzle.position
+                                       : (Vector2)bodyCollider.bounds.center;
+
+        var filter = new ContactFilter2D { useLayerMask = true, useTriggers = false };
+        // Box + Anchor를 모두 탐색 (anchorMask가 0이면 boxMask만)
+        int mask = boxMask | anchorMask;
+        filter.SetLayerMask(mask != 0 ? mask : ~0); // 레이어 안쓰면 전체에서 찾고 아래에서 컴포넌트로 필터
+
+        int count = Physics2D.OverlapCircle(origin, p2LaserAutoRadius, filter, p2BoxScanBuf);
+
+        Collider2D best = null;
+        float bestDist = float.PositiveInfinity;
+
+        for (int i = 0; i < count; i++)
+        {
+            var c = p2BoxScanBuf[i];
+            if (!c || !c.enabled) continue;
+
+            // Box 또는 Anchor만 대상
+            bool anchor = IsAnchorCollider(c);
+            bool box = ((1 << c.gameObject.layer) & boxMask) != 0;
+
+            if (!anchor && !box) continue;
+
+            Vector2 target = c.bounds.center;
+            float dist = Vector2.Distance(origin, target);
+            if (dist < 0.001f) continue;
+
+            Vector2 dir = (target - origin) / dist;
+
+            // LoS 체크(벽 뒤 제외)
+            bool blocked = Physics2D.BoxCast(origin, new Vector2(p2LoSBoxWidth, p2LoSBoxWidth),
+                                             0f, dir, dist - 0.01f, p2ObstructionMask);
+            if (blocked) continue;
+
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = c;
+                isAnchor = anchor; // 마지막으로 갱신된 후보의 타입 기록
+            }
+        }
+        return best;
+    }
+
+    private void EndP2Laser()
+    {
+        if (!p2AnchorMode && p2TetherCol != null) // Box일 때만 정지 보조
+            ApplyHighFrictionAndStopNow(p2TetherCol);
+
+        p2LaserActive = false;
+        p2AnchorMode = false;
+        p2AnchorCol = null;
+        p2TetherCol = null;
+        p2TetherRb = null;
+
+        UpdateP2LaserRenderer(false);
+    }
+
+
+    private bool IsP2LaserTooFar()
+    {
+        if (p2TetherCol == null || bodyCollider == null) return true;
+        Bounds b1 = bodyCollider.bounds;
+        Bounds b2 = p2TetherCol.bounds;
+        float dist = Vector2.Distance(b1.center, b2.center);
+        return dist > p2LaserBreakDist;
+    }
+
+    private void UpdateP2LaserPhysics()
+    {
+        if (p2AnchorMode)
+        {
+            // 앵커 모드: 당기지 않음, 라인/임팩트만 갱신
+            UpdateP2LaserRenderer(true);
+            return;
+        }
+        if (p2TetherCol == null) { EndP2Laser(); return; }
+
+        // 자동 해제 거리 체크
+        if (IsP2LaserTooFar()) { EndP2Laser(); return; }
+
+        // P2와 Box가 접촉했으면 끌어오기만 중단(연결 유지)
+        var d = Physics2D.Distance(bodyCollider, p2TetherCol);
+        bool touching = d.isOverlapped || d.distance <= p2StopPullContactGap;
+
+        if (!touching)
+        {
+            // Box → P2 방향 힘(혹은 속도 상한)
+            Vector2 p2 = bodyCollider.bounds.center;
+            Vector2 bx = p2TetherCol.bounds.center;
+            Vector2 dir = (p2 - bx).normalized;
+
+            if (p2TetherRb != null && p2TetherRb.simulated)
+            {
+                p2TetherRb.AddForce(dir * p2PullForce, ForceMode2D.Force);
+
+                // 속도 상한
+                Vector2 v = p2TetherRb.linearVelocity;
+                float max = Mathf.Max(0.1f, p2PullSpeed);
+                if (v.magnitude > max) p2TetherRb.linearVelocity = v.normalized * max;
+            }
+            else
+            {
+                // Rigidbody가 없거나 Kinematic인 경우: 위치 보간
+                Vector2 next = Vector2.MoveTowards(bx, p2, p2PullSpeed * Time.fixedDeltaTime);
+                p2TetherCol.transform.position = next;
+            }
+        }
+        else
+        {
+            if (p2TetherRb != null) p2TetherRb.linearVelocity = Vector2.zero;
+        }
+
+        UpdateP2LaserRenderer(true);
+    }
+
+    private void UpdateP2LaserRenderer(bool on)
+    {
+        if (!p2LaserLine) return;
+
+        if (!on)
+        {
+            p2LaserLine.enabled = false;
+            if (p2ImpactFx) p2ImpactFx.gameObject.SetActive(false);
+            return;
+        }
+
+        p2LaserLine.enabled = true;
+
+        // 시작점
+        Vector3 start = p2LaserMuzzle ? p2LaserMuzzle.position
+                                      : (Vector3)bodyCollider.bounds.center;
+
+        //  여기: end 계산 부분을 아래처럼 교체
+        Vector3 end;
+        if (p2TetherCol != null) end = p2TetherCol.bounds.center;        // 박스에 붙은 경우
+        else if (p2AnchorCol != null) end = p2AnchorCol.bounds.center;   // 앵커에 붙은 경우
+        else
+        {
+            // 타겟이 없을 때는 가늠선(기존 로직 유지)
+            int sign = (transform.localScale.x >= 0f) ? +1 : -1;
+            end = start + new Vector3(sign * p2LaserMaxDist, 0f, 0f);
+        }
+
+        p2LaserLine.positionCount = 2;
+        p2LaserLine.SetPosition(0, start);
+        p2LaserLine.SetPosition(1, end);
+
+        // 굵기 펄스 등 기존 시각효과 유지
+        p2BeamPulseTimer += Time.deltaTime * beamPulseHz;
+        float pulse = 1f + beamPulseAmp * Mathf.Sin(p2BeamPulseTimer);
+        p2LaserLine.widthMultiplier = beamBaseWidth * pulse;
+
+        // 끝점 글로우도 같은 end 사용
+        if (p2ImpactFx != null)
+        {
+            p2ImpactFx.gameObject.SetActive(true);
+            p2ImpactFx.position = end;
+
+            float s = Mathf.Lerp(0.14f, 0.22f, (Mathf.Sin(Time.time * 9f) + 1f) * 0.5f);
+            p2ImpactFx.localScale = new Vector3(s, s, 1f);
+        }
+    }
+
+
+
+    private void EnsureP2LaserLine()
+    {
+        if (p2LaserLine != null) return;
+
+        var go = new GameObject("P2LaserLine");
+        go.transform.SetParent(transform, false);
+        p2LaserLine = go.AddComponent<LineRenderer>();
+
+        // 머티리얼 없이도 또렷하게: 기본 Unlit 느낌
+        var shader = Shader.Find("Sprites/Default");
+        var mat = new Material(shader);
+        p2LaserLine.sharedMaterial = mat;
+
+        p2LaserLine.textureMode = LineTextureMode.Stretch;
+        p2LaserLine.numCapVertices = 8;
+        p2LaserLine.numCornerVertices = 3;
+        p2LaserLine.alignment = LineAlignment.View;
+        p2LaserLine.positionCount = 2;
+        p2LaserLine.enabled = false;
+
+        // 파란빛 그라디언트
+        var g = new Gradient();
+        g.SetKeys(
+            new GradientColorKey[] {
+            new GradientColorKey(new Color(0.25f, 0.75f, 1f, 1f), 0f),  // 밝은 파랑
+            new GradientColorKey(new Color(0.05f, 0.35f, 1f, 1f), 1f)   // 진한 파랑
+            },
+            new GradientAlphaKey[] {
+            new GradientAlphaKey(0.85f, 0f),
+            new GradientAlphaKey(0.85f, 1f)
+            }
+        );
+        p2LaserLine.colorGradient = g;
+
+        // 기본 굵기 곡선(중앙 살짝 두껍게)
+        var w = new AnimationCurve(
+            new Keyframe(0f, 1.0f),
+            new Keyframe(0.15f, 1.2f),
+            new Keyframe(0.85f, 1.2f),
+            new Keyframe(1f, 0.8f)
+        );
+        p2LaserLine.widthCurve = w;
+        p2LaserLine.widthMultiplier = beamBaseWidth;
+
+        // 정렬: 플레이어 스프라이트보다 위
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            p2LaserLine.sortingLayerID = sr.sortingLayerID;
+            p2LaserLine.sortingOrder = sr.sortingOrder + beamSortingOrderOffset;
+        }
+    }
+
+    private void EnsureP2ImpactFx()
+    {
+        if (p2ImpactFx != null || impactSprite == null) return;
+
+        var fx = new GameObject("P2LaserImpact");
+        fx.transform.SetParent(transform, false);
+        p2ImpactSr = fx.AddComponent<SpriteRenderer>();
+        p2ImpactSr.sprite = impactSprite;
+        p2ImpactSr.color = new Color(0.35f, 0.75f, 1f, 0.9f); // 푸른 글로우
+
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            p2ImpactSr.sortingLayerID = sr.sortingLayerID;
+            p2ImpactSr.sortingOrder = sr.sortingOrder + beamSortingOrderOffset + 1;
+        }
+
+        p2ImpactFx = fx.transform;
+        p2ImpactFx.gameObject.SetActive(false);
+    }
+
 
     // 애니메이션 이벤트 훅(선택 사용)
     public void AE_CarryStart_Begin() { }
@@ -1700,6 +2166,7 @@ public class PlayerMouseMovement : MonoBehaviour
         otherPlayer.rb.simulated = false;
         otherPlayer.isCarried = true;
         otherPlayer.ballisticThrowActive = false;
+        extraAirJumps = 0;
         if (rb2) rb2.SetBool("ground", true);
 
         if (otherPlayer.rb2)
@@ -1725,6 +2192,82 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+    private void ApplyHighFrictionAndStopNow(Collider2D anyColOnBox)
+    {
+        if (anyColOnBox == null) return;
+
+        var root = anyColOnBox.attachedRigidbody ? anyColOnBox.attachedRigidbody.transform
+                                                 : anyColOnBox.transform;
+
+        // 1) Rigidbody2D → 속도 즉시 0
+        var rb2d = root.GetComponent<Rigidbody2D>();
+        if (rb2d != null && rb2d.simulated)
+        {
+            // 잔여 속도 제거
+            rb2d.linearVelocity = Vector2.zero;
+            rb2d.angularVelocity = 0f;
+
+            // 임시 드래그 부스트
+            p2PrevDrag = rb2d.linearDamping;
+            p2PrevAngDrag = rb2d.angularDamping;
+            rb2d.linearDamping = onReleaseExtraDrag;
+            rb2d.angularDamping = onReleaseExtraAngDrag;
+        }
+
+        // 2) Collider2D들 → 고마찰 머티리얼 부여
+        p2LastCols.Clear();
+        var cols = root.GetComponentsInChildren<Collider2D>(includeInactive: false);
+
+        // 준비: 고마찰 머티리얼 없으면 런타임 생성
+        if (!boxHighFrictionMat)
+        {
+            boxHighFrictionMat = new PhysicsMaterial2D("Runtime_BoxHighFric_1");
+            boxHighFrictionMat.friction = 1.0f;
+            boxHighFrictionMat.bounciness = 0f;
+        }
+
+        for (int i = 0; i < cols.Length; i++)
+        {
+            var c = cols[i];
+            // 트리거나 상호작용 무관이면 스킵하고 싶다면 조건 추가 가능
+            p2LastCols.Add((c, c.sharedMaterial));
+            c.sharedMaterial = boxHighFrictionMat;
+        }
+
+        // 3) 원복 예약(선택)
+        if (restoreMatAfter)
+        {
+            if (p2RestoreCo != null) StopCoroutine(p2RestoreCo);
+            p2RestoreCo = StartCoroutine(RestoreBoxAfterDelay(root, rb2d));
+        }
+    }
+
+    private IEnumerator RestoreBoxAfterDelay(Transform root, Rigidbody2D rb2d)
+    {
+        yield return new WaitForSeconds(onReleaseDragDuration);
+
+        // 드래그 원래값 복원
+        if (rb2d != null)
+        {
+            if (p2PrevDrag >= 0f) rb2d.linearDamping = p2PrevDrag;
+            if (p2PrevAngDrag >= 0f) rb2d.angularDamping = p2PrevAngDrag;
+        }
+
+        // 마찰은 조금 더 유지했다가 원복
+        if (restoreMatAfter)
+        {
+            yield return new WaitForSeconds(Mathf.Max(0f, restoreMatAfterSec - onReleaseDragDuration));
+            for (int i = 0; i < p2LastCols.Count; i++)
+            {
+                var (col, orig) = p2LastCols[i];
+                if (col) col.sharedMaterial = orig;
+            }
+            p2LastCols.Clear();
+        }
+
+        p2PrevDrag = p2PrevAngDrag = -1f;
+        p2RestoreCo = null;
+    }
 
     private void SetFrictionless(bool on)
     {
@@ -1809,6 +2352,14 @@ public class PlayerMouseMovement : MonoBehaviour
             rb.position = rb.position + new Vector2(0f, dy);
     }
 
+    private bool IsAnchorCollider(Collider2D c)
+    {
+        if (!c) return false;
+        if (c.GetComponentInParent<LaserAnchor>() != null) return true;           // 컴포넌트로 구분
+        if (anchorMask != 0 && ((1 << c.gameObject.layer) & anchorMask) != 0)     // (선택) 레이어로도 허용
+            return true;
+        return false;
+    }
     private void BeginCeilingRelease()
     {
         if (!stickingToCeiling) return;

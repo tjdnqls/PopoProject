@@ -1,0 +1,1989 @@
+fileFormatVersion: 2
+guid: 1a3a39259010f074e94b27575dbf01fc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2170030152113664643
+    second: Male_spritesheet_dodge_roll_0
+  - first:
+      213: -8762714576045818034
+    second: Male_spritesheet_dodge_roll_1
+  - first:
+      213: -8679452804289729288
+    second: Male_spritesheet_dodge_roll_2
+  - first:
+      213: 7455824184035545947
+    second: Male_spritesheet_dodge_roll_3
+  - first:
+      213: 3815996046885364824
+    second: Male_spritesheet_dodge_roll_4
+  - first:
+      213: 8298912989559796595
+    second: Male_spritesheet_dodge_roll_5
+  - first:
+      213: -8784143702188431839
+    second: Male_spritesheet_dodge_roll_6
+  - first:
+      213: 7668280607108242240
+    second: Male_spritesheet_dodge_roll_7
+  - first:
+      213: 6305004609633392135
+    second: Male_spritesheet_dodge_roll_8
+  - first:
+      213: -3883394860429694225
+    second: Male_spritesheet_dodge_roll_9
+  - first:
+      213: 227155248030492028
+    second: Male_spritesheet_dodge_roll_10
+  - first:
+      213: -6690416976979220207
+    second: Male_spritesheet_dodge_roll_11
+  - first:
+      213: -8177937598172278775
+    second: Male_spritesheet_dodge_roll_12
+  - first:
+      213: -6289289822869857223
+    second: Male_spritesheet_dodge_roll_13
+  - first:
+      213: -8335159142737538809
+    second: Male_spritesheet_dodge_roll_14
+  - first:
+      213: -8496240652468661594
+    second: Male_spritesheet_dodge_roll_15
+  - first:
+      213: 8367387775698119565
+    second: Male_spritesheet_dodge_roll_16
+  - first:
+      213: -1474045073671663089
+    second: Male_spritesheet_dodge_roll_17
+  - first:
+      213: -4598333947294943082
+    second: Male_spritesheet_dodge_roll_18
+  - first:
+      213: -3222629964029812942
+    second: Male_spritesheet_dodge_roll_19
+  - first:
+      213: 4421306446466425597
+    second: Male_spritesheet_dodge_roll_20
+  - first:
+      213: -7857031430571088941
+    second: Male_spritesheet_dodge_roll_21
+  - first:
+      213: 5410499928484642706
+    second: Male_spritesheet_dodge_roll_22
+  - first:
+      213: 5454344492483784059
+    second: Male_spritesheet_dodge_roll_23
+  - first:
+      213: -750052618948918260
+    second: Male_spritesheet_dodge_roll_24
+  - first:
+      213: 1103626575973011615
+    second: Male_spritesheet_dodge_roll_25
+  - first:
+      213: -1827700285104303100
+    second: Male_spritesheet_dodge_roll_26
+  - first:
+      213: -3240365196339804493
+    second: Male_spritesheet_dodge_roll_27
+  - first:
+      213: 8292464335471831150
+    second: Male_spritesheet_dodge_roll_28
+  - first:
+      213: -9060413370859277578
+    second: Male_spritesheet_dodge_roll_29
+  - first:
+      213: -2799036318862375694
+    second: Male_spritesheet_dodge_roll_30
+  - first:
+      213: -2170526782660943265
+    second: Male_spritesheet_dodge_roll_31
+  - first:
+      213: 7495189296744604788
+    second: Male_spritesheet_dodge_roll_32
+  - first:
+      213: 8529601898735925810
+    second: Male_spritesheet_dodge_roll_33
+  - first:
+      213: 2140667376446433090
+    second: Male_spritesheet_dodge_roll_34
+  - first:
+      213: -4812756884213064692
+    second: Male_spritesheet_dodge_roll_35
+  - first:
+      213: -6320163452635682605
+    second: Male_spritesheet_dodge_roll_36
+  - first:
+      213: -5844941670073087722
+    second: Male_spritesheet_dodge_roll_37
+  - first:
+      213: -5971144308677603481
+    second: Male_spritesheet_dodge_roll_38
+  - first:
+      213: -4432417234091210797
+    second: Male_spritesheet_dodge_roll_39
+  - first:
+      213: -1714627564822994469
+    second: Male_spritesheet_dodge_roll_40
+  - first:
+      213: -2748322940152121718
+    second: Male_spritesheet_dodge_roll_41
+  - first:
+      213: 8703672458530004284
+    second: Male_spritesheet_dodge_roll_42
+  - first:
+      213: 2807958374243181091
+    second: Male_spritesheet_dodge_roll_43
+  - first:
+      213: -6953752041716584511
+    second: Male_spritesheet_dodge_roll_44
+  - first:
+      213: 3716409127965093602
+    second: Male_spritesheet_dodge_roll_45
+  - first:
+      213: 4524700157392158221
+    second: Male_spritesheet_dodge_roll_46
+  - first:
+      213: -6260398633359489180
+    second: Male_spritesheet_dodge_roll_47
+  - first:
+      213: -8592306392877000048
+    second: Male_spritesheet_dodge_roll_48
+  - first:
+      213: 2954767802934284448
+    second: Male_spritesheet_dodge_roll_49
+  - first:
+      213: -1393824188186689290
+    second: Male_spritesheet_dodge_roll_50
+  - first:
+      213: 1650841134328280041
+    second: Male_spritesheet_dodge_roll_51
+  - first:
+      213: -2085377529611219346
+    second: Male_spritesheet_dodge_roll_52
+  - first:
+      213: -5764896492654835155
+    second: Male_spritesheet_dodge_roll_53
+  - first:
+      213: -2722584898136427903
+    second: Male_spritesheet_dodge_roll_54
+  - first:
+      213: 5304101268463019967
+    second: Male_spritesheet_dodge_roll_55
+  - first:
+      213: -6951185935419451413
+    second: Male_spritesheet_dodge_roll_56
+  - first:
+      213: 5186915128883391152
+    second: Male_spritesheet_dodge_roll_57
+  - first:
+      213: 5337116006174421121
+    second: Male_spritesheet_dodge_roll_58
+  - first:
+      213: 2633779520010321116
+    second: Male_spritesheet_dodge_roll_59
+  - first:
+      213: -7659497532199006174
+    second: Male_spritesheet_dodge_roll_60
+  - first:
+      213: -4955353098917638179
+    second: Male_spritesheet_dodge_roll_61
+  - first:
+      213: 3252276889778894068
+    second: Male_spritesheet_dodge_roll_62
+  - first:
+      213: 490858004602145218
+    second: Male_spritesheet_dodge_roll_63
+  - first:
+      213: -8514999770916657523
+    second: Male_spritesheet_dodge_roll_64
+  - first:
+      213: -2735561238894944154
+    second: Male_spritesheet_dodge_roll_65
+  - first:
+      213: 6620112975977932423
+    second: Male_spritesheet_dodge_roll_66
+  - first:
+      213: 1211344186678464035
+    second: Male_spritesheet_dodge_roll_67
+  - first:
+      213: -4739075780505602020
+    second: Male_spritesheet_dodge_roll_68
+  - first:
+      213: -7919686260701910800
+    second: Male_spritesheet_dodge_roll_69
+  - first:
+      213: -5366208485436647740
+    second: Male_spritesheet_dodge_roll_70
+  - first:
+      213: -3460909525500516774
+    second: Male_spritesheet_dodge_roll_71
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 895
+        width: 81
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7dc06fe21182e1e0800000000000000
+      internalID: -2170030152113664643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_1
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 895
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4fb6aa1585946680800000000000000
+      internalID: -8762714576045818034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_2
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 895
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fcea8309a36c8780800000000000000
+      internalID: -8679452804289729288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_3
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 895
+        width: 39
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b53943db798687760800000000000000
+      internalID: 7455824184035545947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_4
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 895
+        width: 42
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 854a5e6cf2425f430800000000000000
+      internalID: 3815996046885364824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_5
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 895
+        width: 44
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 373369cf469ab2370800000000000000
+      internalID: 8298912989559796595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_6
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 895
+        width: 46
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 126e21fd7d3781680800000000000000
+      internalID: -8784143702188431839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_7
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 895
+        width: 48
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04b14b875943b6a60800000000000000
+      internalID: 7668280607108242240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_8
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 895
+        width: 46
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70616608940ef7750800000000000000
+      internalID: 6305004609633392135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_9
+      rect:
+        serializedVersion: 2
+        x: 1193
+        y: 895
+        width: 42
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feaa28513f86b1ac0800000000000000
+      internalID: -3883394860429694225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_10
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 767
+        width: 40
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7529bb9e74072300800000000000000
+      internalID: 227155248030492028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_11
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 767
+        width: 38
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11929efe43dd623a0800000000000000
+      internalID: -6690416976979220207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_12
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 767
+        width: 36
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90051a14511228e80800000000000000
+      internalID: -8177937598172278775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_13
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 767
+        width: 36
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93cdc5a6a34f7b8a0800000000000000
+      internalID: -6289289822869857223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_14
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 767
+        width: 40
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70197c6dbe0935c80800000000000000
+      internalID: -8335159142737538809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_15
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 767
+        width: 47
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a25f5f342a471a80800000000000000
+      internalID: -8496240652468661594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_16
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 767
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8bae6489deee1470800000000000000
+      internalID: 8367387775698119565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_17
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 767
+        width: 60
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f02d2e8b0d32b8be0800000000000000
+      internalID: -1474045073671663089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_18
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 767
+        width: 67
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6987dd053af6f20c0800000000000000
+      internalID: -4598333947294943082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_19
+      rect:
+        serializedVersion: 2
+        x: 1185
+        y: 767
+        width: 74
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23f19773f1be643d0800000000000000
+      internalID: -3222629964029812942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_20
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 639
+        width: 76
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df2a6c8b9c2ab5d30800000000000000
+      internalID: 4421306446466425597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_21
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 640
+        width: 78
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d32bbfca8736f290800000000000000
+      internalID: -7857031430571088941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_22
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 644
+        width: 81
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29f7a96d405f51b40800000000000000
+      internalID: 5410499928484642706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_23
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 649
+        width: 82
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7daa15ea69b1bb40800000000000000
+      internalID: 5454344492483784059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_24
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 648
+        width: 81
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c04c2b4fd174795f0800000000000000
+      internalID: -750052618948918260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_25
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 647
+        width: 77
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f905d89068ed05f00800000000000000
+      internalID: 1103626575973011615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_26
+      rect:
+        serializedVersion: 2
+        x: 783
+        y: 647
+        width: 76
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4045a763644b2a6e0800000000000000
+      internalID: -1827700285104303100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_27
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 646
+        width: 74
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b680a9a509e703d0800000000000000
+      internalID: -3240365196339804493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_28
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 646
+        width: 69
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e68e464b060c41370800000000000000
+      internalID: 8292464335471831150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_29
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 645
+        width: 66
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f2bbb71b02f24280800000000000000
+      internalID: -9060413370859277578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_30
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 516
+        width: 61
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f48ac44c43d729d0800000000000000
+      internalID: -2799036318862375694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_31
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 515
+        width: 57
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f52e500246db0e1e0800000000000000
+      internalID: -2170526782660943265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_32
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 514
+        width: 53
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 474a5c444f2440860800000000000000
+      internalID: 7495189296744604788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_33
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 511
+        width: 49
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23af6a13cbb3f5670800000000000000
+      internalID: 8529601898735925810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_34
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 511
+        width: 42
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2476b5b13ad25bd10800000000000000
+      internalID: 2140667376446433090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_35
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 511
+        width: 34
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0c1a26ec17a53db0800000000000000
+      internalID: -4812756884213064692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_36
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 511
+        width: 33
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d86e3353d44a48a0800000000000000
+      internalID: -6320163452635682605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_37
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 511
+        width: 33
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6194a66d48892eea0800000000000000
+      internalID: -5844941670073087722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_38
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 511
+        width: 40
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76f0da243eb322da0800000000000000
+      internalID: -5971144308677603481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_39
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 513
+        width: 47
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d78ca17204ec72c0800000000000000
+      internalID: -4432417234091210797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_40
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 385
+        width: 51
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd1e1a4705b6438e0800000000000000
+      internalID: -1714627564822994469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_41
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 383
+        width: 53
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a86fc20e8defbd9d0800000000000000
+      internalID: -2748322940152121718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_42
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 383
+        width: 57
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3d180cacf7a9c870800000000000000
+      internalID: 8703672458530004284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_43
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 383
+        width: 57
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32229d0a34fd7f620800000000000000
+      internalID: 2807958374243181091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_44
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 383
+        width: 56
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cfe5515c5f4f7f90800000000000000
+      internalID: -6953752041716584511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_45
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 383
+        width: 54
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2eee0685966539330800000000000000
+      internalID: 3716409127965093602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_46
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 383
+        width: 51
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0e738cf1d6face30800000000000000
+      internalID: 4524700157392158221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_47
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 383
+        width: 48
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 467444aac989e19a0800000000000000
+      internalID: -6260398633359489180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_48
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 383
+        width: 45
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09a9f331cdef1c880800000000000000
+      internalID: -8592306392877000048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_49
+      rect:
+        serializedVersion: 2
+        x: 1203
+        y: 383
+        width: 43
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a0d8a769a1710920800000000000000
+      internalID: 2954767802934284448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_50
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 255
+        width: 41
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f009cf194428ace0800000000000000
+      internalID: -1393824188186689290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_51
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 255
+        width: 39
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e37d30e347f8e610800000000000000
+      internalID: 1650841134328280041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_52
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 255
+        width: 38
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6e01f48f204f03e0800000000000000
+      internalID: -2085377529611219346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_53
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 255
+        width: 36
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2ac9640f29feffa0800000000000000
+      internalID: -5764896492654835155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_54
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 255
+        width: 35
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1823cb3c57f673ad0800000000000000
+      internalID: -2722584898136427903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_55
+      rect:
+        serializedVersion: 2
+        x: 691
+        y: 255
+        width: 34
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb7ef675004fb9940800000000000000
+      internalID: 5304101268463019967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_56
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 255
+        width: 33
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be7d1af783d688f90800000000000000
+      internalID: -6951185935419451413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_57
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 255
+        width: 34
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0baa13904df9bf740800000000000000
+      internalID: 5186915128883391152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_58
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 255
+        width: 36
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 180f319fabe311a40800000000000000
+      internalID: 5337116006174421121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_59
+      rect:
+        serializedVersion: 2
+        x: 1199
+        y: 255
+        width: 36
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdcf9e2e4801d8420800000000000000
+      internalID: 2633779520010321116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_60
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 127
+        width: 36
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2201c43839ff3b590800000000000000
+      internalID: -7659497532199006174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_61
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddf02627c9c0b3bb0800000000000000
+      internalID: -4955353098917638179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_62
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f4bb769998622d20800000000000000
+      internalID: 3252276889778894068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_63
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 127
+        width: 37
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c9c77721c0efc600800000000000000
+      internalID: 490858004602145218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_64
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 127
+        width: 37
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d86eaff92d4a4d980800000000000000
+      internalID: -8514999770916657523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_65
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 127
+        width: 36
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 660e65efb85590ad0800000000000000
+      internalID: -2735561238894944154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_66
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 127
+        width: 36
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7866e124dad5fdb50800000000000000
+      internalID: 6620112975977932423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_67
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32e44bbae1f8fc010800000000000000
+      internalID: 1211344186678464035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_68
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c187e43bfab6b3eb0800000000000000
+      internalID: -4739075780505602020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_69
+      rect:
+        serializedVersion: 2
+        x: 1198
+        y: 127
+        width: 37
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f822526e4f971290800000000000000
+      internalID: -7919686260701910800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_70
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 0
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c69cda50d56785b0800000000000000
+      internalID: -5366208485436647740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Male_spritesheet_dodge_roll_71
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 0
+        width: 37
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a56a6cc8f1168ffc0800000000000000
+      internalID: -3460909525500516774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Male_spritesheet_dodge_roll_0: -2170030152113664643
+      Male_spritesheet_dodge_roll_1: -8762714576045818034
+      Male_spritesheet_dodge_roll_10: 227155248030492028
+      Male_spritesheet_dodge_roll_11: -6690416976979220207
+      Male_spritesheet_dodge_roll_12: -8177937598172278775
+      Male_spritesheet_dodge_roll_13: -6289289822869857223
+      Male_spritesheet_dodge_roll_14: -8335159142737538809
+      Male_spritesheet_dodge_roll_15: -8496240652468661594
+      Male_spritesheet_dodge_roll_16: 8367387775698119565
+      Male_spritesheet_dodge_roll_17: -1474045073671663089
+      Male_spritesheet_dodge_roll_18: -4598333947294943082
+      Male_spritesheet_dodge_roll_19: -3222629964029812942
+      Male_spritesheet_dodge_roll_2: -8679452804289729288
+      Male_spritesheet_dodge_roll_20: 4421306446466425597
+      Male_spritesheet_dodge_roll_21: -7857031430571088941
+      Male_spritesheet_dodge_roll_22: 5410499928484642706
+      Male_spritesheet_dodge_roll_23: 5454344492483784059
+      Male_spritesheet_dodge_roll_24: -750052618948918260
+      Male_spritesheet_dodge_roll_25: 1103626575973011615
+      Male_spritesheet_dodge_roll_26: -1827700285104303100
+      Male_spritesheet_dodge_roll_27: -3240365196339804493
+      Male_spritesheet_dodge_roll_28: 8292464335471831150
+      Male_spritesheet_dodge_roll_29: -9060413370859277578
+      Male_spritesheet_dodge_roll_3: 7455824184035545947
+      Male_spritesheet_dodge_roll_30: -2799036318862375694
+      Male_spritesheet_dodge_roll_31: -2170526782660943265
+      Male_spritesheet_dodge_roll_32: 7495189296744604788
+      Male_spritesheet_dodge_roll_33: 8529601898735925810
+      Male_spritesheet_dodge_roll_34: 2140667376446433090
+      Male_spritesheet_dodge_roll_35: -4812756884213064692
+      Male_spritesheet_dodge_roll_36: -6320163452635682605
+      Male_spritesheet_dodge_roll_37: -5844941670073087722
+      Male_spritesheet_dodge_roll_38: -5971144308677603481
+      Male_spritesheet_dodge_roll_39: -4432417234091210797
+      Male_spritesheet_dodge_roll_4: 3815996046885364824
+      Male_spritesheet_dodge_roll_40: -1714627564822994469
+      Male_spritesheet_dodge_roll_41: -2748322940152121718
+      Male_spritesheet_dodge_roll_42: 8703672458530004284
+      Male_spritesheet_dodge_roll_43: 2807958374243181091
+      Male_spritesheet_dodge_roll_44: -6953752041716584511
+      Male_spritesheet_dodge_roll_45: 3716409127965093602
+      Male_spritesheet_dodge_roll_46: 4524700157392158221
+      Male_spritesheet_dodge_roll_47: -6260398633359489180
+      Male_spritesheet_dodge_roll_48: -8592306392877000048
+      Male_spritesheet_dodge_roll_49: 2954767802934284448
+      Male_spritesheet_dodge_roll_5: 8298912989559796595
+      Male_spritesheet_dodge_roll_50: -1393824188186689290
+      Male_spritesheet_dodge_roll_51: 1650841134328280041
+      Male_spritesheet_dodge_roll_52: -2085377529611219346
+      Male_spritesheet_dodge_roll_53: -5764896492654835155
+      Male_spritesheet_dodge_roll_54: -2722584898136427903
+      Male_spritesheet_dodge_roll_55: 5304101268463019967
+      Male_spritesheet_dodge_roll_56: -6951185935419451413
+      Male_spritesheet_dodge_roll_57: 5186915128883391152
+      Male_spritesheet_dodge_roll_58: 5337116006174421121
+      Male_spritesheet_dodge_roll_59: 2633779520010321116
+      Male_spritesheet_dodge_roll_6: -8784143702188431839
+      Male_spritesheet_dodge_roll_60: -7659497532199006174
+      Male_spritesheet_dodge_roll_61: -4955353098917638179
+      Male_spritesheet_dodge_roll_62: 3252276889778894068
+      Male_spritesheet_dodge_roll_63: 490858004602145218
+      Male_spritesheet_dodge_roll_64: -8514999770916657523
+      Male_spritesheet_dodge_roll_65: -2735561238894944154
+      Male_spritesheet_dodge_roll_66: 6620112975977932423
+      Male_spritesheet_dodge_roll_67: 1211344186678464035
+      Male_spritesheet_dodge_roll_68: -4739075780505602020
+      Male_spritesheet_dodge_roll_69: -7919686260701910800
+      Male_spritesheet_dodge_roll_7: 7668280607108242240
+      Male_spritesheet_dodge_roll_70: -5366208485436647740
+      Male_spritesheet_dodge_roll_71: -3460909525500516774
+      Male_spritesheet_dodge_roll_8: 6305004609633392135
+      Male_spritesheet_dodge_roll_9: -3883394860429694225
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
