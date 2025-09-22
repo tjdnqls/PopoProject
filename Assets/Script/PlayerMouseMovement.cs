@@ -76,6 +76,15 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private Vector2 throwStartLocalOffset = new(0.35f, 0.6f);
     [Tooltip("로컬 오프셋 X를 P1의 바라보는 방향 기준으로 좌/우 반전할지 여부")]
     [SerializeField] private bool throwStartUseFacing = true;
+    [Header("Throw Combo Grace")]
+    [SerializeField] private float throwComboGrace = 0.09f; // 60~120ms 권장
+    private float throwComboPendingUntil = -1f;
+    private bool throwComboPending = false;
+    [Header("Throw Preview Colors")]
+    [SerializeField] private Color previewSafeColor = new Color(1f, 0.2f, 0.2f, 0.95f); // 안전(빨강)
+    [SerializeField] private Color previewHazardColor = new Color(0.2f, 0.6f, 1f, 0.95f); // 위험(파랑)
+    [SerializeField] private string hazardLayerNames = "Trap, Monster, Monkill, MonAttack";
+    private int hazardMask;
 
     // 내부 캐시 (코드에서만 사용)
     private int groundMask, eventMask, trapMask, slimeMask;
@@ -88,6 +97,16 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float slimeStickPush = 22f;
     [SerializeField] private float slimeNormalClamp = 20f;
     [SerializeField] private float carrySlideMaxFall = -11f;
+    // ==== Throw Hold: 마지막 입력 우선 래치 ====
+    private int holdHorizSign = 0;                 // -1=L, +1=R, 0=none
+    private float holdHorizChangedAt = -999f;
+    private float holdUpChangedAt = -999f;
+
+    // ==== Throw Preview (Sim) ====
+    [Header("Throw Preview (Sim)")]
+    [SerializeField] private LineRenderer throwPreview;
+    [SerializeField] private float throwPreviewDuration = 2.0f;
+    [SerializeField] private int throwPreviewSteps = 60;
 
     // === Ceiling Slime (Head Stick) ===
     [Header("Ceiling Slime (Head Stick)")]
@@ -200,6 +219,17 @@ public class PlayerMouseMovement : MonoBehaviour
     private Coroutine _revealCo;       // P2 복귀 코루틴
     private Coroutine _throwResetCo;   // throw 종료 타이머
     private Coroutine _delayedThrowCo; // 던지기 지연 코루틴
+                                       // === Throw Hold (Press & Hold to Aim) ===
+    [Header("Throw Hold (Press & Hold to Aim)")]
+    [SerializeField] private bool enableThrowHold = true;
+    [SerializeField] private KeyCode throwHoldKeyMain = KeyCode.LeftShift;
+    [SerializeField] private KeyCode throwHoldKeyAlt = KeyCode.RightShift;
+    [SerializeField] private string throwStateName = "Throw";  // 1프레임 정지할 애니메이션 상태명 (없으면 Bool만 사용)
+    [SerializeField] private bool throwHoldFreezeAnimator = true;
+    [SerializeField] private float throwHoldMaxTime = 3.0f;   // (선택) 너무 오래 홀드하면 자동 던지기
+    private bool throwHoldActive = false;
+    private float throwHoldStartedAt = -1f;
+    private float _prevAnimSpeed = 1f;
 
     // === 접지/레이 거리 ===
     [Header("Ray distances")]
@@ -239,7 +269,11 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float ceilingAttachSkin = 0.01f;           // 천장에 스냅 붙일 때 여유
 
     private float ceilingStickUntil = -1f;
- 
+    // Hold 에임 옵션
+    [SerializeField] private bool allowAimUpInHold = true;            // 홀드 상태에서도 ↑ 던지기 허용
+    [SerializeField] private Vector2 throwStartLocalOffsetUp = new(0f, 0.75f); // ↑ 던지기 스폰 오프셋(머리 위 중앙 추천)
+    [SerializeField] private bool upThrowKeepsFacing = true;          // ↑ 던질 땐 회전 유지(=P2 방향 안 바꿈)
+
 
     [Header("Ground Snap")]
     [SerializeField] private Collider2D bodyCollider;
@@ -316,6 +350,8 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float diveSpeed = -36f;
     [SerializeField] private float diveGravityScale = 7.5f;
     private bool isDiving = false;
+    // Throw Hold: ↑ 에임 래치(탭 한 번으로 고정)
+    private bool throwAimUpLatched = false;
 
     // === 캐리(안아 들기) 관련 ===
     [Header("Carry (P1 carries P2)")]
@@ -487,7 +523,7 @@ public class PlayerMouseMovement : MonoBehaviour
         slimeMask = GetMaskFromCsv(slimeLayerName);
         boxMask = GetMaskFromCsv(boxLayerName);
         anchorMask = GetMaskFromCsv(anchorLayerName);
-        
+
 
 
         slimeLayerMask = slimeMask;
@@ -511,6 +547,16 @@ public class PlayerMouseMovement : MonoBehaviour
             int mask = groundMask | eventMask | trapMask;
             p2ObstructionMask = mask;
         }
+        hazardMask = GetMaskFromCsv(hazardLayerNames);
+        if (hazardMask == 0)
+        {
+            hazardMask = trapMask;
+            if (monsterLayerIndex >= 0) hazardMask |= (1 << monsterLayerIndex);
+            int monKill = LayerMask.NameToLayer("Monkill");
+            if (monKill >= 0) hazardMask |= (1 << monKill);
+            int monAtk = LayerMask.NameToLayer("MonAttack");
+            if (monAtk >= 0) hazardMask |= (1 << monAtk);
+        }
     }
 
     //공격 중(P1) 입력락 여부
@@ -521,6 +567,141 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void Update()
     {
+        // 유틸: 미리보기 선 감추기(있는 경우)
+        void HideThrowPreview()
+        {
+            var tf = transform.Find("ThrowPreview");
+            if (tf != null)
+            {
+                var lr = tf.GetComponent<LineRenderer>();
+                if (lr) { lr.enabled = false; lr.positionCount = 0; }
+            }
+        }
+
+        // 유틸: 미리보기 선 확보(없으면 생성)
+        LineRenderer EnsureThrowPreview()
+        {
+            var tf = transform.Find("ThrowPreview");
+            LineRenderer lr = null;
+
+            if (tf == null)
+            {
+                var go = new GameObject("ThrowPreview");
+                go.transform.SetParent(transform, false);
+                lr = go.AddComponent<LineRenderer>();
+
+                // 머티리얼/셰이더
+                var shader = Shader.Find("Sprites/Default");
+                lr.material = new Material(shader);
+
+                lr.useWorldSpace = true;
+                lr.textureMode = LineTextureMode.Stretch;
+                lr.alignment = LineAlignment.View;
+                lr.numCapVertices = 6;
+                lr.numCornerVertices = 3;
+                lr.widthMultiplier = 0.045f;
+
+                // 정렬: 플레이어보다 위
+                var sr = GetComponentInChildren<SpriteRenderer>();
+                if (sr)
+                {
+                    lr.sortingLayerID = sr.sortingLayerID;
+                    lr.sortingOrder = sr.sortingOrder + beamSortingOrderOffset + 1;
+                }
+
+                // 색상
+                lr.startColor = new Color(1f, 0f, 0f, 0.95f);
+                lr.endColor = new Color(1f, 0f, 0f, 0.95f);
+            }
+            else
+            {
+                lr = tf.GetComponent<LineRenderer>();
+                if (!lr)
+                {
+                    lr = tf.gameObject.AddComponent<LineRenderer>();
+                    var shader = Shader.Find("Sprites/Default");
+                    lr.material = new Material(shader);
+                }
+            }
+            return lr;
+        }
+
+        // 유틸: 포물선 그리기(홀드 중 매 프레임 호출)
+        void DrawThrowPreview()
+        {
+            if (!isCarrying || otherPlayer == null || otherPlayer.rb == null) { HideThrowPreview(); return; }
+
+            // 던지기 시작 위치 계산(DoThrowNowFromHold와 동일 로직)
+            int facingSign = (transform.localScale.x >= 0f) ? +1 : -1;
+            bool aimUp = allowAimUpInHold && (throwAimUpLatched || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow));
+
+
+            Vector3 startPos;
+            if (throwStartWorldPoint != null)
+            {
+                startPos = throwStartWorldPoint.position;
+            }
+            else
+            {
+                if (aimUp)
+                {
+                    startPos = transform.position + new Vector3(0f, throwStartLocalOffsetUp.y, 0f);
+                }
+                else
+                {
+                    float xoff = throwStartLocalOffset.x * (throwStartUseFacing ? facingSign : 1f);
+                    startPos = transform.position + new Vector3(xoff, throwStartLocalOffset.y, 0f);
+                }
+            }
+
+            // 초기 속도 (DoThrowNowFromHold와 동일)
+            Vector2 v0 = aimUp
+                ? new Vector2(0f, carryThrowUpSpeed)
+                : new Vector2(facingSign * carryThrowSideSpeed, carryThrowUpSpeed);
+
+            // 중력 가속도 (Rigidbody2D 규칙 사용)
+            Vector2 a = Physics2D.gravity * Mathf.Max(0.0001f, otherPlayer.rb.gravityScale);
+
+            // 샘플링 파라미터
+            const int maxSteps = 32;
+            const float maxTime = 1.6f;
+            float dt = maxTime / maxSteps;
+
+            var lr = EnsureThrowPreview();
+            if (!lr) return;
+
+            // 충돌 중단 마스크(지형/이벤트/트랩에 닿으면 멈춤)
+            int stopMask = groundMask | eventMask | trapMask;
+
+            // 점들 계산
+            Vector3 prev = startPos;
+            List<Vector3> pts = new List<Vector3>(maxSteps + 1);
+            pts.Add(startPos);
+
+            float t = 0f;
+            for (int i = 1; i <= maxSteps; i++)
+            {
+                t += dt;
+                Vector2 p = (Vector2)startPos + v0 * t + 0.5f * a * (t * t);
+                Vector3 curr = new Vector3(p.x, p.y, startPos.z);
+
+                // 충돌 체크(라인캐스트)
+                var hit = Physics2D.Linecast(prev, curr, stopMask);
+                if (hit.collider)
+                {
+                    pts.Add(hit.point);
+                    break;
+                }
+
+                pts.Add(curr);
+                prev = curr;
+            }
+
+            lr.positionCount = pts.Count;
+            lr.SetPositions(pts.ToArray());
+            lr.enabled = true;
+        }
+
         bool isSelected = (swap != null && swap.charSelect == playerID);
         bool suppressed = Time.time < swapSuppressUntil;
 
@@ -531,6 +712,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
         if (SpiralBoxWipe.IsBusy || IsDead)
         {
+            HideThrowPreview();
             rawX = 0f;
             jumpHeld = false;
             return;
@@ -538,12 +720,14 @@ public class PlayerMouseMovement : MonoBehaviour
 
         if (prevSelected && !isSelected)
         {
+            HideThrowPreview();
             ResetAnimStates();
         }
         prevSelected = isSelected;
 
         if (!isSelected)
         {
+            HideThrowPreview();
             rawX = 0f;
             jumpHeld = false;
             return;
@@ -561,28 +745,156 @@ public class PlayerMouseMovement : MonoBehaviour
 
         rawX = Mathf.Clamp(left + right, -1f, 1f);
 
-        // 점프 입력 버퍼
-        if (!locked && Input.GetKeyDown(KeyCode.Space)) lastJumpPressedTime = Time.time;
-        jumpHeld = !locked && Input.GetKey(KeyCode.Space);
+        // 점프 입력 버퍼 (홀드 중엔 이동만 잠그고 점프는 허용)
+        bool jumpLocked = (suppressed || Time.time < inputLockUntil || attackLock);
+        // throwHoldActive면 이동락만 유지하고 점프는 허용(단, 공격 중은 그대로 금지)
+        bool allowJumpNow = throwHoldActive ? !attackLock : !jumpLocked;
 
-        // 캐리 토글 (P1만)
+        if (allowJumpNow && Input.GetKeyDown(KeyCode.Space))
+            lastJumpPressedTime = Time.time;
+
+        jumpHeld = allowJumpNow && Input.GetKey(KeyCode.Space);
+
+        // ── P1 캐리/던지기 입력 처리 ─────────────────────────
         if (playerID == SwapController.PlayerChar.P1)
         {
-            bool shiftDown = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
+            bool shiftDown = ThrowHoldDown();
+            bool shiftUp = ThrowHoldUp();
             bool canToggleCarry = !locked && Time.time >= nextCarryAllowedAt;
-            if (shiftDown && canToggleCarry)
+
+            // 캐리 중이 아닐 땐 보류 상태 초기화
+            if (!isCarrying) throwComboPending = false;
+
+            if (isCarrying && enableThrowHold)
             {
-                if (!isCarrying)
+                // ① 쉬프트 먼저 눌린 뒤, 짧게 방향키를 기다리는 보정 구간
+                if (throwComboPending)
                 {
-                    if (CanStartCarryNow()) TryStartCarryNow();
-                    else Debug.Log("[Carry] Start blocked (must be grounded or rule not met).");
+                    HideThrowPreview();
+
+                    bool dirHeld =
+                        Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+                        Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ||
+                        Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+                    bool shiftHeld = ThrowHoldHeld();
+
+                    // 그레이스 안에 '쉬프트 계속 누른 상태 + 방향키'가 들어오면 홀드 에임 시작
+                    if (shiftHeld && dirHeld)
+                    {
+                        throwComboPending = false;
+                        BeginThrowHold();
+
+                        // 바로 프리뷰 표시
+                        DrawThrowPreview();
+                        rawX = 0f;
+                        return;
+                    }
+
+                    // 그레이스 끝났는데 방향키가 없으면 → DROP
+                    if (Time.time >= throwComboPendingUntil)
+                    {
+                        throwComboPending = false;
+                        StopCarry(); // 내부에서 DROP/THROW 분기(현 상황은 DROP)
+                        HideThrowPreview();
+                        return;
+                    }
+
+                    // 보정 대기 중에는 다른 입력 잠깐 묶어줘(미끄럼/점프 방지)
+                    rawX = 0f;
+                    return;
                 }
-                else
+
+                // ② 이번 프레임에 쉬프트가 눌림
+                if (shiftDown && canToggleCarry && !throwHoldActive)
                 {
-                    StopCarry();
+                    HideThrowPreview(); // 일단 감춰놓고
+
+                    bool dirKeyHeld =
+                        Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ||
+                        Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ||
+                        Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+
+                    if (dirKeyHeld)
+                    {
+                        // 쉬프트 + 방향키 동시 → 즉시 홀드 에임
+                        BeginThrowHold();
+                        DrawThrowPreview();
+                    }
+                    else
+                    {
+                        // 쉬프트가 살짝 먼저면 여기로: 잠깐 기다렸다가 방향 들어오면 홀드, 아니면 DROP
+                        throwComboPending = true;
+                        throwComboPendingUntil = Time.time + throwComboGrace;
+                    }
+                    rawX = 0f;
+                    return;
+                }
+
+                // ③ 이미 홀드 중일 때(기존 동작 유지) + 프리뷰 표시
+                if (throwHoldActive)
+                {
+                    // 수평: 마지막 입력 시간이 승리
+                    if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                    {
+                        holdHorizSign = -1;
+                        holdHorizChangedAt = Time.time;
+                        ForceFaceSign(-1);
+                    }
+                    if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                    {
+                        holdHorizSign = +1;
+                        holdHorizChangedAt = Time.time;
+                        ForceFaceSign(+1);
+                    }
+
+                    // ↑: 마지막 입력 시간이 수평보다 최신이면 '위 에임'으로 해석
+                    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                        holdUpChangedAt = Time.time;
+
+                    // (선택) ↓ 누르면 ↑ 해제 (원하지 않으면 이 3줄은 지워도 됨)
+                    if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                        holdUpChangedAt = -999f;
+
+                    // 자동 던지기/해제 기존 로직 그대로 유지
+                    if (throwHoldMaxTime > 0f && Time.time - throwHoldStartedAt >= throwHoldMaxTime)
+                    {
+                        ReleaseThrowHoldAndThrow();
+                        return;
+                    }
+                    if (ThrowHoldUp()) { ReleaseThrowHoldAndThrow(); return; }
+
+                    // 입력 중 이동/점프 봉인은 기존대로
+                    rawX = 0f;
+
+                    // ★ 프리뷰 갱신 (실제 물리와 동기화된 포물선)
+                    UpdateThrowPreview();
+                    return;
+                }
+            }
+            else
+            {
+                // 캐리 중이 아니면 보정 상태/프리뷰 리셋
+                throwComboPending = false;
+                HideThrowPreview();
+
+                // (기존) 캐리 시작/종료 토글
+                if (shiftDown && canToggleCarry)
+                {
+                    if (!isCarrying)
+                    {
+                        if (CanStartCarryNow()) TryStartCarryNow();
+                    }
+                    else
+                    {
+                        StopCarry();
+                    }
                 }
             }
         }
+
+        // 홀드 중이 아니면 항상 프리뷰 감춤(안전장치)
+        if (!throwHoldActive) HideThrowPreview();
+
         // Update() 안, 입력 처리들 아래 아무 위치에 추가
         if (!locked)
         {
@@ -722,7 +1034,6 @@ public class PlayerMouseMovement : MonoBehaviour
 
             // (선택) 완전 확실히 끊고 싶으면 재부착 억제를 잠금시간과 동기화
             ignoreSlimeUntil = Mathf.Max(ignoreSlimeUntil, Time.time + wallOppositeInputLock);
-
         }
 
         // === Run 애니메이션 ===
@@ -751,6 +1062,7 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+
     void FixedUpdate()
     {
         // === 사망했으면 물리 낙하만 처리 ===
@@ -771,9 +1083,15 @@ public class PlayerMouseMovement : MonoBehaviour
             rb.linearVelocity = dv;
             return; // 나머지 이동/점프/슬라임 로직 전부 우회
         }
+        // 던지기 홀드 중에는 수평 속도를 빠르게 0으로 → 미끄럼 방지
+        if (throwHoldActive)
+        {
+            var vv = rb.linearVelocity;
+            vv.x = Mathf.MoveTowards(vv.x, 0f, decel * Time.fixedDeltaTime * 2f);
+            rb.linearVelocity = vv;
+        }
 
         bool groundedStrict = IsGroundedStrictSmall();
-      
 
         Vector2 v = rb.linearVelocity;
         bool grounded = groundedStrict;
@@ -879,7 +1197,22 @@ public class PlayerMouseMovement : MonoBehaviour
                 lastJumpStartTime = Time.time;
                 didCutThisJump = false;
 
-                if (!canCoyote && !grounded) airJumpsLeft = Mathf.Max(airJumpsLeft - 1, 0);
+                // === DoubleJump FX: '지면/코요테 아님' → 공중점프일 때만 ===
+                if (!canCoyote && !grounded)
+                {
+                    // FX: 더블점프 이펙트 (발밑에서, 스케일 x4)
+                    if (bodyCollider)
+                    {
+                        var b = bodyCollider.bounds;
+                        Vector3 feet = new Vector3(b.center.x, b.min.y, transform.position.z);
+                        FX.Play("doubleJumpe", feet + Vector3.down * 0.06f, 10f);
+                        // 만약 FX.Play(…, scale) 오버로드가 없다면 ↓ 이렇게도 가능:
+                        // SpriteEffectManager.Instance?.PlayScaled("doubleJumpe", feet + Vector3.down * 0.06f, 4f);
+                    }
+
+                    // 공중점프 1회 소모
+                    airJumpsLeft = Mathf.Max(airJumpsLeft - 1, 0);
+                }
 
                 lastJumpPressedTime = -999f;
                 lastGroundedTime = -999f;
@@ -1027,14 +1360,11 @@ public class PlayerMouseMovement : MonoBehaviour
 
     }
 
+
+
     /* ===================== 충돌/트리거에서 슬라임 판정 보강 ===================== */
     void OnCollisionStay2D(Collision2D col)
     {
-        if (playerID == SwapController.PlayerChar.P1 && otherPlayer != null)
-        {
-            var op = col.collider.GetComponentInParent<PlayerMouseMovement>();
-            if (op != null && op == otherPlayer) isCarried = true;
-        }
 
         if (!IsInLayerMask(col.collider.gameObject.layer, slimeLayerMask)) return;
 
@@ -1048,12 +1378,6 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D col)
     {
-        // 캐리 대상 이탈 체크는 Exit에서 처리
-        if (playerID == SwapController.PlayerChar.P1 && otherPlayer != null)
-        {
-            var op = col.collider.GetComponentInParent<PlayerMouseMovement>();
-            if (op != null && op == otherPlayer) isCarried = false;
-        }
 
         if (!IsInLayerMask(col.collider.gameObject.layer, slimeLayerMask)) return;
         touchL_byCollision = false;
@@ -1112,6 +1436,10 @@ public class PlayerMouseMovement : MonoBehaviour
             return;
         }
         StartCarry();
+    }
+    private void SoftUnlockCarryWindow(float extra = 0.25f)
+    {
+        nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, Time.time + extra);
     }
 
     // 캐리 시작 가능 여부 게이트
@@ -1217,6 +1545,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
     private void StopCarry()
     {
+        HideThrowPreview();
         if (otherPlayer == null || !isCarrying) return;
 
         // ====== 기본 상태/입력 해석 ======
@@ -1238,7 +1567,7 @@ public class PlayerMouseMovement : MonoBehaviour
         // ====== 스폰 좌표 미리 계산 ======
         Vector3 dropSpawnOffset = new(spawnSign * carryDropForward, carryOffsetY + carryThrowSeparation, 1f);
         Vector3 dropPos = transform.position + dropSpawnOffset;
-        
+
         Vector3 throwPos;
         if (throwStartWorldPoint != null) throwPos = throwStartWorldPoint.position;
         else
@@ -1422,7 +1751,6 @@ public class PlayerMouseMovement : MonoBehaviour
     {
         swapSuppressUntil = Time.time + Mathf.Max(0f, seconds);
         rawX = 0f;
-        jumpHeld = false;
         lastJumpPressedTime = -999f;
         ResetAnimStates();
         if (zeroHorizontalVelocity && rb) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
@@ -1443,12 +1771,13 @@ public class PlayerMouseMovement : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        // P2는 무조건 씬 리로드
         if (playerID == SwapController.PlayerChar.P2)
         {
             if (_sceneReloading) return;
             _sceneReloading = true;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+            //  DS3 스타일 연출 + 리로드
+            SpiralBoxWipe.Run(SceneManager.GetActiveScene().name);
             return;
         }
 
@@ -1561,8 +1890,9 @@ public class PlayerMouseMovement : MonoBehaviour
         var clips = rb2.GetCurrentAnimatorClipInfo(layer);
         if (clips != null && clips.Length > 0 && clips[0].clip)
         {
-            float speed = Mathf.Max(0.0001f, rb2.speed);
-            return clips[0].clip.length / speed;
+            float speed = rb2.speed;
+            if (speed < 0.05f) speed = 1f; // ★ 방어: 느리면 1배로 간주
+            return clips[0].clip.length / Mathf.Max(0.0001f, speed);
         }
         return 0f;
     }
@@ -1951,7 +2281,17 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
-
+    private void SetThrowPreviewColor(bool hazardous)
+    {
+        if (!throwPreview) return;
+        Color c = hazardous ? previewHazardColor : previewSafeColor;
+        var g = new Gradient();
+        g.SetKeys(
+            new[] { new GradientColorKey(c, 0f), new GradientColorKey(c, 1f) },
+            new[] { new GradientAlphaKey(c.a, 0f), new GradientAlphaKey(c.a, 1f) }
+        );
+        throwPreview.colorGradient = g;
+    }
 
     private void EnsureP2LaserLine()
     {
@@ -2297,6 +2637,149 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+    private bool ThrowHoldDown() => Input.GetKeyDown(throwHoldKeyMain) || Input.GetKeyDown(throwHoldKeyAlt);
+    private bool ThrowHoldHeld() => Input.GetKey(throwHoldKeyMain) || Input.GetKey(throwHoldKeyAlt);
+    private bool ThrowHoldUp() => Input.GetKeyUp(throwHoldKeyMain) || Input.GetKeyUp(throwHoldKeyAlt);
+
+    private void FreezeThrowAnimAtFirstFrame()
+    {
+        if (!rb2) return;
+        _prevAnimSpeed = rb2.speed;
+
+        // 던지기 상태로 즉시 진입 후 정지
+        if (!string.IsNullOrEmpty(throwStateName))
+            rb2.CrossFadeInFixedTime(throwStateName, 0.05f, 0, 0f);
+
+        rb2.SetBool("throw", true);    // 기존 파이프라인과 호환
+        if (throwHoldFreezeAnimator) rb2.speed = 0f;
+    }
+
+    private void RestoreAnimatorSpeed()
+    {
+        if (!rb2) return;
+        rb2.speed = Mathf.Approximately(_prevAnimSpeed, 0f) ? 1f : _prevAnimSpeed;
+    }
+    private void BeginThrowHold()
+    {
+        if (!isCarrying || otherPlayer == null) return;
+
+        ResetHoldAimState();          // 래치 초기화
+        EnsureThrowPreviewLine();     // 프리뷰 라인 준비
+        DisableOtherPreviewLines();   // 예전 라인 OFF
+        throwHoldActive = true;
+        throwHoldStartedAt = Time.time;
+
+        rawX = 0f;                    // 수평만 고정(미끄럼 방지)
+                                      // ⛔️ 기존: jumpHeld = false;  → 삭제
+                                      // ⛔️ 기존: lastJumpPressedTime = -999f; → 삭제
+
+        FreezeThrowAnimAtFirstFrame();
+
+        if (throwPreview) throwPreview.enabled = true; // 프리뷰 ON
+    }
+
+
+
+    private void ReleaseThrowHoldAndThrow()
+    {
+        HideThrowPreview();
+        if (!throwHoldActive) return;
+        throwHoldActive = false;
+
+        RestoreAnimatorSpeed();
+
+        // ★ 프리뷰 끄기
+        if (throwPreview) throwPreview.enabled = false;
+
+        DoThrowNowFromHold();
+        SoftUnlockCarryWindow(0.25f);
+    }
+
+
+    // StopCarry()의 THROW 분기를 그대로 재현(드롭 분기 없이 강제 던지기)
+    private void DoThrowNowFromHold()
+    {
+        if (otherPlayer == null || !isCarrying) return;
+
+        // ↑ 입력 체크 (홀드 해제 순간 기준)
+        bool aimUp = HoldAimUpActive();
+
+
+        // ====== 공통 상태 해제 ======
+        otherPlayer.transform.SetParent(otherOriginalParent, worldPositionStays: true);
+
+        // 스폰 위치 계산
+        int facingSign = HoldHorizSignOrFacing();
+
+        Vector3 throwPos;
+        if (throwStartWorldPoint != null)
+        {
+            throwPos = throwStartWorldPoint.position; // 월드 포인트가 있으면 그대로 사용
+        }
+        else
+        {
+            if (aimUp)
+            {
+                // ↑ 던지기: X는 중앙, Y는 머리 위로
+                throwPos = transform.position + new Vector3(0f, throwStartLocalOffsetUp.y, 0f);
+            }
+            else
+            {
+                float xoff = throwStartLocalOffset.x * (throwStartUseFacing ? facingSign : 1f);
+                throwPos = transform.position + new Vector3(xoff, throwStartLocalOffset.y, 0f);
+            }
+        }
+
+        otherPlayer.transform.position = throwPos;
+        otherPlayer.rb.simulated = false;  // 지연 시작 전까지 Off
+        otherPlayer.isCarried = false;
+        SetOtherPlayerVisible(false);
+
+        // 초기 속도
+        Vector2 initialVelocity = aimUp
+            ? new Vector2(0f, carryThrowUpSpeed)                                   // ↑ 던지기
+            : new Vector2(facingSign * carryThrowSideSpeed, carryThrowUpSpeed);    // 좌/우 대각
+
+        // 던진 직후 오토캐치 차단
+        autoCatchSuppressUntil = Time.time + autoCatchBlockOnThrow;
+
+        // P1 애니/상태 정리
+        isCarrying = false;
+        carryset = false;
+
+        if (rb2)
+        {
+            AnimatorSetBoolSafe(rb2, carryBoolName, false);
+            AnimatorSetBoolSafe(rb2, carryingBoolName, false);
+            if (!string.IsNullOrEmpty(carryEndTriggerName)) AnimatorSetTriggerSafe(rb2, carryEndTriggerName);
+            else if (!string.IsNullOrEmpty(carryEndStateName)) rb2.CrossFadeInFixedTime(carryEndStateName, 0.05f, 0, 0f);
+
+            rb2.SetBool("run", false);
+            rb2.SetBool("throw", true);
+            rb2.SetBool("throwed", true);
+        }
+
+        throwmanager = false;
+
+        BeginCarryEndLock();
+        CancelCarryLock();
+        inputLockUntil = Time.time + 0.45f;
+
+        if (_throwResetCo != null) StopCoroutine(_throwResetCo);
+        _throwResetCo = StartCoroutine(ResetThrowAfter(0.6f));
+
+        // P2 방향 정렬: 던지기는 회전 유지
+        if (!aimUp || !upThrowKeepsFacing)
+        {
+            otherPlayer.ForceFaceSign(facingSign);
+        }
+        // else: 회전 유지(아무 것도 안 함)
+
+        // 실제 발사 스케줄
+        if (_delayedThrowCo != null) StopCoroutine(_delayedThrowCo);
+        _delayedThrowCo = StartCoroutine(DelayedThrow(throwDelay, initialVelocity));
+    }
+
     // 머리 위 슬라임 감지
     private bool TouchingSlimeCeilingCast(out RaycastHit2D upHit)
     {
@@ -2400,6 +2883,216 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+    // 마지막 입력 기준으로 ↑ 에임 활성인지 판정
+    private bool HoldAimUpActive() => allowAimUpInHold && (holdUpChangedAt > holdHorizChangedAt);
+
+    // 수평 방향(없으면 현재 바라보는 방향)
+    private int HoldHorizSignOrFacing()
+    {
+        if (holdHorizSign != 0) return holdHorizSign;
+        return (transform.localScale.x >= 0f) ? +1 : -1;
+    }
+
+    private void ResetHoldAimState()
+    {
+        holdHorizSign = 0;
+        holdHorizChangedAt = holdUpChangedAt = -999f;
+    }
+
+    // ▶ 한 번만 쓰는 프리뷰 라인 확보(중복 있으면 제거/비활성)
+    private void EnsureThrowPreviewLine()
+    {
+        // 1) 같은 이름 라인 찾기(있으면 재사용, 여러 개면 하나만 남기고 제거)
+        LineRenderer found = null;
+        var all = GetComponentsInChildren<LineRenderer>(true);
+        for (int i = 0; i < all.Length; i++)
+        {
+            var lr = all[i];
+            if (lr == p2LaserLine) continue; // P2 레이저 라인은 건드리지 않음
+            if (lr.gameObject.name == "ThrowPreviewLine")
+            {
+                if (found == null) found = lr;
+                else Destroy(lr.gameObject); // 중복 제거
+            }
+        }
+
+        // 2) 없으면 새로 생성
+        if (!found)
+        {
+            var go = new GameObject("ThrowPreviewLine");
+            go.transform.SetParent(transform, false);
+            found = go.AddComponent<LineRenderer>();
+
+            var shader = Shader.Find("Sprites/Default");
+            found.sharedMaterial = new Material(shader);
+
+            found.useWorldSpace = true;
+            found.textureMode = LineTextureMode.Stretch;
+            found.numCapVertices = 8;
+            found.numCornerVertices = 3;
+            found.alignment = LineAlignment.View;
+            found.widthMultiplier = 0.05f;
+
+            // 기본 색상: 안전(빨강)
+            SetThrowPreviewColor(false);
+
+            // 정렬: 플레이어 스프라이트보다 위
+            var sr = GetComponentInChildren<SpriteRenderer>();
+            if (sr != null)
+            {
+                found.sortingLayerID = sr.sortingLayerID;
+                found.sortingOrder = sr.sortingOrder + 3;
+            }
+        }
+
+        throwPreview = found;
+        throwPreview.positionCount = 0;
+        throwPreview.enabled = false;
+
+        // 3) 혹시 남아있는 다른 Throw/Preview 라인은 끄기(이름 기반)
+        DisableOtherPreviewLines();
+    }
+
+    // ▶ 다른(예전) 프리뷰 라인들 끄기
+    private void DisableOtherPreviewLines()
+    {
+        var all = GetComponentsInChildren<LineRenderer>(true);
+        for (int i = 0; i < all.Length; i++)
+        {
+            var lr = all[i];
+            if (lr == throwPreview || lr == p2LaserLine) continue;
+            string n = lr.gameObject.name;
+            if (n.Contains("Throw") || n.Contains("Preview"))
+                lr.enabled = false;
+        }
+    }
+
+
+    // ▶ 프리뷰 숨기기(던질 때/홀드 종료 때 호출)
+    private void HideThrowPreview()
+    {
+        if (throwPreview)
+        {
+            throwPreview.positionCount = 0;
+            throwPreview.enabled = false;
+        }
+    }
+
+    private void UpdateThrowPreview()
+    {
+        EnsureThrowPreviewLine();
+        if (!throwPreview) return;
+
+        int sign = HoldHorizSignOrFacing();
+        bool aimUp = HoldAimUpActive();
+
+        // 스폰 위치(실제 던지기와 동일 규칙)
+        Vector3 start;
+        if (throwStartWorldPoint != null) start = throwStartWorldPoint.position;
+        else if (aimUp) start = transform.position + new Vector3(0f, throwStartLocalOffsetUp.y, 0f);
+        else
+        {
+            float xoff = throwStartLocalOffset.x * (throwStartUseFacing ? sign : 1f);
+            start = transform.position + new Vector3(xoff, throwStartLocalOffset.y, 0f);
+        }
+
+        // 초기 속도(실제와 동일)
+        Vector2 v0 = aimUp
+            ? new Vector2(0f, carryThrowUpSpeed)
+            : new Vector2(sign * carryThrowSideSpeed, carryThrowUpSpeed);
+
+        RenderThrowPreview_Sim((Vector2)start, v0, throwPreviewDuration, throwPreviewSteps);
+    }
+
+    private void RenderThrowPreview_Sim(Vector2 start, Vector2 v0, float duration, int steps)
+    {
+        EnsureThrowPreviewLine();
+        var line = throwPreview;
+        if (!line) return;
+
+        // 기본은 안전색
+        SetThrowPreviewColor(false);
+
+        int total = Mathf.Max(2, steps);
+        line.positionCount = total;
+
+        // 충돌 마스크: Ground/Event/Trap 에 닿으면 끊기
+        int collideMask = groundMask | eventMask | trapMask;
+
+        // 캐스트 반경: P2의 바디 크기 기반(없으면 기본 0.12)
+        float radius = 0.12f;
+        if (otherPlayer && otherPlayer.bodyCollider)
+        {
+            var ext = otherPlayer.bodyCollider.bounds.extents;
+            radius = Mathf.Min(ext.x, ext.y) * 0.9f;
+            radius = Mathf.Clamp(radius, 0.05f, 0.25f);
+        }
+
+        // 실제 던져지는 애(P2)의 물리 파라미터로 시뮬
+        PlayerMouseMovement target = otherPlayer ? otherPlayer : this;
+
+        Vector2 p = start;
+        Vector2 v = v0;
+        float dt = Mathf.Max(0.005f, duration / (total - 1));
+
+        float gScale = (target.rb ? target.rb.gravityScale : 1f);
+        float gNormal = target.baseGravityNormal;
+        float gFall = target.baseGravityFall;
+        float apexTh = target.apexThreshold;
+        float apexMul = target.apexHangMultiplier;
+        float smoothT = target.gravitySmoothTime;
+        float vFallMin = target.maxFallSpeed;
+        float smoothVel = 0f;
+
+        for (int i = 0; i < total; i++)
+        {
+            line.SetPosition(i, p);
+
+            // 중력 스텝(실제 로직과 동일)
+            float desired = (v.y < -0.01f) ? gFall : gNormal;
+            if (Mathf.Abs(v.y) <= apexTh) desired = Mathf.Min(desired, gNormal * apexMul);
+            gScale = Mathf.SmoothDamp(gScale, desired, ref smoothVel, smoothT, Mathf.Infinity, dt);
+
+            // 다음 위치 예측
+            Vector2 vNext = v + Physics2D.gravity * gScale * dt;
+            if (vNext.y < vFallMin) vNext.y = vFallMin;
+            Vector2 pNext = p + vNext * dt;
+
+            // p → pNext 구간 충돌 캐스트(원-캐스트)
+            Vector2 delta = pNext - p;
+            float dist = delta.magnitude;
+            if (dist > 0.0001f)
+            {
+                var hit = Physics2D.CircleCast(p, radius, delta / dist, dist, collideMask);
+                if (hit.collider)
+                {
+                    Vector2 endPoint = hit.point;
+
+                    // 착지 지점에 '위험 레이어'가 있나?
+                    bool hazardAtEnd =
+                        ((hazardMask & (1 << hit.collider.gameObject.layer)) != 0) ||
+                        Physics2D.OverlapCircle(endPoint, Mathf.Max(0.06f, radius * 0.8f), hazardMask);
+
+                    line.SetPosition(i, endPoint);
+                    line.positionCount = i + 1;
+                    line.enabled = true;
+
+                    SetThrowPreviewColor(hazardAtEnd);
+                    return;
+                }
+            }
+
+            // 갱신
+            v = vNext;
+            p = pNext;
+        }
+
+        // 충돌 없이 끝난 경우: 마지막 지점 주변에 위험 레이어가 있는지 체크
+        bool hazardFinal = Physics2D.OverlapCircle(p, Mathf.Max(0.06f, radius * 0.8f), hazardMask);
+        SetThrowPreviewColor(hazardFinal);
+        line.enabled = true;
+    }
+
 
     private static bool AnimatorHasParam(Animator a, string name, AnimatorControllerParameterType t)
     {
@@ -2424,9 +3117,9 @@ public class PlayerMouseMovement : MonoBehaviour
     }
 
     // 머리 위 슬라임 감지 (Ceiling)
-    
 
-    
+
+
     // === 슬라임 접촉 감지: Collider.Cast 기반 ===
     private bool TouchingSlimeSideCast(int sign)
     {

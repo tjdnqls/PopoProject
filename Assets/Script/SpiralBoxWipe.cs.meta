@@ -1,2 +1,12 @@
 fileFormatVersion: 2
 guid: 78b102dcb483b534f8be96ba6f2aed3f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - youDiedFont: {fileID: 11400000, guid: 211e72c45b3eed54ead65ca3c007290e, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
