@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 7a53b4d7727df5741b2523095eb42fa2
+guid: 5c7916832d4d74643b01cf60305f7c94
 AudioImporter:
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 8
   defaultSettings:
     serializedVersion: 2
     loadType: 0
@@ -21,10 +21,3 @@ AudioImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 307682
-  packageName: Footsteps Mini Sound Pack
-  packageVersion: 1.0
-  assetPath: Assets/Footsteps Mini Sound Pack/Tile_Mono_03.wav
-  uploadId: 723109

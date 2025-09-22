@@ -113,6 +113,10 @@ public class PlayerMouseMovement : MonoBehaviour
     private int holdHorizSign = 0;                 // -1=L, +1=R, 0=none
     private float holdHorizChangedAt = -999f;
     private float holdUpChangedAt = -999f;
+    [Header("Audio – Footsteps")]
+    [SerializeField] private bool enableFootstepLoop = true;
+    [SerializeField] private float footstepMinSpeed = 0.1f; // |vx|가 이값 이상일 때만 발소리
+    private string _currentWalkLoop = null;                  // 현재 재생 중인 루프 이름(KnightWalk/PrincessWalk)
 
     // ==== Throw Preview (Sim) ====
     [Header("Throw Preview (Sim)")]
@@ -513,7 +517,11 @@ public class PlayerMouseMovement : MonoBehaviour
     }
 
     void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
-    void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        StopFootstepLoop(); // 씬/오브젝트 비활성화 시 루프 정리
+    }
 
 #if UNITY_EDITOR
     void OnValidate()
@@ -724,6 +732,8 @@ public class PlayerMouseMovement : MonoBehaviour
         bool attackLock = AttackLocksInput();
         bool locked = suppressed || Time.time < inputLockUntil || attackLock;
         lockedall = locked; // 전체 트랜지션 중에는 모든 입력/조작 봉인
+
+        UpdateFootstepLoop(isSelected);
 
         if (SpiralBoxWipe.IsBusy || IsDead)
         {
@@ -2942,6 +2952,60 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
+    private void StopFootstepLoop()
+    {
+        if (!string.IsNullOrEmpty(_currentWalkLoop))
+        {
+            SoundManager.StopLoop(_currentWalkLoop, graceful: true);
+            _currentWalkLoop = null;
+        }
+    }
+
+    private void UpdateFootstepLoop(bool isSelected)
+    {
+        if (!enableFootstepLoop || rb == null)
+        {
+            StopFootstepLoop();
+            return;
+        }
+
+        // “재생해야 하는가?” 조건
+        bool grounded = IsGroundedStrictSmall();
+        float speedX = Mathf.Abs(rb.linearVelocity.x);
+        bool shouldPlay =
+            isSelected &&                           // 내가 현재 조작 대상일 때만
+            !IsDead &&                              // 사망 중 아님
+            !SpiralBoxWipe.IsBusy &&                // 컷씬/전환 중 아님
+            grounded &&                             // 땅 위
+            speedX >= footstepMinSpeed &&           // 실제 수평속도 존재
+            !throwHoldActive &&                     // 던지기 에임 중 아님
+            !attack;                                // 공격 중 아님
+
+        // 플레이어 캐릭터별 루프 이름
+        string desiredLoop = shouldPlay
+            ? (playerID == SwapController.PlayerChar.P1 ? "KnightWalk" : "PrincessWalk")
+            : null;
+
+        // 상태 변화에만 반응 (중복 호출로 인한 누적 방지)
+        if (_currentWalkLoop != desiredLoop)
+        {
+            // 1) 이전 루프 정리
+            if (!string.IsNullOrEmpty(_currentWalkLoop))
+                SoundManager.StopLoop(_currentWalkLoop, graceful: true);
+
+            _currentWalkLoop = null;
+
+            // 2) 새 루프 시작
+            if (!string.IsNullOrEmpty(desiredLoop))
+            {
+                SoundManager.StartLoop(desiredLoop, transform);
+                Debug.Log("발걸음 사운드 재생됌");
+                _currentWalkLoop = desiredLoop;
+            }
+        }
+    }
+
+
     // 마지막 입력 기준으로 ↑ 에임 활성인지 판정
     private bool HoldAimUpActive() => allowAimUpInHold && (holdUpChangedAt > holdHorizChangedAt);
 
@@ -3399,3 +3463,4 @@ public class PlayerMouseMovement : MonoBehaviour
         dir = sign;
     }
 }
+

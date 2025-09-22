@@ -639,12 +639,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62658daa4aa5f5a46b52f64b5ba966db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _current:
-    sceneName: 
-    respawnPos: {x: 0, y: 0, z: 0}
-    ids: []
-    states: []
-  _applyAfterLoad: 0
 --- !u!114 &120585257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43418,6 +43412,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!1 &899171141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4766230852274504762, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
+  m_PrefabInstance: {fileID: 6312633683019052545}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &908705840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44067,6 +44066,113 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   revertOnDisable: 0
+--- !u!1 &1019984898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1019984900}
+  - component: {fileID: 1019984899}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1019984899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019984898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb8b388f854ee8e409c861a430e18379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowEditModePlayback: 0
+  sounds:
+  - name: KnightWalk
+    mainClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    enableSub: 1
+    subClips:
+    - {fileID: 8300000, guid: bb81960598db2e64780babfc174f7aba, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 1
+    pitch: 0
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 2
+    cooldown: 0.2
+    gracefulStopLoop: 1
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0
+    maxVoices: 8
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 3839841817411716754}
+  - name: PrincessWalk
+    mainClips:
+    - {fileID: 8300000, guid: b50e8f20f0f85d74791046e1adbdd9bb, type: 3}
+    enableSub: 1
+    subClips:
+    - {fileID: 8300000, guid: 4e9a4273523cac54fa5dfc581f50235c, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 1
+    pitch: 0
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 2
+    cooldown: 0.2
+    gracefulStopLoop: 1
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0
+    maxVoices: 8
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 2677128368298723695}
+  prewarmVoices: 8
+--- !u!4 &1019984900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019984898}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 72.012474, y: -58.21482, z: -0.44603804}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1031602957
 GameObject:
   m_ObjectHideFlags: 0
@@ -55623,7 +55729,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4766230852274504762, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7357204630883092747}
   m_SourcePrefab: {fileID: 100100000, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
 --- !u!1001 &6352952955344435762
 PrefabInstance:
@@ -55886,10 +55995,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8729801131823638229, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
   m_PrefabInstance: {fileID: 6312633683019052545}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 899171141}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c388a7d6a17d664ca370070699ef118, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7357204630883092747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899171141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7be42ef4bc87fd4da587e2fd7375347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7750034733739936113
@@ -56514,3 +56635,4 @@ SceneRoots:
   - {fileID: 249621320}
   - {fileID: 394085449}
   - {fileID: 898999459}
+  - {fileID: 1019984900}
