@@ -5,663 +5,295 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Collider2D))]
 public class FadingTilemapForP2 : MonoBehaviour
 {
-    [Header("Targets")]
-    public Transform player2Root;                     // 공주(P2)
-    public Transform player1Root;                     // 옵션
-    [Tooltip("있으면 콜라이더-콜라이더 최소거리로 표면거리 계산(겹침 포함 정확)")]
-    public Collider2D player2MainCollider;            // 선택
+    [Header("Target Roots (auto-filled by tags if enabled)")]
+    public Transform player2Root;
+    public Transform player1Root;
 
-    // ── 거리→속도: 콜라이더 '가장 가까운 면' 기준 ──
-    [Header("Nearest-Surface Distance (meters)")]
-    [Tooltip("면에서 이 거리까지를 0..1로 정규화(near=1, far=0)")]
-    public float influenceMaxDistance = 6f;
+    [Header("Fade Distance (world units)")]
+    public float fadeStartDistance = 6f;
+    public float fadeEndDistance = 1.5f;
 
-    [Header("Distance Correction")]
-    [Tooltip("정규화 전에 d' = max(0, d*Scale - Bias) 적용")]
-    public float distanceBiasMeters = 0f;
-    public float distanceScale = 1f;
-    [Tooltip("정규화 t(0..1)를 속도 가중치로 보정(기본 선형)")]
-    public AnimationCurve distanceToSpeedCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    [Header("Mode")]
+    [Tooltip("true면: 멀수록 투명, 가까울수록 보이게(알파 ↑)")]
+    public bool reverse = false;
 
-    // ── (선택) 시야 체크: 가려지면 '이탈'로 간주해 감소 ──
-    [Header("Line of Sight (optional)")]
-    public bool requireLineOfSight = false;
-    public LayerMask losBlockMask;
-    public float losSkin = 0.01f;
+    [Header("Appear gating")]
+    [Tooltip("알파가 이 값 이상일 때부터 충돌 시작(예: 0.98)")]
+    [Range(0f, 1f)] public float appearAlphaThreshold = 0.98f; // (참고용)
 
-    // ── 속도 ──
-    [Header("Rates (per second)")]
-    public float chargeRateMin = 0.2f;   // 멀리
-    public float chargeRateMax = 2.0f;   // 가까이
-    public float drainRateMin = 0.1f;   // 가까이
-    public float drainRateMax = 2.0f;   // 멀리
+    [Header("Easing")]
+    public AnimationCurve alphaCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
-    // ── 임계치 ──
-    [Header("Thresholds")]
-    [Range(0f, 1f)] public float vanishThreshold = 0.995f; // 기본모드: ≥면 '사라짐(물리 off)'
-    [Range(0f, 1f)] public float appearThreshold = 0.005f; // 기본모드: ≤면 '나타남(물리 on)'
-    [Tooltip("접근/이탈 판정 데드존(m)")]
-    public float epsilonDistance = 0.005f;
+    [Tooltip("충돌용 콜라이더 오브젝트(선택). 비워두면 무시")]
+    public GameObject coll;
 
-    // ── 시각효과(선/원) ──
-    [Header("Guide Line")]
-    [SerializeField] private bool showLine = true;
-    [SerializeField] private Color lineColor = Color.yellow;                 // 기본(노랑)
-    [SerializeField] private Color lineColorFull = new Color(0.2f, 0.65f, 1f); // Full(파랑)
-    [SerializeField] private float lineMinWidth = 0.02f;
-    [SerializeField] private float lineMaxWidth = 0.2f;
+    [Header("Auto-assign by Tag")]
+    [Tooltip("시작 시 태그로 Player1/Player2를 자동 탐색하여 부모 Transform을 Root로 설정")]
+    public bool autoAssignPlayersByTag = true;
+    public string player1Tag = "Player1";
+    public string player2Tag = "Player2";
+    [Tooltip("태그로 찾은 오브젝트의 부모를 Root로 삼습니다. 부모가 없으면 해당 오브젝트를 사용")]
+    public bool assignToParentOfTagged = true;
 
-    [Header("Circle Indicator")]
-    [SerializeField] private bool showCircle = true;
-    [SerializeField] private float circleRadius = 0.5f;
-    [SerializeField] private float ringThickness = 0.05f;
-    [SerializeField] private Color ringColor = Color.white;
-    [SerializeField] private Color fillColor = Color.yellow;                 // 기본(노랑)
-    [SerializeField] private Color fillColorFull = new Color(0.2f, 0.65f, 1f); // Full(파랑)
-    [Tooltip("테두리용 원 스프라이트(권장)")]
-    [SerializeField] private Sprite circleSprite;
-    [Tooltip("채움용(1x1 사각 추천, 비워도 자동 생성)")]
-    [SerializeField] private Sprite fillSprite;
+    // --- cached ---
+    private Collider2D wallCollider;
 
-    // ── 본체 시각효과(게이지에 따라 노랗게 + 투명) ──
-    [Header("Visual by Gauge (Object)")]
-    public Color tintColor = new Color(1f, 0.92f, 0.2f);
-    [Range(0f, 1f)] public float minAlphaAtFull = 0f; // 1→0
-    public AnimationCurve visualCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    // ▸ Renderer: 같은 오브젝트에 붙은 것만 제어(자식 제외)
+    private SpriteRenderer[] spriteRenderers;   // 스프라이트
+    private Renderer[] genericRenderers;        // Mesh/Skinned 등(_Color MPB)
+    private Tilemap tilemap;                    // 타일맵 본체
+    private TilemapRenderer tilemapRenderer;    // 타일맵 렌더러
 
-    // ── Reverse 모드 ──
-    [Header("Reverse Visibility")]
-    [Tooltip("켜면: 평소 안보임(물리 off) → 게이지가 '가득' 찼을 때만 보임(물리 on)")]
-    public bool reverseVisibility = false;
-    [Tooltip("런타임 토글 키(없으면 None)")]
-    public KeyCode reverseToggleKey = KeyCode.None;
-    [Tooltip("리버스일 때, 가득 차기 전엔 완전 투명(0), 가득 차면 한 번에 보이게")]
-    public bool reverseHardGate = true;
-    [Tooltip("리버스일 때 보일 때의 알파(1=불투명)")]
-    [Range(0f, 1f)] public float reverseAlphaAtFull = 1f;
+    private readonly List<Collider2D> p2Cols = new();
+    private readonly List<Collider2D> p1Cols = new();
 
-    [Header("Collision/Render")]
-    [Tooltip("충돌용 콜라이더 오브젝트(선택). 비우면 자신의 Collider2D on/off")]
-    public GameObject collGO;
+    private bool collisionsIgnoredWithP2 = false;
+    private bool collisionsIgnoredWithP1 = false;
 
-    // 내부 캐시
-    private Collider2D wallCol;
-    private TilemapRenderer tmRenderer;
-    private Tilemap tilemap;
-    private SpriteRenderer[] spriteRenderers;
-    private Renderer[] otherRenderers;
-
-    private LineRenderer linkLine;    // P2 ↔ 콜라이더 중앙
-    private LineRenderer ringLine;    // 흰 링
-    private SpriteMask circleMask;    // 원형 마스크
-    private SpriteRenderer fillSR;    // 노란/파란 채움
-    private Transform indicatorRoot;  // 중앙 고정
-
-    [SerializeField, Range(0f, 1f)] private float charge01 = 0f;
-    private bool isPresent = true;                     // '물리 on' 상태
-    private const int ringSegments = 48;
-
-    // 거리 변화 추적
-    private float prevSurfaceDist = -1f;
-    private bool hasPrevDist = false;
-
-    // 비주얼 원본 색상 저장
-    private Color tilemapBaseColor = Color.white;
-    private Color[] spriteBaseColors;
-    private Color[] otherBaseColors; // _Color 지원 머터리얼만
-
-    // Full 컬러 스위치 상태(노랑↔파랑)
-    [Header("Full Color Switch")]
-    [Range(0f, 1f)] public float fullColorThreshold = 0.995f; // 기본은 vanishThreshold와 동일
-    [Range(0f, 0.2f)] public float fullColorHysteresis = 0.02f;
-    private bool _lastFullVisual = false;
+    // 타일맵 원본 색(복구용)
+    private Color _tilemapBaseColor = Color.white;
 
     void Awake()
     {
-        wallCol = GetComponent<Collider2D>();
-        tmRenderer = GetComponent<TilemapRenderer>();
+        wallCollider = GetComponent<Collider2D>();
+
+        // Tilemap / TilemapRenderer 캐시
         tilemap = GetComponent<Tilemap>();
+        tilemapRenderer = GetComponent<TilemapRenderer>();
+        if (tilemap) _tilemapBaseColor = tilemap.color;
+        else if (tilemapRenderer && tilemapRenderer.sharedMaterial && tilemapRenderer.sharedMaterial.HasProperty("_Color"))
+            _tilemapBaseColor = tilemapRenderer.sharedMaterial.color;
 
-        // 자신(자식 제외)의 렌더러만 제어
+        // 현재 오브젝트에 부착된 Renderer들만 수집(자식 제외)
         spriteRenderers = GetComponents<SpriteRenderer>();
-        var all = GetComponents<Renderer>();
-        var others = new List<Renderer>();
-        foreach (var r in all) if (r is not SpriteRenderer && r is not TilemapRenderer) others.Add(r);
-        otherRenderers = others.ToArray();
 
-        if (!player2MainCollider && player2Root)
-            player2MainCollider = player2Root.GetComponentInChildren<Collider2D>();
+        var allRenderers = GetComponents<Renderer>();
+        var genericList = new List<Renderer>();
+        foreach (var r in allRenderers)
+        {
+            if (r is SpriteRenderer) continue;      // 스프라이트는 따로 처리
+            if (r is TilemapRenderer) continue;     // 타일맵은 tilemap/tilemapRenderer에서 처리
+            genericList.Add(r);
+        }
+        genericRenderers = genericList.ToArray();
 
-        CacheBaseVisuals();
-        SetupLine();
-        SetupCircle();
+        // 태그 기반 자동 할당
+        if (autoAssignPlayersByTag)
+            AutoAssignPlayersByTag();
 
-        ApplyPresentState(true, affectRenderers: false); // 렌더는 항상 on, 물리만 토글
-        if (Mathf.Approximately(fullColorThreshold, 0f)) fullColorThreshold = vanishThreshold;
-
-        ValidateParams();
-        SyncPresenceWithMode(); // 리버스 초기상태 반영
+        CacheP2Colliders();
+        CacheP1Colliders();
+        ValidateThresholds();
     }
 
-    void OnValidate() => ValidateParams();
+    void OnValidate() => ValidateThresholds();
 
-    private void ValidateParams()
+    private void ValidateThresholds()
     {
-        if (influenceMaxDistance < 0.01f) influenceMaxDistance = 0.01f;
-        if (distanceScale <= 0f) distanceScale = 1f;
-        if (distanceBiasMeters < 0f) distanceBiasMeters = 0f;
-        if (vanishThreshold <= appearThreshold)
-            vanishThreshold = Mathf.Clamp01(Mathf.Max(appearThreshold + 0.05f, 0.2f));
-        if (epsilonDistance < 0f) epsilonDistance = 0f;
-        if (fullColorThreshold <= 0f) fullColorThreshold = vanishThreshold;
+        if (fadeEndDistance < 0f) fadeEndDistance = 0f;
+        if (fadeStartDistance < fadeEndDistance + 0.01f)
+            fadeStartDistance = fadeEndDistance + 0.01f;
+        appearAlphaThreshold = Mathf.Clamp01(appearAlphaThreshold);
+    }
+
+    private void AutoAssignPlayersByTag()
+    {
+        // Player1
+        if (player1Root == null && !string.IsNullOrEmpty(player1Tag))
+        {
+            var p1 = GameObject.FindWithTag(player1Tag);
+            if (p1)
+            {
+                var root = assignToParentOfTagged && p1.transform.parent ? p1.transform.parent : p1.transform;
+                SetPlayer1Root(root);
+            }
+            else
+            {
+                Debug.LogWarning($"[FadingGameObjectForP2] '{player1Tag}' 태그를 가진 오브젝트를 찾지 못했습니다.", this);
+            }
+        }
+
+        // Player2
+        if (player2Root == null && !string.IsNullOrEmpty(player2Tag))
+        {
+            var p2 = GameObject.FindWithTag(player2Tag);
+            if (p2)
+            {
+                var root = assignToParentOfTagged && p2.transform.parent ? p2.transform.parent : p2.transform;
+                SetPlayer2Root(root);
+            }
+            else
+            {
+                Debug.LogWarning($"[FadingGameObjectForP2] '{player2Tag}' 태그를 가진 오브젝트를 찾지 못했습니다.", this);
+            }
+        }
+    }
+
+    private void CacheP2Colliders()
+    {
+        p2Cols.Clear();
+        if (player2Root == null) return;
+        player2Root.GetComponentsInChildren(true, p2Cols);
+        p2Cols.RemoveAll(c => c == null);
+    }
+
+    private void CacheP1Colliders()
+    {
+        p1Cols.Clear();
+        if (player1Root == null) return;
+        player1Root.GetComponentsInChildren(true, p1Cols);
+        p1Cols.RemoveAll(c => c == null);
     }
 
     void LateUpdate()
     {
-        // 런타임 키 토글(선택)
-        if (reverseToggleKey != KeyCode.None && Input.GetKeyDown(reverseToggleKey))
+        if (player2Root == null && player1Root == null)
         {
-            reverseVisibility = !reverseVisibility;
-            SyncPresenceWithMode();
-        }
-
-        Transform target = player2Root ? player2Root : player1Root;
-        if (!target)
-        {
-            UpdateUI(false, Vector3.zero, 0f);
-            UpdateVisualByGauge();
+            SetAlpha(1f);
+            ForceCollision(true); // 항상 충돌 ON
+            if (coll) coll.SetActive(true);
             return;
         }
 
-        Vector3 center = GetCenter();
+        // 기준 위치: P2 우선, 없으면 P1
+        Vector2 refPos = player2Root ? (Vector2)player2Root.position
+                       : player1Root ? (Vector2)player1Root.position
+                       : (Vector2)transform.position;
 
-        // 1) 표면까지 최단거리
-        float surfaceDist = GetSurfaceDistance((Vector2)target.position);
+        // 이 오브젝트의 Collider2D 기준 최단점
+        Vector2 closest = wallCollider ? wallCollider.ClosestPoint(refPos) : (Vector2)transform.position;
+        float dist = Vector2.Distance(closest, refPos);
 
-        // 2) 거리 보정 → 정규화 tNear: near(1) ← far(0)
-        float adj = Mathf.Max(0f, surfaceDist * distanceScale - distanceBiasMeters);
-        float tNear = Mathf.Clamp01(1f - adj / influenceMaxDistance);
+        // far(0) -> near(1)
+        float t = Mathf.InverseLerp(fadeStartDistance, fadeEndDistance, dist);
 
-        // 3) LOS(선택). 가려지면 '이탈'로 취급
-        bool hasLOS = !requireLineOfSight || HasLineOfSight(center, target.position);
+        // 기본: 멀면 1, 가까우면 0 → 커브 → reverse면 반전
+        float alphaNormal = Mathf.Clamp01(alphaCurve.Evaluate(1f - t));
+        float alpha = reverse ? (1f - alphaNormal) : alphaNormal;
 
-        // 4) 접근/이탈 판정
-        float dt = Time.deltaTime;
-        float delta = 0f;
-        bool approaching = false, leaving = false;
+        SetAlpha(alpha);
 
-        if (!hasPrevDist) { prevSurfaceDist = surfaceDist; hasPrevDist = true; }
-        else
+        // 1차 충돌 규칙: 완전 0일 땐 통과
+        ForceCollision(alpha > 0f);
+
+        // 최종 분기(원본과 유사)
+        if (alpha <= 0f)
         {
-            delta = prevSurfaceDist - surfaceDist; // +면 접근, -면 이탈
-            if (delta > epsilonDistance) approaching = true;
-            if (delta < -epsilonDistance) leaving = true;
-            prevSurfaceDist = surfaceDist;
+            ForceCollision(false);
+            if (coll) coll.SetActive(false);
         }
-
-        // 5) 범위/LOS 충족 여부
-        bool inRange = (adj < influenceMaxDistance - 1e-4f);
-        bool canInfluence = inRange && hasLOS;
-
-        // ───────── 규칙 확정: 범위 안+접근↑ / 범위 안+이탈↓ / 범위 밖↓ ─────────
-        if (canInfluence)
+        else if (alpha >= 0.5f || alpha >= appearAlphaThreshold)
         {
-            if (approaching)
-            {
-                float w = Mathf.Clamp01(distanceToSpeedCurve.Evaluate(tNear)); // near일수록 큼
-                float rate = Mathf.Lerp(chargeRateMin, chargeRateMax, w);
-                charge01 += rate * dt;
-            }
-            else if (leaving)
-            {
-                float nearInv = 1f - tNear; // near=1 → 0, far=0 → 1
-                float rate = Mathf.Lerp(drainRateMin, drainRateMax, Mathf.Clamp01(nearInv));
-                charge01 -= rate * dt;
-            }
-            // else: 정지 → 유지
+            ForceCollision(true);
+            if (coll) coll.SetActive(true);
         }
         else
         {
-            // ★ 범위 밖이면 접근 중이어도 '무조건 감소'
-            float far01 = 1f - Mathf.Clamp01(tNear);
-            float rate = Mathf.Lerp(drainRateMin, drainRateMax, far01);
-            charge01 -= rate * dt;
-        }
-
-        charge01 = Mathf.Clamp01(charge01);
-
-        // ── 물리 상태 전이(모드별 반전) ──
-        if (!reverseVisibility)
-        {
-            if (isPresent && charge01 >= vanishThreshold) ApplyPresentState(false, affectRenderers: false);
-            else if (!isPresent && charge01 <= appearThreshold) ApplyPresentState(true, affectRenderers: false);
-        }
-        else // Reverse: 가득 차야 '나타남(물리 on)'
-        {
-            if (!isPresent && charge01 >= vanishThreshold) ApplyPresentState(true, affectRenderers: false);
-            else if (isPresent && charge01 <= appearThreshold) ApplyPresentState(false, affectRenderers: false);
-        }
-
-        // 게이지에 따른 본체 색/알파 연출(리버스 대응)
-        UpdateVisualByGauge();
-
-        // Full 컬러 스위치(선·게이지 노랑↔파랑)
-        bool wantFull = _lastFullVisual
-                        ? (charge01 >= fullColorThreshold - fullColorHysteresis)
-                        : (charge01 >= fullColorThreshold);
-        UpdateFullVisual(wantFull);
-
-        // ── 가시성 규칙: 게이지 UI는 진행 중이면 보이되, 선은 '관여 가능'일 때만 ──
-        bool showGaugeUI = canInfluence || (charge01 > 0f && charge01 < 1f);
-        bool showLineNow = canInfluence;             // ★ 범위/LOS 충족시에만 선 표시
-
-        UpdateUI(showGaugeUI, center, Mathf.Lerp(lineMinWidth, lineMaxWidth, tNear));
-
-        // 라인 토글/좌표는 여기서만!
-        if (showLine && linkLine)
-        {
-            linkLine.enabled = showLineNow;
-            if (showLineNow)
-            {
-                linkLine.SetPosition(0, target.position);
-                linkLine.SetPosition(1, center); // 콜라이더 중앙
-            }
+            ForceCollision(false);
+            if (coll) coll.SetActive(false);
         }
     }
 
-    // ── 콜라이더 '면'까지의 최단거리 ──
-    private float GetSurfaceDistance(Vector2 p2World)
+    private void ForceCollision(bool enable)
     {
-        if (!wallCol) return Mathf.Infinity;
+        bool ignore = !enable;
 
-        if (player2MainCollider)
+        if (collisionsIgnoredWithP2 != ignore)
         {
-            var d = Physics2D.Distance(player2MainCollider, wallCol); // 겹치면 음수
-            return Mathf.Max(0f, d.distance);
+            SetIgnoreCollisionWithList(p2Cols, ignore);
+            collisionsIgnoredWithP2 = ignore;
         }
-        else
+        if (collisionsIgnoredWithP1 != ignore)
         {
-            Vector2 closest = wallCol.ClosestPoint(p2World);
-            return Vector2.Distance(closest, p2World);
-        }
-    }
-
-    private Vector3 GetCenter() => wallCol ? (Vector3)wallCol.bounds.center : transform.position;
-
-    // ── LOS 체크 ──
-    private bool HasLineOfSight(Vector3 from, Vector3 to)
-    {
-        Vector2 dir = (to - from);
-        float len = dir.magnitude;
-        if (len <= losSkin) return true;
-        var hit = Physics2D.Raycast((Vector2)from, dir / len, len - losSkin, losBlockMask);
-        return hit.collider == null;
-    }
-
-    // ── 물리 on/off (렌더는 항상 on) ──
-    private void ApplyPresentState(bool present, bool affectRenderers)
-    {
-        isPresent = present;
-
-        // 충돌만 임계치로 on/off
-        if (collGO != null) collGO.SetActive(present);
-        else if (wallCol) wallCol.enabled = present;
-
-        // 렌더러는 항상 on으로 두고 알파/색만 보간(팝인X)
-        if (affectRenderers)
-        {
-            if (tmRenderer) tmRenderer.enabled = present;
-            if (spriteRenderers != null) foreach (var sr in spriteRenderers) if (sr) sr.enabled = present;
-            if (otherRenderers != null) foreach (var r in otherRenderers) if (r) r.enabled = present;
-        }
-
-        if (indicatorRoot) indicatorRoot.gameObject.SetActive(true);
-    }
-
-    // ── 게이지에 따른 색/알파 보간(리버스 대응) ──
-    private void UpdateVisualByGauge()
-    {
-        if (!reverseVisibility)
-        {
-            float f = Mathf.Clamp01(visualCurve.Evaluate(charge01));   // 0..1
-
-            // Tilemap
-            if (tilemap)
-            {
-                Color rgb = Color.Lerp(new Color(tilemapBaseColor.r, tilemapBaseColor.g, tilemapBaseColor.b, 1f),
-                                       new Color(tintColor.r, tintColor.g, tintColor.b, 1f), f);
-                float a = Mathf.Lerp(tilemapBaseColor.a, minAlphaAtFull, f);
-                rgb.a = a;
-                tilemap.color = rgb;
-            }
-            else if (tmRenderer)
-            {
-                var mpb = new MaterialPropertyBlock();
-                tmRenderer.GetPropertyBlock(mpb);
-                Color baseC = tilemapBaseColor;
-                Color rgb = Color.Lerp(new Color(baseC.r, baseC.g, baseC.b, 1f),
-                                       new Color(tintColor.r, tintColor.g, tintColor.b, 1f), f);
-                float a = Mathf.Lerp(baseC.a, minAlphaAtFull, f);
-                rgb.a = a;
-                mpb.SetColor("_Color", rgb);
-                tmRenderer.SetPropertyBlock(mpb);
-            }
-
-            // SpriteRenderer들
-            if (spriteRenderers != null)
-            {
-                for (int i = 0; i < spriteRenderers.Length; i++)
-                {
-                    var sr = spriteRenderers[i];
-                    if (!sr) continue;
-                    Color baseC = (spriteBaseColors != null && i < spriteBaseColors.Length) ? spriteBaseColors[i] : Color.white;
-                    Color rgb = Color.Lerp(new Color(baseC.r, baseC.g, baseC.b, 1f),
-                                           new Color(tintColor.r, tintColor.g, tintColor.b, 1f), f);
-                    float a = Mathf.Lerp(baseC.a, minAlphaAtFull, f);
-                    rgb.a = a;
-                    sr.color = rgb;
-                }
-            }
-
-            // 기타 Renderer(MeshRenderer 등)
-            if (otherRenderers != null)
-            {
-                for (int i = 0; i < otherRenderers.Length; i++)
-                {
-                    var r = otherRenderers[i];
-                    if (!r) continue;
-                    Color baseC = (otherBaseColors != null && i < otherBaseColors.Length) ? otherBaseColors[i] : Color.white;
-                    var mpb = new MaterialPropertyBlock();
-                    r.GetPropertyBlock(mpb);
-                    Color rgb = Color.Lerp(new Color(baseC.r, baseC.g, baseC.b, 1f),
-                                           new Color(tintColor.r, tintColor.g, tintColor.b, 1f), f);
-                    float a = Mathf.Lerp(baseC.a, minAlphaAtFull, f);
-                    rgb.a = a;
-                    mpb.SetColor("_Color", rgb);
-                    r.SetPropertyBlock(mpb);
-                }
-            }
-        }
-        else
-        {
-            // 리버스: 가득 차기 전엔 완전 투명(하드 게이트), 가득 차면 한 번에 보임
-            bool full = charge01 >= vanishThreshold;
-            float alpha = full ? reverseAlphaAtFull : 0f;
-
-            // Tilemap
-            if (tilemap)
-            {
-                Color c = tilemapBaseColor;
-                c.a = alpha;
-                tilemap.color = c;
-            }
-            else if (tmRenderer)
-            {
-                var mpb = new MaterialPropertyBlock();
-                tmRenderer.GetPropertyBlock(mpb);
-                Color baseC = tilemapBaseColor;
-                baseC.a = alpha;
-                mpb.SetColor("_Color", baseC);
-                tmRenderer.SetPropertyBlock(mpb);
-            }
-
-            // SpriteRenderer들
-            if (spriteRenderers != null)
-            {
-                for (int i = 0; i < spriteRenderers.Length; i++)
-                {
-                    var sr = spriteRenderers[i];
-                    if (!sr) continue;
-                    Color c = (spriteBaseColors != null && i < spriteBaseColors.Length) ? spriteBaseColors[i] : Color.white;
-                    c.a = alpha;
-                    sr.color = c;
-                }
-            }
-
-            // 기타 Renderer(MeshRenderer 등)
-            if (otherRenderers != null)
-            {
-                for (int i = 0; i < otherRenderers.Length; i++)
-                {
-                    var r = otherRenderers[i];
-                    if (!r) continue;
-                    var mpb = new MaterialPropertyBlock();
-                    r.GetPropertyBlock(mpb);
-                    Color c = (otherBaseColors != null && i < otherBaseColors.Length) ? otherBaseColors[i] : Color.white;
-                    c.a = alpha;
-                    mpb.SetColor("_Color", c);
-                    r.SetPropertyBlock(mpb);
-                }
-            }
+            SetIgnoreCollisionWithList(p1Cols, ignore);
+            collisionsIgnoredWithP1 = ignore;
         }
     }
 
-    private void CacheBaseVisuals()
+    private void SetAlpha(float a)
     {
-        // Tilemap 원본
-        if (tilemap) tilemapBaseColor = tilemap.color;
-        else if (tmRenderer && tmRenderer.sharedMaterial && tmRenderer.sharedMaterial.HasProperty("_Color"))
-            tilemapBaseColor = tmRenderer.sharedMaterial.color;
-        else tilemapBaseColor = Color.white;
+        a = Mathf.Clamp01(a);
 
-        // SpriteRenderer 원본
-        if (spriteRenderers != null)
+        // 0) 타일맵 우선 처리
+        if (tilemap)
         {
-            spriteBaseColors = new Color[spriteRenderers.Length];
+            var c = tilemap.color;
+            c.r = _tilemapBaseColor.r; c.g = _tilemapBaseColor.g; c.b = _tilemapBaseColor.b;
+            c.a = a;
+            tilemap.color = c;
+        }
+        else if (tilemapRenderer)
+        {
+            // 타일맵 컴포넌트가 없고 렌더러만 있을 때: MPB로 _Color 알파 조절
+            var mpb = new MaterialPropertyBlock();
+            tilemapRenderer.GetPropertyBlock(mpb);
+
+            Color c = _tilemapBaseColor;
+            c.a = a;
+            mpb.SetColor("_Color", c);
+            tilemapRenderer.SetPropertyBlock(mpb);
+        }
+
+        // 1) SpriteRenderer들
+        if (spriteRenderers != null && spriteRenderers.Length > 0)
+        {
             for (int i = 0; i < spriteRenderers.Length; i++)
-                spriteBaseColors[i] = spriteRenderers[i] ? spriteRenderers[i].color : Color.white;
+            {
+                var sr = spriteRenderers[i];
+                if (!sr) continue;
+                Color c = sr.color; c.a = a; sr.color = c;
+            }
         }
 
-        // 기타 Renderer 원본(_Color)
-        if (otherRenderers != null)
+        // 2) 그 외 Renderer들(MeshRenderer/Skinned 등): MPB로 _Color 알파만 변경
+        if (genericRenderers != null && genericRenderers.Length > 0)
         {
-            otherBaseColors = new Color[otherRenderers.Length];
-            for (int i = 0; i < otherRenderers.Length; i++)
+            for (int i = 0; i < genericRenderers.Length; i++)
             {
-                var r = otherRenderers[i];
-                if (!r) { otherBaseColors[i] = Color.white; continue; }
+                var r = genericRenderers[i];
+                if (!r) continue;
+
+                var mpb = new MaterialPropertyBlock();
+                r.GetPropertyBlock(mpb);
+
+                Color c = Color.white;
+                // 프로젝트에 확장된 MPB API가 없더라도 안전하게 동작: sharedMaterial 기준
                 if (r.sharedMaterial && r.sharedMaterial.HasProperty("_Color"))
-                    otherBaseColors[i] = r.sharedMaterial.color;
-                else
-                    otherBaseColors[i] = Color.white;
+                    c = r.sharedMaterial.color;
+
+                c.a = a;
+                mpb.SetColor("_Color", c);
+                r.SetPropertyBlock(mpb);
             }
         }
     }
 
-    private void UpdateUI(bool enable, Vector3 center, float lineWidth)
+    private void SetIgnoreCollisionWithList(List<Collider2D> list, bool ignore)
     {
-        if (indicatorRoot) indicatorRoot.position = center;
-
-        // 링
-        if (showCircle && ringLine)
+        if (!wallCollider) return;
+        for (int i = 0; i < list.Count; i++)
         {
-            ringLine.enabled = enable;
-            ringLine.startWidth = ringThickness;
-            ringLine.endWidth = ringThickness;
-            RebuildRing(center);
-        }
-
-        // 채움(아래→위, 진행률=charge01)
-        if (showCircle && fillSR && circleMask)
-        {
-            float diameter = circleRadius * 2f;
-
-            if (circleMask.sprite != null)
-            {
-                float maskWorldW = circleMask.sprite.rect.width / circleMask.sprite.pixelsPerUnit;
-                float scale = (maskWorldW > 0.0001f) ? diameter / maskWorldW : 1f;
-                circleMask.transform.localScale = new Vector3(scale, scale, 1f);
-            }
-
-            float targetW = diameter;
-            float targetH = diameter * charge01;
-
-            Vector2 baseSize = fillSR.sprite
-                ? fillSR.sprite.rect.size / fillSR.sprite.pixelsPerUnit
-                : new Vector2(1f, 1f);
-
-            float sx = targetW / Mathf.Max(0.0001f, baseSize.x);
-            float sy = targetH / Mathf.Max(0.0001f, baseSize.y);
-            fillSR.transform.localScale = new Vector3(sx, sy, 1f);
-
-            float y = -circleRadius + targetH * 0.5f;
-            fillSR.transform.localPosition = new Vector3(0f, y, 0f);
-
-            fillSR.enabled = enable;
-        }
-
-        // 라인의 enable/disable은 LateUpdate에서만
-        if (showLine && linkLine)
-        {
-            linkLine.startWidth = lineWidth;
-            linkLine.endWidth = lineWidth;
+            var col = list[i];
+            if (col) Physics2D.IgnoreCollision(wallCollider, col, ignore);
         }
     }
 
-    // ── Full/Normal 전환 시에만 선·채움 색 교체 ──
-    private void UpdateFullVisual(bool isFull)
+    void OnDisable()
     {
-        if (_lastFullVisual == isFull) return;
-        _lastFullVisual = isFull;
-
-        if (linkLine)
-        {
-            var lc = isFull ? lineColorFull : lineColor;
-            var g = new Gradient();
-            g.SetKeys(
-                new[] { new GradientColorKey(lc, 0f), new GradientColorKey(lc, 1f) },
-                new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
-            );
-            linkLine.colorGradient = g;
-        }
-
-        if (fillSR)
-        {
-            var c = isFull ? fillColorFull : fillColor;
-            c.a = 1f; // 마스크 절두
-            fillSR.color = c;
-        }
+        ForceCollision(true); // 원복: 충돌 ON
+        SetAlpha(1f);
+        if (coll) coll.SetActive(true);
     }
 
-    // ── 세팅 ──
-    private void SetupLine()
+    public void SetPlayer2Root(Transform newRoot) { player2Root = newRoot; CacheP2Colliders(); }
+    public void SetPlayer1Root(Transform newRoot) { player1Root = newRoot; CacheP1Colliders(); }
+
+    // 에디터에서 수동 갱신용
+    [ContextMenu("Auto-Assign Players From Tags")]
+    public void Editor_AutoAssignNow()
     {
-        if (!showLine) return;
-
-        linkLine = GetComponent<LineRenderer>();
-        if (!linkLine) linkLine = gameObject.AddComponent<LineRenderer>();
-        linkLine.useWorldSpace = true;
-        linkLine.positionCount = 2;
-        linkLine.material = new Material(Shader.Find("Sprites/Default"));
-
-        var g = new Gradient();
-        g.SetKeys(
-            new[] { new GradientColorKey(lineColor, 0f), new GradientColorKey(lineColor, 1f) },
-            new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
-        );
-        linkLine.colorGradient = g;
-
-        if (tmRenderer)
-        {
-            linkLine.sortingLayerID = tmRenderer.sortingLayerID;
-            linkLine.sortingOrder = tmRenderer.sortingOrder + 3; // 타일 위 최상
-        }
-    }
-
-    private void SetupCircle()
-    {
-        if (!showCircle) return;
-
-        indicatorRoot = new GameObject("CircleIndicatorRoot").transform;
-        indicatorRoot.SetParent(transform, false);
-
-        // 링
-        var ringGO = new GameObject("Ring");
-        ringGO.transform.SetParent(indicatorRoot, false);
-        ringLine = ringGO.AddComponent<LineRenderer>();
-        ringLine.useWorldSpace = true;
-        ringLine.positionCount = ringSegments + 1;
-        ringLine.loop = false;
-        ringLine.material = new Material(Shader.Find("Sprites/Default"));
-        ringLine.startColor = ringColor;
-        ringLine.endColor = ringColor;
-        if (tmRenderer)
-        {
-            ringLine.sortingLayerID = tmRenderer.sortingLayerID;
-            ringLine.sortingOrder = tmRenderer.sortingOrder + 2;
-        }
-
-        // 마스크 + 채움
-        var maskGO = new GameObject("CircleMask");
-        maskGO.transform.SetParent(indicatorRoot, false);
-        circleMask = maskGO.AddComponent<SpriteMask>();
-        circleMask.sprite = circleSprite;
-
-        var fillGO = new GameObject("Fill");
-        fillGO.transform.SetParent(indicatorRoot, false);
-        fillSR = fillGO.AddComponent<SpriteRenderer>();
-        fillSR.sprite = fillSprite ? fillSprite : Texture2D.whiteTexture.ToSprite();
-        fillSR.color = fillColor; // 초기 노랑
-        fillSR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-
-        if (tmRenderer)
-        {
-            fillSR.sortingLayerID = tmRenderer.sortingLayerID;
-            fillSR.sortingOrder = tmRenderer.sortingOrder + 1;
-        }
-
-        // 마스크가 fill을 확실히 포함하도록 정렬 범위 지정
-        circleMask.isCustomRangeActive = true;
-        circleMask.backSortingLayerID = fillSR.sortingLayerID;
-        circleMask.frontSortingLayerID = fillSR.sortingLayerID;
-        circleMask.backSortingOrder = fillSR.sortingOrder - 1;
-        circleMask.frontSortingOrder = fillSR.sortingOrder + 1;
-
-        RebuildRing(GetCenter());
-    }
-
-    private void RebuildRing(Vector3 center)
-    {
-        if (!ringLine) return;
-        for (int i = 0; i <= ringSegments; i++)
-        {
-            float a = (i / (float)ringSegments) * Mathf.PI * 2f;
-            var p = new Vector3(center.x + Mathf.Cos(a) * circleRadius,
-                                center.y + Mathf.Sin(a) * circleRadius,
-                                center.z);
-            ringLine.SetPosition(i, p);
-        }
-        ringLine.startWidth = ringThickness;
-        ringLine.endWidth = ringThickness;
-    }
-
-    // ── 모드 전환 시 물리 상태 동기화 ──
-    private void SyncPresenceWithMode()
-    {
-        bool shouldPresent = !reverseVisibility
-            ? (charge01 < vanishThreshold)
-            : (charge01 >= vanishThreshold);
-        if (shouldPresent != isPresent)
-            ApplyPresentState(shouldPresent, affectRenderers: false);
-    }
-}
-
-// ── Texture2D → Sprite 헬퍼 ──
-public static class SpriteExtensions
-{
-    private static Sprite _cachedWhite;
-    public static Sprite ToSprite(this Texture2D tex, float ppu = 100f)
-    {
-        if (!tex) return null;
-        if (ReferenceEquals(tex, Texture2D.whiteTexture))
-        {
-            if (_cachedWhite == null)
-            {
-                var w = Texture2D.whiteTexture;
-                _cachedWhite = Sprite.Create(w, new Rect(0, 0, w.width, w.height), new Vector2(0.5f, 0.5f), ppu);
-            }
-            return _cachedWhite;
-        }
-        return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), ppu);
+        AutoAssignPlayersByTag();
+        CacheP2Colliders();
+        CacheP1Colliders();
     }
 }

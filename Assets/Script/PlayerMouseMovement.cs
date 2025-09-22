@@ -66,6 +66,18 @@ public class PlayerMouseMovement : MonoBehaviour
 
     // (선택) 정확한 길이/프레임을 얻고 싶으면 클립 참조도 함께 지정
     [SerializeField] private AnimationClip carryClipRef;
+
+    // === Revive helpers ===
+    [SerializeField] private float reviveIFrame = 1.2f; // 부활 후 무적 시간
+    private float _invincibleUntil = -1f;               // 무적 타이머
+    public bool IsInvincible => Time.time < _invincibleUntil;
+
+    // (선택) 체크포인트 기록용
+    private Vector3 _lastSafePos;
+    public void SetCheckpoint(Vector3 pos) { _lastSafePos = pos; }
+    public void SetCheckpoint(Transform t) { if (t) { _lastSafePos = t.position; } }
+
+
     // === 던지기 시작 위치(인스펙터로 조정) ===
     [Header("Throw Start (Inspector Control)")]
     [Tooltip("던지기 시작 지연(초). 이 시간이 지난 뒤 보이면서 실제로 날아가기 시작합니다.")]
@@ -325,7 +337,9 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float bounceImpulseY = 15f;
     [SerializeField] private float inputLockAfterImpulse = 0.12f;
     [SerializeField] private float bounceProtectDuration = 0.06f;
-
+    // PlayerMouseMovement.cs 아무 곳(필드 아래)에 추가
+    public float GravityScaleNormal => gravityScaleNormal;
+    public float GravityScaleFall => gravityScaleFall;   // (있으면 편하니 같이)
     [Header("Slime Wall")]
     [SerializeField] private LayerMask slimeLayer;
     [SerializeField] private float wallCheckDist = 0.18f;
@@ -489,6 +503,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
         baseGravityNormal = gravityScaleNormal;
         baseGravityFall = gravityScaleFall;
+        _lastSafePos = transform.position;
 
         TryResolveSwap();
         ResolveLayerMasks();
@@ -1741,6 +1756,7 @@ public class PlayerMouseMovement : MonoBehaviour
     public void TakeDamage(int dmg = 1)
     {
         if (IsDead || _sceneReloading) return;
+        if (IsInvincible) return; // 부활 무적 중이면 무시
         int amount = Mathf.Max(1, dmg);
         currentHP = Mathf.Max(0, currentHP - amount);
         Debug.Log($"플레이어 HP: {currentHP}");
@@ -1995,6 +2011,32 @@ public class PlayerMouseMovement : MonoBehaviour
             transform.position += new Vector3(0f, climb + stepUpSkin, 0f);
     }
 
+    // PlayerMouseMovement 내부 (아래 메서드 아무 곳에 추가)
+    public void ResetJumpStateOnRevive(bool assumeGrounded = true, int restoreExtraJumpsTo = 1)
+    {
+        // 캐리/상태 잔여치 정리
+        isCarrying = false;
+        isCarried = false;
+        ballisticThrowActive = false;
+        isDiving = false;
+        stickingToCeiling = false;
+
+        // 2단 점프 회복
+        extraAirJumps = restoreExtraJumpsTo;   // 기본 1개로 복구(프로젝트 값에 맞게 바꾸세요)
+                                               // 내부 카운터도 채움(grounded 간주)
+        if (assumeGrounded)
+        {
+            // 바로 점프 가능하도록 접지 타임/무시 타임 초기화
+            // (private라 이 클래스 안에서만 만질 수 있어요)
+            // grounded 처리를 신뢰한다면 아래 두 줄은 생략해도 됨
+            // 단, spawnOffset이 살짝 떠있으면 넣는게 편합니다.
+            var now = Time.time;
+            lastGroundedTime = now;
+            ignoreGroundUntil = -1f;
+        }
+        // 속도 정리
+        if (rb) rb.linearVelocity = Vector2.zero;
+    }
 
     private void ApplyAnchorConstraint(ref Vector2 v)
     {
@@ -2812,7 +2854,24 @@ public class PlayerMouseMovement : MonoBehaviour
         }
         return false;
     }
+    public void OnRevivedSafe()
+    {
+        IsDead = false;                 // 해당 프로퍼티가 private set이면 이 메서드 내부에선 접근 가능
+        lockedall = false;
+        rawX = 0f;
+        jumpHeld = false;
+        inputLockUntil = -999f;
+        swapSuppressUntil = -999f;
 
+        rb.gravityScale = gravityScaleNormal;
+        ResetAnimStates();
+        if (rb2)
+        {
+            rb2.SetBool("death", false);
+            rb2.SetBool("throw", false);
+            rb2.SetBool("throwed", false);
+        }
+    }
     private void StartCeilingStick(RaycastHit2D upHit)
     {
         stickingToCeiling = true;
@@ -3093,6 +3152,75 @@ public class PlayerMouseMovement : MonoBehaviour
         line.enabled = true;
     }
 
+    public void ForceReviveAt(Vector3 worldPos)
+    {
+        if (!IsDead) return; // 죽어있을 때만
+
+        // 코루틴/연출 중이면 정리
+        StopAllCoroutines();
+
+        IsDead = false;
+        _sceneReloading = false;
+        currentHP = maxHP;
+
+        // 물리/위치 초기화
+        if (rb)
+        {
+            rb.simulated = true;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = gravityScaleNormal;
+            rb.position = worldPos;      // 정확한 텔레포트
+        }
+        else
+        {
+            transform.position = worldPos;
+        }
+
+        // 상태 리셋
+        inputLockUntil = Time.time + 0.1f;
+        swapSuppressUntil = Time.time;
+        ignoreGroundUntil = Time.time;
+        ballisticThrowActive = false;
+        isDiving = false;
+        stickingToCeiling = false;
+        ceilingReleaseUntil = -1f;
+        throwHoldActive = false;
+        autoCatchSuppressUntil = -1f;
+
+        // 캐리/레이저 강제 해제
+        if (isCarrying) { isCarrying = false; carryset = false; }
+        if (isCarried)
+        {
+            isCarried = false;
+            if (rb) rb.simulated = true;
+            transform.SetParent(null, true);
+            SetOtherPlayerVisible(true);
+        }
+        if (playerID == SwapController.PlayerChar.P2 && p2LaserActive) EndP2Laser();
+
+        // 애니 초기화
+        ResetAnimStates();
+        if (rb2)
+        {
+            rb2.speed = 1f;
+            rb2.SetBool("run", false);
+            rb2.SetBool("jump", false);
+            rb2.SetBool("jumped", false);
+            rb2.SetBool("throw", false);
+            rb2.SetBool("throwed", false);
+            rb2.SetBool("carry", false);
+            rb2.SetBool("carrying", false);
+            if (AnimatorHasParam(rb2, "dead", AnimatorControllerParameterType.Bool)) rb2.SetBool("dead", false);
+        }
+
+        // 부활 무적
+        _invincibleUntil = Time.time + reviveIFrame;
+
+        // 선택: 시점 P1로 강제 전환
+        if (playerID == SwapController.PlayerChar.P1) ForceViewToP1IfNeeded();
+    }
 
     private static bool AnimatorHasParam(Animator a, string name, AnimatorControllerParameterType t)
     {

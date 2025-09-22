@@ -21,6 +21,7 @@ public class SpiralBoxWipe : MonoBehaviour
     [SerializeField] private Vector2 textScaleRange = new(0.94f, 1.0f);
     [SerializeField] private float youDiedYOffset = 60f;
     [SerializeField] private float youDiedDelay = 7f; // 시작 7초 뒤 등장
+    [SerializeField] private float beamYShift = -0.40f; // 스포트라이트 전체 Y 오프셋(음수=아래)
 
     [Header("AnyKey")]
     [SerializeField] private bool allowAnyKeySkip = true;
@@ -30,8 +31,9 @@ public class SpiralBoxWipe : MonoBehaviour
 
     // ================== Fast Blackout ==================
     [Header("Fast Blackout (Except P2)")]
-    [SerializeField] private float blackoutDuration = 0.12f;            // 매우 빠르게
-    [SerializeField] private bool useSortingBlackout = true;            // (새) 레이어 방식으로 블랙아웃
+    [SerializeField] private float blackoutDuration = 3.0f;            // 더 느리게(기본 3초)
+    [SerializeField] private bool useSortingBlackout = true;           // 레이어 방식 블랙아웃
+    [SerializeField] private AnimationCurve blackoutCurve = null;      // null=Linear
 
     // ================== Camera ==================
     [Header("Camera Zoom & Focus")]
@@ -61,21 +63,20 @@ public class SpiralBoxWipe : MonoBehaviour
     [SerializeField] private float beamBottomRadius = 1.6f;  // 바닥 반지름
     [SerializeField] private float beamTopOffset = 1.0f;     // 꼭짓점이 P2 위로
     [SerializeField, Range(0f, 1f)] private float beamOpacity = 0.9f;
-    [SerializeField] private float beamFadeIn = 0.15f;
+    [SerializeField] private float beamFadeIn = 0.15f;       // (현재 미사용: 즉시 등장)
     [SerializeField] private bool flipBeamY = true;          // 상하 반전 보정
     [SerializeField] private int beamTexW = 256, beamTexH = 512;
     [SerializeField] private int beamPPU = 100;
 
+    [Header("Spotlight Timing")]
+    [SerializeField] private float spotlightDelayAfterBlack = 0.25f;   // 완전 블랙 후 대기
+
     // ================== Sorting Override ==================
     [Header("Death Sorting Override (SpriteRenderer)")]
-    [Tooltip("사망 연출 동안 사용할 정렬 레이어 이름 (최상위 전용 레이어를 권장, 예: 'Overlay' / 'Death')")]
     [SerializeField] private string deathSortingLayerName = "Default";
-    [Tooltip("검은 배경 SR의 Sorting Order (낮을수록 뒤)")]
-    [SerializeField] private int deathBlackOrder = 32758;
-    [Tooltip("하얀 스포트라이트 SR의 Sorting Order (블랙보다 앞, P2보다 뒤)")]
-    [SerializeField] private int deathBeamOrder = 32759;
-    [Tooltip("P2의 Sorting Order (가장 앞)")]
-    [SerializeField] private int deathP2Order = 32760;
+    [SerializeField] private int deathBlackOrder = 32758; // 뒤
+    [SerializeField] private int deathBeamOrder = 32759;  // 중간
+    [SerializeField] private int deathP2Order = 32760;    // 앞
 
     // ================== Runtime ==================
     Canvas _canvas;
@@ -127,6 +128,7 @@ public class SpiralBoxWipe : MonoBehaviour
 
         youDiedFadeCurve ??= AnimationCurve.EaseInOut(0, 0, 1, 1);
         zoomEase ??= AnimationCurve.EaseInOut(0, 0, 1, 1);
+        blackoutCurve ??= AnimationCurve.EaseInOut(0, 0, 1, 1); // 부드러운 블랙 페이드
     }
 
     void OnDestroy()
@@ -265,7 +267,6 @@ public class SpiralBoxWipe : MonoBehaviour
             if (pixelSnapDuringLock) pos = PixelSnap(pos, _cam);
             _cam.transform.position = pos;
 
-            // 블랙 커버는 화면 크기에 맞춰 매 프레임 스케일 갱신(줌에 대응)
             if (_blackSR) UpdateBlackCoverTransform();
 
             _camT += Time.unscaledDeltaTime;
@@ -323,6 +324,45 @@ public class SpiralBoxWipe : MonoBehaviour
         if (!Instance) new GameObject("YouDiedWipe").AddComponent<SpiralBoxWipe>();
     }
 
+    // ✅ 카메라 줌/슬로모를 즉시 시작
+    void StartCameraZoomNow()
+    {
+        if (!enableCameraZoom) return;
+
+        if (_cam == null) _cam = FindBestCamera();
+        if (_cam == null) return;
+
+        Vector3 startPos = _cam.transform.position;
+        Vector3 endPos = startPos;
+        if (_p2)
+            endPos = new Vector3(
+                _p2.position.x + zoomFocusOffsetWorld.x,
+                _p2.position.y + zoomFocusOffsetWorld.y,
+                startPos.z
+            );
+
+        _camOverrideActive = true;
+        _camT = 0f;
+        _camDur = zoomDuration;
+        _camCurve = zoomEase;
+        _camStartPos = startPos;
+        _camEndPos = endPos;
+
+        if (_cam.orthographic)
+        {
+            _camStartOrtho = _cam.orthographicSize;
+            _camEndOrtho = Mathf.Max(0.01f, targetOrthoSize);
+        }
+        else
+        {
+            _camStartFov = _cam.fieldOfView;
+            _camEndFov = Mathf.Clamp(targetFOV, 1f, 179f);
+        }
+
+        if (enableSlowMo)
+            StartCoroutine(SlowMoFor(duration: zoomDuration, targetScale: slowMoScale, easeIn: slowMoEaseIn, recover: slowMoRecover));
+    }
+
     // --------------- Main Routine ---------------
     IEnumerator PlayRoutine(string sceneName)
     {
@@ -338,54 +378,48 @@ public class SpiralBoxWipe : MonoBehaviour
 
         FindP2();
 
-        // === 1) 순간 블랙(Except P2) : 레이어 블랙아웃 & P2 최전방 ===
+        // ✅ 연출 시작과 동시에 줌/슬로모 시작
+        StartCameraZoomNow();
+
+        // === 1) (더 천천히) 페이드로 화면을 완전 블랙 ===
         if (useSortingBlackout)
         {
             BringP2ToFront();
-            CreateOrUpdateBlackCover();     // 검은 SR 생성(카메라 자식)
-            // 빠른 페이드
+            CreateOrUpdateBlackCover();
+
             float t = 0f;
             while (t < blackoutDuration)
             {
                 float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, blackoutDuration));
-                var c = _blackSR.color; c.a = k; _blackSR.color = c;
+                if (blackoutCurve != null) k = blackoutCurve.Evaluate(k);
+
+                var c = _blackSR.color;
+                c.a = k;                 // 0 → 1
+                _blackSR.color = c;
+
                 t += Time.unscaledDeltaTime;
                 yield return null;
             }
             { var c = _blackSR.color; c.a = 1f; _blackSR.color = c; }
         }
 
-        // === 2) 스포트라이트 콘(P2 뒤) 생성 & 빠른 페이드인 ===
-        CreateOrUpdateBeam();
-        yield return StartCoroutine(FadeInBeam());
-
-        // === 3) 카메라 5초 줌 + 포커스(살짝 아래) / 슬로모 5초 ===
-        if (enableCameraZoom && _cam)
+        // 1.5) 완전 블랙 후 잠깐 대기
+        if (spotlightDelayAfterBlack > 0f)
         {
-            Vector3 startPos = _cam.transform.position;
-            Vector3 endPos = startPos;
-            if (_p2) endPos = new Vector3(_p2.position.x + zoomFocusOffsetWorld.x,
-                                          _p2.position.y + zoomFocusOffsetWorld.y,
-                                          startPos.z);
-
-            _camOverrideActive = true;
-            _camT = 0f; _camDur = zoomDuration; _camCurve = zoomEase;
-            _camStartPos = startPos; _camEndPos = endPos;
-
-            if (_cam.orthographic)
-            { _camStartOrtho = _cam.orthographicSize; _camEndOrtho = Mathf.Max(0.01f, targetOrthoSize); }
-            else
-            { _camStartFov = _cam.fieldOfView; _camEndFov = Mathf.Clamp(targetFOV, 1f, 179f); }
-
-            if (enableSlowMo)
-                yield return StartCoroutine(SlowMoFor(duration: zoomDuration, targetScale: slowMoScale, easeIn: slowMoEaseIn, recover: slowMoRecover));
-            else
-            {
-                float w = 0f; while (w < zoomDuration) { w += Time.unscaledDeltaTime; yield return null; }
-            }
+            float s = 0f;
+            while (s < spotlightDelayAfterBlack) { s += Time.unscaledDeltaTime; yield return null; }
         }
 
-        // === 4) (시작 후 7초) 게임오버 텍스트 천천히 뜨기 ===
+        // === 2) 스포트라이트 '즉시' 등장 ===
+        CreateOrUpdateBeam();
+        if (_beamSR != null)
+        {
+            var c = _beamSR.color;
+            c.a = beamOpacity;
+            _beamSR.color = c;
+        }
+
+        // === 3) (시작 후 youDiedDelay) 게임오버 텍스트 천천히 뜨기 ===
         float elapsed = 0f;
         while (elapsed < Mathf.Max(0f, youDiedDelay - blackoutDuration)) { elapsed += Time.unscaledDeltaTime; yield return null; }
 
@@ -396,28 +430,36 @@ public class SpiralBoxWipe : MonoBehaviour
             float k = Mathf.Clamp01(tf / Mathf.Max(0.0001f, youDiedFadeIn));
             k = youDiedFadeCurve != null ? youDiedFadeCurve.Evaluate(k) : k;
             SetAlpha(_label, k);
-            _label.rectTransform.localScale = Vector3.Lerp(Vector3.one * textScaleRange.x, Vector3.one * textScaleRange.y, k);
+            _label.rectTransform.localScale = Vector3.Lerp(
+                Vector3.one * textScaleRange.x, Vector3.one * textScaleRange.y, k);
             tf += Time.unscaledDeltaTime;
             yield return null;
         }
         SetAlpha(_label, 1f);
 
-        // === 5) 텍스트가 모두 뜬 뒤 AnyKey 등장 ===
+        // === 4) 텍스트가 모두 뜬 뒤 AnyKey 등장 ===
         yield return StartCoroutine(FadeInAnyKey());
 
-        // === 입력/자동 재시작 대기 ===
-        float waitAuto = 0f;
-        while (true)
-        {
-            if (allowAnyKeySkip && Input.anyKeyDown) break;
-            // 자동 재시작 쓰고 싶으면 외부에서 처리(또는 여기서 시간 체크 추가)
+        // === 5) 입력 대기 ===
+        while (!(allowAnyKeySkip && Input.anyKeyDown))
             yield return null;
-        }
 
-        // 정리
+        // ---------- 정리 & 세이브 & 로드 ----------
         _lockCamActive = false;
         if (_cmBrain && disableCinemachineBrain) _cmBrain.enabled = true;
 
+        // 안전: 타임스케일 원복 후 저장
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        // ★ 씬 리로드 직전 저장 (SaveManager v2)
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.SaveNow();
+        }
+        // 필요 시 보수적으로 보장하고 싶으면 다음 라인 해제:
+        // else { new GameObject("SaveManager").AddComponent<SaveManager>().SaveNow(); }
+        SaveManager.RequestLoadOnNextScene();   // ← 추가
         var op = SceneManager.LoadSceneAsync(sceneName);
         while (!op.isDone) yield return null;
 
@@ -429,7 +471,6 @@ public class SpiralBoxWipe : MonoBehaviour
     IEnumerator SlowMoFor(float duration, float targetScale, float easeIn, float recover)
     {
         float origScale = Time.timeScale;
-        float origFixed = Time.fixedDeltaTime;
 
         float t = 0f;
         while (t < easeIn)
@@ -481,7 +522,7 @@ public class SpiralBoxWipe : MonoBehaviour
             _beamGO = new GameObject("SpotlightBeam", typeof(SpriteRenderer));
             _beamGO.transform.SetParent(_p2, worldPositionStays: false);
             _beamSR = _beamGO.GetComponent<SpriteRenderer>();
-            _beamSR.color = new Color(1f, 1f, 1f, 0f); // 나중에 페이드인
+            _beamSR.color = new Color(1f, 1f, 1f, 0f); // 초기 투명
             _beamSprite = GenerateBeamSprite(beamTexW, beamTexH, beamOpacity);
             _beamSR.sprite = _beamSprite;
             _beamSR.drawMode = SpriteDrawMode.Simple;
@@ -495,35 +536,15 @@ public class SpiralBoxWipe : MonoBehaviour
         // 상하 반전 보정
         _beamSR.flipY = flipBeamY;
 
-        // 꼭짓점이 P2 위쪽이 되게
-        _beamGO.transform.localPosition = new Vector3(0f, beamTopOffset, 0f);
+        // 꼭짓점이 P2 위쪽이 되게 + 전체 Y 시프트
+        _beamGO.transform.localPosition = new Vector3(0f, beamTopOffset + beamYShift, 0f);
 
-        // 길이/폭 스케일 (Pivot이 top-center라 Y가 길이, X가 아래쪽 지름)
+        // 길이/폭 스케일 (Pivot=top-center → Y가 길이, X가 아래쪽 지름)
         float spriteH = _beamSR.sprite.rect.height / (float)beamPPU;
         float spriteW = _beamSR.sprite.rect.width / (float)beamPPU;
         float scaleY = beamLength / Mathf.Max(0.0001f, spriteH);
         float scaleX = (beamBottomRadius * 2f) / Mathf.Max(0.0001f, spriteW);
         _beamGO.transform.localScale = new Vector3(scaleX, scaleY, 1f);
-    }
-
-    IEnumerator FadeInBeam()
-    {
-        if (_beamSR == null) yield break;
-        float t = 0f;
-        while (t < beamFadeIn)
-        {
-            float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, beamFadeIn));
-            var c = _beamSR.color; c.a = k * beamOpacity; _beamSR.color = c;
-            t += Time.unscaledDeltaTime;
-            yield return null;
-        }
-        var c2 = _beamSR.color; c2.a = beamOpacity; _beamSR.color = c2;
-    }
-
-    void DestroyBeam()
-    {
-        if (_beamGO != null) Destroy(_beamGO);
-        _beamGO = null; _beamSR = null; _beamSprite = null;
     }
 
     Sprite GenerateBeamSprite(int w, int h, float opacity)
@@ -607,7 +628,6 @@ public class SpiralBoxWipe : MonoBehaviour
         }
         else
         {
-            // near + d 만큼 앞에 평면을 놓고 화면 크기에 맞게 스케일
             float d = Mathf.Max(0.5f, _cam.nearClipPlane + 0.5f);
             float h = 2f * d * Mathf.Tan(_cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
             float w = h * _cam.aspect;
@@ -632,7 +652,6 @@ public class SpiralBoxWipe : MonoBehaviour
         var all = _p2.GetComponentsInChildren<SpriteRenderer>(true);
         int layerId = SortingLayer.NameToID(deathSortingLayerName);
 
-        // 백업 & 올리기
         for (int i = 0; i < all.Length; i++)
         {
             var r = all[i];
@@ -640,5 +659,20 @@ public class SpiralBoxWipe : MonoBehaviour
             r.sortingLayerID = layerId;
             r.sortingOrder = deathP2Order + i; // 여러 SR이 있으면 상대 순서 유지
         }
+    }
+
+    // ---------- Beam Cleanup ----------
+    void DestroyBeam()
+    {
+        if (_beamSR != null && _beamSR.sprite != null && _beamSR.sprite.texture != null)
+            Destroy(_beamSR.sprite.texture);
+        else if (_beamSprite != null && _beamSprite.texture != null)
+            Destroy(_beamSprite.texture);
+
+        if (_beamGO != null) Destroy(_beamGO);
+
+        _beamGO = null;
+        _beamSR = null;
+        _beamSprite = null;
     }
 }

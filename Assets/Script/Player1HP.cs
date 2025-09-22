@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -9,32 +9,39 @@ public class Player1HP : MonoBehaviour, global::IDamageable
     [Header("HP")]
     [SerializeField] private int maxHP = 2;
     public int CurrentHP { get; private set; }
-    public int MaxHP => maxHP;                // ¡Ú UI¿¡¼­ ÀĞÀ» ¼ö ÀÖ°Ô °ø°³ Getter
+    public int MaxHP => maxHP;                // â˜… UIì—ì„œ ì½ì„ ìˆ˜ ìˆê²Œ ê³µê°œ Getter
     public bool IsDead { get; private set; }
 
-    // ¡Ú HP º¯°æ/»ç¸Á ÀÌº¥Æ®
+    // â˜… HP ë³€ê²½/ì‚¬ë§ ì´ë²¤íŠ¸
     public event Action<int, int> HpChanged;   // (current, max)
     public event Action Died;
     public bool Dead = false;
     public SmartCameraFollowByWall swap;
     public Animator rb2;
 
-    [Header("Layers (»ç¸Á ½Ã Ground·Î º¯°æ)")]
+    [Header("Layers (ì‚¬ë§ ì‹œ Groundë¡œ ë³€ê²½)")]
     [SerializeField] private string groundLayerName = "Ground";
 
     [Header("Optional")]
-    [SerializeField] private string deadBoolName = "dead"; // Animator bool ÆÄ¶ó¹ÌÅÍ¸í(ÀÖÀ¸¸é ¼¼ÆÃ)
+    [SerializeField] private string deadBoolName = "dead"; // Animator bool íŒŒë¼ë¯¸í„°ëª…(ìˆìœ¼ë©´ ì„¸íŒ…)
 
     [Header("Timing")]
     [SerializeField] private float swapDisableDelay = 1.5f;
+    // ---- Player1HP.cs ìƒë‹¨ í•„ë“œ ì¶”ê°€ ----
+    [Header("Revive")]
+    [SerializeField] private string playerLayerName = "Player";
+    [SerializeField] private float reviveIFrame = 1.2f;    // ë¶€í™œ í›„ ë¬´ì  ì‹œê°„
+    private int _originalLayer;
+    private float _invincibleUntil = -1f;
+    public bool IsInvincible => Time.time < _invincibleUntil;
 
-    // === »ç¸Á ³«ÇÏ ¿É¼Ç ===
+    // === ì‚¬ë§ ë‚™í•˜ ì˜µì…˜ ===
     [Header("Death Fall")]
-    [SerializeField] private bool keepFallingOnDeath = true;  // Á×¾îµµ ³«ÇÏ À¯Áö
-    [SerializeField] private float deadHorizontalDamp = 6f;   // »ç¸Á ÈÄ ¼öÆò °¨¼è
-    [SerializeField] private bool makeStaticOnLand = true;    // ÂøÁö ÈÄ ½ÃÃ¼¸¦ StaticÀ¸·Î °íÁ¤
-    [SerializeField] private float landStaticDelay = 0.10f;   // ÂøÁö °¨Áö ÈÄ ¾à°£ÀÇ Áö¿¬
-    [SerializeField] private float maxDeathFallSeconds = 6f;  // ¾ÈÀü Å¸ÀÓ¾Æ¿ô
+    [SerializeField] private bool keepFallingOnDeath = true;  // ì£½ì–´ë„ ë‚™í•˜ ìœ ì§€
+    [SerializeField] private float deadHorizontalDamp = 6f;   // ì‚¬ë§ í›„ ìˆ˜í‰ ê°ì‡ 
+    [SerializeField] private bool makeStaticOnLand = true;    // ì°©ì§€ í›„ ì‹œì²´ë¥¼ Staticìœ¼ë¡œ ê³ ì •
+    [SerializeField] private float landStaticDelay = 0.10f;   // ì°©ì§€ ê°ì§€ í›„ ì•½ê°„ì˜ ì§€ì—°
+    [SerializeField] private float maxDeathFallSeconds = 6f;  // ì•ˆì „ íƒ€ì„ì•„ì›ƒ
 
     private PlayerMouseMovement move;
     private Rigidbody2D rb;
@@ -46,15 +53,15 @@ public class Player1HP : MonoBehaviour, global::IDamageable
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         CurrentHP = Mathf.Max(1, maxHP);
-
-        // ¡Ú ½ÃÀÛ »óÅÂ ºê·ÎµåÄ³½ºÆ®(ÃÊ±â UI µ¿±âÈ­)
+        _originalLayer = gameObject.layer;
+        // ì‹œì‘ ìƒíƒœ ë¸Œë¡œë“œìºìŠ¤íŠ¸(ì´ˆê¸° UI ë™ê¸°í™”)
         HpChanged?.Invoke(CurrentHP, maxHP);
     }
 
-    /// <summary>¿ÜºÎ¿¡¼­ µ¥¹ÌÁö ÁÙ ¶§ »ç¿ë</summary>
+    /// <summary>ì™¸ë¶€ì—ì„œ ë°ë¯¸ì§€ ì¤„ ë•Œ ì‚¬ìš©</summary>
     public void TakeDamage(int dmg = 1)
     {
-        if (IsDead) return;
+        if (IsDead || IsInvincible) return;
 
         int amount = Mathf.Max(1, dmg);
         int prev = CurrentHP;
@@ -63,28 +70,28 @@ public class Player1HP : MonoBehaviour, global::IDamageable
         if (CurrentHP <= 0)
         {
             CameraShaker.Shake(0.5f, 0.2f);
-            Die(); // Die() ³»ºÎ¿¡¼­ HpChanged(0, max)¿Í Died È£Ãâ
+            Die(); // Die() ë‚´ë¶€ì—ì„œ HpChanged(0, max)ì™€ Died í˜¸ì¶œ
         }
         else
         {
             CameraShaker.Shake(0.5f, 0.2f);
-            HpChanged?.Invoke(CurrentHP, maxHP); // ¡Ú °¨¼Ò ¾Ë¸²
+            HpChanged?.Invoke(CurrentHP, maxHP); // â˜… ê°ì†Œ ì•Œë¦¼
         }
     }
 
-    // ChargerSentinelAI, Monster µî¿¡¼­ ÀÌ ½Ã±×´ÏÃ³·Î È£ÃâÇÕ´Ï´Ù.
+    // ChargerSentinelAI, Monster ë“±ì—ì„œ ì´ ì‹œê·¸ë‹ˆì²˜ë¡œ í˜¸ì¶œí•©ë‹ˆë‹¤.
     public void TakeDamage(int amount, Vector2 hitPoint, Vector2 hitNormal)
     {
-        TakeDamage(amount); // ±âÁ¸ ´ÜÀÏ ÀÎÀÚ ¹öÀü Àç»ç¿ë
+        TakeDamage(amount); // ê¸°ì¡´ ë‹¨ì¼ ì¸ì ë²„ì „ ì¬ì‚¬ìš©
     }
 
-    // ================== Ãß°¡: SendMessage Æú¹é ´ëÀÀ ==================
+    // ================== ì¶”ê°€: SendMessage í´ë°± ëŒ€ì‘ ==================
     public void OnHit(int damage)
     {
         TakeDamage(damage);
     }
 
-    /// <summary>È¸º¹ÀÌ ÇÊ¿äÇÏ¸é »ç¿ë(ÃÖ´ëÄ¡ ÃÊ°ú ¹æÁö)</summary>
+    /// <summary>íšŒë³µì´ í•„ìš”í•˜ë©´ ì‚¬ìš©(ìµœëŒ€ì¹˜ ì´ˆê³¼ ë°©ì§€)</summary>
     public void Heal(int amount)
     {
         if (IsDead) return;
@@ -94,16 +101,16 @@ public class Player1HP : MonoBehaviour, global::IDamageable
         CurrentHP = Mathf.Min(maxHP, CurrentHP + amount);
 
         if (CurrentHP != prev)
-            HpChanged?.Invoke(CurrentHP, maxHP); // ¡Ú È¸º¹ ¾Ë¸²
+            HpChanged?.Invoke(CurrentHP, maxHP); // â˜… íšŒë³µ ì•Œë¦¼
     }
 
-    /// <summary>P1 »ç¸Á Ã³¸®: Á¶ÀÛºÒ°¡ + (³«ÇÏ À¯Áö) + ÂøÁö ÈÄ °íÁ¤</summary>
+    /// <summary>P1 ì‚¬ë§ ì²˜ë¦¬: ì¡°ì‘ë¶ˆê°€ + (ë‚™í•˜ ìœ ì§€) + ì°©ì§€ í›„ ê³ ì •</summary>
     public void Die()
     {
         if (IsDead) return;
         IsDead = true;
 
-        // Ä³¸® ÁßÀÌ¸é ¾ÈÀüÇÏ°Ô ³»·Á³õ±â(´øÁöÁö ¾ÊÀ½)
+        // ìºë¦¬ ì¤‘ì´ë©´ ì•ˆì „í•˜ê²Œ ë‚´ë ¤ë†“ê¸°(ë˜ì§€ì§€ ì•ŠìŒ)
         if (move != null && move.isCarrying && move.otherPlayer != null)
         {
             var op = move.otherPlayer;
@@ -112,34 +119,35 @@ public class Player1HP : MonoBehaviour, global::IDamageable
             if (op.rb) op.rb.simulated = true;
             op.isCarried = false;
             move.isCarrying = false;
+            move.extraAirJumps = 1;
         }
 
-        // ÀÌµ¿/ÀÔ·Â Â÷´Ü
+        // ì´ë™/ì…ë ¥ ì°¨ë‹¨
         if (move) move.enabled = false;
 
-        // ¾Ö´Ï¸ŞÀÌÅÍ ÇÃ·¡±×
+        // ì• ë‹ˆë©”ì´í„° í”Œë˜ê·¸
         if (rb2) rb2.SetBool("death", true);
         if (anim && !string.IsNullOrEmpty(deadBoolName)) anim.SetBool(deadBoolName, true);
 
-        // ¡å¡å ±âÁ¸: ¿©±â¼­ Static/Áß·Â0/·¹ÀÌ¾î Ground ¡æ °øÁßÁ¤Áö ¿øÀÎ
-        //          ÀÌÁ¦´Â ³«ÇÏ¸¦ À¯ÁöÇÏ°í, ÂøÁö ÈÄ¿¡¸¸ Static/·¹ÀÌ¾î Ground·Î ÀüÈ¯
+        // â–¼â–¼ ê¸°ì¡´: ì—¬ê¸°ì„œ Static/ì¤‘ë ¥0/ë ˆì´ì–´ Ground â†’ ê³µì¤‘ì •ì§€ ì›ì¸
+        //          ì´ì œëŠ” ë‚™í•˜ë¥¼ ìœ ì§€í•˜ê³ , ì°©ì§€ í›„ì—ë§Œ Static/ë ˆì´ì–´ Groundë¡œ ì „í™˜
         if (keepFallingOnDeath && rb != null)
         {
-            // ³«ÇÏ º¸Àå ¼¼ÆÃ
+            // ë‚™í•˜ ë³´ì¥ ì„¸íŒ…
             rb.simulated = true;
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            // PlayerMouseMovement ¼¼ÆÃÀ» ÃÖ´ëÇÑ ÀçÈ°¿ë (¾øÀ¸¸é Àû´çÇÑ °ª)
+            // PlayerMouseMovement ì„¸íŒ…ì„ ìµœëŒ€í•œ ì¬í™œìš© (ì—†ìœ¼ë©´ ì ë‹¹í•œ ê°’)
             float fallGravity = (move != null) ? move.gravityScaleFall : 5f;
             rb.gravityScale = fallGravity;
 
-            // ³«ÇÏ »óÅÂ À¯Áö ÄÚ·çÆ¾ ½ÃÀÛ
+            // ë‚™í•˜ ìƒíƒœ ìœ ì§€ ì½”ë£¨í‹´ ì‹œì‘
             StartCoroutine(DeathFallRoutine());
         }
         else
         {
-            // ¿ø·¡ µ¿ÀÛ(Áï½Ã °íÁ¤)ÀÌ ÇÊ¿äÇÒ ¶§¸¦ À§ÇØ ³²°ÜµÒ
+            // ì›ë˜ ë™ì‘(ì¦‰ì‹œ ê³ ì •)ì´ í•„ìš”í•  ë•Œë¥¼ ìœ„í•´ ë‚¨ê²¨ë‘ 
             MakeStaticAndGroundNow();
         }
 
@@ -152,7 +160,47 @@ public class Player1HP : MonoBehaviour, global::IDamageable
         HpChanged?.Invoke(0, maxHP);
         Died?.Invoke();
 
-        Debug.Log("[Player1HP] »ç¸Á Ã³¸®: ³«ÇÏ À¯Áö ¡æ ÂøÁö ÈÄ °íÁ¤(¿É¼Ç)");
+        Debug.Log("[Player1HP] ì‚¬ë§ ì²˜ë¦¬: ë‚™í•˜ ìœ ì§€ â†’ ì°©ì§€ í›„ ê³ ì •(ì˜µì…˜)");
+    }
+
+    // ---- ê°•ì œ ë¶€í™œ ë³¸ì²´ ----
+    public void ForceReviveAt(Vector3 pos)
+    {
+        // --- ê¸°ë³¸ ë³µì› ---
+        IsDead = false;
+        Dead = false;                                // âœ… P1 ì™¸ë¶€ ì°¸ì¡°ìš© ë°ë“œ í”Œë˜ê·¸ë„ í•´ì œ
+        CurrentHP = Mathf.Max(1, maxHP);
+
+        if (!rb) rb = GetComponent<Rigidbody2D>();
+        if (!anim) anim = GetComponent<Animator>();
+        if (!move) move = GetComponent<PlayerMouseMovement>();
+
+        // ë ˆì´ì–´/ë¬¼ë¦¬/ìœ„ì¹˜
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        if (rb)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.simulated = true;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = move ? move.gravityScaleFall : 3f;
+        }
+        transform.position = pos;
+
+        // ì¡°ì‘/ì• ë‹ˆ ì¬í™œì„±
+        if (move)
+        {
+            move.enabled = true;
+            move.ResetJumpStateOnRevive(assumeGrounded: true, restoreExtraJumpsTo: 1);
+        }
+        if (rb2) rb2.SetBool("death", false);
+        if (anim && !string.IsNullOrEmpty(deadBoolName)) anim.SetBool(deadBoolName, false);
+
+        // HP UI ê°±ì‹  ì´ë²¤íŠ¸
+        HpChanged?.Invoke(CurrentHP, maxHP);
+
+        if (move) move.OnRevivedSafe();
+
     }
 
     private IEnumerator DeathFallRoutine()
@@ -162,27 +210,27 @@ public class Player1HP : MonoBehaviour, global::IDamageable
 
         while (Time.time - t0 < maxDeathFallSeconds)
         {
-            // µ¿Àû/Áß·Â »óÅÂ À¯Áö(È¤½Ã ´Ù¸¥ ½ºÅ©¸³Æ®°¡ ¹Ù²ãµµ º¹±¸)
+            // ë™ì /ì¤‘ë ¥ ìƒíƒœ ìœ ì§€(í˜¹ì‹œ ë‹¤ë¥¸ ìŠ¤í¬ë¦½íŠ¸ê°€ ë°”ê¿”ë„ ë³µêµ¬)
             if (rb == null) yield break;
             rb.simulated = true;
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            // ÇÏ°­ Áß Áß·Â
+            // í•˜ê°• ì¤‘ ì¤‘ë ¥
             float fallGravity = (move != null) ? move.gravityScaleFall : rb.gravityScale;
             rb.gravityScale = fallGravity;
 
-            // ¼öÆò °¨¼è(ÀÚ¿¬½º·¯¿î Á¤Áö ´À³¦)
+            // ìˆ˜í‰ ê°ì‡ (ìì—°ìŠ¤ëŸ¬ìš´ ì •ì§€ ëŠë‚Œ)
             Vector2 v = rb.linearVelocity;
             if (deadHorizontalDamp > 0f)
                 v.x = Mathf.MoveTowards(v.x, 0f, deadHorizontalDamp * Time.fixedDeltaTime);
             rb.linearVelocity = v;
 
-            // ÂøÁö ÆÇÁ¤(°¡´ÉÇÏ¸é PlayerMouseMovementÀÇ Á¢Áö Ã¼Å© »ç¿ë)
+            // ì°©ì§€ íŒì •(ê°€ëŠ¥í•˜ë©´ PlayerMouseMovementì˜ ì ‘ì§€ ì²´í¬ ì‚¬ìš©)
             bool grounded = (move != null) ? move.IsGroundedStrictSmall_Public() : false;
             if (grounded) groundedFrames++; else groundedFrames = 0;
 
-            if (groundedFrames >= 2) break; // 2ÇÁ·¹ÀÓ ¿¬¼Ó Á¢Áö ½Ã ÂøÁö·Î °£ÁÖ
+            if (groundedFrames >= 2) break; // 2í”„ë ˆì„ ì—°ì† ì ‘ì§€ ì‹œ ì°©ì§€ë¡œ ê°„ì£¼
 
             yield return new WaitForFixedUpdate();
         }
@@ -205,7 +253,7 @@ public class Player1HP : MonoBehaviour, global::IDamageable
 
         int groundIdx = LayerMask.NameToLayer(groundLayerName);
         if (groundIdx >= 0) gameObject.layer = groundIdx;
-        else Debug.LogWarning($"[Player1HP] Ground ·¹ÀÌ¾î '{groundLayerName}'¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+        else Debug.LogWarning($"[Player1HP] Ground ë ˆì´ì–´ '{groundLayerName}'ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
     }
 
     private IEnumerator DisableSwapAfterDelay()

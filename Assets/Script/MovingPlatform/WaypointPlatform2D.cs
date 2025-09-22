@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Globalization; // ← for InvariantCulture
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -14,7 +15,18 @@ public class WaypointPlatform2D : MonoBehaviour
     public enum MoveMode { ConstantSpeed, EaseInOut }
     public enum AnchorMode { ColliderBoundsCenter, TilemapBoundsCenter, TransformPivot, Custom }
 
-    [Serializable] public class Node { public Transform point; public float waitSeconds = 0f; }
+    // ───────── Node 확장: 웨이포인트 도착 시 쉐이크 옵션 ─────────
+    [Serializable]
+    public class Node
+    {
+        public Transform point;
+        public float waitSeconds = 0f;
+
+        [Header("Camera Shake on Arrive")]
+        public bool shakeOnArrive = false;
+        [Min(0f)] public float shakeIntensity = 0.8f;
+        [Min(0f)] public float shakeDuration = 0.12f;
+    }
 
     // ───────── Path ─────────
     [Header("Path")]
@@ -83,6 +95,18 @@ public class WaypointPlatform2D : MonoBehaviour
     [SerializeField] private int triggerMaxHits = 32;
     [SerializeField, Range(0.05f, 1f)] private float returnSpeedMul = 0.5f; // Hold 복귀 속도 배율
 
+    // ───────── Camera Shake ─────────
+    [Header("Camera Shake")]
+    [Tooltip("발동 시작(움직임 허용이 되는 순간)에 1회 흔듭니다.")]
+    [SerializeField] private bool shakeOnActivate = true;
+    [SerializeField, Min(0f)] private float activateShakeIntensity = 0.8f;
+    [SerializeField, Min(0f)] private float activateShakeDuration = 0.12f;
+
+    // (선택) 트리거 없이 시작하자마자 흔들고 싶을 때
+    [SerializeField] private bool shakeOnAwake = false;
+    [SerializeField, Min(0f)] private float awakeShakeIntensity = 0.8f;
+    [SerializeField, Min(0f)] private float awakeShakeDuration = 0.12f;
+
     // ───────── Renderer Safety ─────────
     [Header("Renderer Safety (Tile 사라짐 방지)")]
     [SerializeField] private bool expandCullingToPath = true;
@@ -121,11 +145,15 @@ public class WaypointPlatform2D : MonoBehaviour
     public Vector2 PlatformVelocity { get; private set; }
 
     // === JustGo: 상태 변수
-    private bool justGoActive = false;                   // 왕복 수행 중
-    private int justGoTripsDone = 0;                     // 완료한 왕복 수
-    private int justGoHomeEdge = -1;                   // 시작 기준 끝단(0 또는 last), -1은 미정
-    private bool justGoVisitedOppositeEdge = false;      // 반대 끝단 방문했는가
-    private bool justGoBlockUntilContactClears = false;  // 끝난 뒤 접촉 해제 전까지 재시작 금지
+    private bool justGoActive = false;
+    private int justGoTripsDone = 0;
+    private int justGoHomeEdge = -1;
+    private bool justGoVisitedOppositeEdge = false;
+    private bool justGoBlockUntilContactClears = false;
+
+    // ★ CameraShake 판단을 위한 에지 감지
+    private bool prevTriggered = false;
+    private bool prevContacting = false;
 
     // ───────── Lifecycle ─────────
     private void Reset()
@@ -185,6 +213,12 @@ public class WaypointPlatform2D : MonoBehaviour
         justGoBlockUntilContactClears = false;
 
         ApplyRendererSafety();
+
+        // ★ 시작 즉시 흔들기(옵션)
+        if (shakeOnAwake) DoCameraShake(awakeShakeIntensity, awakeShakeDuration);
+
+        prevTriggered = triggered;
+        prevContacting = contacting;
     }
 
     private void OnValidate()
@@ -204,24 +238,20 @@ public class WaypointPlatform2D : MonoBehaviour
             holdMode = false;
             stopHold = false;
             stopHoldReverse = false;
-            // JustGo는 트리거 필요 → 트리거 끄면 의미 없음(켜둘 수는 있으나 동작 X)
+            // JustGo는 트리거 필요
         }
         else
         {
-            // AllTrigger OFF면 서브 모드 끔
             if (!allTrigger)
             {
                 selectTrigger = false;
                 countTrigger = false;
             }
-            // Select vs Count 상호배타
             if (selectTrigger && countTrigger) countTrigger = false;
-            // threshold 상한
             int n = triggerColliders != null ? triggerColliders.Count(c => c) : 0;
             if (n > 0 && countThreshold > n) countThreshold = n;
         }
 
-        // === JustGo는 다른 Hold/StopHold와 중복 금지, 경로는 PingPong 권장/강제
         if (justGoMode)
         {
             holdMode = false;
@@ -242,35 +272,30 @@ public class WaypointPlatform2D : MonoBehaviour
         {
             EvaluateTriggers(out bool anyHit, out bool allHit, out int hitCount, out bool selectedAllHit);
 
-            // 조건 조합 (All/Select/Count/Any)
             if (allTrigger)
             {
-                if (selectTrigger && selectTriggerColliders.Count > 0) conditionMet = selectedAllHit;     // 선택 전부
-                else if (countTrigger) conditionMet = hitCount >= Mathf.Max(1, countThreshold);           // N개 이상
-                else conditionMet = allHit;                                                               // 전부
+                if (selectTrigger && selectTriggerColliders.Count > 0) conditionMet = selectedAllHit;
+                else if (countTrigger) conditionMet = hitCount >= Mathf.Max(1, countThreshold);
+                else conditionMet = allHit;
             }
-            else conditionMet = anyHit;                                                                   // 1개라도
+            else conditionMet = anyHit;
 
-            // === JustGo 전용 처리: 시작 / 진행 / 차단
             if (justGoMode)
             {
-                // 왕복 중엔 추가 트리거 무시
                 if (!justGoActive)
                 {
-                    // 왕복 종료 직후엔 접촉이 끊겼다 다시 붙을 때까지 재시작 금지
                     if (!justGoBlockUntilContactClears && conditionMet)
-                        StartJustGo();
-                    // 접촉이 끊기면 차단 해제
+                    {
+                        StartJustGo(); // ★ 여기서 발동 시작 → 내부에서 쉐이크 호출
+                    }
                     if (!conditionMet) justGoBlockUntilContactClears = false;
                 }
 
-                // 일반 'triggered' 래치는 JustGo 진행 중에만 true
                 triggered = justGoActive;
-                contacting = false; // Hold류 미사용
+                contacting = false;
             }
             else
             {
-                // 기존 동작
                 if (!triggered && conditionMet) triggered = true; // 최초 발동 래치
                 contacting = conditionMet;
             }
@@ -281,10 +306,29 @@ public class WaypointPlatform2D : MonoBehaviour
             triggered = true; // 트리거 모드 OFF면 항상 진행 허용
         }
 
+        // ★★★ 발동 시작 시점 감지(1프레임 에지) → 카메라 쉐이크
+        if (shakeOnActivate)
+        {
+            bool contactStart = contacting && !prevContacting;
+
+            // StopHold / Reverse의 '전진 허용' 에지 보정
+            bool stopHoldEdge = stopHold && (prevContacting && !contacting);          // 트리거에서 벗어날 때 전진
+            bool stopHoldRevEdge = stopHoldReverse && contactStart;                   // 트리거에 들어올 때 전진
+
+            bool activationEdge =
+                (!prevTriggered && triggered) ||                                     // 트리거 래치 true로 바뀐 순간
+                (holdMode && contactStart) ||                                        // Hold: 닿기 시작할 때
+                stopHoldEdge || stopHoldRevEdge;                                     // StopHold류 전진 에지
+
+            if (activationEdge) DoCameraShake(activateShakeIntensity, activateShakeDuration);
+        }
+
         // 진행 불가 상태면 정지
         if (!triggered)
         {
             UpdateVel(now);
+            prevTriggered = triggered;
+            prevContacting = contacting;
             return;
         }
 
@@ -294,11 +338,13 @@ public class WaypointPlatform2D : MonoBehaviour
             // 우선순위: StopHold(Reverse) > Hold > 일반
             if (triggerMode && (stopHold || stopHoldReverse))
             {
-                bool allowAdvance = stopHold ? contacting : !contacting;
+                bool allowAdvance = stopHold ? contacting == false : contacting == true;
                 if (!allowAdvance)
                 {
                     returning = false;
                     UpdateVel(now);
+                    prevTriggered = triggered;
+                    prevContacting = contacting;
                     return;
                 }
                 returning = false; // 전진 허용 → 아래 일반 전진
@@ -310,27 +356,29 @@ public class WaypointPlatform2D : MonoBehaviour
                     returning = true;
                     MoveTowardsAnchorNode(startIndex, Mathf.Max(0.01f, speed * returnSpeedMul));
                     Vector2 want = (Vector2)nodes[startIndex].point.position - anchorOffset;
-                    if (((Vector2)rb.position - want).sqrMagnitude < 1e-6f)
-                    {
-                        waitTimer = 0f;
-                    }
+                    if (((Vector2)rb.position - want).sqrMagnitude < 1e-6f) { waitTimer = 0f; }
+                    prevTriggered = triggered;
+                    prevContacting = contacting;
                     return;
                 }
                 returning = false;
             }
         }
-        // JustGo 모드면 Hold 계열은 무시
 
         // ── 일반 전진 ──
         if (nodes == null || nodes.Length < 2 || nodes[Mathf.Clamp(curr, 0, nodes.Length - 1)].point == null)
         {
             UpdateVel(now);
+            prevTriggered = triggered;
+            prevContacting = contacting;
             return;
         }
         if (waitTimer > 0f)
         {
             waitTimer -= Time.fixedDeltaTime;
             UpdateVel(now);
+            prevTriggered = triggered;
+            prevContacting = contacting;
             return;
         }
 
@@ -350,8 +398,13 @@ public class WaypointPlatform2D : MonoBehaviour
 
         if ((next - targetRb).sqrMagnitude < 1e-6f)
         {
-            // === 도착 처리(엣지 감지 전에 현재 목표 인덱스 보존)
+            // === 도착 처리
             int arrivedIndex = curr;
+
+            // ★ 웨이포인트 도착 시 카메라 쉐이크 (노드별 설정)
+            var n = nodes[arrivedIndex];
+            if (n != null && n.shakeOnArrive)
+                DoCameraShake(Mathf.Max(0f, n.shakeIntensity), Mathf.Max(0f, n.shakeDuration));
 
             waitTimer = Mathf.Max(0f, nodes[curr].waitSeconds);
             curr = NextIndexFrom(curr, ref dir, pathMode, nodes.Length);
@@ -366,6 +419,10 @@ public class WaypointPlatform2D : MonoBehaviour
         }
 
         UpdateVel(rb.position);
+
+        // 상태 업데이트(다음 프레임 에지 감지용)
+        prevTriggered = triggered;
+        prevContacting = contacting;
     }
 
     // ───────── Trigger 평가(멀티) ─────────
@@ -381,7 +438,6 @@ public class WaypointPlatform2D : MonoBehaviour
 
         if (list == null || list.Count == 0)
         {
-            // 폴백: 자신의 콜라이더/타일맵 경계 1개
             Bounds b = GetSelfBounds();
             bool hit = Physics2D.OverlapBox(
                 (Vector2)b.center,
@@ -407,7 +463,6 @@ public class WaypointPlatform2D : MonoBehaviour
             if (hit) hitCount++;
         }
 
-        // 선택된 트리거 전부 맞아야 true
         if (selectTrigger && selectTriggerColliders != null && selectTriggerColliders.Count > 0)
         {
             foreach (var sc in selectTriggerColliders)
@@ -417,9 +472,8 @@ public class WaypointPlatform2D : MonoBehaviour
                 if (!v) { selectedAllHit = false; break; }
             }
         }
-        else selectedAllHit = false; // 사용 안 함 상태
+        else selectedAllHit = false;
 
-        // 로컬: OverlapCollider 금지 → NonAlloc 박스 검사
         bool OverlapColliderBox(Collider2D col)
         {
             Bounds b = col.bounds;
@@ -668,6 +722,9 @@ public class WaypointPlatform2D : MonoBehaviour
 
         // 현재 위치에서 더 가까운 끝단(0 또는 last)을 홈으로 고정
         justGoHomeEdge = GetNearestEdgeIndex();
+
+        // ★ JustGo 시작도 '발동 시작'으로 간주 → 쉐이크
+        if (shakeOnActivate) DoCameraShake(activateShakeIntensity, activateShakeDuration);
     }
     private int GetNearestEdgeIndex()
     {
@@ -742,13 +799,48 @@ public class WaypointPlatform2D : MonoBehaviour
         }
         else
         {
-            // 아무 것도 등록 안 했을 때만 폴백 1개 영역 표시
             Bounds fb = GetSelfBounds();
             Gizmos.color = triggerGizmoColor;
             Gizmos.DrawCube(fb.center, fb.size);
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireCube(fb.center, fb.size);
         }
+    }
+
+    // ───────── CameraShaker 호출 유틸 (안전 리플렉션) ─────────
+    private static void DoCameraShake(float intensity, float duration)
+    {
+        try
+        {
+            // 1) 클래스 찾기 (모든 어셈블리에서)
+            Type shakerType = null;
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                shakerType = asm.GetType("CameraShaker");
+                if (shakerType != null) break;
+            }
+            if (shakerType == null) return;
+
+            // 2) 오버로드 우선: Shake(string,string) → 없으면 Shake(float,float)
+            MethodInfo m =
+                shakerType.GetMethod("Shake", BindingFlags.Public | BindingFlags.Static, null,
+                                     new Type[] { typeof(string), typeof(string) }, null)
+                ?? shakerType.GetMethod("Shake", BindingFlags.Public | BindingFlags.Static, null,
+                                        new Type[] { typeof(float), typeof(float) }, null);
+            if (m == null) return;
+
+            if (m.GetParameters()[0].ParameterType == typeof(string))
+            {
+                var s1 = intensity.ToString(CultureInfo.InvariantCulture);
+                var s2 = duration.ToString(CultureInfo.InvariantCulture);
+                m.Invoke(null, new object[] { s1, s2 });
+            }
+            else
+            {
+                m.Invoke(null, new object[] { intensity, duration });
+            }
+        }
+        catch { /* fail-safe: 아무 것도 안 함 */ }
     }
 
 #if UNITY_EDITOR
@@ -765,12 +857,12 @@ public class WaypointPlatform2D : MonoBehaviour
         SerializedProperty pathModeProp;
 
         static readonly string[] _exclude = {
-        "m_Script",
-        // Trigger/Hold/JustGo 그룹은 커스텀으로 그림
-        "triggerMode","holdMode","stopHold","stopHoldReverse",
-        "justGoMode","justGoRoundTrips",
-        "triggerColliders","allTrigger","selectTrigger","selectTriggerColliders","countTrigger","countThreshold"
-    };
+            "m_Script",
+            // Trigger/Hold/JustGo 그룹은 커스텀으로 그림
+            "triggerMode","holdMode","stopHold","stopHoldReverse",
+            "justGoMode","justGoRoundTrips",
+            "triggerColliders","allTrigger","selectTrigger","selectTriggerColliders","countTrigger","countThreshold"
+        };
 
         void OnEnable()
         {
@@ -841,7 +933,6 @@ public class WaypointPlatform2D : MonoBehaviour
                 EditorGUILayout.PropertyField(allTrigger, new GUIContent("All Trigger (모든 트리거 필요)"));
                 using (new EditorGUI.DisabledScope(!allTrigger.boolValue))
                 {
-                    // Select vs Count (배타)
                     EditorGUI.BeginChangeCheck();
                     bool sel = EditorGUILayout.ToggleLeft("Select Trigger (선택 트리거 모두 필요)", selectTrigger.boolValue);
                     if (EditorGUI.EndChangeCheck()) { selectTrigger.boolValue = sel; if (sel) countTrigger.boolValue = false; }
