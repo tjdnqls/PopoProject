@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Laser2D : MonoBehaviour
 {
+    public enum Targeting { P1Only, P2Only, BothPlayers }
+    public enum CooldownMode { Shared, PerTarget }
+
     [Header("Laser Shape")]
     [Min(0.05f)] public float maxLength = 8f;       // 로컬 +X 최대 길이
     [Min(0.01f)] public float width = 0.15f;        // 시각/판정 두께
@@ -18,12 +22,23 @@ public class Laser2D : MonoBehaviour
 
     [Header("Damage")]
     public int damage = 1;
-    public float cooldownSeconds = 2f;              // 같은 레이저 재피해 쿨타임(공유)
+    [Tooltip("같은 레이저의 재피해 쿨타임")]
+    public float cooldownSeconds = 2f;
+    public CooldownMode cooldownMode = CooldownMode.PerTarget;
+
+    [Header("Targeting")]
+    public Targeting targeting = Targeting.BothPlayers;
 
     [Header("Visual (SpriteRenderer)")]
     public Sprite sprite;
     public string sortingLayerName = "Default";
     public int orderInLayer = 100;
+
+    [Tooltip("타겟팅에 따라 자동 색상 적용")]
+    public bool autoTintByTarget = true;
+    public Color tintP1Only = new Color(0.1f, 0.01f, 0.01f, 1f);   // 회색(=P1)
+    public Color tintP2Only = new Color(0.25f, 0.55f, 1f, 1f);      // 파랑(=P2)
+    public Color tintBoth = new Color(1f, 0.92f, 0.25f, 1f);      // 노랑(=둘 다)
 
     // ---- Runtime ----
     private BoxCollider2D box;
@@ -31,8 +46,12 @@ public class Laser2D : MonoBehaviour
     private GameObject beamGO;
     private SpriteRenderer sr;
     private float currentLength;
-    private float _nextDamageTime = 0f;
 
+    // 쿨다운
+    private float _nextDamageTimeShared = 0f;
+    private readonly Dictionary<int, float> _perTargetNextDamage = new Dictionary<int, float>();
+
+    // 캐싱(디버그/편의용)
     private Player1HP p1;
     private Player2HP p2;
 
@@ -71,8 +90,20 @@ public class Laser2D : MonoBehaviour
         sr.sortingOrder = orderInLayer;
         sr.sprite = sprite != null ? sprite : MakeFallbackWhiteSprite();
 
+        ApplyAutoTint();
         CachePlayers();
         UpdateLaserGeometry(); // 초기화
+    }
+
+    void OnValidate()
+    {
+        if (sr != null) ApplyAutoTint();
+        if (box != null)
+        {
+            box.isTrigger = true;
+            box.size = new Vector2(Mathf.Max(0.01f, maxLength), Mathf.Max(0.01f, width));
+            box.offset = new Vector2(box.size.x * 0.5f, 0f);
+        }
     }
 
     void FixedUpdate() => UpdateLaserGeometry();
@@ -129,47 +160,67 @@ public class Laser2D : MonoBehaviour
 
     void TryHit(Collider2D other)
     {
-        if (Time.time < _nextDamageTime) return;
-
-        // 마스크/컴포넌트 폴백 중 하나라도 맞으면 처리
+        // 레이어/컴포넌트 필터
         bool layerPass = (playerMask.value & (1 << other.gameObject.layer)) != 0;
-        bool compPass = other.GetComponentInParent<Player1HP>() != null
-                      || other.GetComponentInParent<Player2HP>() != null
-                      || other.GetComponentInParent<global::IDamageable>() != null;
-        if (!layerPass && !compPass) return;
+        var hp1 = other.GetComponentInParent<Player1HP>();
+        var hp2 = other.GetComponentInParent<Player2HP>();
+        if (!layerPass && hp1 == null && hp2 == null) return;
 
-        CachePlayers();
-
-        bool any = false;
-        // 요구사항: 한 명이 닿아도 P1/P2 **각자** 1 데미지
-        if (p1 && p1.gameObject.activeInHierarchy) { DealDamageLikeYourCode(p1.transform, damage); any = true; }
-        if (p2 && p2.gameObject.activeInHierarchy) { DealDamageLikeYourCode(p2.transform, damage); any = true; }
-
-        if (any) _nextDamageTime = Time.time + Mathf.Max(0f, cooldownSeconds);
-    }
-
-    // ==== 여기서 "주인님이 준 패턴" 그대로 적용 ====
-    void DealDamageLikeYourCode(Transform t, int dmg)
-    {
-        if (!t) return;
-
-        var dmgIf = t.GetComponentInParent<global::IDamageable>();
-        if (dmgIf != null)
+        // 타겟 규칙 적용
+        switch (targeting)
         {
-            // hitPoint/Normal: 레이저 중심과 진행방향으로 생성
-            Vector2 hitPoint = box ? (Vector2)box.bounds.center : (Vector2)transform.position;
-            Vector2 hitNormal = (Vector2)transform.right; // +X 방향
-            dmgIf.TakeDamage(dmg, hitPoint, hitNormal);
-            return;
+            case Targeting.P1Only:
+                if (hp1 != null && hp1.gameObject.activeInHierarchy)
+                    TryDealDamage(hp1.gameObject.GetInstanceID(), () => hp1.TakeDamage(damage));
+                break;
+
+            case Targeting.P2Only:
+                if (hp2 != null && hp2.gameObject.activeInHierarchy)
+                    TryDealDamage(hp2.gameObject.GetInstanceID(), () => hp2.TakeDamage(damage));
+                break;
+
+            case Targeting.BothPlayers:
+                if (hp1 != null && hp1.gameObject.activeInHierarchy)
+                    TryDealDamage(hp1.gameObject.GetInstanceID(), () => hp1.TakeDamage(damage));
+                if (hp2 != null && hp2.gameObject.activeInHierarchy)
+                    TryDealDamage(hp2.gameObject.GetInstanceID(), () => hp2.TakeDamage(damage));
+                break;
         }
-
-        var p2hp = t.GetComponentInParent<Player2HP>();
-        if (p2hp != null) { p2hp.TakeDamage(dmg); return; }
-
-        t.SendMessageUpwards("TakeDamage", dmg, SendMessageOptions.DontRequireReceiver);
-        t.SendMessageUpwards("OnHit", dmg, SendMessageOptions.DontRequireReceiver);
     }
-    // ===============================================
+
+    bool TryDealDamage(int targetId, System.Action applyDamage)
+    {
+        float now = Time.time;
+
+        if (cooldownMode == CooldownMode.Shared)
+        {
+            if (now < _nextDamageTimeShared) return false;
+            applyDamage();
+            _nextDamageTimeShared = now + Mathf.Max(0f, cooldownSeconds);
+            return true;
+        }
+        else // PerTarget
+        {
+            if (_perTargetNextDamage.TryGetValue(targetId, out float next) && now < next)
+                return false;
+
+            applyDamage();
+            _perTargetNextDamage[targetId] = now + Mathf.Max(0f, cooldownSeconds);
+            return true;
+        }
+    }
+
+    void ApplyAutoTint()
+    {
+        if (!autoTintByTarget || sr == null) return;
+
+        switch (targeting)
+        {
+            case Targeting.P1Only: sr.color = tintP1Only; break; // 회색
+            case Targeting.P2Only: sr.color = tintP2Only; break; // 파랑
+            case Targeting.BothPlayers: sr.color = tintBoth; break; // 노랑
+        }
+    }
 
     // 스프라이트 없을 때 안전장치용 1x1 흰색
     Sprite MakeFallbackWhiteSprite()

@@ -162,7 +162,7 @@ public class Player2HP : MonoBehaviour, global::IDamageable
 
         // ---- Wipe를 "레퍼런스 우선"으로 확보 ----
         EnsureWipeReady();
-
+        SoundManager.Play("PrincessHit", transform);
         // 씬 리로드 연출 실행(Instance 사용 → 인스펙터 튜닝값 반영)
         SpiralBoxWipe.RunActiveScene();
     }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c7245ab05db872242bf26bead7d7c870
+guid: 9e0b56bb6e4ae9644ae0f9d56737fe60
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3809170587047133966
-    second: "\uACF5\uC8FC \uC624\uBE0C\uC81D\uD2B8 \uCC44\uC6C0_0"
+      213: -3541421086858438742
+    second: princess_hurt7_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uACF5\uC8FC \uC624\uBE0C\uC81D\uD2B8 \uCC44\uC6C0_0"
+      name: princess_hurt7_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 130
-        height: 130
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 129
+        y: 114
+        width: 92
+        height: 162
+      alignment: 9
+      pivot: {x: 0.5, y: -1.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e038fc19774ecd430800000000000000
-      internalID: 3809170587047133966
+      spriteID: aa799b5e8485adec0800000000000000
+      internalID: -3541421086858438742
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ab8755449a86bc8409681d1db126e171
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\uACF5\uC8FC \uC624\uBE0C\uC81D\uD2B8 \uCC44\uC6C0_0": 3809170587047133966
+      princess_hurt7_0: -3541421086858438742
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

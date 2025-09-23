@@ -165,6 +165,7 @@ public class BreakOnLayerHit2D : MonoBehaviour
 
         for (int i = 0; i < shardCount; i++)
         {
+            SoundManager.Play("BreakBox", transform);
             var prefab = (shardPrefabs != null && shardPrefabs.Count > 0) ? shardPrefabs[i % shardPrefabs.Count] : null;
             Vector2 spawnPos = center + Random.insideUnitCircle * spawnRadius;
             Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0f, 360f));

@@ -358,6 +358,7 @@ public class ChargerSentinelAI : MonoBehaviour
 
     private void EnterDash()
     {
+        SoundManager.Play("WarriorDash", transform);
         _stoppedThisDash = false;
         _hitPlayerRootsThisDash.Clear();
         if (!StillValidTarget() && !_mustDashOnce) { EnterIdle(); return; }
@@ -532,8 +533,10 @@ public class ChargerSentinelAI : MonoBehaviour
         if (!t) return;
 
         var dmgIf = t.GetComponentInParent<global::IDamageable>();
+        SoundManager.Play("WarriorAttack", transform);
         if (dmgIf != null)
         {
+
             Vector2 hitPoint = body ? (Vector2)body.bounds.center : (Vector2)transform.position;
             Vector2 hitNormal = new Vector2(_dashDir, 0);
             dmgIf.TakeDamage(dmg, hitPoint, hitNormal);

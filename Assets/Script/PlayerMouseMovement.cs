@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,7 @@ public class PlayerMouseMovement : MonoBehaviour
     // === 필수 컴포넌트 / 레이어 ===
     public Rigidbody2D rb;
     public Animator rb2;
-
+    public SmartCameraFollowByWall cameran;
     [Header("Layers")]
     // ▼▼ LayerMask 대신 "이름"만 설정 (기본값 그대로 쓰면 인스펙터 세팅 불필요)
     [Header("Layer Names (auto-resolve)")]
@@ -117,6 +118,12 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private bool enableFootstepLoop = true;
     [SerializeField] private float footstepMinSpeed = 0.1f; // |vx|가 이값 이상일 때만 발소리
     private string _currentWalkLoop = null;                  // 현재 재생 중인 루프 이름(KnightWalk/PrincessWalk)
+    private bool jumpchk;
+    // 착지 사운드: 공중→착지 검출용
+    [Header("Audio – Landing")]
+    [SerializeField] private float landSfxMinAirTime = 0.05f; // 너무 짧은 공중 구간(잡음) 무시
+    private bool _leftGroundSinceLast = false;                // 지난번 이후 '땅을 떠난 적'이 있는가
+    private float _leftGroundAt = -999f;                      // 마지막으로 땅을 떠난 시각
 
     // ==== Throw Preview (Sim) ====
     [Header("Throw Preview (Sim)")]
@@ -187,7 +194,7 @@ public class PlayerMouseMovement : MonoBehaviour
     private List<(Collider2D col, PhysicsMaterial2D orig)> p2LastCols = new();
     private float p2PrevDrag = -1f, p2PrevAngDrag = -1f;
     private Coroutine p2RestoreCo;
-
+    
 
     private Transform p2ImpactFx;    // 끝점 글로우
     private SpriteRenderer p2ImpactSr;
@@ -466,6 +473,7 @@ public class PlayerMouseMovement : MonoBehaviour
     private float bounceRampTimer = 0f;
     private Vector2 bounceTargetVel;
     private float bounceVxRef = 0f, bounceVyRef = 0f;
+    private bool shouldPlayJump;
 
     private bool lefthold;
     private bool righthold;
@@ -487,6 +495,8 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void Awake()
     {
+        SoundManager.Play("Test");
+
         if (!rb) rb = GetComponent<Rigidbody2D>();
         if (!bodyCollider)
         {
@@ -728,7 +738,7 @@ public class PlayerMouseMovement : MonoBehaviour
         bool isSelected = (swap != null && swap.charSelect == playerID);
         bool suppressed = Time.time < swapSuppressUntil;
 
-        // ★ 변경: 공격 중(P1)에는 입력 자체를 잠그기
+        // 변경: 공격 중(P1)에는 입력 자체를 잠그기
         bool attackLock = AttackLocksInput();
         bool locked = suppressed || Time.time < inputLockUntil || attackLock;
         lockedall = locked; // 전체 트랜지션 중에는 모든 입력/조작 봉인
@@ -829,7 +839,7 @@ public class PlayerMouseMovement : MonoBehaviour
                     return;
                 }
 
-                // ② 이번 프레임에 쉬프트가 눌림
+                // 이번 프레임에 쉬프트가 눌림
                 if (shiftDown && canToggleCarry && !throwHoldActive)
                 {
                     HideThrowPreview(); // 일단 감춰놓고
@@ -855,7 +865,7 @@ public class PlayerMouseMovement : MonoBehaviour
                     return;
                 }
 
-                // ③ 이미 홀드 중일 때(기존 동작 유지) + 프리뷰 표시
+                // 이미 홀드 중일 때(기존 동작 유지) + 프리뷰 표시
                 if (throwHoldActive)
                 {
                     // 수평: 마지막 입력 시간이 승리
@@ -943,6 +953,7 @@ public class PlayerMouseMovement : MonoBehaviour
             // 공격 시작: 쿨타임 체크
             if (Input.GetKeyDown(KeyCode.F) && !isCarrying && Time.time >= nextAttackTime)
             {
+                SoundManager.Play("KnightAttack", transform); 
                 StartAttack();
             }
             // 공격 종료: 시간 만료
@@ -1343,11 +1354,31 @@ public class PlayerMouseMovement : MonoBehaviour
         }
 
         bool groundedThisFrame = groundedStrict;
+        if (wasGrounded && !groundedThisFrame)
+        {
+            _leftGroundSinceLast = true;
+            _leftGroundAt = Time.time;
+        }
         if (!wasGrounded && groundedThisFrame)
         {
             JumpedAni();
             wallRegrabUntil = -1f;
             wallRegrabSide = 0;
+
+            // ▼ 현재 조작 중인 캐릭터인지 확인
+            bool isSelectedNow = (swap != null && swap.charSelect == playerID);
+
+            // ▼ 착지 사운드: 반드시 '한번 떠난 뒤' 착지했을 때만, 그리고 현재 조작 캐릭터만
+            if (isSelectedNow && _leftGroundSinceLast && (Time.time - _leftGroundAt) >= landSfxMinAirTime)
+            {
+                // 캐릭터에 맞는 키로 1회 재생
+                if (playerID == SwapController.PlayerChar.P1)
+                    SoundManager.Play("KnightJumpAnd", transform);
+                else
+                    SoundManager.Play("PrincessJumpAnd", transform);
+
+                _leftGroundSinceLast = false; // 소모
+            }
 
             // ▼ 추가: P2가 착지한 그 프레임에 ground=false
             if (playerID == SwapController.PlayerChar.P2 && rb2)
@@ -1673,7 +1704,7 @@ public class PlayerMouseMovement : MonoBehaviour
             : new Vector2(spawnSign * carryThrowSideSpeed, carryThrowUpSpeed);
 
         autoCatchSuppressUntil = Time.time + autoCatchBlockOnThrow;
-
+        
         isCarrying = false;
         carryset = false;
         // 애니 상태 정리(던질 땐 즉시 해제 연출)
@@ -1691,6 +1722,7 @@ public class PlayerMouseMovement : MonoBehaviour
         bool groundedNow = IsGroundedStrictSmall();
         if (rb2)
         {
+            
             rb2.SetBool("throw", false);
             rb2.SetBool("run", false);
             rb2.SetBool("throw", true);
@@ -1729,9 +1761,11 @@ public class PlayerMouseMovement : MonoBehaviour
         // 물리 켜고 실제 비행 시작
         if (otherPlayer != null && otherPlayer.rb != null)
         {
+            SoundManager.Play("KnightThrow", transform);
             otherPlayer.rb.simulated = true;
 
             // 던지기 시작 애니 플래그 (P2)
+
             if (otherPlayer.rb2) otherPlayer.rb2.SetBool("throwe", true);
             if (otherPlayer.rb2) otherPlayer.rb2.SetBool("throwed", true);
 
@@ -1787,6 +1821,7 @@ public class PlayerMouseMovement : MonoBehaviour
         if (!rb2) return;
         rb2.SetBool("run", false);
         rb2.SetBool("jump", false);
+        rb2.SetBool("hurt", false);
         rb2.SetBool("jumped", false);
         rb2.SetBool("attack", false);
         attack = false;
@@ -1819,7 +1854,9 @@ public class PlayerMouseMovement : MonoBehaviour
 
     private void RunAni()
     {
+        
         if (rb2) rb2.SetBool("run", true);
+        
         lefthold = false;
         righthold = false;
     }
@@ -1832,12 +1869,14 @@ public class PlayerMouseMovement : MonoBehaviour
     private void JumpAni()
     {
         if (rb2) rb2.SetBool("jump", true);
+        jumpchk = true;
     }
 
     private void JumpedAni()
     {
         if (rb2)
         {
+          
             rb2.SetBool("jump", false);
             rb2.SetBool("jumped", true);
         }
@@ -2701,7 +2740,6 @@ public class PlayerMouseMovement : MonoBehaviour
         // 던지기 상태로 즉시 진입 후 정지
         if (!string.IsNullOrEmpty(throwStateName))
             rb2.CrossFadeInFixedTime(throwStateName, 0.05f, 0, 0f);
-
         rb2.SetBool("throw", true);    // 기존 파이프라인과 호환
         if (throwHoldFreezeAnimator) rb2.speed = 0f;
     }
@@ -2808,6 +2846,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
             rb2.SetBool("run", false);
             rb2.SetBool("throw", true);
+            rb2.SetBool("hurt", false);
             rb2.SetBool("throwed", true);
         }
 
@@ -2878,6 +2917,7 @@ public class PlayerMouseMovement : MonoBehaviour
         if (rb2)
         {
             rb2.SetBool("death", false);
+            rb2.SetBool("hurt", false);
             rb2.SetBool("throw", false);
             rb2.SetBool("throwed", false);
         }
@@ -2999,7 +3039,6 @@ public class PlayerMouseMovement : MonoBehaviour
             if (!string.IsNullOrEmpty(desiredLoop))
             {
                 SoundManager.StartLoop(desiredLoop, transform);
-                Debug.Log("발걸음 사운드 재생됌");
                 _currentWalkLoop = desiredLoop;
             }
         }
@@ -3276,6 +3315,7 @@ public class PlayerMouseMovement : MonoBehaviour
             rb2.SetBool("throwed", false);
             rb2.SetBool("carry", false);
             rb2.SetBool("carrying", false);
+            rb2.SetBool("hurt", false);
             if (AnimatorHasParam(rb2, "dead", AnimatorControllerParameterType.Bool)) rb2.SetBool("dead", false);
         }
 

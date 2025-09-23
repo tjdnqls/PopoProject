@@ -132,6 +132,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private bool attackAnyPlayerInRange = true;
     [SerializeField] private bool switchToPreferWhileChasing = false;
     [SerializeField] private string player1Tag = "Player1";
+    private bool graceful;
 
     // ===== Debug =====
     [Header("Debug View")]
@@ -142,6 +143,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     [SerializeField] private Color fallbackGizmoColor = new Color(1f, 0.55f, 0f, 0.12f);
     [SerializeField] private Color fallbackGizmoEdgeColor = new Color(1f, 0.55f, 0f, 0.9f);
     [SerializeField] private bool drawGizmos = true;
+
 
     // ---- runtime ----
     private State state;
@@ -214,6 +216,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void OnEnable()
     {
         Play(runAnim, true);
+        SoundManager.StartLoop("BAMWalk", transform);
         SetFlipByDir(dir);
     }
 
@@ -263,6 +266,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void TickPatrol()
     {
         Play(runAnim);
+        SoundManager.StartLoop("BAMWalk", transform);
         Vector2 target = GetPatrolTarget();
         dir = (target.x >= transform.position.x) ? +1 : -1;
         SetFlipByDir(dir);
@@ -280,7 +284,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void TickChase()
     {
         Play(runAnim);
-
+        SoundManager.StartLoop("BAMWalk", transform);
         if (preferSwitchEnabled && currentTarget && currentTarget.root.CompareTag(player1Tag))
         {
             if (TryImmediatePreferSwitch(out var preferT))
@@ -331,7 +335,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     private void TickReturn()
     {
         Play(runAnim);
-
+        SoundManager.StartLoop("BAMWalk", transform);
         int retDir = (NearestHome().x >= transform.position.x) ? +1 : -1;
         SetFlipByDir(retDir);
         if (FrontWall(retDir)) StopHorizontal();
@@ -349,6 +353,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         state = State.Alert;
         StopHorizontal();
         Play(idleAnim, true);
+        SoundManager.StopLoop("BAMWalk", graceful = true);
         if (logicCo != null) StopCoroutine(logicCo);
         logicCo = StartCoroutine(AlertWaitThenChaseOrAttack());
     }
@@ -370,6 +375,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         stuckTimer = 0f;
         lastSeenTime = Time.time;
         Play(runAnim, true);
+        SoundManager.StartLoop("BAMWalk", transform);
     }
 
     private void EnterReturn()
@@ -377,6 +383,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         state = State.Return;
         currentTarget = null;
         Play(runAnim, true);
+        SoundManager.StartLoop("BAMWalk", transform);
     }
 
     private void EnterAttackWindup()
@@ -419,6 +426,8 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
         state = State.Attacking;
         Play(attackAnim, true);
+        SoundManager.StopLoop("BAMWalk", graceful = true);
+        SoundManager.Play("BAMAttack", transform);
 
         if (attackHitbox != null)
         {
@@ -709,6 +718,8 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
         state = State.Guard;
         CameraShaker.Shake(guardShakeAmp, guardShakeDur);
         Play(blockAnim, true);
+        SoundManager.StopLoop("BAMWalk", graceful = true);
+        SoundManager.Play("BAMGuard", transform);
 
         var prevConstraints = rb ? rb.constraints : RigidbodyConstraints2D.FreezeRotation;
         if (rb)
@@ -726,6 +737,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
             {
                 cached = new List<Collider2D>(playerRoot.GetComponentsInChildren<Collider2D>(true));
                 foreach (var pc in cached) if (pc) Physics2D.IgnoreCollision(body, pc, true);
+                
             }
             if (optionalHazard) Physics2D.IgnoreCollision(body, optionalHazard, true);
         }
@@ -753,7 +765,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
 
         stuckTimer = 0f;
         lastSeenTime = Time.time;
-
+        
         Transform tTarget;
         if (!TryPickTarget(out tTarget)) tTarget = playerRoot;
         currentTarget = tTarget;
@@ -771,7 +783,7 @@ public class BackChaserFSM : MonoBehaviour, global::IDamageable
     {
         if (isDying) return;
         isDying = true;
-
+        SoundManager.StopLoop("BAMWalk", graceful = true);
         if (logicCo != null) { StopCoroutine(logicCo); logicCo = null; }
         if (guardCo != null) { StopCoroutine(guardCo); guardCo = null; }
 

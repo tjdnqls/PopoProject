@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 using static UnityEngine.GraphicsBuffer;
 
 public class SmartCameraFollowByWall : MonoBehaviour
@@ -43,11 +45,11 @@ public class SmartCameraFollowByWall : MonoBehaviour
     [SerializeField] private GameObject Princess_UI;
 
     // ===== Off-screen Indicator UI =====
-    [SerializeField] private Camera cam;                    // 비워두면 자동으로 Camera.main 사용
-    [SerializeField] private RectTransform canvasRect;      // Canvas의 RectTransform
+    [SerializeField] private Camera cam;                       // 비워두면 자동으로 Camera.main 사용
+    [SerializeField] private RectTransform canvasRect;         // Canvas의 RectTransform
     [SerializeField] private RectTransform offscreenIndicator; // 화면 가장자리에 붙을 아이콘(화살표)
-    [SerializeField] private float edgePadding = 48f;       // 화면 가장자리로부터 여백
-    [SerializeField] private bool showDistance = false;     // 원하시면 거리 텍스트도 표시
+    [SerializeField] private float edgePadding = 48f;          // 화면 가장자리로부터 여백
+    [SerializeField] private bool showDistance = false;        // 원하면 거리 텍스트 표시
     [SerializeField] private TMPro.TextMeshProUGUI distanceText; // (선택) 거리 표시 텍스트
 
     // --- 경고 아이콘(빠른 페이드 인/아웃) ---
@@ -61,7 +63,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
     [SerializeField] private float warnAlphaMax = 1f;
     [SerializeField] private float warnFadeOutSpeed = 8f;    // 위험이 사라질 때 빠르게 사라짐
     private CanvasGroup warnGroup;
-    private readonly Collider2D[] _hazardHits = new Collider2D[8];
 
     // === 전환 제어 ===
     [Header("Tab 전환 이동")]
@@ -84,7 +85,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
     private Vector3 indicatorBaseScale = Vector3.one; // 인디케이터 원본 스케일
     private float currentScale = 1f;                  // 현재 배율(1=기본)
 
-    // ====== 추가: BoxCast Confiner(끼임 방지) ======
+    // ====== BoxCast Confiner(끼임 방지) ======
     [Header("BoxCast Confiner (anti-stuck)")]
     [SerializeField, Tooltip("카메라가 통과 가능한 ‘상자’로 가정하고, 이동 경로를 BoxCast로 제한합니다.")]
     private bool useBoxCastConfiner = true;
@@ -106,6 +107,19 @@ public class SmartCameraFollowByWall : MonoBehaviour
     private Vector3 lastAppliedPos;
 
     private LayerMask ConfinerMask => wallLayer | groundLayer;
+
+    // ====== Swap SFX (OneShot 전환음 전용) ======
+    [Header("Swap SFX (OneShot)")]
+    [SerializeField] private bool useSoundManagerOneShot = true;     // SoundManager의 PlayOneShot 사용 여부
+    [SerializeField] private string knightSwapSfxKey = "KnightChenge";
+    [SerializeField] private string princessSwapSfxKey = "PrincessChenge";
+    [SerializeField] private AudioClip knightSwapClip;               // SoundManager 미사용 시 사용
+    [SerializeField] private AudioClip princessSwapClip;             // SoundManager 미사용 시 사용
+    [SerializeField] private float minSwapSfxInterval = 0.2f;        // 중복 이벤트 디바운스 간격
+
+    private bool _lastIsP1Focus;     // 직전 프레임의 시점 대상(P1=true/P2=false)
+    private float _lastSwapSfxTime = -999f;
+    private AudioSource _swapAudio;  // 로컬 OneShot 재생용
 
     private void Awake()
     {
@@ -131,6 +145,16 @@ public class SmartCameraFollowByWall : MonoBehaviour
             warnIcon.gameObject.SetActive(false);
         }
 
+        // Swap OneShot용 로컬 AudioSource(백업 경로)
+        if (!useSoundManagerOneShot)
+        {
+            _swapAudio = GetComponent<AudioSource>();
+            if (_swapAudio == null) _swapAudio = gameObject.AddComponent<AudioSource>();
+            _swapAudio.playOnAwake = false;
+            _swapAudio.loop = false;
+            _swapAudio.spatialBlend = 0f; // UI 성격이면 0, 3D면 1로 변경
+        }
+
         lastAppliedPos = transform.position;
     }
 
@@ -145,6 +169,9 @@ public class SmartCameraFollowByWall : MonoBehaviour
         selectmark2.SetActive(false);
         selectmark1.SetActive(true);
         wasCarrying = (carry != null && carry.isCarrying);
+
+        // SFX: 시작 시 베이스라인 저장(즉시 재생 방지)
+        _lastIsP1Focus = swapsup; // swapsup == true면 P1, false면 P2
     }
 
     void Update()
@@ -166,8 +193,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
                 transitUntil = Time.unscaledTime + transitMaxDuration;
                 originalFollowSpeed = Mathf.Approximately(originalFollowSpeed, 0f) ? followSpeed : originalFollowSpeed;
                 followSpeed = Mathf.Max(followSpeed, transitBoostFollowSpeed);
+                // 전환음은 프레임 말미에서 일괄 감지
             }
         }
+
         if (autoSelectP1OnCarry && carry != null)
         {
             bool nowCarrying = carry.isCarrying;
@@ -197,8 +226,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
             selectmark1.SetActive(false);
         }
 
-        // ===== 원래의 ‘막힘 레이’는 디버그용으로만 계산 =====
-        // (실제 이동은 아래 BoxCast Confiner가 처리)
+        // ===== 디버그 레이(표시용) =====
         {
             blockLeft = Physics2D.Raycast(cameraPos, Vector2.left, rayDistance, wallLayer);
             blockRight = Physics2D.Raycast(cameraPos, Vector2.right, rayDistance, wallLayer);
@@ -206,20 +234,20 @@ public class SmartCameraFollowByWall : MonoBehaviour
             blockUp = hitUpRaw.collider != null && hitUpRaw.collider.tag != "OneWay";
         }
 
-        // ===== 타깃 기반 목표 위치(막음 고려 없이 순수한 목표) =====
+        // ===== 목표 위치 =====
         float targetX = focus.position.x;
         float desiredY = focus.position.y + yOffset;
-        float targetY = desiredY; // 위/아래 모두 목표 반영 후 콘파이너에서 제어
+        float targetY = desiredY;
 
         Vector3 desired = new Vector3(targetX, targetY, cameraPos.z);
 
         // ===== 부드러운 추종 =====
         Vector3 smooth = Vector3.SmoothDamp(cameraPos, desired, ref currentVelocity, 1f / followSpeed);
 
-        // ===== 전환 중이고 "차단 해제" 옵션이면 그대로 이동(원래 옵션 유지) =====
+        // ===== 전환 중 콘파이너 우회 여부 =====
         bool bypassConfiner = isTransit && disableWallGroundWhileTransit;
 
-        // ===== BoxCast Confiner로 끼임 방지 이동 (전환 중이더라도 끼임이 잦으면 이걸 권장) =====
+        // ===== BoxCast Confiner =====
         Vector3 nextPos = smooth;
         if (useBoxCastConfiner && !bypassConfiner)
         {
@@ -244,12 +272,12 @@ public class SmartCameraFollowByWall : MonoBehaviour
         // ===== 실제 위치 반영 =====
         transform.position = nextPos;
 
-        // ===== ‘제자리 떨림/정지’ 감지 → 잠깐 콘파이너 해제하여 탈출 =====
+        // ===== 끼임 탈출 =====
         if (useBoxCastConfiner && !bypassConfiner)
         {
             float moved = (nextPos - lastAppliedPos).sqrMagnitude;
             float wantMove = (smooth - cameraPos).sqrMagnitude;
-            if (moved < 1e-6f && wantMove > 0.0004f) // 가고 싶은데 한 픽셀도 못 갔으면
+            if (moved < 1e-6f && wantMove > 0.0004f)
             {
                 stuckFrameCounter++;
                 if (stuckFrameCounter >= stuckFramesToForgive)
@@ -265,7 +293,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
             if (Time.unscaledTime < forgiveUntil)
             {
-                // 잠깐 콘파이너 해제(탈출)
                 transform.position = smooth;
             }
         }
@@ -291,6 +318,9 @@ public class SmartCameraFollowByWall : MonoBehaviour
         Transform self = swapsup ? target1 : target2;
         Transform other = swapsup ? target2 : target1;
         UpdateOffscreenIndicator(other, self);
+
+        // ===== 전환음: 딱 한 번만 OneShot =====
+        PlayChaseSwapSfxIfChanged();
     }
 
     // === BoxCast 기반 이동 제한(축 분리) ===
@@ -299,7 +329,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
         if (!cam) cam = Camera.main;
 
         Vector2 half = new Vector2(cam.orthographicSize * cam.aspect, cam.orthographicSize);
-        // 카메라 박스(약간 축소)
         Vector2 boxSize = new Vector2(Mathf.Max(0.01f, (half.x * 2f) - boxShrink * 2f),
                                       Mathf.Max(0.01f, (half.y * 2f) - boxShrink * 2f));
 
@@ -356,7 +385,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
             return hitOut.collider != null;
         }
 
-        // 위로 갈 때 OneWay는 관통하도록 모든 히트 중 필터링
         var hits = Physics2D.BoxCastAll(origin, size, 0f, dir, dist, mask);
         float best = float.MaxValue;
         RaycastHit2D bestHit = new RaycastHit2D();
@@ -375,12 +403,13 @@ public class SmartCameraFollowByWall : MonoBehaviour
         hitOut = best < float.MaxValue ? bestHit : new RaycastHit2D();
         return hitOut.collider != null;
     }
+
     private void ForceToP1()
     {
         // 카메라 대상 전환
         swapsup = true;
 
-        // 부드러운 전환 시작(현재 네 전환 로직 재사용)
+        // 부드러운 전환 시작(현재 전환 로직 재사용)
         isTransit = true;
         transitUntil = Time.unscaledTime + transitMaxDuration;
         originalFollowSpeed = Mathf.Approximately(originalFollowSpeed, 0f) ? followSpeed : originalFollowSpeed;
@@ -390,8 +419,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
         if (swap != null)
             swap.charSelect = SwapController.PlayerChar.P1;
 
-        // UI는 아래 Update의 공용 처리에서 같은 프레임에 정리됨
+        // 전환 즉시 SFX 변화 반영(외부 호출 대비)
+        PlayChaseSwapSfxIfChanged();
     }
+
     void OnDrawGizmos()
     {
         Vector3 cameraPos = transform.position;
@@ -415,10 +446,8 @@ public class SmartCameraFollowByWall : MonoBehaviour
         if (!cam) cam = Camera.main;
         if (!cam) return;
 
-        // 1) 대상의 뷰포트 좌표
         Vector3 vp = cam.WorldToViewportPoint(otherTarget.position);
 
-        // 2) 화면 안이면 화살표/경고 숨김
         bool inFront = vp.z > 0f;
         bool onScreen = inFront && vp.x >= 0f && vp.x <= 1f && vp.y >= 0f && vp.y <= 1f;
         if (onScreen)
@@ -429,16 +458,13 @@ public class SmartCameraFollowByWall : MonoBehaviour
         }
         offscreenIndicator.gameObject.SetActive(true);
 
-        // 3) 카메라 뒤 → 반사
         Vector2 v2 = new Vector2(vp.x, vp.y);
         Vector2 center = new Vector2(0.5f, 0.5f);
         if (!inFront) v2 = center - (v2 - center);
 
-        // 4) 방향
         Vector2 dirFromCenter = (v2 - center).normalized;
         if (dirFromCenter.sqrMagnitude < 1e-6f) dirFromCenter = Vector2.right;
 
-        // 5) 경계와 교차 (패딩 반영)
         float padX = edgePadding / Screen.width;
         float padY = edgePadding / Screen.height;
         float minX = padX, maxX = 1f - padX;
@@ -463,7 +489,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
         Vector2 edgeVP = center + dirFromCenter * t;
 
-        // 스냅 (수치 오차 방지)
         float dxMin = Mathf.Abs(edgeVP.x - minX);
         float dxMax = Mathf.Abs(edgeVP.x - maxX);
         float dyMin = Mathf.Abs(edgeVP.y - minY);
@@ -474,12 +499,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
         else if (best == dyMin) edgeVP.y = minY;
         else edgeVP.y = maxY;
 
-        // 각도 (화살표 끝이 타겟 향함)
         Vector2 dirFromEdgeToTarget = (v2 - edgeVP).normalized;
         if (dirFromEdgeToTarget.sqrMagnitude < 1e-6f) dirFromEdgeToTarget = dirFromCenter;
         float angle = Mathf.Atan2(dirFromEdgeToTarget.y, dirFromEdgeToTarget.x) * Mathf.Rad2Deg + arrowRotationOffsetDeg;
 
-        // 뷰포트→스크린→캔버스 좌표
         Vector2 screenPos = new Vector2(edgeVP.x * Screen.width, edgeVP.y * Screen.height);
         Canvas canvas = canvasRect.GetComponentInParent<Canvas>();
         Camera uiCam = (canvas && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
@@ -490,11 +513,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
         offscreenIndicator.anchoredPosition = local;
         offscreenIndicator.rotation = Quaternion.Euler(0f, 0f, angle);
 
-        // --- 거리 기반 색 & 스케일 보간 ---
         if (otherTarget && selfTarget)
         {
             float dist = Vector2.Distance(selfTarget.position, otherTarget.position);
-            float closeness = 1f - Mathf.InverseLerp(nearDistance, farDistance, dist); // 0(멀다)~1(가깝다)
+            float closeness = 1f - Mathf.InverseLerp(nearDistance, farDistance, dist);
 
             if (indicatorGraphic)
                 indicatorGraphic.color = Color.Lerp(farColor, nearColor, closeness);
@@ -507,7 +529,6 @@ public class SmartCameraFollowByWall : MonoBehaviour
                 distanceText.text = Mathf.RoundToInt(dist).ToString();
         }
 
-        // --- 위험 감지 & 경고 아이콘 페이드 ---
         if (warnIcon)
         {
             bool danger = IsDangerNear(otherTarget.position);
@@ -516,21 +537,54 @@ public class SmartCameraFollowByWall : MonoBehaviour
             if (danger)
             {
                 if (!warnIcon.gameObject.activeSelf) warnIcon.gameObject.SetActive(true);
+                if (warnGroup == null) warnGroup = warnIcon.GetComponent<CanvasGroup>();
+                if (warnGroup == null) warnGroup = warnIcon.gameObject.AddComponent<CanvasGroup>();
                 float tBlink = Mathf.PingPong(Time.unscaledTime * warnBlinkSpeed, 1f);
                 warnGroup.alpha = Mathf.Lerp(warnAlphaMin, warnAlphaMax, tBlink);
             }
             else
             {
-                warnGroup.alpha = Mathf.MoveTowards(warnGroup.alpha, 0f, Time.unscaledDeltaTime * warnFadeOutSpeed);
-                if (warnGroup.alpha <= 0.01f && warnIcon.gameObject.activeSelf)
-                    warnIcon.gameObject.SetActive(false);
+                if (warnGroup != null)
+                {
+                    warnGroup.alpha = Mathf.MoveTowards(warnGroup.alpha, 0f, Time.unscaledDeltaTime * warnFadeOutSpeed);
+                    if (warnGroup.alpha <= 0.01f && warnIcon.gameObject.activeSelf)
+                        warnIcon.gameObject.SetActive(false);
+                }
             }
         }
     }
 
     private bool IsDangerNear(Vector2 center)
     {
-        // 트랩/불릿/몬스터 레이어에 속한 콜라이더가 하나라도 반경 내에 있으면 true
         return Physics2D.OverlapCircle(center, hazardCheckRadius, hazardMask) != null;
+    }
+
+    // === 전환 시에만 OneShot을 1회 재생(루프 사용 금지) ===
+    private void PlayChaseSwapSfxIfChanged()
+    {
+        bool nowIsP1 = swapsup; // true: P1, false: P2
+        if (nowIsP1 != _lastIsP1Focus)
+        {
+            if (Time.unscaledTime - _lastSwapSfxTime >= minSwapSfxInterval)
+            {
+                if (useSoundManagerOneShot)
+                {
+                    // 프로젝트의 사운드 매니저에 맞춰 함수명을 조정하세요.
+                    SoundManager.Play(nowIsP1 ? knightSwapSfxKey : princessSwapSfxKey, transform);
+                }
+                else
+                {
+                    var clip = nowIsP1 ? knightSwapClip : princessSwapClip;
+                    if (clip != null)
+                    {
+                        if (_swapAudio == null) _swapAudio = gameObject.AddComponent<AudioSource>();
+                        _swapAudio.PlayOneShot(clip);
+                    }
+                }
+                _lastSwapSfxTime = Time.unscaledTime;
+            }
+
+            _lastIsP1Focus = nowIsP1;
+        }
     }
 }

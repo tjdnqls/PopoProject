@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
@@ -6,33 +6,42 @@ using UnityEngine;
 public class BoxPushAssist2D : MonoBehaviour
 {
     [Header("Player Refs")]
-    [SerializeField] private Rigidbody2D playerRb;     // ÀÚµ¿ ÇÒ´ç
-    [SerializeField] private Collider2D playerCol;    // ÀÚµ¿ ÇÒ´ç
-    [Tooltip("ÀÖÀ¸¸é Çª½Ã Áß moveSpeed¸¦ ³·Ãä´Ï´Ù.")]
-    [SerializeField] private PlayerMouseMovement playerMove; // ¼±ÅÃ
+    [SerializeField] private Rigidbody2D playerRb;      // ìë™ í• ë‹¹
+    [SerializeField] private Collider2D playerCol;      // ìë™ í• ë‹¹(ìì‹ê¹Œì§€ íƒìƒ‰)
+    [Tooltip("ìˆìœ¼ë©´ í‘¸ì‹œ ì¤‘ moveSpeedë¥¼ ë‚®ì¶¥ë‹ˆë‹¤.")]
+    [SerializeField] private PlayerMouseMovement playerMove; // ì„ íƒ
 
     [Header("Layers (names)")]
     [SerializeField] private string boxLayerName = "Box";
     [SerializeField] private string groundLayerNames = "Ground, EventGround, OneWayGround";
 
     [Header("Push Feel")]
-    [Tooltip("Çª½Ã Áß ÇÃ·¹ÀÌ¾îÀÇ moveSpeed")]
+    [Tooltip("í‘¸ì‹œ ì¤‘ í”Œë ˆì´ì–´ì˜ moveSpeed")]
     [SerializeField] private float pushPlayerMoveSpeed = 3.0f;
-    [Tooltip("¹Ú½º µ¿Çà ÃÖ´ë ¼Óµµ(°ú¼Ó ¾ÈÀüÄ¸)")]
+    [Tooltip("ë°•ìŠ¤ ë™í–‰ ìµœëŒ€ ì†ë„(ê³¼ì† ì•ˆì „ìº¡)")]
     [SerializeField] private float maxPushSpeed = 3.5f;
-    [Tooltip("ºÙ±â ½ÃÀÛ ÃÖ¼Ò ÇÃ·¹ÀÌ¾î ¼Óµµ")]
+    [Tooltip("ë¶™ê¸° ì‹œì‘ ìµœì†Œ í”Œë ˆì´ì–´ ì†ë„")]
     [SerializeField] private float engageMinPlayerSpeed = 0.15f;
-    [Tooltip("Á¢ÃËÀÌ Àá±ñ ²÷°Üµµ À¯ÁöÇØÁÙ À¯¿¹(ÃÊ)")]
+    [Tooltip("ì ‘ì´‰ì´ ì ê¹ ëŠê²¨ë„ ìœ ì§€í•´ì¤„ ìœ ì˜ˆ(ì´ˆ)")]
     [SerializeField] private float contactKeepAlive = 0.06f;
 
     [Header("Cancel Conditions")]
     [SerializeField] private bool cancelWhenPlayerAirborne = true;
     [SerializeField] private bool cancelWhenBoxOffGround = true;
+    [Tooltip("ë¶™ê¸° ì‹œì‘ ì‹œ ì ‘ì§€ í•„ìˆ˜ ì—¬ë¶€(P2 ì ‘ì§€ íŒì •ì´ ë¶ˆì•ˆí•˜ë©´ ë„ì„¸ìš”)")]
+    [SerializeField] private bool requireGroundedToEngage = true;
+
+    [Header("Audio")]
+    [SerializeField] private string pushLoopName = "StonePush0";
+
+    // í˜„ì¬ ì¬ìƒ ì¤‘ì¸ ë£¨í”„ ì´ë¦„ & ëŒ€ìƒ(ì¤‘ë³µ ìŠ¤íƒ€íŠ¸/íƒ€ê²Ÿ ì „í™˜ ê´€ë¦¬)
+    private string _activePushLoop = null;
+    private Transform _activeLoopTarget = null;
 
     [Header("Debug")]
     [SerializeField] private bool debug = false;
 
-    // ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Internals ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€â”€â”€â”€â”€â”€â”€â”€ Internals â”€â”€â”€â”€â”€â”€â”€â”€â”€
     private int boxMask;
     private int groundMask;
 
@@ -42,11 +51,18 @@ public class BoxPushAssist2D : MonoBehaviour
     private float lastContactTime = -999f;
     private bool isActive = false;
 
-    // ¥Äx ÃßÀû¿ë
+    // Î”x ì¶”ì ìš©
     private float prevPlayerX;
-    private float cachedPlayerMoveSpeed = -1f; // <0ÀÌ¸é ¹Ì»ç¿ë
+    private float cachedPlayerMoveSpeed = -1f; // <0ì´ë©´ ë¯¸ì‚¬ìš©
+
+    void Awake()
+    {
+        AutoWire();
+        ResolveMasks();
+    }
 
     void Reset() { AutoWire(); ResolveMasks(); }
+
     void OnValidate()
     {
         AutoWire(); ResolveMasks();
@@ -59,8 +75,12 @@ public class BoxPushAssist2D : MonoBehaviour
     void AutoWire()
     {
         if (!playerRb) playerRb = GetComponent<Rigidbody2D>();
-        if (!playerCol) playerCol = GetComponent<Collider2D>();
-        if (!playerMove) playerMove = GetComponent<PlayerMouseMovement>(); // ÀÖÀ¸¸é ÀÚµ¿
+        if (!playerCol)
+        {
+            playerCol = GetComponent<Collider2D>();
+            if (!playerCol) playerCol = GetComponentInChildren<Collider2D>(true); // ìì‹ê¹Œì§€ íƒìƒ‰
+        }
+        if (!playerMove) playerMove = GetComponent<PlayerMouseMovement>(); // ìˆìœ¼ë©´ ìë™
     }
 
     void ResolveMasks()
@@ -90,8 +110,9 @@ public class BoxPushAssist2D : MonoBehaviour
         return mask;
     }
 
-    bool PlayerGrounded() => playerCol ? playerCol.IsTouchingLayers(groundMask) : true;
-    bool BoxGrounded() => currentBoxCol ? currentBoxCol.IsTouchingLayers(groundMask) : false;
+    // Rigidbody2D ê¸°ì¤€ìœ¼ë¡œ ì ‘ì§€ ì²´í¬(ë¶€ì°©ëœ ëª¨ë“  ì½œë¼ì´ë” í¬í•¨)
+    bool PlayerGrounded() => playerRb ? playerRb.IsTouchingLayers(groundMask) : true;
+    bool BoxGrounded() => currentBox ? currentBox.IsTouchingLayers(groundMask) : false;
 
     void Engage(Rigidbody2D boxRb, Collider2D boxCol, int dirToBox)
     {
@@ -100,15 +121,17 @@ public class BoxPushAssist2D : MonoBehaviour
         pushDir = dirToBox;
         isActive = true;
 
-        // ¥Äx ±âÁØ ¼³Á¤
+        // Î”x ê¸°ì¤€ ì„¤ì •
         prevPlayerX = playerRb ? playerRb.position.x : transform.position.x;
 
-        // ÇÃ·¹ÀÌ¾î ¼Óµµ ³·Ãß±â(ÀÖÀ» ¶§¸¸)
+        // í”Œë ˆì´ì–´ ì†ë„ ë‚®ì¶”ê¸°(ìˆì„ ë•Œë§Œ)
         if (playerMove != null)
         {
             cachedPlayerMoveSpeed = playerMove.moveSpeed;
             playerMove.moveSpeed = pushPlayerMoveSpeed;
         }
+
+        StartPushSfx();
 
         if (debug) Debug.Log($"[BoxPushAssist2D] engage -> {currentBox.name}, dir={pushDir}");
     }
@@ -116,12 +139,15 @@ public class BoxPushAssist2D : MonoBehaviour
     void Release()
     {
         if (debug && isActive) Debug.Log("[BoxPushAssist2D] release");
+
+        StopPushSfx();
+
         isActive = false;
         currentBox = null;
         currentBoxCol = null;
         pushDir = 0;
 
-        // ¼Óµµ ¿øº¹
+        // ì†ë„ ì›ë³µ
         if (playerMove != null && cachedPlayerMoveSpeed >= 0f)
         {
             playerMove.moveSpeed = cachedPlayerMoveSpeed;
@@ -133,10 +159,10 @@ public class BoxPushAssist2D : MonoBehaviour
     {
         if (!isActive) return;
 
-        // Á¢ÃË À¯¿¹ Á¾·á ¡æ ÇØÁ¦
+        // ì ‘ì´‰ ìœ ì˜ˆ ì¢…ë£Œ â†’ í•´ì œ
         if (Time.time - lastContactTime > contactKeepAlive) { Release(); return; }
 
-        // ¹İ´ë ÀÌµ¿/Á¤Áö/°øÁß ¡æ ÇØÁ¦
+        // ë°˜ëŒ€ ì´ë™/ì •ì§€/ê³µì¤‘/ë°•ìŠ¤ë¯¸ì ‘ì§€ â†’ í•´ì œ
         float pvx = playerRb ? playerRb.linearVelocity.x : 0f;
         if (Mathf.Abs(pvx) < 0.0001f || Mathf.Sign(pvx) != pushDir) { Release(); return; }
         if (cancelWhenPlayerAirborne && !PlayerGrounded()) { Release(); return; }
@@ -144,15 +170,15 @@ public class BoxPushAssist2D : MonoBehaviour
 
         if (!currentBox) { Release(); return; }
 
-        // ÇÃ·¹ÀÌ¾î ¥Äx¸¸Å­ ¹Ú½º MovePosition (°¡·Î¸¸)
+        // í”Œë ˆì´ì–´ Î”xë§Œí¼ ë°•ìŠ¤ MovePosition (ê°€ë¡œë§Œ)
         float playerX = playerRb ? playerRb.position.x : transform.position.x;
-        float dx = playerX - prevPlayerX;          // ÀÌ¹ø Fixed ½ºÅÜ¿¡¼­ ÇÃ·¹ÀÌ¾î°¡ ¿òÁ÷ÀÎ ¾ç
+        float dx = playerX - prevPlayerX;          // ì´ë²ˆ Fixed ìŠ¤í…ì—ì„œ í”Œë ˆì´ì–´ê°€ ì›€ì§ì¸ ì–‘
         prevPlayerX = playerX;
 
-        // °°Àº ¹æÇâÀÏ ¶§¸¸ Àû¿ë
+        // ê°™ì€ ë°©í–¥ì¼ ë•Œë§Œ ì ìš©
         if (Mathf.Abs(dx) > 0.00001f && Mathf.Sign(dx) == pushDir)
         {
-            float maxDx = maxPushSpeed * Time.fixedDeltaTime; // ¾ÈÀüÄ¸
+            float maxDx = maxPushSpeed * Time.fixedDeltaTime; // ì•ˆì „ìº¡
             float move = Mathf.Clamp(dx, -maxDx, maxDx);
             Vector2 next = currentBox.position + new Vector2(move, 0f);
             currentBox.MovePosition(next);
@@ -161,34 +187,35 @@ public class BoxPushAssist2D : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D c)
     {
-        // Box ·¹ÀÌ¾î¸¸ °ü½É
+        // Box ë ˆì´ì–´ë§Œ ê´€ì‹¬
         if ((boxMask & (1 << c.collider.gameObject.layer)) == 0) return;
 
-        // Á¢ÃË À¯Áö ±â·Ï
-        lastContactTime = Time.time;
+        // í™œì„± ì¤‘ì—ëŠ” 'í˜„ì¬ ë°€ê³  ìˆëŠ” ë°•ìŠ¤'ì™€ì˜ ì ‘ì´‰ì¼ ë•Œë§Œ keepAlive ì—°ì¥
+        if (!isActive || c.collider == currentBoxCol)
+            lastContactTime = Time.time;
 
-        // ¨ç Ç×»ó: Á¢ÃË Áï½Ã ¹Ú½º °¡·Î ¼Óµµ 0(°ü¼º Á¦°Å)
+        // â‘  í•­ìƒ: ì ‘ì´‰ ì¦‰ì‹œ ë°•ìŠ¤ ê°€ë¡œ ì†ë„ 0(ê´€ì„± ì œê±°)
         if (c.rigidbody != null)
         {
             var v = c.rigidbody.linearVelocity;
             if (Mathf.Abs(v.x) > 0.0001f) { v.x = 0f; c.rigidbody.linearVelocity = v; }
         }
 
-        // ¨è È°¼ºÈ­µÇÁö ¾Ê¾Ò´Ù¸é Á¶°Ç ¸ÂÀ¸¸é Engage
+        // â‘¡ ì•„ì§ ë¹„í™œì„± â†’ ì¡°ê±´ ë§ìœ¼ë©´ Engage
         if (!isActive)
         {
             if (!playerRb) return;
 
             float pvx = playerRb.linearVelocity.x;
-            if (!PlayerGrounded()) return; // Á¡ÇÁ Áß¿£ ½ÃÀÛ ¾È ÇÔ
+            if (requireGroundedToEngage && !PlayerGrounded()) return; // ì ‘ì§€ í•„ìˆ˜ ì˜µì…˜
             if (Mathf.Abs(pvx) < engageMinPlayerSpeed) return;
 
-            // ¹Ú½º°¡ ÇÃ·¹ÀÌ¾îÀÇ ¾î´À ÂÊ¿¡ ÀÖ´ÂÁö ¡æ ÀüÁø ÁßÀÎÁö È®ÀÎ
+            // ë°•ìŠ¤ê°€ í”Œë ˆì´ì–´ì˜ ì–´ëŠ ìª½ì— ìˆëŠ”ì§€ â†’ ì „ì§„ ì¤‘ì¸ì§€ í™•ì¸
             float dx = c.transform.position.x - transform.position.x;
             int dirToBox = dx >= 0f ? +1 : -1;
             if (Mathf.Sign(pvx) != dirToBox) return;
 
-            if (c.rigidbody == null) return; // Rigidbody2D ¾ø´Â ´ë»ó Á¦¿Ü
+            if (c.rigidbody == null) return; // Rigidbody2D ì—†ëŠ” ëŒ€ìƒ ì œì™¸
 
             Engage(c.rigidbody, c.collider, dirToBox);
         }
@@ -199,9 +226,41 @@ public class BoxPushAssist2D : MonoBehaviour
         if (!isActive) return;
         if (currentBoxCol == c.collider)
         {
-            // Á¢ÃË À¯¿¹ Å¸ÀÌ¸Ó·Î À¯Áö, Áï½Ã ²÷Áö´Â ¾ÊÀ½
+            // ì ‘ì´‰ ìœ ì˜ˆ íƒ€ì´ë¨¸ë¡œ ìœ ì§€, ì¦‰ì‹œ ëŠì§€ëŠ” ì•ŠìŒ
         }
     }
+
+    private void StartPushSfx()
+    {
+        if (!currentBox) return;
+
+        // ê°™ì€ ë°•ìŠ¤ì—ì„œ ì´ë¯¸ ì¬ìƒ ì¤‘ì´ë©´ ë¬´ì‹œ
+        if (_activePushLoop == pushLoopName && _activeLoopTarget == currentBox.transform) return;
+
+        // ì´ì „ ë£¨í”„ê°€ ë‚¨ì•„ ìˆìœ¼ë©´ ì •ë¦¬(ë‹¤ë¥¸ ë°•ìŠ¤ì—ì„œ ë„˜ì–´ì˜¨ ê²½ìš° ë“±)
+        StopPushSfx();
+
+        // ë°•ìŠ¤ Transform ê¸°ì¤€ìœ¼ë¡œ ë£¨í”„ ì‹œì‘(í”Œë ˆì´ì–´ê°€ ì•„ë‹ˆë¼ ë°•ìŠ¤ì—ì„œ ì¬ìƒ)
+        SoundManager.StartLoop(pushLoopName, currentBox.transform);
+        _activePushLoop = pushLoopName;
+        _activeLoopTarget = currentBox.transform;
+
+        if (debug) Debug.Log($"[BoxPushAssist2D] SFX start on {currentBox.name}");
+    }
+
+    private void StopPushSfx()
+    {
+        if (string.IsNullOrEmpty(_activePushLoop)) return;
+
+        SoundManager.StopLoop(_activePushLoop, graceful: true);
+        _activePushLoop = null;
+        _activeLoopTarget = null;
+
+        if (debug) Debug.Log("[BoxPushAssist2D] SFX stop");
+    }
+
+    void OnDisable() { StopPushSfx(); }
+    void OnDestroy() { StopPushSfx(); }
 
     void OnDrawGizmosSelected()
     {

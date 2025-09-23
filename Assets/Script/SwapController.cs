@@ -8,6 +8,7 @@ public class SwapController : MonoBehaviour
     public PlayerMouseMovement carry;
     public Player1HP dead;
     public bool coubt;
+    public bool soundcount = true;
     public PlayerChar Current; // 실제 프로젝트의 소스 오브 트루스
 
     void Update()
@@ -35,6 +36,7 @@ public class SwapController : MonoBehaviour
             {
                 // P1 <-> P2 토글
                 charSelect = (charSelect == PlayerChar.P1) ? PlayerChar.P2 : PlayerChar.P1;
+             
                 Debug.Log($"[SwapController] 현재 선택 = {charSelect}");
             }
         }

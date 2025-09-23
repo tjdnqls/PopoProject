@@ -18,6 +18,9 @@ public class Player1HP : MonoBehaviour, global::IDamageable
     public bool Dead = false;
     public SmartCameraFollowByWall swap;
     public Animator rb2;
+    // Player1HP 필드 구역 어딘가
+    [SerializeField] private float hurtDuration = 0.2f;
+    private Coroutine _hurtCo;
 
     [Header("Layers (사망 시 Ground로 변경)")]
     [SerializeField] private string groundLayerName = "Ground";
@@ -74,8 +77,17 @@ public class Player1HP : MonoBehaviour, global::IDamageable
         }
         else
         {
+            if (rb2)
+            {
+                rb2.SetBool("hurt", true);
+                SoundManager.Play("KnightHit", transform);
+                // 이전 타이머 있으면 리셋
+                if (_hurtCo != null) StopCoroutine(_hurtCo);
+                _hurtCo = StartCoroutine(HurtOffAfter(hurtDuration));
+            }
+
             CameraShaker.Shake(0.5f, 0.2f);
-            HpChanged?.Invoke(CurrentHP, maxHP); // ★ 감소 알림
+            HpChanged?.Invoke(CurrentHP, maxHP);
         }
     }
 
@@ -240,6 +252,12 @@ public class Player1HP : MonoBehaviour, global::IDamageable
             if (landStaticDelay > 0f) yield return new WaitForSeconds(landStaticDelay);
             MakeStaticAndGroundNow();
         }
+    }
+    private System.Collections.IEnumerator HurtOffAfter(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        if (!IsDead && rb2) rb2.SetBool("hurt", false);
+        _hurtCo = null;
     }
 
     private void MakeStaticAndGroundNow()

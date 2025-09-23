@@ -8,12 +8,6 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
-    [Header("Edit Mode")]
-    [Tooltip("에디터 편집 모드에서도 사운드를 들을 수 있게 허용합니다. (권장: 꺼두기)")]
-    public bool allowEditModePlayback = false;
-
-    // ============ 데이터 모델 ============
-
     public enum LoopMode { None, Continuous, RetriggerWithCooldown }
     public enum SubMode { None, Alternate, Simultaneous }
 
@@ -30,25 +24,18 @@ public class SoundManager : MonoBehaviour
         public List<AudioClip> subClips = new List<AudioClip>();
 
         [Header("Play Window (sec)")]
-        [Tooltip("이 시점부터 재생(0이면 처음부터)")]
         [Min(0f)] public float startAt = 0f;
-        [Tooltip("이 시점까지만 재생(0이거나 startAt보다 작/같으면 전체 길이)")]
         [Min(0f)] public float endAt = 0f;
 
         [Header("Volume/Pitch")]
         [Range(0f, 1f)] public float volume = 1f;
         [Range(0f, 3f)] public float pitch = 1f;
-        [Tooltip("볼륨 랜덤 ±범위(0~1). 예: 0.1 → 0.9~1.1 배")]
         [Range(0f, 1f)] public float volumeRandom = 0f;
-        [Tooltip("피치 랜덤 ±범위(0~1). 예: 0.05 → 0.95~1.05 배")]
         [Range(0f, 1f)] public float pitchRandom = 0f;
 
         [Header("Space / Follow")]
-        [Tooltip("0=2D, 1=3D(입체)")]
-        [Range(0f, 1f)] public float spatialBlend = 0f;
-        [Tooltip("재생 중 위치 트랜스폼을 추적할지")]
+        [Range(0f, 1f)] public float spatialBlend = 0f; // 0=2D, 1=3D
         public bool followTarget = true;
-        [Tooltip("3D 거리 감쇠")]
         public AudioRolloffMode rolloff = AudioRolloffMode.Logarithmic;
         public float minDistance = 1f;
         public float maxDistance = 20f;
@@ -57,33 +44,29 @@ public class SoundManager : MonoBehaviour
 
         [Header("Loop / Cooldown")]
         public LoopMode loopMode = LoopMode.None;
-        [Tooltip("Continuous 모드에선 반복 간격, Retrigger 모드에선 최소 재트리거 간격")]
         [Min(0f)] public float cooldown = 0.2f;
-        [Tooltip("StopLoop 시 현재 재생 중인 보이스는 끝까지 두고 종료")]
         public bool gracefulStopLoop = true;
 
         [Header("Sub Sound Mode")]
         public SubMode subMode = SubMode.None;
-        [Tooltip("교차 모드일 때 첫 재생에 서브를 먼저 시작")]
         public bool startWithSub = false;
-        [Tooltip("Simultaneous 또는 Alternate에서 서로 간 지연(초)")]
         [Min(0f)] public float subDelay = 0f;
 
         [Header("Polyphony / Mixer")]
-        [Tooltip("동시 재생 가능 수")]
         [Min(1)] public int maxVoices = 8;
-        [Tooltip("가득 찼을 때 가장 오래된 보이스를 제거하고 재생")]
         public bool stealOldestOnLimit = true;
         public AudioMixerGroup outputMixerGroup;
-        [Range(0, 256)] public int priority = 128; // 낮을수록 우선
+        [Range(0, 256)] public int priority = 128;
 
         [Header("Advanced")]
-        [Tooltip("이 사운드의 기본 위치(비워두면 호출 시 전달 Transform/좌표 사용)")]
         public Transform defaultAnchor;
+
+        [Header("FX")]
+        [Tooltip("클립 끝에서 자동으로 볼륨을 서서히 0으로 (초). 0=끄기")]
+        [Min(0f)] public float tailFadeSeconds = 0.08f; // ★ 추가
     }
 
-    // ============ 풀 & 런타임 ============
-
+    // ---------- 런타임 ----------
     private class Voice
     {
         public AudioSource src;
@@ -92,14 +75,17 @@ public class SoundManager : MonoBehaviour
         public string soundName;
         public double scheduledEnd;  // dspTime
         public bool inUse;
+
+        public Coroutine fadeCo;     // ★ 추가: 꼬리 페이드
     }
 
     private class SoundRuntime
     {
         public bool looping;
-        public bool nextIsSub;      // Alternate용
+        public bool nextIsSub;
         public double lastTriggerDsp;
         public Coroutine loopCo;
+        public readonly List<Voice> voices = new List<Voice>();
     }
 
     [Header("Library")]
@@ -110,32 +96,31 @@ public class SoundManager : MonoBehaviour
 
     private readonly Dictionary<string, SoundDef> _map = new();
     private readonly Dictionary<string, SoundRuntime> _run = new();
-
     private readonly List<Voice> _pool = new();
-    private readonly List<Voice> _tempToRelease = new();
-
-    // ============ 라이프사이클 ============
 
     private void Awake()
     {
         if (Instance && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-
-        // 매니저만 영속화 (보이스는 항상 매니저의 자식으로 유지)
         DontDestroyOnLoad(gameObject);
 
         BuildMap();
+        for (int i = 0; i < prewarmVoices; i++) _pool.Add(CreateVoice());
 
-        for (int i = 0; i < prewarmVoices; i++)
-            _pool.Add(CreateVoice());
+#if UNITY_EDITOR
+        AudioListener.pause = false;
+        AudioListener.volume = 1f;
+#endif
     }
 
     private void LateUpdate()
     {
-        // 팔로우 & 정리
+#if UNITY_EDITOR
+        if (AudioListener.pause) AudioListener.pause = false;
+        if (AudioListener.volume <= 0.0001f) AudioListener.volume = 1f;
+#endif
         double now = AudioSettings.dspTime;
-
-        for (int i = 0; i < _pool.Count; i++)
+        for (int i = _pool.Count - 1; i >= 0; i--)
         {
             var v = _pool[i];
             if (!v.inUse) continue;
@@ -143,45 +128,29 @@ public class SoundManager : MonoBehaviour
             if (v.follow && v.anchor)
                 v.src.transform.position = v.anchor.position;
 
-            // isPlaying이 false 여도 scheduledEnd가 남아 있을 수 있음 → dsp 기준으로 종료 판단
             if (!v.src.isPlaying && now >= v.scheduledEnd - 0.001)
                 ReleaseVoice(v);
         }
     }
 
-    private void OnDestroy()
-    {
-        // 코루틴 정리
-        foreach (var kv in _run)
-        {
-            var rt = kv.Value;
-            if (rt.loopCo != null) StopCoroutine(rt.loopCo);
-        }
-        _run.Clear();
-    }
-
-    // ============ 맵/보이스 풀 ============
-
     private void BuildMap()
     {
-        _map.Clear();
+        _map.Clear(); _run.Clear();
         foreach (var s in sounds)
         {
-            if (string.IsNullOrEmpty(s.name)) continue;
+            if (string.IsNullOrWhiteSpace(s.name)) continue;
             if (!_map.ContainsKey(s.name)) _map.Add(s.name, s);
-            if (!_run.ContainsKey(s.name)) _run.Add(s.name, new SoundRuntime { nextIsSub = s.startWithSub });
+            if (!_run.ContainsKey(s.name))
+                _run.Add(s.name, new SoundRuntime { nextIsSub = s.startWithSub, lastTriggerDsp = -9999 });
         }
     }
 
     private Voice CreateVoice()
     {
         var go = new GameObject("SFXVoice");
-        // 🔵 항상 매니저의 자식으로 두고, 씬 저장을 방해하는 HideFlags는 쓰지 않는다.
         go.transform.SetParent(transform, false);
-        go.hideFlags = HideFlags.None;
 
         var src = go.AddComponent<AudioSource>();
-        src.hideFlags = HideFlags.None;
         src.playOnAwake = false;
         src.loop = false;
         src.spatialBlend = 0f;
@@ -192,20 +161,11 @@ public class SoundManager : MonoBehaviour
         src.spread = 0f;
         src.priority = 128;
 
-        return new Voice
-        {
-            src = src,
-            inUse = false,
-            follow = false,
-            soundName = null,
-            anchor = null,
-            scheduledEnd = 0
-        };
+        return new Voice { src = src, inUse = false };
     }
 
     private Voice AcquireVoice(SoundDef def, string name)
     {
-        // 동시 재생 수 체크
         int activeCount = 0;
         for (int i = 0; i < _pool.Count; i++)
             if (_pool[i].inUse && _pool[i].soundName == name) activeCount++;
@@ -214,7 +174,6 @@ public class SoundManager : MonoBehaviour
         {
             if (!def.stealOldestOnLimit) return null;
 
-            // 가장 먼저 끝나는(=scheduledEnd가 가장 이른) 보이스를 해제
             Voice oldest = null;
             double oldestEnd = double.MaxValue;
             for (int i = 0; i < _pool.Count; i++)
@@ -226,7 +185,6 @@ public class SoundManager : MonoBehaviour
             if (oldest != null) ReleaseVoice(oldest);
         }
 
-        // 빈 보이스 사용
         for (int i = 0; i < _pool.Count; i++)
             if (!_pool[i].inUse)
             {
@@ -236,7 +194,6 @@ public class SoundManager : MonoBehaviour
                 return v;
             }
 
-        // 부족하면 새로 생성
         var nv = CreateVoice();
         nv.inUse = true;
         nv.soundName = name;
@@ -244,115 +201,76 @@ public class SoundManager : MonoBehaviour
         return nv;
     }
 
+    private void StopFade(Voice v)
+    {
+        if (v.fadeCo != null)
+        {
+            StopCoroutine(v.fadeCo);
+            v.fadeCo = null;
+        }
+    }
+
     private void ReleaseVoice(Voice v)
     {
         if (!v.inUse) return;
+        StopFade(v);
         v.inUse = false;
-
-        if (v.src)
-        {
-            v.src.Stop();
-            v.src.clip = null;
-        }
-
+        v.src.Stop();
+        v.src.volume = 1f;   // 리셋
+        v.src.clip = null;
         v.anchor = null;
         v.follow = false;
         v.soundName = null;
         v.scheduledEnd = 0;
     }
 
-    // ============ 퍼블릭 API (간편 호출) ============
-
-    // 편집 모드 보호
-    private bool CanPlayNow()
-    {
-        return Application.isPlaying || allowEditModePlayback;
-    }
-
-    public static void Play(string name, Transform at = null)
-    {
-        if (Instance == null) return;
-        if (!Instance.CanPlayNow()) return;
-        Instance.PlayOneShot(name, at, null);
-    }
-
-    public static void PlayAt(string name, Vector3 worldPos)
-    {
-        if (Instance == null) return;
-        if (!Instance.CanPlayNow()) return;
-        Instance.PlayOneShot(name, null, worldPos);
-    }
-
+    // ---------- 퍼블릭 API ----------
+    public static void Play(string name, Transform at = null) => Instance?.PlayOneShot(name, at, null);
+    public static void PlayAt(string name, Vector3 worldPos) => Instance?.PlayOneShot(name, null, worldPos);
     public static void StartLoop(string name, Transform at = null, bool restartIfRunning = false)
-    {
-        if (Instance == null) return;
-        if (!Instance.CanPlayNow()) return;
-        Instance.BeginLoop(name, at, null, restartIfRunning);
-    }
-
+        => Instance?.BeginLoop(name, at, null, restartIfRunning);
     public static void StartLoopAt(string name, Vector3 worldPos, bool restartIfRunning = false)
-    {
-        if (Instance == null) return;
-        if (!Instance.CanPlayNow()) return;
-        Instance.BeginLoop(name, null, worldPos, restartIfRunning);
-    }
+        => Instance?.BeginLoop(name, null, worldPos, restartIfRunning);
+    public static void StopLoop(string name, bool graceful = true) => Instance?.EndLoop(name, graceful);
+    public static void StopAll(string name) => Instance?.StopAllVoices(name);
 
-    public static void StopLoop(string name, bool graceful = true)
-    {
-        if (Instance == null) return;
-        Instance.EndLoop(name, graceful);
-    }
-
-    public static void StopAll(string name)
-    {
-        if (Instance == null) return;
-        Instance.StopAllVoices(name);
-    }
-
-    // ============ 본체 구현 ============
-
+    // ---------- 본체 ----------
     public void PlayOneShot(string name, Transform at, Vector3? worldPosOverride)
     {
-        if (!CanPlayNow()) return;
         if (string.IsNullOrEmpty(name) || !_map.TryGetValue(name, out var def)) return;
 
         var rt = _run[name];
         double now = AudioSettings.dspTime;
 
-        // RetriggerWithCooldown: 트리거 쿨다운
         if (def.loopMode == LoopMode.RetriggerWithCooldown && (now - rt.lastTriggerDsp) < def.cooldown)
             return;
-
-        // 어떤 세트를 쓸지(서브 모드)
-        if (def.subMode == SubMode.Simultaneous && def.enableSub && def.subClips.Count > 0)
-        {
-            // 동시에
-            PlayClipOnce(def, useSub: false, when: now, at: at, worldPosOverride: worldPosOverride);
-            double when2 = def.subDelay > 0f ? now + def.subDelay : now;
-            PlayClipOnce(def, useSub: true, when: when2, at: at, worldPosOverride: worldPosOverride);
-            _run[name].lastTriggerDsp = now;
-            return;
-        }
 
         bool useSub = false;
         double when = now;
 
         if (def.subMode == SubMode.Alternate && def.enableSub && def.subClips.Count > 0)
         {
-            useSub = _run[name].nextIsSub;
-            _run[name].nextIsSub = !useSub;
+            useSub = rt.nextIsSub;
+            rt.nextIsSub = !rt.nextIsSub;
             if (def.subDelay > 0f) when += (useSub ? 0f : def.subDelay);
+        }
+        else if (def.subMode == SubMode.Simultaneous && def.enableSub && def.subClips.Count > 0)
+        {
+            PlayClipOnce(def, false, now, at, worldPosOverride);
+            double when2 = def.subDelay > 0f ? now + def.subDelay : now;
+            PlayClipOnce(def, true, when2, at, worldPosOverride);
+            rt.lastTriggerDsp = now;
+            return;
         }
 
         PlayClipOnce(def, useSub, when, at, worldPosOverride);
-        _run[name].lastTriggerDsp = now;
+        rt.lastTriggerDsp = now;
     }
 
     public void BeginLoop(string name, Transform at, Vector3? worldPosOverride, bool restartIfRunning)
     {
-        if (!CanPlayNow()) return;
         if (string.IsNullOrEmpty(name) || !_map.TryGetValue(name, out var def)) return;
-        if (!_run.TryGetValue(name, out var rt)) return;
+        var rt = _run[name];
 
         if (rt.looping && !restartIfRunning) return;
         if (rt.loopCo != null) { StopCoroutine(rt.loopCo); rt.loopCo = null; }
@@ -364,17 +282,13 @@ public class SoundManager : MonoBehaviour
     public void EndLoop(string name, bool graceful)
     {
         if (string.IsNullOrEmpty(name) || !_map.TryGetValue(name, out var def)) return;
-        if (!_run.TryGetValue(name, out var rt)) return;
+        var rt = _run[name];
 
         rt.looping = false;
         if (rt.loopCo != null) { StopCoroutine(rt.loopCo); rt.loopCo = null; }
 
-        if (!def.gracefulStopLoop)
-            graceful = false;
-
-        if (!graceful)
-            StopAllVoices(name); // 즉시 강제 정지
-        // graceful 이면 현재 보이스는 끝까지 둔다(자동 해제)
+        if (!def.gracefulStopLoop) graceful = false;
+        if (!graceful) StopAllVoices(name);
     }
 
     public void StopAllVoices(string name)
@@ -387,8 +301,6 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // ============ 내부 동작 ============
-
     private System.Collections.IEnumerator CoLoop(SoundDef def, string name, Transform at, Vector3? worldPosOverride)
     {
         var rt = _run[name];
@@ -397,31 +309,35 @@ public class SoundManager : MonoBehaviour
         {
             double now = AudioSettings.dspTime;
 
+            // ★ 루프에도 쿨다운 게이트
+            if (def.loopMode == LoopMode.RetriggerWithCooldown)
+            {
+                double nextAllowed = rt.lastTriggerDsp + Math.Max(0.0001f, def.cooldown);
+                while (rt.looping && AudioSettings.dspTime < nextAllowed)
+                    yield return null;
+                if (!rt.looping) yield break;
+            }
+
+            now = AudioSettings.dspTime;
+
             if (def.subMode == SubMode.Simultaneous && def.enableSub && def.subClips.Count > 0)
             {
-                // 동시에
-                PlayClipOnce(def, useSub: false, when: now, at: at, worldPosOverride: worldPosOverride);
+                PlayClipOnce(def, false, now, at, worldPosOverride);
                 double when2 = def.subDelay > 0f ? now + def.subDelay : now;
-                PlayClipOnce(def, useSub: true, when: when2, at: at, worldPosOverride: worldPosOverride);
+                PlayClipOnce(def, true, when2, at, worldPosOverride);
             }
             else
             {
-                // 교차/없음
-                bool useSub = (def.subMode == SubMode.Alternate && def.enableSub && def.subClips.Count > 0)
-                              ? rt.nextIsSub : false;
+                bool useSub = (def.subMode == SubMode.Alternate && def.enableSub && def.subClips.Count > 0) ? rt.nextIsSub : false;
                 PlayClipOnce(def, useSub, now, at, worldPosOverride);
                 if (def.subMode == SubMode.Alternate && def.enableSub && def.subClips.Count > 0)
                     rt.nextIsSub = !rt.nextIsSub;
             }
 
-            // 다음 트리거까지 대기 (쿨다운 간격)
+            rt.lastTriggerDsp = AudioSettings.dspTime;
+
             float wait = Mathf.Max(0.01f, def.cooldown);
-            if (def.loopMode == LoopMode.Continuous)
-            {
-                // 재생 구간 길이만큼은 최소 보장
-                var dur = GetPlayDuration(def);
-                wait = Mathf.Max(wait, dur);
-            }
+            if (def.loopMode == LoopMode.Continuous) wait = Mathf.Max(wait, GetPlayDuration(def));
 
             float t = 0f;
             while (rt.looping && t < wait) { t += Time.unscaledDeltaTime; yield return null; }
@@ -430,18 +346,11 @@ public class SoundManager : MonoBehaviour
 
     private void PlayClipOnce(SoundDef def, bool useSub, double when, Transform at, Vector3? worldPosOverride)
     {
-
         var clips = (!useSub) ? def.mainClips : def.subClips;
         if (clips == null || clips.Count == 0) return;
 
         var clip = clips[UnityEngine.Random.Range(0, clips.Count)];
         if (!clip) return;
-
-        if (clips == null || clips.Count == 0)
-        {
-            Debug.LogWarning($"[SFX] '{def.name}'에 재생할 클립이 없습니다.");
-            return;
-        }
 
         float start = Mathf.Clamp(def.startAt, 0f, Mathf.Max(0f, clip.length - 0.0001f));
         float end = (def.endAt > start + 0.0001f) ? Mathf.Min(def.endAt, clip.length) : clip.length;
@@ -453,19 +362,16 @@ public class SoundManager : MonoBehaviour
         var v = AcquireVoice(def, def.name);
         if (v == null) return;
 
-        // 위치/팔로우 (부모로 붙이지 않고 팔로우만 한다)
+        // 위치/팔로우
         v.anchor = at ? at : def.defaultAnchor;
         v.follow = def.followTarget && (v.anchor != null);
         var pos = worldPosOverride ?? (v.anchor ? v.anchor.position : Vector3.zero);
         v.src.transform.position = pos;
 
-        // 오디오 소스 파라미터
+        // 공통 파라미터
         var s = v.src;
         s.outputAudioMixerGroup = def.outputMixerGroup;
-        s.clip = clip;
         s.priority = def.priority;
-        s.volume = volume;
-        s.pitch = pitch;
         s.spatialBlend = def.spatialBlend;
         s.rolloffMode = def.rolloff;
         s.minDistance = def.minDistance;
@@ -473,31 +379,71 @@ public class SoundManager : MonoBehaviour
         s.dopplerLevel = def.dopplerLevel;
         s.spread = def.spread;
         s.loop = false;
+        s.ignoreListenerPause = true;
 
-        // 시작/종료 스케줄 (DSP)
-        s.time = start; // 시작 오프셋
-        double now = AudioSettings.dspTime;
-        if (when > now + 0.0005) s.PlayScheduled(when);
-        else s.Play(); // 즉시
-                       // SoundManager.PlayClipOnce(...)의 디버그용 계산
-        var lp = AudioRuntime.Listener
-            ? AudioRuntime.Listener.position
-            : (Camera.main ? Camera.main.transform.position : Vector3.zero);
+        StopFade(v); // 재사용 시 이전 페이드 중지
 
-        float dist = Vector3.Distance(lp, s.transform.position);
-        Debug.Log($"[SFX] {def.name} '{s.clip?.name}' vol={s.volume:0.##}, spatial={s.spatialBlend:0.##}, min={s.minDistance}, max={s.maxDistance}, dist={dist:0.0}, mixer={(s.outputAudioMixerGroup ? s.outputAudioMixerGroup.name : "None")}");
+        bool fullSpan = (Mathf.Approximately(start, 0f) && Mathf.Abs(end - clip.length) < 0.0001f);
+        bool allowOneShot = Mathf.Approximately(def.spatialBlend, 0f) && fullSpan && def.tailFadeSeconds <= 0f; // ★ 페이드가 있으면 일반 재생
 
+        if (allowOneShot)
+        {
+            // 간단 경로
+            s.volume = 1f; // PlayOneShot의 volumeScale로 적용
+            s.PlayOneShot(clip, volume);
+            v.scheduledEnd = AudioSettings.dspTime + (playDur / pitch);
+            return;
+        }
 
-        double startDsp = (when > 0 ? when : now);
-        double endDsp = startDsp + (playDur / Mathf.Max(0.001f, pitch));
-        s.SetScheduledEndTime(endDsp);
+        // 일반 경로(페이드 지원)
+        s.clip = clip;
+        s.pitch = pitch;
+        s.volume = volume;
+
+        s.time = start;
+        if (when > AudioSettings.dspTime + 0.0005) s.PlayScheduled(when);
+        else s.Play();
+
+        double startDsp = (when > 0 ? when : AudioSettings.dspTime);
+        double endDsp = startDsp + (playDur / pitch);
+
+        // 부분 재생이면 DSP로 끝 잘라주기
+        if (!fullSpan || !Mathf.Approximately(def.spatialBlend, 0f))
+            s.SetScheduledEndTime(endDsp);
 
         v.scheduledEnd = endDsp;
+
+        // ★ 꼬리 페이드 스케줄
+        if (def.tailFadeSeconds > 0f)
+        {
+            v.fadeCo = StartCoroutine(CoFadeOutAt(v, def.tailFadeSeconds));
+        }
+    }
+
+    private System.Collections.IEnumerator CoFadeOutAt(Voice v, float fadeSec)
+    {
+        var s = v.src;
+        double startAt = v.scheduledEnd - fadeSec;
+
+        // 페이드 시작 시점까지 대기
+        while (v.inUse && AudioSettings.dspTime < startAt)
+            yield return null;
+
+        // 페이드
+        float t = 0f;
+        float startVol = s.volume;
+        while (v.inUse && t < fadeSec)
+        {
+            t += Time.unscaledDeltaTime;
+            float k = 1f - Mathf.Clamp01(t / fadeSec);
+            s.volume = startVol * k;
+            yield return null;
+        }
+        v.fadeCo = null;
     }
 
     private float GetPlayDuration(SoundDef def)
     {
-        // 평균 길이 대신 첫 클립 기준으로 대충 계산
         AudioClip c = null;
         if (def.mainClips != null && def.mainClips.Count > 0) c = def.mainClips[0];
         if (!c) return def.cooldown;
@@ -509,10 +455,31 @@ public class SoundManager : MonoBehaviour
         return dur / pitch;
     }
 
-    // ============ 에디터/런타임 유틸 ============
-
     [ContextMenu("Rebuild Map")]
     private void RebuildMapContext() => BuildMap();
 
-    // (옵션) 런타임에 사운드 등록/수정이 필요하면 여기에 API 추가하세요.
+#if UNITY_EDITOR
+    [ContextMenu("DEBUG Ping Beep")]
+    private void DebugPingBeep()
+    {
+        int hz = 440;
+        float sec = 0.2f;
+        int sr = AudioSettings.outputSampleRate > 0 ? AudioSettings.outputSampleRate : 48000;
+        int samples = Mathf.CeilToInt(sr * sec);
+
+        var clip = AudioClip.Create("dbg_beep", samples, 1, sr, false);
+        var data = new float[samples];
+        for (int i = 0; i < samples; i++) data[i] = Mathf.Sin(2f * Mathf.PI * hz * i / sr) * 0.2f;
+        clip.SetData(data, 0);
+
+        var go = new GameObject("Beep (temp)");
+        var src = go.AddComponent<AudioSource>();
+        src.spatialBlend = 0f;
+        src.ignoreListenerPause = true;
+        src.PlayOneShot(clip, 1f);
+
+        if (Application.isPlaying) Destroy(go, 1f);
+        else DestroyImmediate(go);
+    }
+#endif
 }

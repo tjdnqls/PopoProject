@@ -139,6 +139,7 @@ public class P2RangeDetectPopupFacing : MonoBehaviour
     {
         _isShowing = true;
 
+        SoundManager.Play("PrincessEmotion_0", transform);
         _popup.SetActive(true);
         UpdatePopupTransform();
 
