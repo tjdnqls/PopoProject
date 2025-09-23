@@ -573,6 +573,11 @@ Sprite:
   m_Bones: []
   m_ScriptableObjects: []
   m_SpriteID: 
+--- !u!4 &91902992 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7538387726173352161, guid: e6c89c517fe61d14ab5af4306cca7835, type: 3}
+  m_PrefabInstance: {fileID: 5507020911276838124}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &107822358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4702,23 +4707,23 @@ MonoBehaviour:
   - point: {fileID: 1384139896}
     waitSeconds: 0
     shakeOnArrive: 0
-    shakeIntensity: 0.8
-    shakeDuration: 0.12
+    shakeIntensity: 0
+    shakeDuration: 0
   - point: {fileID: 938077043}
     waitSeconds: 0
     shakeOnArrive: 0
-    shakeIntensity: 0.8
-    shakeDuration: 0.12
+    shakeIntensity: 0
+    shakeDuration: 0
   - point: {fileID: 368483154}
     waitSeconds: 0
     shakeOnArrive: 1
-    shakeIntensity: 0.8
-    shakeDuration: 3
+    shakeIntensity: 0
+    shakeDuration: 0
   - point: {fileID: 1268654997}
     waitSeconds: 0
     shakeOnArrive: 0
-    shakeIntensity: 0.8
-    shakeDuration: 0.12
+    shakeIntensity: 0
+    shakeDuration: 0
   pathMode: 0
   moveMode: 0
   speed: 2.5
@@ -42138,6 +42143,10 @@ MonoBehaviour:
   pivotMoverIndex: 0
   pivotColliderOverride: {fileID: 0}
   alignPathToPivotAtStart: 0
+  useMoveLoop: 1
+  moveLoopKey: MovingPlatform
+  moveLoopAttach: {fileID: 0}
+  moveEpsilon: 0.000001
   drawGizmos: 1
   pathColor: {r: 1, g: 0.9, b: 0.2, a: 0.9}
   pointColor: {r: 0.3, g: 1, b: 0.9, a: 0.9}
@@ -44124,6 +44133,7 @@ MonoBehaviour:
     loopMode: 2
     cooldown: 0.2
     gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
     subMode: 1
     startWithSub: 0
     subDelay: 0.2
@@ -44133,6 +44143,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: PrincessWalk
     mainClips:
     - {fileID: 8300000, guid: b50e8f20f0f85d74791046e1adbdd9bb, type: 3}
@@ -44155,6 +44173,7 @@ MonoBehaviour:
     loopMode: 2
     cooldown: 0.2
     gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
     subMode: 1
     startWithSub: 0
     subDelay: 0.2
@@ -44164,6 +44183,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 2677128368298723695}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: KnightThrow
     mainClips:
     - {fileID: 8300000, guid: 8054823de4b636a4198eea1c58ef2670, type: 3}
@@ -44185,6 +44212,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44194,6 +44222,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: KnightChenge
     mainClips:
     - {fileID: 8300000, guid: ac04128a3985f1941b9acbdab2f1f6a8, type: 3}
@@ -44205,9 +44241,9 @@ MonoBehaviour:
     pitch: 1
     volumeRandom: 0
     pitchRandom: 0
-    spatialBlend: 0
+    spatialBlend: 1
     followTarget: 1
-    rolloff: 0
+    rolloff: 1
     minDistance: 0
     maxDistance: 0
     dopplerLevel: 0
@@ -44215,6 +44251,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44224,6 +44261,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: KnightAttack
     mainClips:
     - {fileID: 8300000, guid: 85e457ca70c0e424c8c6a54e86d5a4b9, type: 3}
@@ -44245,6 +44290,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44254,6 +44300,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: PrincessChenge
     mainClips:
     - {fileID: 8300000, guid: f98b63949f137184a938143526dac0d0, type: 3}
@@ -44275,6 +44329,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44284,6 +44339,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: KnightJumpAnd
     mainClips:
     - {fileID: 8300000, guid: 504154fa03918ad4eb9ca0d1182b4c42, type: 3}
@@ -44291,13 +44354,13 @@ MonoBehaviour:
     subClips: []
     startAt: 0
     endAt: 0
-    volume: 0.2
+    volume: 0.095
     pitch: 1
     volumeRandom: 0
     pitchRandom: 0
-    spatialBlend: 0
+    spatialBlend: 1
     followTarget: 1
-    rolloff: 0
+    rolloff: 1
     minDistance: 0
     maxDistance: 0
     dopplerLevel: 0
@@ -44305,6 +44368,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44314,6 +44378,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: PrincessJumpAnd
     mainClips:
     - {fileID: 8300000, guid: 56da6518fc827d14c9c5c2ef4e6c22e9, type: 3}
@@ -44321,13 +44393,13 @@ MonoBehaviour:
     subClips: []
     startAt: 0
     endAt: 0
-    volume: 0.2
+    volume: 0.115
     pitch: 1
     volumeRandom: 0
     pitchRandom: 0
-    spatialBlend: 0
+    spatialBlend: 1
     followTarget: 1
-    rolloff: 0
+    rolloff: 1
     minDistance: 0
     maxDistance: 0
     dopplerLevel: 0
@@ -44335,6 +44407,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44344,6 +44417,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: KnightHit
     mainClips:
     - {fileID: 8300000, guid: dda8cd38b92b89345b02bc6a716d42c2, type: 3}
@@ -44365,6 +44446,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44374,6 +44456,14 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   - name: PrincessHit
     mainClips:
     - {fileID: 8300000, guid: c7184e8ab59116449bc1f7c58985e8df, type: 3}
@@ -44395,6 +44485,7 @@ MonoBehaviour:
     loopMode: 0
     cooldown: 0.2
     gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
     subMode: 0
     startWithSub: 0
     subDelay: 0.2
@@ -44404,7 +44495,886 @@ MonoBehaviour:
     priority: 0
     defaultAnchor: {fileID: 3839841817411716754}
     tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: PrincessEmotion_0
+    mainClips:
+    - {fileID: 8300000, guid: 9bb186a584457554e8e11d68369a87ee, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 0
+    volume: 0.5
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.2
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 8
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 3839841817411716754}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: StonePush0
+    mainClips:
+    - {fileID: 8300000, guid: 358375951ebdb1547a1be75dbf859627, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 1
+    volume: 0.526
+    pitch: 1
+    volumeRandom: 0.128
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 1
+    cooldown: 1
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 8
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1031602961}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: BreakBox
+    mainClips:
+    - {fileID: 8300000, guid: 39503eb7563b8b9468b215dc0c34e0bd, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 1
+    volume: 0.658
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 1
+    cooldown: 0.2
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1031602961}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: WarriorDash
+    mainClips:
+    - {fileID: 8300000, guid: 33ad665dd09935e448fd7980d085f34b, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 0
+    volume: 0.717
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.2
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 91902992}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.138
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: WarriorAttack
+    mainClips:
+    - {fileID: 8300000, guid: 52abb829241818949a1f801363239a18, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 0
+    volume: 0.547
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.2
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 91902992}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: BAMAttack
+    mainClips:
+    - {fileID: 8300000, guid: 52abb829241818949a1f801363239a18, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 0
+    volume: 0.796
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.2
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1589576758}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.115
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: BAMGuard
+    mainClips:
+    - {fileID: 8300000, guid: dda8cd38b92b89345b02bc6a716d42c2, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 0
+    volume: 0.553
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.2
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.2
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1589576758}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.05
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: BAMWalk
+    mainClips:
+    - {fileID: 8300000, guid: bb81960598db2e64780babfc174f7aba, type: 3}
+    enableSub: 1
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 1
+    pitch: 2.49
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 2
+    cooldown: 0.5
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 1
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1589576758}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.266
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: MainBGM
+    mainClips:
+    - {fileID: 8300000, guid: 6fdc5aa5b2a6dc74ebe8080a4e06e826, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.075
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 0
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 0}
+    playOnStart: 1
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: Jump
+    mainClips:
+    - {fileID: 8300000, guid: 94658ba3c59f1404d85bc0ac3397a5ac, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.309
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 0
+    rolloff: 1
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: DoubleJump
+    mainClips:
+    - {fileID: 8300000, guid: 94658ba3c59f1404d85bc0ac3397a5ac, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.329
+    pitch: 2.01
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 0
+    rolloff: 1
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: TrapDie
+    mainClips:
+    - {fileID: 8300000, guid: 52809cabfa2fbad49a826b1a89654913, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.579
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 0
+    rolloff: 1
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 0}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: MonsterDie0
+    mainClips:
+    - {fileID: 8300000, guid: 06ed34cc3faf95d47bd98bc1b2a338a9, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.572
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: MonsterDie1
+    mainClips:
+    - {fileID: 8300000, guid: 0f3c9b4a9a4b2354c91d6dc2effb1de2, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.566
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: MonsterSee
+    mainClips:
+    - {fileID: 8300000, guid: a835045c023bd2e47b4b786c78f3be49, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.671
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: MonsterHit
+    mainClips:
+    - {fileID: 8300000, guid: 9d67833924b5a5e48a66f3da86e6c19d, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.189
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 1
+    maxDistance: 2
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: SwapBeep
+    mainClips:
+    - {fileID: 8300000, guid: 100a4f0109976dd43bef93e384fb6887, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.316
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: SaveSound
+    mainClips:
+    - {fileID: 8300000, guid: 1db2773b8cb450a42a7dbc4ae25ff4c7, type: 3}
+    enableSub: 0
+    subClips:
+    - {fileID: 8300000, guid: 0479401df49bcc6489cbd39cd086c1ce, type: 3}
+    startAt: 0
+    endAt: 0
+    volume: 0.316
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0
+    followTarget: 1
+    rolloff: 0
+    minDistance: 0
+    maxDistance: 0
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 0}
+    tailFadeSeconds: 0.08
+    requireInCamera: 0
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: CatMeow
+    mainClips:
+    - {fileID: 8300000, guid: d419ac3573f17a04ca28f81a39a83101, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 0
+    endAt: 0
+    volume: 0.849
+    pitch: 1.22
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0.803
+    followTarget: 1
+    rolloff: 1
+    minDistance: 5
+    maxDistance: 5
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 0.5
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1634702181}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: MovingPlatform
+    mainClips:
+    - {fileID: 8300000, guid: 23a862f3b65b7284cb27052f85fcb526, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 4
+    endAt: 9
+    volume: 1
+    pitch: 1.22
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 1
+    followTarget: 1
+    rolloff: 0
+    minDistance: 10
+    maxDistance: 5
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 1
+    cooldown: 0
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 794445021}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: DoublePressure0
+    mainClips:
+    - {fileID: 8300000, guid: ea84f01ee215dab4ebb732e5e08b0646, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 1
+    endAt: 10
+    volume: 1
+    pitch: 2.11
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0.803
+    followTarget: 1
+    rolloff: 1
+    minDistance: 3
+    maxDistance: 5
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 2
+    cooldown: 9
+    gracefulStopLoop: 1
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1690077551}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
+  - name: DoublePressure1
+    mainClips:
+    - {fileID: 8300000, guid: ea84f01ee215dab4ebb732e5e08b0646, type: 3}
+    enableSub: 0
+    subClips: []
+    startAt: 1
+    endAt: 10
+    volume: 0.849
+    pitch: 1
+    volumeRandom: 0
+    pitchRandom: 0
+    spatialBlend: 0.803
+    followTarget: 1
+    rolloff: 1
+    minDistance: 3
+    maxDistance: 5
+    dopplerLevel: 0
+    spread: 0
+    loopMode: 0
+    cooldown: 9
+    gracefulStopLoop: 0
+    gracefulStopOnlyLatest: 0
+    subMode: 0
+    startWithSub: 0
+    subDelay: 0.5
+    maxVoices: 3
+    stealOldestOnLimit: 0
+    outputMixerGroup: {fileID: 0}
+    priority: 0
+    defaultAnchor: {fileID: 1690077551}
+    tailFadeSeconds: 0.08
+    requireInCamera: 1
+    stopIfLeaveCamera: 0
+    cameraViewportPadding: 0.404
+    overrideCamera: {fileID: 7357204630883092740}
+    playOnStart: 0
+    useLoopOnStart: 1
+    restartIfRunningOnStart: 0
+    autoStartDelay: 0
   prewarmVoices: 8
+  registeredCameras: []
+  debugLogs: 0
 --- !u!4 &1019984900
 Transform:
   m_ObjectHideFlags: 0
@@ -44414,7 +45384,7 @@ Transform:
   m_GameObject: {fileID: 1019984898}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 72.012474, y: -58.21482, z: -0.44603804}
+  m_LocalPosition: {x: 106.68, y: -88.75, z: -0.44603804}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48915,6 +49885,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 579314566}
   m_SourcePrefab: {fileID: 100100000, guid: 2150386cefdbb1e47b60116cd0732d12, type: 3}
+--- !u!4 &1589576758 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5315954105031040331, guid: a321a787952f96a438661eb4215b514c, type: 3}
+  m_PrefabInstance: {fileID: 7782748126424679456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1590365362
 GameObject:
   m_ObjectHideFlags: 0
@@ -49289,7 +50264,7 @@ Transform:
   m_GameObject: {fileID: 1634702177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.83, y: -37.67, z: -0.08372452}
+  m_LocalPosition: {x: 100.3, y: -69.9, z: -0.08372452}
   m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49749,6 +50724,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   revertOnDisable: 0
+--- !u!4 &1690077551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5494225030219331330, guid: 34ddd10a0e625bc4289aae83b72cbea9, type: 3}
+  m_PrefabInstance: {fileID: 7087966683757373196}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1711755615
 GameObject:
   m_ObjectHideFlags: 0
@@ -55627,17 +56607,21 @@ PrefabInstance:
       propertyPath: cameran
       value: 
       objectReference: {fileID: 7357204630883092742}
+    - target: {fileID: 6212785834311897571, guid: 671274f1ca348f5469bad941529559b2, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 881c0f0f048dfbd4d8c349141a6d85ce, type: 2}
     - target: {fileID: 6350590631832846768, guid: 671274f1ca348f5469bad941529559b2, type: 3}
       propertyPath: player1
       value: 
       objectReference: {fileID: 3839841817411716754}
     - target: {fileID: 7471257881795332192, guid: 671274f1ca348f5469bad941529559b2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 82.6
+      value: 34.46752
       objectReference: {fileID: 0}
     - target: {fileID: 7471257881795332192, guid: 671274f1ca348f5469bad941529559b2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -69.8
+      value: -68.83518
       objectReference: {fileID: 0}
     - target: {fileID: 7471257881795332192, guid: 671274f1ca348f5469bad941529559b2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -55893,6 +56877,8 @@ MonoBehaviour:
   contactKeepAlive: 0.06
   cancelWhenPlayerAirborne: 1
   cancelWhenBoxOffGround: 1
+  requireGroundedToEngage: 1
+  pushLoopName: StonePush0
   debug: 0
 --- !u!114 &5970518801399258676 stripped
 MonoBehaviour:
@@ -55956,6 +56942,10 @@ PrefabInstance:
     - target: {fileID: 4766230852274504762, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
       propertyPath: m_Name
       value: Camera_2_mk1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4766230852274504762, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     - target: {fileID: 8729801131823638229, guid: d65fd0faa0c97bf4eb07c4e2fbb1a3cb, type: 3}
       propertyPath: rb
@@ -56442,11 +57432,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3798040512951818207, guid: 79d9909609b23e94eaa026a55f1c0394, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 74.7
+      value: 39.167526
       objectReference: {fileID: 0}
     - target: {fileID: 3798040512951818207, guid: 79d9909609b23e94eaa026a55f1c0394, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -69
+      value: -68.63518
       objectReference: {fileID: 0}
     - target: {fileID: 3798040512951818207, guid: 79d9909609b23e94eaa026a55f1c0394, type: 3}
       propertyPath: m_LocalPosition.z
@@ -56876,6 +57866,8 @@ MonoBehaviour:
   contactKeepAlive: 0.06
   cancelWhenPlayerAirborne: 1
   cancelWhenBoxOffGround: 1
+  requireGroundedToEngage: 1
+  pushLoopName: StonePush0
   debug: 0
 --- !u!82 &8828798325214426673
 AudioSource:

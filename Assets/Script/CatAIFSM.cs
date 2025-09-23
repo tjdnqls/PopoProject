@@ -500,12 +500,14 @@ public class CatAIFSM : MonoBehaviour
         float xSign = (_dir >= 0) ? +1f : -1f;
         Vector3 local = new Vector3(meowVFXOffsetLocal.x * xSign, meowVFXOffsetLocal.y, 0f);
         Vector3 worldPos = transform.position + local;
-
+        SoundManager.Play("CatMeow", transform);
+        Debug.Log("고양이 울음소리");
         Transform parent = meowVFXParentToCat ? transform : null;
         GameObject vfx = Instantiate(meowVFXPrefab, worldPos, Quaternion.identity, parent);
 
         if (meowVFXFlipWithFacing && vfx)
         {
+            
             bool flip = (_dir < 0);
             var srs = vfx.GetComponentsInChildren<SpriteRenderer>(true);
             bool any = false;

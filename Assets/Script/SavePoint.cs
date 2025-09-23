@@ -166,7 +166,7 @@ public class SavePoint : MonoBehaviour
     IEnumerator CooldownTintRoutine()
     {
         SetTint(activatedColor);  // 즉시 초록
-
+        SoundManager.Play("SaveSound", transform);
         float t = 0f;
         while (t < cooldownSeconds)
         {

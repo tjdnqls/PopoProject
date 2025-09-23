@@ -167,6 +167,7 @@ public class TwoPlayerPressurePlate2D : MonoBehaviour
         {
             if (!spawnOnce || !_activatedOnce)
             {
+                SoundManager.Play("DoublePressure1", transform);
                 SpawnOnce();
                 _activatedOnce = true;
             }
@@ -187,7 +188,7 @@ public class TwoPlayerPressurePlate2D : MonoBehaviour
             // Identify bottom (inside) and other
             Transform inside = p1Inside ? player1Root : player2Root;
             Transform other = p1Inside ? player2Root : player1Root;
-
+            SoundManager.Play("DoublePressure0", transform);
             if (inside && other)
             {
                 Vector2 ib = inside.position;

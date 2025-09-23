@@ -236,6 +236,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
         var v = rb.linearVelocity; v.x = dir * patrolSpeed; rb.linearVelocity = v;
         PlayAnim("Run", true);
+        SoundManager.StartLoop("BAMWalk", transform);
         SetFlipByDir(dir);
     }
 
@@ -271,6 +272,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private void TickPatrol()
     {
         PlayAnim("Run");
+        SoundManager.StartLoop("BAMWalk", transform);
         Vector2 target = GetPatrolTarget();
         dir = (target.x > transform.position.x) ? +1 : -1;
         SetFlipByDir(dir);
@@ -301,13 +303,18 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     {
         StopHorizontal();
         PlayAnim("Idle");
+        
+        SoundManager.StartLoop("BAMWalk");
+        SoundManager.Play("MonsterSee", transform);
+
+
     }
 
     // ============ Chase ============
     private void TickChase()
     {
         PlayAnim("Run");
-
+        SoundManager.Play("BAMWalk", transform);
         if (currentTarget && !IsOnLayerMask(currentTarget.gameObject.layer, playerMask))
         {
             currentTarget = null;
@@ -354,6 +361,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
         Color startC = sr.color; float t = 0f;
         PlayOnce("AttackStart");
+        
         while (t < attackWindupSec)
         {
             if (IsDeadOrStopped) yield break;
@@ -365,6 +373,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
 
         sr.color = Color.white;
         PlayOnce("Attack", "Idle");
+        SoundManager.Play("BAMAttack", transform);
+        SoundManager.StartLoop("BAMWalk", transform);
 
         if (AttackSound)
         {
@@ -417,7 +427,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     private void TickReturn()
     {
         PlayAnim("Run");
-
+        SoundManager.StartLoop("BANwalk", transform);
         int retDir = (homePos.x > transform.position.x) ? +1 : -1;
         SetFlipByDir(retDir);
 
@@ -486,6 +496,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         SetFlipByDir(dir);
         state = State.Patrol;
         PlayAnim("Run", true);
+        SoundManager.StartLoop("BANwalk", transform);
+
     }
 
     private void EnterAlert()
@@ -495,6 +507,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         state = State.Alert;
         StopHorizontal();
         PlayAnim("Idle", true);
+        SoundManager.StartLoop("BAMWalk");
 
         if (alertCo != null) StopCoroutine(alertCo);
         alertCo = StartCoroutine(AlertThenChase());
@@ -525,6 +538,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         state = State.Chase;
         chaseStartTime = Time.time;
         PlayAnim("Run", true);
+        SoundManager.StartLoop("BANwalk", transform);
+
     }
 
     private void EnterReturn()
@@ -536,6 +551,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         returnBlockTimer = 0f;
         returnBlockingPlayer = null;
         PlayAnim("Run");
+        SoundManager.StartLoop("BANwalk", transform);
+
     }
 
     // ============ Detect (LOS + Height) ============
@@ -600,7 +617,6 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
     {
         if (IsDeadOrStopped) return;
         if (!target) return;
-
         if (target.TryGetComponent<IDamageable>(out var dmg))
         {
             dmg.TakeDamage(attackDamage, transform.position, new Vector2(dir, 0));
@@ -878,7 +894,8 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         if (isDying) return;
         isDying = true;
         state = State.Dead;
-
+        SoundManager.Play("MonsterDie0", transform);
+        SoundManager.StopLoop("BAMWalk");
         _deathPos = transform.position;
         _deathRot = transform.rotation;
         _deathFeetPos = GetFeetWorldFallback();
@@ -906,9 +923,15 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         if (sr) sr.color = Color.white;
 
         if (anim && anim.HasClip("Hit"))
+        {
             PlayOnce("Hit", "Death", true);
+        }
         else
+        {
             PlayOnce("Death", null, true);
+
+        }
+            
 
 #if UNITY_EDITOR
         Debug.Log($"[Monster] Death start ({reason})", this);
@@ -921,6 +944,7 @@ public class MonsterABPatrolFSM : MonoBehaviour, IDamageable
         // 1. 사운드 재생 (Destroy와 상관없이 재생)
         if (DeathSound != null) // DeathSound는 몬스터 사망시 재생할 AudioClip
         {
+            SoundManager.Play("MonsterDie0", transform);
             AudioSource.PlayClipAtPoint(DeathSound, transform.position);
             // 또는 PlaySoundIndependent(DeathSound); <- 위에서 만든 함수 사용 가능
             Debug.Log("사망소리 재생됨");

@@ -495,8 +495,6 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void Awake()
     {
-        SoundManager.Play("Test");
-
         if (!rb) rb = GetComponent<Rigidbody2D>();
         if (!bodyCollider)
         {
@@ -818,7 +816,7 @@ public class PlayerMouseMovement : MonoBehaviour
                     {
                         throwComboPending = false;
                         BeginThrowHold();
-
+                        
                         // 바로 프리뷰 표시
                         DrawThrowPreview();
                         rawX = 0f;
@@ -1011,6 +1009,7 @@ public class PlayerMouseMovement : MonoBehaviour
         var breakHit = IsBreak();
         if (breakHit.collider != null && breakHit.collider.CompareTag("Trap"))
         {
+            SoundManager.Play("TrapDie", transform);
             return;
         }
 
@@ -1089,6 +1088,8 @@ public class PlayerMouseMovement : MonoBehaviour
             janit += Time.deltaTime;
             if (janit < 0.1f)
             {
+                SoundManager.Play("Jump", transform);
+
                 JumpAni();
             }
         }
@@ -1241,6 +1242,7 @@ public class PlayerMouseMovement : MonoBehaviour
                     {
                         var b = bodyCollider.bounds;
                         Vector3 feet = new Vector3(b.center.x, b.min.y, transform.position.z);
+                        SoundManager.Play("DoubleJump", transform);
                         FX.Play("doubleJumpe", feet + Vector3.down * 0.06f, 10f);
                         // 만약 FX.Play(…, scale) 오버로드가 없다면 ↓ 이렇게도 가능:
                         // SpriteEffectManager.Instance?.PlayScaled("doubleJumpe", feet + Vector3.down * 0.06f, 4f);

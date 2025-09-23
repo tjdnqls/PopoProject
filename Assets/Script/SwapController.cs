@@ -40,6 +40,10 @@ public class SwapController : MonoBehaviour
                 Debug.Log($"[SwapController] 현재 선택 = {charSelect}");
             }
         }
+        else if(Input.GetKeyDown(KeyCode.Tab) && coubt == false)
+        {
+            SoundManager.Play("SwapBeep", transform);
+        }
     }
 
 }

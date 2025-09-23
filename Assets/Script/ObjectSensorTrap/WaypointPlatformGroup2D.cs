@@ -55,25 +55,19 @@ public class WaypointPlatformGroup2D : MonoBehaviour
     public class Mover
     {
         public string name;
-        [Tooltip("움직일 대상 Rigidbody2D (필수)")]
         public Rigidbody2D rb;
-        [Tooltip("앵커 기준점 계산에 사용할 Collider2D (선택)")]
         public Collider2D col;
-        [Tooltip("Custom 앵커 모드일 때 사용할 Transform")]
         public Transform customAnchor;
-        [Tooltip("이 모듈만의 추가 오프셋(경로 좌표에 더해짐)")]
         public Vector2 extraOffset;
         [Header("Anchor Mode")]
         public AnchorMode anchorMode = AnchorMode.ColliderBoundsCenter;
 
-        // runtime
-        [NonSerialized] public Vector2 anchorOffset;  // anchorWorld - rb.position
+        [NonSerialized] public Vector2 anchorOffset;
         [NonSerialized] public Vector2 prevPos;
         [NonSerialized] public bool hasPrev;
         [NonSerialized] public Vector2 PlatformDelta;
         [NonSerialized] public Vector2 PlatformVelocity;
 
-        // 충돌 무시용 캐시
         [NonSerialized] public List<Collider2D> allCols;
     }
 
@@ -83,17 +77,18 @@ public class WaypointPlatformGroup2D : MonoBehaviour
 
     // ======= 새 옵션: Movers 간 충돌 무시 & Pivot =======
     [Header("Movers Collision / Pivot")]
-    [Tooltip("movers 내부 오브젝트들끼리 서로 충돌하지 않도록 무시")]
     public bool ignoreCollisionsAmongMovers = true;
-
-    [Tooltip("경로를 이 mover(인덱스)의 콜라이더 기준으로 정렬(센터)")]
     public int pivotMoverIndex = 0;
-
-    [Tooltip("특정 콜라이더를 피벗으로 직접 지정하면 인덱스보다 우선")]
     public Collider2D pivotColliderOverride;
-
-    [Tooltip("시작 시 피벗의 현재 위치에 경로를 딱 맞춰 오프셋을 잡음")]
     public bool alignPathToPivotAtStart = true;
+
+    // ======= Sound =======
+    [Header("Sound")]
+    [SerializeField] private bool useMoveLoop = true;
+    [SerializeField] private string moveLoopKey = "MovingPlatform";
+    [SerializeField] private Transform moveLoopAttach; // null이면 this.transform
+    [SerializeField, Tooltip("이동 판정 민감도(제곱거리)")] private float moveEpsilon = 1e-6f;
+    private bool _loopPlaying = false;
 
     // ======= Debug =======
     [Header("Debug")]
@@ -109,23 +104,19 @@ public class WaypointPlatformGroup2D : MonoBehaviour
     private int triggerMask;
     private Collider2D[] sharedBuf;
 
-    // group anchor pos (경로 타깃; 피벗 기준 오프셋이 적용됨)
     private Vector2 groupPos;
     private bool groupPosInit;
-    private Vector2 pathOffsetFromPivot; // ★ 피벗 기준 경로 오프셋
+    private Vector2 pathOffsetFromPivot;
 
-    // Trigger 상태
     private bool triggered = false;
     private bool contacting = false;
 
-    // JustGo 상태
     private bool justGoActive = false;
     private int justGoTripsDone = 0;
     private int justGoHomeEdge = -1;
     private bool justGoVisitedOppositeEdge = false;
     private bool justGoBlockUntilContactClears = false;
 
-    // 충돌 무시 원복을 위한 페어 캐시
     private struct ColPair { public Collider2D a, b; }
     private readonly List<ColPair> ignoredPairs = new();
 
@@ -136,7 +127,6 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         startIndex = Mathf.Clamp(startIndex, 0, Math.Max(0, (nodes?.Length ?? 1) - 1));
         dir = startReverse ? -1 : +1;
 
-        // 초기 group pos
         if (!groupPosInit)
         {
             Vector2 startAnchor = (nodes != null && nodes.Length > 0 && nodes[startIndex].point)
@@ -151,7 +141,6 @@ public class WaypointPlatformGroup2D : MonoBehaviour
             curr = NextIndexFrom(startIndex, ref dir, pathMode, nodes?.Length ?? 0);
         }
 
-        // 모버 준비 + 앵커 오프셋 산출 + 콜라이더 수집
         foreach (var m in movers)
         {
             if (m == null || !m.rb) continue;
@@ -159,7 +148,6 @@ public class WaypointPlatformGroup2D : MonoBehaviour
             m.allCols = CollectAllColliders(m);
         }
 
-        // 피벗 정렬: 시작 시 피벗의 현재 위치를 노드 startIndex에 맞춤
         RecomputePathOffsetFromPivot();
 
         triggerMask = LayerMask.GetMask(playerLayerName, boxLayerName);
@@ -174,8 +162,9 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         justGoVisitedOppositeEdge = false;
         justGoBlockUntilContactClears = false;
 
-        // movers 간 충돌 무시
         if (ignoreCollisionsAmongMovers) ApplyIgnoreCollisionsAmongMovers(true);
+
+        if (useMoveLoop && moveLoopAttach == null) moveLoopAttach = transform;
     }
 
     private void OnEnable()
@@ -185,8 +174,13 @@ public class WaypointPlatformGroup2D : MonoBehaviour
 
     private void OnDisable()
     {
-        // 원복
         if (ignoredPairs.Count > 0) ApplyIgnoreCollisionsAmongMovers(false);
+        SetLoopState(false);
+    }
+
+    private void OnDestroy()
+    {
+        SetLoopState(false);
     }
 
     private void OnValidate()
@@ -222,8 +216,7 @@ public class WaypointPlatformGroup2D : MonoBehaviour
 
         Vector2 nodeStart = (Vector2)nodes[startIndex].point.position;
         Vector2 pivotAnchor = GetPivotAnchorWorld();
-        pathOffsetFromPivot = pivotAnchor - nodeStart; // 노드를 피벗 현재 위치에 정렬
-        // groupPos도 맞춰줌
+        pathOffsetFromPivot = pivotAnchor - nodeStart;
         groupPos = nodeStart + pathOffsetFromPivot;
     }
 
@@ -234,13 +227,8 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         if (movers != null && pivotMoverIndex >= 0 && pivotMoverIndex < movers.Count)
         {
             var m = movers[pivotMoverIndex];
-            if (m != null && m.rb)
-            {
-                // anchorWorld = rb.position + anchorOffset
-                return m.rb.position + m.anchorOffset;
-            }
+            if (m != null && m.rb) return m.rb.position + m.anchorOffset;
         }
-        // 폴백: 현재 groupPos
         return groupPos;
     }
 
@@ -259,7 +247,6 @@ public class WaypointPlatformGroup2D : MonoBehaviour
 
     private void ApplyIgnoreCollisionsAmongMovers(bool enable)
     {
-        // 먼저 기존 기록 원복
         if (!enable && ignoredPairs.Count > 0)
         {
             foreach (var p in ignoredPairs)
@@ -271,7 +258,6 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         if (!enable || movers == null) return;
 
         ignoredPairs.Clear();
-        // 모든 mover의 모든 콜라이더 쌍을 무시
         for (int i = 0; i < movers.Count; i++)
         {
             var A = movers[i]; if (A == null || A.allCols == null) continue;
@@ -295,7 +281,8 @@ public class WaypointPlatformGroup2D : MonoBehaviour
     // ======= 메인 루프 =======
     private void FixedUpdate()
     {
-        // Trigger 평가
+        Vector2 prevGroupPos = groupPos;
+
         bool conditionMet = false;
         if (triggerMode)
         {
@@ -333,16 +320,16 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         if (!triggered)
         {
             UpdateMoverVelocities();
+            SetLoopState(false);
             return;
         }
 
-        // Hold/StopHold (JustGo가 아니면)
         if (!justGoMode)
         {
             if (triggerMode && (stopHold || stopHoldReverse))
             {
                 bool allowAdvance = stopHold ? contacting : !contacting;
-                if (!allowAdvance) { UpdateMoverVelocities(); return; }
+                if (!allowAdvance) { UpdateMoverVelocities(); SetLoopState(false); return; }
             }
             else if (triggerMode && holdMode)
             {
@@ -350,23 +337,23 @@ public class WaypointPlatformGroup2D : MonoBehaviour
                 {
                     MoveGroupTowardsNode(startIndex, Mathf.Max(0.01f, speed * returnSpeedMul));
                     ApplyGroupPositionToMovers();
+                    bool moved = (groupPos - prevGroupPos).sqrMagnitude > moveEpsilon;
+                    SetLoopState(moved);
                     return;
                 }
             }
         }
 
-        // 일반 전진
         if (nodes == null || nodes.Length < 2 || nodes[Mathf.Clamp(curr, 0, nodes.Length - 1)].point == null)
         {
-            UpdateMoverVelocities(); return;
+            UpdateMoverVelocities(); SetLoopState(false); return;
         }
         if (waitTimer > 0f)
         {
             waitTimer -= Time.fixedDeltaTime;
-            UpdateMoverVelocities(); return;
+            UpdateMoverVelocities(); SetLoopState(false); return;
         }
 
-        // ★ 피벗 오프셋 적용된 타깃
         Vector2 targetAnchor = (Vector2)nodes[curr].point.position + pathOffsetFromPivot;
 
         float step = speed * Time.fixedDeltaTime;
@@ -381,6 +368,7 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         bool arrived = (nextGroup - targetAnchor).sqrMagnitude < 1e-6f;
 
         MoveAllMovers(nextGroup);
+        bool movedNow = (nextGroup - prevGroupPos).sqrMagnitude > moveEpsilon;
 
         if (arrived)
         {
@@ -396,6 +384,7 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         }
 
         groupPos = nextGroup;
+        SetLoopState(movedNow);
     }
 
     private void MoveGroupTowardsNode(int nodeIndex, float spd)
@@ -425,7 +414,6 @@ public class WaypointPlatformGroup2D : MonoBehaviour
             Vector2 nowPos = m.rb.position;
             if (!m.hasPrev) { m.prevPos = nowPos; m.hasPrev = true; }
 
-            // 각 모버 타깃 = 그룹앵커 + per-mover 오프셋 - 앵커오프셋
             Vector2 targetRb = nextGroup + m.extraOffset - m.anchorOffset;
             m.rb.MovePosition(targetRb);
 
@@ -513,7 +501,7 @@ public class WaypointPlatformGroup2D : MonoBehaviour
             case AnchorMode.Custom:
                 anchorWorld = m.customAnchor ? (Vector2)m.customAnchor.position : (m.rb ? m.rb.position : (Vector2)transform.position);
                 break;
-            default: // TransformPivot
+            default:
                 anchorWorld = m.rb ? m.rb.position : (Vector2)(m.customAnchor ? m.customAnchor.position : transform.position);
                 break;
         }
@@ -558,6 +546,29 @@ public class WaypointPlatformGroup2D : MonoBehaviour
         {
             justGoTripsDone++; justGoVisitedOppositeEdge = false;
             if (justGoTripsDone >= justGoRoundTrips) EndJustGo();
+        }
+    }
+
+    // ======= Sound helper =======
+    private void SetLoopState(bool moving)
+    {
+        if (!useMoveLoop) return;
+
+        if (moving)
+        {
+            if (!_loopPlaying)
+            {
+                SoundManager.StartLoop(moveLoopKey, moveLoopAttach ? moveLoopAttach : transform);
+                _loopPlaying = true;
+            }
+        }
+        else
+        {
+            if (_loopPlaying)
+            {
+                SoundManager.StopLoop(moveLoopKey);
+                _loopPlaying = false;
+            }
         }
     }
 
