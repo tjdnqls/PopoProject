@@ -1363,6 +1363,7 @@ public class PlayerMouseMovement : MonoBehaviour
         float px = transform.position.x;
         if (ox > px) touchR_byTrigger = true;
         else touchL_byTrigger = true;
+
     }
 
     void OnTriggerExit2D(Collider2D other)
