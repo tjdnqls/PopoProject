@@ -1,16 +1,13 @@
 fileFormatVersion: 2
-guid: 0b6f492c0ef502244833dd4d8ce283d5
+guid: bb3ccd037266e2947b5fe50a0aa1dc02
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1914366428787905652
-    second: effect_star1_0
+      213: 5915136790497935454
+    second: 32e0bc66-db15-48af-941b-da6145b3b7ec-Photoroom_0
   - first:
-      213: -3015613006144019893
-    second: effect_star1_1
-  - first:
-      213: 824775335377513351
-    second: effect_star1_2
+      213: -5953064664693411916
+    second: 32e0bc66-db15-48af-941b-da6145b3b7ec-Photoroom_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,11 +49,11 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 2
+  spritePivot: {x: 0.5, y: 1}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -106,67 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: effect_star1_0
+      name: 32e0bc66-db15-48af-941b-da6145b3b7ec-Photoroom_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 34
-        width: 15
-        height: 15
+        x: 242
+        y: 190
+        width: 479
+        height: 791
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c8be92230edce65e0800000000000000
-      internalID: -1914366428787905652
+      spriteID: e50497b3299c61250800000000000000
+      internalID: 5915136790497935454
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: effect_star1_1
+      name: 32e0bc66-db15-48af-941b-da6145b3b7ec-Photoroom_1
       rect:
         serializedVersion: 2
-        x: 41
-        y: 31
-        width: 9
-        height: 9
+        x: 0
+        y: 0
+        width: 782
+        height: 135
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b42ecb4c2f36626d0800000000000000
-      internalID: -3015613006144019893
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: effect_star1_2
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 15
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 78b2ea43cc0327b00800000000000000
-      internalID: 824775335377513351
+      spriteID: 4bfe4086a37726da0800000000000000
+      internalID: -5953064664693411916
       vertices: []
       indices: 
       edges: []
@@ -175,8 +150,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
-    internalID: 0
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -185,9 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      effect_star1_0: -1914366428787905652
-      effect_star1_1: -3015613006144019893
-      effect_star1_2: 824775335377513351
+      32e0bc66-db15-48af-941b-da6145b3b7ec-Photoroom_0: 5915136790497935454
+      32e0bc66-db15-48af-941b-da6145b3b7ec-Photoroom_1: -5953064664693411916
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

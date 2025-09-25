@@ -215,8 +215,8 @@ public class PlayerMouseMovement : MonoBehaviour
                                        // === Throw Hold (Press & Hold to Aim) ===
     [Header("Throw Hold (Press & Hold to Aim)")]
     [SerializeField] private bool enableThrowHold = true;
-    [SerializeField] private KeyCode throwHoldKeyMain = KeyCode.LeftShift;
-    [SerializeField] private KeyCode throwHoldKeyAlt = KeyCode.RightShift;
+    [SerializeField] private KeyCode throwHoldKeyMain = KeyCode.Mouse1;
+    [SerializeField] private KeyCode throwHoldKeyAlt = KeyCode.Mouse5;
     [SerializeField] private string throwStateName = "Throw";  // 1프레임 정지할 애니메이션 상태명 (없으면 Bool만 사용)
     [SerializeField] private bool throwHoldFreezeAnimator = true;
     [SerializeField] private float throwHoldMaxTime = 3.0f;   // (선택) 너무 오래 홀드하면 자동 던지기
@@ -885,7 +885,7 @@ public class PlayerMouseMovement : MonoBehaviour
         if (selectedObject)
         {
             // 공격 시작: 쿨타임 체크
-            if (Input.GetKeyDown(KeyCode.F) && !isCarrying && Time.time >= nextAttackTime)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !isCarrying && Time.time >= nextAttackTime)
             {
                 SoundManager.Play("KnightAttack", transform); 
                 StartAttack();

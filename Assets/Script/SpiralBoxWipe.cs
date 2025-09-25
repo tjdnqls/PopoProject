@@ -23,6 +23,11 @@ public class SpiralBoxWipe : MonoBehaviour
     [SerializeField] private float youDiedDelay = 7f; // 시작 7초 뒤 등장
     [SerializeField] private float beamYShift = -0.40f; // 스포트라이트 전체 Y 오프셋(음수=아래)
 
+    // ========== ✨ 추가된 부분 ✨ ==========
+    [Header("UI to Hide")]
+    [SerializeField] private List<GameObject> UIsToHide;
+    // ======================================
+
     [Header("AnyKey")]
     [SerializeField] private bool allowAnyKeySkip = true;
     [SerializeField] private string anyKeyText = "Press any key to restart";
@@ -31,15 +36,15 @@ public class SpiralBoxWipe : MonoBehaviour
 
     // ================== Fast Blackout ==================
     [Header("Fast Blackout (Except P2)")]
-    [SerializeField] private float blackoutDuration = 3.0f;            // 더 느리게(기본 3초)
-    [SerializeField] private bool useSortingBlackout = true;           // 레이어 방식 블랙아웃
-    [SerializeField] private AnimationCurve blackoutCurve = null;      // null=Linear
+    [SerializeField] private float blackoutDuration = 3.0f;              // 더 느리게(기본 3초)
+    [SerializeField] private bool useSortingBlackout = true;             // 레이어 방식 블랙아웃
+    [SerializeField] private AnimationCurve blackoutCurve = null;         // null=Linear
 
     // ================== Camera ==================
     [Header("Camera Zoom & Focus")]
     [SerializeField] private bool enableCameraZoom = true;
-    [SerializeField] private float zoomDuration = 5.0f;                 // 슬로모 5초와 동일
-    [SerializeField] private AnimationCurve zoomEase = null;            // null=EaseInOut
+    [SerializeField] private float zoomDuration = 5.0f;                  // 슬로모 5초와 동일
+    [SerializeField] private AnimationCurve zoomEase = null;             // null=EaseInOut
     [SerializeField] private float targetOrthoSize = 3.5f;
     [SerializeField] private float targetFOV = 35f;
     [SerializeField] private Vector2 zoomFocusOffsetWorld = new(0f, -0.6f); // P2에서 살짝 아래
@@ -59,17 +64,19 @@ public class SpiralBoxWipe : MonoBehaviour
 
     // ================== Spotlight Beam (World) ==================
     [Header("Spotlight Beam (World, behind P2)")]
-    [SerializeField] private float beamLength = 5f;          // 월드 길이(Y)
-    [SerializeField] private float beamBottomRadius = 1.6f;  // 바닥 반지름
-    [SerializeField] private float beamTopOffset = 1.0f;     // 꼭짓점이 P2 위로
+    [SerializeField] private Sprite spotlightSprite; // ★ 외부 이미지 스프라이트
+    [SerializeField] private float beamLength = 5f;        // 월드 길이(Y)
+    [SerializeField] private float beamBottomRadius = 1.6f; // 바닥 반지름
+    [SerializeField] private float beamTopOffset = 1.0f;  // 꼭짓점이 P2 위로
     [SerializeField, Range(0f, 1f)] private float beamOpacity = 0.9f;
-    [SerializeField] private float beamFadeIn = 0.15f;       // (현재 미사용: 즉시 등장)
-    [SerializeField] private bool flipBeamY = true;          // 상하 반전 보정
-    [SerializeField] private int beamTexW = 256, beamTexH = 512;
-    [SerializeField] private int beamPPU = 100;
+    [SerializeField] private float beamFadeIn = 0.15f;    // (현재 미사용: 즉시 등장)
+    [SerializeField] private bool flipBeamY = true;      // 상하 반전 보정
+    [SerializeField] private bool useOriginalSpriteSize = false; // ★ 원본 스프라이트 크기 사용 여부
+    [SerializeField] private int fallbackBeamTexW = 256, fallbackBeamTexH = 512; // ★ 폴백용 (스프라이트가 없을 때)
+    [SerializeField] private int fallbackBeamPPU = 100;
 
     [Header("Spotlight Timing")]
-    [SerializeField] private float spotlightDelayAfterBlack = 0.25f;   // 완전 블랙 후 대기
+    [SerializeField] private float spotlightDelayAfterBlack = 0.25f;    // 완전 블랙 후 대기
 
     // ================== Sorting Override ==================
     [Header("Death Sorting Override (SpriteRenderer)")]
@@ -102,7 +109,7 @@ public class SpiralBoxWipe : MonoBehaviour
     // 빔 / 블랙커버
     GameObject _beamGO;
     SpriteRenderer _beamSR;
-    Sprite _beamSprite;
+    Sprite _fallbackBeamSprite; // ★ 폴백용 프로그래밍 스프라이트
 
     GameObject _blackGO;
     SpriteRenderer _blackSR;
@@ -368,6 +375,10 @@ public class SpiralBoxWipe : MonoBehaviour
     {
         IsBusy = true;
 
+        // ========== ✨ 추가된 부분 ✨ ==========
+        HideUIs(); // 사망 연출 시작과 함께 모든 UI 비활성화
+        // ======================================
+
         _cam = FindBestCamera();
         if (disableCinemachineBrain) _cmBrain = FindCinemachineBrain(_cam);
         if (_cmBrain && disableCinemachineBrain) _cmBrain.enabled = false;
@@ -394,7 +405,7 @@ public class SpiralBoxWipe : MonoBehaviour
                 if (blackoutCurve != null) k = blackoutCurve.Evaluate(k);
 
                 var c = _blackSR.color;
-                c.a = k;                 // 0 → 1
+                c.a = k;            // 0 → 1
                 _blackSR.color = c;
 
                 t += Time.unscaledDeltaTime;
@@ -457,11 +468,13 @@ public class SpiralBoxWipe : MonoBehaviour
         {
             SaveManager.Instance.SaveNow();
         }
-        // 필요 시 보수적으로 보장하고 싶으면 다음 라인 해제:
-        // else { new GameObject("SaveManager").AddComponent<SaveManager>().SaveNow(); }
         SaveManager.RequestLoadOnNextScene();   // ← 추가
         var op = SceneManager.LoadSceneAsync(sceneName);
         while (!op.isDone) yield return null;
+
+        // ========== ✨ 추가된 부분 ✨ ==========
+        ShowUIs(); // 사망 연출 종료 후 모든 UI 다시 활성화
+        // ======================================
 
         HideUI();
         IsBusy = false;
@@ -512,7 +525,7 @@ public class SpiralBoxWipe : MonoBehaviour
         SetAlpha(_anyKey, 1f);
     }
 
-    // ---------- Spotlight Beam ----------
+    // ---------- Spotlight Beam (이미지 버전) ----------
     void CreateOrUpdateBeam()
     {
         if (_p2 == null) return;
@@ -523,8 +536,24 @@ public class SpiralBoxWipe : MonoBehaviour
             _beamGO.transform.SetParent(_p2, worldPositionStays: false);
             _beamSR = _beamGO.GetComponent<SpriteRenderer>();
             _beamSR.color = new Color(1f, 1f, 1f, 0f); // 초기 투명
-            _beamSprite = GenerateBeamSprite(beamTexW, beamTexH, beamOpacity);
-            _beamSR.sprite = _beamSprite;
+
+            // ★ 외부 스프라이트 우선 사용, 없으면 폴백 스프라이트 생성
+            if (spotlightSprite != null)
+            {
+                _beamSR.sprite = spotlightSprite;
+                Debug.Log($"SpiralBoxWipe: 외부 스프라이트 사용 - {spotlightSprite.name}");
+            }
+            else
+            {
+                // 폴백: 기존 프로그래밍 방식으로 스프라이트 생성
+                if (_fallbackBeamSprite == null)
+                {
+                    _fallbackBeamSprite = GenerateBeamSprite(fallbackBeamTexW, fallbackBeamTexH, beamOpacity);
+                }
+                _beamSR.sprite = _fallbackBeamSprite;
+                Debug.LogWarning("SpiralBoxWipe: spotlightSprite가 설정되지 않아 폴백 스프라이트를 사용합니다.");
+            }
+
             _beamSR.drawMode = SpriteDrawMode.Simple;
         }
 
@@ -539,14 +568,39 @@ public class SpiralBoxWipe : MonoBehaviour
         // 꼭짓점이 P2 위쪽이 되게 + 전체 Y 시프트
         _beamGO.transform.localPosition = new Vector3(0f, beamTopOffset + beamYShift, 0f);
 
-        // 길이/폭 스케일 (Pivot=top-center → Y가 길이, X가 아래쪽 지름)
-        float spriteH = _beamSR.sprite.rect.height / (float)beamPPU;
-        float spriteW = _beamSR.sprite.rect.width / (float)beamPPU;
-        float scaleY = beamLength / Mathf.Max(0.0001f, spriteH);
-        float scaleX = (beamBottomRadius * 2f) / Mathf.Max(0.0001f, spriteW);
-        _beamGO.transform.localScale = new Vector3(scaleX, scaleY, 1f);
+        // ★ 크기 설정 - 원본 크기 사용 또는 커스텀 크기
+        if (useOriginalSpriteSize)
+        {
+            // 원본 스프라이트 크기 그대로 사용
+            _beamGO.transform.localScale = Vector3.one;
+            Debug.Log($"SpiralBoxWipe: 원본 크기 사용 - Scale: {Vector3.one}");
+        }
+        else
+        {
+            // 기존 방식: 길이/폭 스케일로 조정
+            var sprite = _beamSR.sprite;
+            if (sprite != null)
+            {
+                float ppu = sprite.pixelsPerUnit;
+                float spriteH = sprite.rect.height / ppu;
+                float spriteW = sprite.rect.width / ppu;
+
+                float scaleY = beamLength / Mathf.Max(0.0001f, spriteH);
+                float scaleX = (beamBottomRadius * 2f) / Mathf.Max(0.0001f, spriteW);
+                _beamGO.transform.localScale = new Vector3(scaleX, scaleY, 1f);
+
+                Debug.Log($"SpiralBoxWipe: 커스텀 크기 적용 - PPU: {ppu}, 원본 크기: {spriteW}x{spriteH}, Scale: {scaleX}x{scaleY}");
+            }
+            else
+            {
+                Debug.LogError("SpiralBoxWipe: 스프라이트가 null입니다!");
+            }
+        }
+
+        Debug.Log($"SpiralBoxWipe: 빔 생성 완료 - Position: {_beamGO.transform.position}, LocalPosition: {_beamGO.transform.localPosition}");
     }
 
+    // ★ 폴백용 프로그래밍 스프라이트 생성 (기존 코드 유지)
     Sprite GenerateBeamSprite(int w, int h, float opacity)
     {
         // Pivot: Top center(0.5, 1) → 꼭짓점이 로컬 위쪽
@@ -560,12 +614,12 @@ public class SpiralBoxWipe : MonoBehaviour
 
         for (int yy = 0; yy < h; yy++)
         {
-            float y = (yy + 0.5f) / h;                   // 0(top)~1(bottom)
+            float y = (yy + 0.5f) / h;            // 0(top)~1(bottom)
             float halfTri = Mathf.Pow(y, 0.7f) * 0.5f;
             float halfCap = 0f;
             if (y > 1f - capY)
             {
-                float ny = (y - (1f - capY)) / capY;     // 0~1
+                float ny = (y - (1f - capY)) / capY;    // 0~1
                 halfCap = capRX * Mathf.Sqrt(Mathf.Max(0f, 1f - (ny - 1f) * (ny - 1f)));
             }
             float half = Mathf.Max(halfTri, halfCap);
@@ -583,7 +637,7 @@ public class SpiralBoxWipe : MonoBehaviour
         }
         tex.SetPixels32(cols);
         tex.Apply(false, false);
-        var sprite = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 1f), beamPPU);
+        var sprite = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 1f), fallbackBeamPPU);
         return sprite;
     }
 
@@ -664,15 +718,42 @@ public class SpiralBoxWipe : MonoBehaviour
     // ---------- Beam Cleanup ----------
     void DestroyBeam()
     {
-        if (_beamSR != null && _beamSR.sprite != null && _beamSR.sprite.texture != null)
-            Destroy(_beamSR.sprite.texture);
-        else if (_beamSprite != null && _beamSprite.texture != null)
-            Destroy(_beamSprite.texture);
+        // ★ 폴백 스프라이트의 텍스처만 정리 (외부 스프라이트는 건드리지 않음)
+        if (_fallbackBeamSprite != null && _fallbackBeamSprite.texture != null)
+        {
+            Destroy(_fallbackBeamSprite.texture);
+            _fallbackBeamSprite = null;
+        }
 
         if (_beamGO != null) Destroy(_beamGO);
 
         _beamGO = null;
         _beamSR = null;
-        _beamSprite = null;
     }
+
+    // ========== ✨ 추가된 메서드 ✨ ==========
+
+    private void HideUIs()
+    {
+        foreach (var ui in UIsToHide)
+        {
+            if (ui != null)
+            {
+                ui.SetActive(false);
+            }
+        }
+    }
+
+    private void ShowUIs()
+    {
+        foreach (var ui in UIsToHide)
+        {
+            if (ui != null)
+            {
+                ui.SetActive(true);
+            }
+        }
+    }
+
+    // ======================================
 }

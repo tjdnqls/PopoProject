@@ -34,6 +34,12 @@ public class SavePoint : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Graphic uiGraphic;
     [SerializeField] private Renderer meshRenderer;
 
+    // === Revive FX ===
+    [Header("Revive FX")]
+    [SerializeField] private GameObject reviveEffectPrefab;                // [NEW] 부활 이펙트 프리팹
+    [SerializeField, Min(0.01f)] private float reviveEffectLifetime = 1.5f;// [NEW] 자동 제거 시간
+    [SerializeField] private Vector2 reviveEffectOffset = Vector2.zero;    // [NEW] 스폰 오프셋(선택)
+
     // ---------- Runtime ----------
     private bool _inside;
     private PlayerMouseMovement _insideMover;
@@ -150,6 +156,22 @@ public class SavePoint : MonoBehaviour
 
             if (preserveCameraFocusOnRevive && swap)
                 swap.charSelect = prevTarget;
+
+            // === Revive FX & SFX === [NEW]
+            // 프리팹이 지정되면 해당 위치에 소환 후 lifetime 뒤 제거,
+            // HolySound는 프리팹 Transform 기준으로 1회 재생(3D 위치 고정 보장)
+            if (reviveEffectPrefab)
+            {
+                var fxPos = spawnPos + (Vector3)reviveEffectOffset;
+                var fx = Instantiate(reviveEffectPrefab, fxPos, Quaternion.identity);
+                Destroy(fx, reviveEffectLifetime);
+                SoundManager.Play("HolySound", fx.transform);
+            }
+            else
+            {
+                // 프리팹이 없어도 사운드는 재생(부활한 P1의 Transform 사용)
+                SoundManager.Play("HolySound", p1Hp.transform);
+            }
         }
 
         // 쿨타임 시작 + 색상 페이드
