@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9181241536057542523
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8759172147668325784}
+  - component: {fileID: 2961109654956166540}
+  m_Layer: 0
+  m_Name: DieManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8759172147668325784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181241536057542523}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.796625, y: -39.136814, z: -3.060414}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2961109654956166540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181241536057542523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b102dcb483b534f8be96ba6f2aed3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pixelPerfect: 1
+  youDiedFont: {fileID: 11400000, guid: 211e72c45b3eed54ead65ca3c007290e, type: 2}
+  youDiedText: GameOver
+  youDiedColor: {r: 1, g: 0.08783785, b: 0, a: 1}
+  youDiedFadeIn: 1
+  youDiedFadeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  textScaleRange: {x: 0.94, y: 1}
+  youDiedYOffset: 100
+  youDiedDelay: 7
+  beamYShift: -2
+  UIsToHide:
+  - {fileID: 0}
+  allowAnyKeySkip: 1
+  anyKeyText: Press any key to restart
+  anyKeyBottomMargin: 48
+  anyKeyFadeIn: 0.8
+  blackoutDuration: 2
+  useSortingBlackout: 1
+  blackoutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableCameraZoom: 1
+  zoomDuration: 2
+  zoomEase:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  targetOrthoSize: 3.5
+  targetFOV: 35
+  zoomFocusOffsetWorld: {x: 0, y: -0.4}
+  lockCameraUntilEnd: 1
+  disableCinemachineBrain: 1
+  pixelSnapDuringLock: 0
+  assumedPPU: 32
+  enableSlowMo: 1
+  slowMoScale: 0.25
+  slowMoEaseIn: 0.08
+  slowMoRecover: 0.2
+  spotlightSprite: {fileID: 21300000, guid: bb3ccd037266e2947b5fe50a0aa1dc02, type: 3}
+  beamLength: 5
+  beamBottomRadius: 1.6
+  beamTopOffset: 1
+  beamOpacity: 0.9
+  beamFadeIn: 0.15
+  flipBeamY: 1
+  useOriginalSpriteSize: 0
+  fallbackBeamTexW: 256
+  fallbackBeamTexH: 512
+  fallbackBeamPPU: 100
+  spotlightDelayAfterBlack: 0.25
+  deathSortingLayerName: Default
+  deathBlackOrder: 32758
+  deathBeamOrder: 32759
+  deathP2Order: 32760

@@ -13,6 +13,7 @@ public class TilemapCarrier2D : MonoBehaviour
     [Header("Layer Names (auto-resolve)")]
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private string boxLayerName = "Box";
+    [SerializeField] private string slimeLayerName = "Slime";   // ← 추가: 이 오브젝트가 Slime 레이어인지 확인용
 
     [Header("Carrier Zone")]
     [SerializeField] private Vector2 padding = new Vector2(0.1f, 0.1f);
@@ -36,6 +37,12 @@ public class TilemapCarrier2D : MonoBehaviour
     [Tooltip("점프 인식 후 X-스냅을 끄는 시간(초)")]
     [SerializeField] private float releaseGrace = 0.12f;
 
+    [Header("Slime 특수 처리")]
+    [Tooltip("이 캐리어 오브젝트가 Slime 레이어일 때, 머리로 천장에 붙어도 따라가게 할지")]
+    [SerializeField] private bool ceilingCarryOnSlime = true;
+    [Tooltip("천장 붙기(AABB) 판정 높이(플랫폼 하단 기준)")]
+    [SerializeField] private float bottomSnapHeight = 0.18f;
+
     [Header("Debug")]
     [SerializeField] private bool drawGizmo = false;
     [SerializeField] private Color gizmoColor = new Color(0f, 1f, 1f, 0.18f);
@@ -44,8 +51,9 @@ public class TilemapCarrier2D : MonoBehaviour
     private CompositeCollider2D composite;
     private Rigidbody2D rbTile;
     private int targetMask;
+    private int slimeLayer;                  // ← 추가
     private Collider2D[] hits;
-
+    private ContactFilter2D _filter;
     private Vector2 prevPos;
     private bool hasPrevPos;
 
@@ -71,7 +79,14 @@ public class TilemapCarrier2D : MonoBehaviour
         rbTile = GetComponent<Rigidbody2D>();
 
         targetMask = LayerMask.GetMask(playerLayerName, boxLayerName);
+        slimeLayer = LayerMask.NameToLayer(slimeLayerName);
+
         hits = new Collider2D[Mathf.Max(8, maxHits)];
+
+        // ContactFilter2D 준비
+        _filter = new ContactFilter2D();
+        _filter.SetLayerMask(targetMask);
+        _filter.useTriggers = true; // 트리거도 포함하고 싶을 경우
     }
 
     private void OnValidate()
@@ -80,9 +95,11 @@ public class TilemapCarrier2D : MonoBehaviour
         if (padding.x < 0f) padding.x = 0f;
         if (padding.y < 0f) padding.y = 0f;
         if (topSnapHeight < 0.02f) topSnapHeight = 0.02f;
+        if (bottomSnapHeight < 0.02f) bottomSnapHeight = 0.02f; // ← 추가
         if (xSnapEpsilon < 0.0005f) xSnapEpsilon = 0.0005f;
         if (releaseGrace < 0.02f) releaseGrace = 0.02f;
         targetMask = LayerMask.GetMask(playerLayerName, boxLayerName);
+        slimeLayer = LayerMask.NameToLayer(slimeLayerName); // ← 추가
         if (hits == null || hits.Length != Mathf.Max(8, maxHits))
             hits = new Collider2D[Mathf.Max(8, maxHits)];
     }
@@ -106,8 +123,10 @@ public class TilemapCarrier2D : MonoBehaviour
         Vector2 center = plat.center;
         Vector2 size = plat.size + (Vector3)padding * 2f;
 
+        bool isSlimeCarrier = gameObject.layer == slimeLayer; // ← 추가
+
         touchedThisStep.Clear();
-        int count = Physics2D.OverlapBoxNonAlloc(center, size, 0f, hits, targetMask);
+        int count = Physics2D.OverlapBox(center, size, 0f, _filter, hits);
         for (int i = 0; i < count; i++)
         {
             var col = hits[i];
@@ -128,13 +147,25 @@ public class TilemapCarrier2D : MonoBehaviour
             if (jumpDetected) releaseUntil[rb] = Time.time + releaseGrace;
             bool releaseActive = releaseUntil.TryGetValue(rb, out var until) && until > Time.time;
 
-            // --- '위에' 판정(AABB 근사) ---
+            // --- 접지/부착 판정(AABB 근사) ---
             Bounds pb = col.bounds;
+
+            // 바닥 위(플랫폼 top 근처)
             float platformTop = plat.max.y;
             bool verticallyOnTop = pb.min.y <= platformTop + 0.02f && pb.min.y >= platformTop - topSnapHeight;
-            bool horizontallyOverlap =
+            bool horizontallyOverlapTop =
                 pb.max.x >= plat.min.x - sideEpsilon && pb.min.x <= plat.max.x + sideEpsilon;
-            bool onTop = verticallyOnTop && horizontallyOverlap;
+            bool onTop = verticallyOnTop && horizontallyOverlapTop;
+
+            // 천장 아래(플랫폼 bottom 근처, Slime 전용)
+            float platformBottom = plat.min.y;
+            bool verticallyOnBottom = pb.max.y >= platformBottom - 0.02f && pb.max.y <= platformBottom + bottomSnapHeight;
+            bool horizontallyOverlapBottom =
+                pb.max.x >= plat.min.x - sideEpsilon && pb.min.x <= plat.max.x + sideEpsilon;
+            bool onBottom = verticallyOnBottom && horizontallyOverlapBottom;
+
+            // 최종 ‘운반 상태’ 결정
+            bool isRiding = onTop || (isSlimeCarrier && ceilingCarryOnSlime && onBottom);
 
             switch (carryMode)
             {
@@ -145,21 +176,22 @@ public class TilemapCarrier2D : MonoBehaviour
 
                         Vector2 toAdd = platformVel;
 
-                        // X축 처리: 릴리즈 중이거나(onTop=false와 동일 처리) 아니면 스냅/하이브리드
+                        // X축 처리: 스냅/하이브리드면 상단/천장 부착 시 과도한 X속도 상속 제한
                         if (xFollowMode == XFollowMode.PositionSnap)
                         {
-                            if (onTop && !releaseActive) toAdd.x = 0f; // 스냅으로 처리할 거라 X속도 추가 안 함
+                            if (isRiding && !releaseActive) toAdd.x = 0f;
                         }
                         else if (xFollowMode == XFollowMode.Hybrid)
                         {
-                            if (onTop && !releaseActive) toAdd.x *= 0.35f;
+                            if (isRiding && !releaseActive) toAdd.x *= 0.35f;
                         }
+
                         // Y축은 그대로 상속
                         rb.linearVelocity += toAdd;
                         lastAddedVel[rb] = toAdd;
 
                         // === X 스냅(점프 릴리즈 동안엔 스냅 금지) ===
-                        if (xFollowMode != XFollowMode.VelocityAdd && onTop && !releaseActive && Mathf.Abs(frameDelta.x) > 0f)
+                        if (xFollowMode != XFollowMode.VelocityAdd && isRiding && !releaseActive && Mathf.Abs(frameDelta.x) > 0f)
                         {
                             float wantX = rb.position.x + frameDelta.x;
                             if (Mathf.Abs(wantX - rb.position.x) > xSnapEpsilon)

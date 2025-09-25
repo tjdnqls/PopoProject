@@ -10161,6 +10161,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   coll: {fileID: 3262901119604752152}
+  autoAssignPlayersByTag: 1
+  player1Tag: Player1
+  player2Tag: Player2
+  assignToParentOfTagged: 1
 --- !u!1 &1872074251908539389
 GameObject:
   m_ObjectHideFlags: 0
@@ -10408,7 +10412,6 @@ GameObject:
   - component: {fileID: 540732365958010920}
   - component: {fileID: 9130173999806462768}
   - component: {fileID: 324087265323405721}
-  - component: {fileID: 5520916363657424822}
   - component: {fileID: 9037614004612354208}
   m_Layer: 0
   m_Name: Sensor
@@ -10565,24 +10568,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &5520916363657424822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2082267756038855022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f913887c32ad0664cb8321ddfe1b4709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trapTag: SensorTrap
-  moveDistance: 9
-  moveSpeed: 5
-  moveUp: 1
-  loop: 1
-  autoLoop: 1
 --- !u!19719996 &9037614004612354208
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -23177,6 +23162,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   coll: {fileID: 3485351063813574955}
+  autoAssignPlayersByTag: 1
+  player1Tag: Player1
+  player2Tag: Player2
+  assignToParentOfTagged: 1
 --- !u!1 &5755846592446892934
 GameObject:
   m_ObjectHideFlags: 0
@@ -26278,7 +26267,6 @@ GameObject:
   - component: {fileID: 6611402838177036994}
   - component: {fileID: 5509153934582340300}
   - component: {fileID: 82462458925064944}
-  - component: {fileID: 6866166387413490394}
   m_Layer: 3
   m_Name: SensorTrap
   m_TagString: SensorTrap
@@ -26626,18 +26614,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &6866166387413490394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629453799364650835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40fbd6ac73e052c49915dc3f06ee2d70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8970096756362448458
 GameObject:
   m_ObjectHideFlags: 0
@@ -27765,3 +27741,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   coll: {fileID: 6798345356225517038}
+  autoAssignPlayersByTag: 1
+  player1Tag: Player1
+  player2Tag: Player2
+  assignToParentOfTagged: 1

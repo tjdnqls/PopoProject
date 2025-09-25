@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -93,6 +95,14 @@ public class SoundManager : MonoBehaviour
         [Min(0f)] public float autoStartDelay = 0f;
     }
 
+    // === Master Volume ===
+    [Header("Master Volume")]
+    [SerializeField] private AudioMixer masterMixer;                  // 선택
+    [SerializeField] private string mixerVolumeParam = "MasterVolume";// dB 파라미터명
+    [SerializeField, Range(0f, 1f)] private float initialMasterVolume = 1f;
+    private const string PlayerPrefsKey_Master = "audio.master";
+    private float _masterVolumeLinear = 1f;
+
     // ---------- Runtime ----------
     private class Voice
     {
@@ -112,7 +122,6 @@ public class SoundManager : MonoBehaviour
         public bool nextIsSub;
         public double lastTriggerDsp;
         public Coroutine loopCo;
-
         public int lastBatchId = 0;  // 마지막으로 트리거된 배치 번호
     }
 
@@ -149,6 +158,12 @@ public class SoundManager : MonoBehaviour
         AudioListener.pause = false;
         AudioListener.volume = 1f;
 #endif
+        // Master Volume 초기화
+        if (PlayerPrefs.HasKey(PlayerPrefsKey_Master))
+            _masterVolumeLinear = Mathf.Clamp01(PlayerPrefs.GetFloat(PlayerPrefsKey_Master, initialMasterVolume));
+        else
+            _masterVolumeLinear = Mathf.Clamp01(initialMasterVolume);
+        ApplyMasterVolume();
     }
 
     private void Start()
@@ -174,7 +189,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator CoDelay(Action act, float sec)
+    private IEnumerator CoDelay(Action act, float sec)
     {
         yield return new WaitForSeconds(sec);
         act?.Invoke();
@@ -200,7 +215,6 @@ public class SoundManager : MonoBehaviour
             // 카메라 게이트: 재생 중 이탈 시 강제 종료 옵션
             if (_map.TryGetValue(v.soundName, out var def) && def.requireInCamera && def.stopIfLeaveCamera)
             {
-                // 위치가 없으면(2D 무위치) 이 옵션은 적용 불가 → 스킵
                 Vector3 checkPos;
                 bool hasPos = (v.anchor != null);
                 checkPos = hasPos ? v.anchor.position : v.src.transform.position;
@@ -212,6 +226,34 @@ public class SoundManager : MonoBehaviour
             // 자연 종료
             if (!v.src.isPlaying && now >= v.scheduledEnd - 0.001)
                 ReleaseVoice(v);
+        }
+    }
+
+    // ---------- Master Volume API ----------
+    public static void SetMasterVolumeLinear(float v)
+    {
+        if (!Instance) return;
+        Instance._masterVolumeLinear = Mathf.Clamp01(v);
+        Instance.ApplyMasterVolume();
+        PlayerPrefs.SetFloat(PlayerPrefsKey_Master, Instance._masterVolumeLinear);
+    }
+
+    public static float GetMasterVolumeLinear()
+    {
+        return Instance ? Instance._masterVolumeLinear : 1f;
+    }
+
+    private void ApplyMasterVolume()
+    {
+        float v = _masterVolumeLinear;
+        if (masterMixer)
+        {
+            float db = (v <= 0.0001f) ? -80f : Mathf.Log10(v) * 20f;
+            masterMixer.SetFloat(mixerVolumeParam, db);
+        }
+        else
+        {
+            AudioListener.volume = v;
         }
     }
 
@@ -299,7 +341,7 @@ public class SoundManager : MonoBehaviour
         StopFade(v);
         v.inUse = false;
         v.src.Stop();
-        v.src.volume = 1f;   // 리셋
+        v.src.volume = 1f;
         v.src.clip = null;
         v.anchor = null;
         v.follow = false;
@@ -406,7 +448,6 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        // 마지막 배치만 남기고 이전은 즉시 끊기
         if (def.gracefulStopOnlyLatest)
         {
             int keepBatch = rt.lastBatchId;
@@ -417,7 +458,6 @@ public class SoundManager : MonoBehaviour
                 if (v.batchId != keepBatch) ReleaseVoice(v);
             }
         }
-        // 나머지는 자연 종료
     }
 
     public void StopAllVoices(string name)
@@ -430,7 +470,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator CoLoop(SoundDef def, string name, Transform at, Vector3? worldPosOverride)
+    private IEnumerator CoLoop(SoundDef def, string name, Transform at, Vector3? worldPosOverride)
     {
         var rt = _run[name];
 
@@ -438,7 +478,6 @@ public class SoundManager : MonoBehaviour
         {
             double now = AudioSettings.dspTime;
 
-            // 쿨다운 게이트
             if (def.loopMode == LoopMode.RetriggerWithCooldown)
             {
                 double nextAllowed = rt.lastTriggerDsp + Math.Max(0.0001, def.cooldown);
@@ -449,7 +488,6 @@ public class SoundManager : MonoBehaviour
 
             now = AudioSettings.dspTime;
 
-            // 배치 증가(이번 틱에서 시작되는 보이스 공통 batchId)
             rt.lastBatchId++;
 
             if (def.subMode == SubMode.Simultaneous && def.enableSub && def.subClips.Count > 0)
@@ -484,12 +522,10 @@ public class SoundManager : MonoBehaviour
         var clip = clips[UnityEngine.Random.Range(0, clips.Count)];
         if (!clip) return;
 
-        // 위치 계산 먼저 (카메라 게이트 확인 때문에)
         Transform anchor = at ? at : def.defaultAnchor;
         bool hasPos = worldPosOverride.HasValue || anchor != null;
         Vector3 pos = worldPosOverride ?? (anchor ? anchor.position : Vector3.zero);
 
-        // 카메라 게이트: 시작 시점에 화면 밖이면 재생 스킵 (위치 없으면 스킵하지 않음)
         if (def.requireInCamera && hasPos)
         {
             if (!IsInAnyCameraView(GetCamerasFor(def), pos, def.cameraViewportPadding))
@@ -509,17 +545,14 @@ public class SoundManager : MonoBehaviour
         var v = AcquireVoice(def, def.name);
         if (v == null) return;
 
-        // 위치/팔로우
         v.anchor = anchor;
         v.follow = def.followTarget && (v.anchor != null);
         v.src.transform.position = pos;
 
-        // 공통 파라미터
         var s = v.src;
         s.outputAudioMixerGroup = def.outputMixerGroup;
         s.priority = def.priority;
 
-        // 3D 요청인데 앵커/좌표 없으면 2D로 강등
         bool want3D = def.spatialBlend > 0.001f;
         bool haveAnchor = hasPos;
         float spatial = (want3D && haveAnchor) ? def.spatialBlend : 0f;
@@ -536,15 +569,15 @@ public class SoundManager : MonoBehaviour
         if (want3D && !haveAnchor)
             Debug.LogWarning($"[SoundManager] '{def.name}' 3D이지만 위치가 없습니다. 2D로 재생합니다.");
 
-        StopFade(v);            // 재사용 시 이전 페이드 중지
-        v.batchId = batchId;    // 배치 기록
+        StopFade(v);
+        v.batchId = batchId;
 
         bool fullSpan = (Mathf.Approximately(start, 0f) && Mathf.Abs(end - clip.length) < 0.0001f);
         bool allowOneShot = (spatial <= 0.001f) && fullSpan && def.tailFadeSeconds <= 0f;
 
         if (allowOneShot)
         {
-            s.volume = 1f; // PlayOneShot의 volumeScale 사용
+            s.volume = 1f;
             s.PlayOneShot(clip, volume);
             v.scheduledEnd = AudioSettings.dspTime + (playDur / pitch);
             return;
@@ -561,18 +594,16 @@ public class SoundManager : MonoBehaviour
         double startDsp = (when > 0 ? when : AudioSettings.dspTime);
         double endDsp = startDsp + (playDur / pitch);
 
-        // 부분 재생 또는 3D면 DSP로 끝 잘라주기
         if (!fullSpan || spatial > 0.001f)
             s.SetScheduledEndTime(endDsp);
 
         v.scheduledEnd = endDsp;
 
-        // 꼬리 페이드
         if (def.tailFadeSeconds > 0f)
             v.fadeCo = StartCoroutine(CoFadeOutAt(v, def.tailFadeSeconds));
     }
 
-    private System.Collections.IEnumerator CoFadeOutAt(Voice v, float fadeSec)
+    private IEnumerator CoFadeOutAt(Voice v, float fadeSec)
     {
         var s = v.src;
         double startAt = v.scheduledEnd - fadeSec;
@@ -608,19 +639,15 @@ public class SoundManager : MonoBehaviour
     // ---------- Camera Helpers ----------
     private List<Camera> GetCamerasFor(SoundDef def)
     {
-        // per-sound override
         if (def.overrideCamera != null)
             return _tmpSingleCamList(def.overrideCamera);
 
-        // global registered
         if (registeredCameras != null && registeredCameras.Count > 0)
             return registeredCameras;
 
-        // fallback: main camera
         var c = GetMainCamera();
         if (c != null) return _tmpSingleCamList(c);
 
-        // no camera → “보인다”로 간주하여 차단하지 않음
         return null;
     }
 
@@ -635,13 +662,17 @@ public class SoundManager : MonoBehaviour
     private Camera GetMainCamera()
     {
         if (_cachedMainCam == null) _cachedMainCam = Camera.main;
+#if UNITY_2023_1_OR_NEWER
         if (_cachedMainCam == null) _cachedMainCam = FindAnyObjectByType<Camera>();
+#else
+        if (_cachedMainCam == null) _cachedMainCam = Camera.main;
+#endif
         return _cachedMainCam;
     }
 
     private static bool IsInAnyCameraView(List<Camera> cams, Vector3 worldPos, float padViewport)
     {
-        if (cams == null || cams.Count == 0) return true; // 카메라 없으면 게이트 통과
+        if (cams == null || cams.Count == 0) return true;
         for (int i = 0; i < cams.Count; i++)
         {
             var cam = cams[i];
@@ -655,23 +686,19 @@ public class SoundManager : MonoBehaviour
     {
         if (!cam) return true;
         var vp = cam.WorldToViewportPoint(worldPos);
-        if (vp.z < 0f) return false; // 카메라 뒤
+        if (vp.z < 0f) return false;
         float min = -padViewport;
         float max = 1f + padViewport;
         return (vp.x >= min && vp.x <= max && vp.y >= min && vp.y <= max);
     }
 
-    // SoundManager 클래스 내부에 추가
     public static IReadOnlyList<string> GetSoundNames()
     {
         if (!Instance) return Array.Empty<string>();
-        // 맵이 비어있으면 재빌드
         if (Instance._map == null || Instance._map.Count == 0) Instance.RebuildMapContext();
-        // 이름 목록 복사본 반환
         var list = new List<string>(Instance._map.Keys);
         return list;
     }
-
 
     [ContextMenu("Rebuild Map")]
     private void RebuildMapContext() => BuildMap();

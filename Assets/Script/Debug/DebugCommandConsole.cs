@@ -23,7 +23,7 @@ public class DebugCommandConsole : MonoBehaviour
     [Header("Commands (첫 토큰 자동완성 대상)")]
     [SerializeField]
     private List<string> commandNames = new()
-    { "Test","Help","Give","Teleport","TimeScale","God","Play","summon" };
+    { "Test","Help","Give","Teleport","TimeScale","God","Play","summon","Save","Quit" }; // Save/Quit 추가
 
     [Header("Play 서브명령 자동완성")]
     [SerializeField] private List<string> playSubcommands = new() { "Sound", "Animation" }; // Animation은 확장용
@@ -243,7 +243,7 @@ public class DebugCommandConsole : MonoBehaviour
 
         if (string.Equals(feature, "Help", StringComparison.OrdinalIgnoreCase))
         {
-            Log("도움말: /Test, /Help, /TimeScale <값>, /God [on|off|toggle|<초>s], /Teleport <x> <y>, /Give <item> [수량], /Play Sound <이름>, /summon <이름>");
+            Log("도움말: /Test, /Help, /TimeScale <값>, /God [on|off|toggle|<초>s], /Teleport <x> <y>, /Give <item> [수량], /Play Sound <이름>, /summon <이름>, /Save [Delete], /Quit");
             return;
         }
 
@@ -341,6 +341,40 @@ public class DebugCommandConsole : MonoBehaviour
             Vector3 pos = Get2DCenterOfScreen(); // 화면 중앙(2D z=0)에 소환
             var go = Instantiate(entry.prefab, pos, Quaternion.identity);
             Log($"소환 완료: {entry.name} @ {pos}");
+            return;
+        }
+
+        // ---- /Save [Delete] ----
+        if (string.Equals(feature, "Save", StringComparison.OrdinalIgnoreCase))
+        {
+            // /Save Delete : 모든 세이브 데이터 삭제
+            if (args.Count >= 1 && (args[0].Equals("Delete", StringComparison.OrdinalIgnoreCase)
+                                    || args[0].Equals("Clear", StringComparison.OrdinalIgnoreCase)))
+            {
+                SaveManager.Ensure();
+                SaveManager.Instance.Clear();
+                Log("세이브 데이터 전체 삭제 완료.");
+                return;
+            }
+
+            // /Save : 현재 지점을 체크포인트로 저장(선택 캐릭터 우선)
+            SaveManager.Ensure();
+            var pos = GetPreferredSavePosition();
+            SaveManager.Instance.SaveCheckpointNow(pos);
+            Log($"세이브 완료 @ {pos}");
+            return;
+        }
+
+        // ---- /Quit : 게임 종료 ----
+        if (string.Equals(feature, "Quit", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(feature, "Exit", StringComparison.OrdinalIgnoreCase))
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+            Log("게임 종료 요청됨.");
             return;
         }
 
@@ -448,6 +482,18 @@ public class DebugCommandConsole : MonoBehaviour
             return;
         }
 
+        // /Save [Delete]
+        if (string.Equals(feature, "Save", StringComparison.OrdinalIgnoreCase))
+        {
+            if (tokens.Count == 2)
+            {
+                var opts = new[] { "Delete" };
+                _suggestions = opts.Where(o => o.StartsWith(current, true, CultureInfo.InvariantCulture))
+                                   .Take(maxSuggestions).ToList();
+                return;
+            }
+        }
+
         // /God 인수
         if (string.Equals(feature, "God", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(feature, "GodMode", StringComparison.OrdinalIgnoreCase))
@@ -509,5 +555,33 @@ public class DebugCommandConsole : MonoBehaviour
         if (token.EndsWith("s") && float.TryParse(token[..^1], out var sec)) return Mathf.Max(0f, sec);
         if (float.TryParse(token, out var sec2)) return Mathf.Max(0f, sec2);
         return -1f;
+    }
+
+    // 현재 선택 캐릭터(있으면) 또는 P2 우선으로 저장 좌표 결정
+    private static Vector2 GetPreferredSavePosition()
+    {
+#if UNITY_2023_1_OR_NEWER
+        var players = UnityEngine.Object.FindObjectsByType<PlayerMouseMovement>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var swap = UnityEngine.Object.FindFirstObjectByType<SwapController>(FindObjectsInactive.Include);
+#else
+        var players = UnityEngine.Object.FindObjectsOfType<PlayerMouseMovement>(true);
+        var swap = UnityEngine.Object.FindObjectOfType<SwapController>();
+#endif
+        PlayerMouseMovement pick = null;
+
+        if (swap && players != null && players.Length > 0)
+            pick = players.FirstOrDefault(p => p.playerID == swap.charSelect);
+
+        if (pick == null && players != null && players.Length > 0)
+            pick = players.FirstOrDefault(p => p.playerID == SwapController.PlayerChar.P2) ?? players[0];
+
+        if (pick != null)
+        {
+            var rb = pick.GetComponent<Rigidbody2D>();
+            return rb ? rb.position : (Vector2)pick.transform.position;
+        }
+
+        var center = Get2DCenterOfScreen();
+        return (Vector2)center;
     }
 }

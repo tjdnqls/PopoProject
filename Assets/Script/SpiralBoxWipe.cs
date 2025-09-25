@@ -34,6 +34,10 @@ public class SpiralBoxWipe : MonoBehaviour
     [SerializeField] private float anyKeyBottomMargin = 48f;
     [SerializeField] private float anyKeyFadeIn = 0.8f;
 
+    // ★ 변경: 스킵 최소 지연
+    [Header("Skip Timing")]
+    [SerializeField] private float minAnyKeyDelay = 1.0f; // 1초 후부터 아무키 스킵 허용
+
     // ================== Fast Blackout ==================
     [Header("Fast Blackout (Except P2)")]
     [SerializeField] private float blackoutDuration = 3.0f;              // 더 느리게(기본 3초)
@@ -375,6 +379,28 @@ public class SpiralBoxWipe : MonoBehaviour
     {
         IsBusy = true;
 
+        // 조기 스킵용 시작 시각
+        float routineStart = Time.unscaledTime; // ★ 변경
+        bool CanEarlySkip() => allowAnyKeySkip && (Time.unscaledTime - routineStart) >= minAnyKeyDelay && Input.anyKeyDown; // ★ 변경
+
+        // 조기 리로드 공용 처리
+        IEnumerator EarlyReloadAndExit() // ★ 변경
+        {
+            _lockCamActive = false;
+            if (_cmBrain && disableCinemachineBrain) _cmBrain.enabled = true;
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
+
+            if (SaveManager.Instance != null) SaveManager.Instance.SaveNow();
+            SaveManager.RequestLoadOnNextScene();
+            var op = SceneManager.LoadSceneAsync(sceneName);
+            while (!op.isDone) yield return null;
+
+            ShowUIs();
+            HideUI();
+            IsBusy = false;
+        }
+
         // ========== ✨ 추가된 부분 ✨ ==========
         HideUIs(); // 사망 연출 시작과 함께 모든 UI 비활성화
         // ======================================
@@ -392,7 +418,7 @@ public class SpiralBoxWipe : MonoBehaviour
         // ✅ 연출 시작과 동시에 줌/슬로모 시작
         StartCameraZoomNow();
 
-        // === 1) (더 천천히) 페이드로 화면을 완전 블랙 ===
+        // === 1) 페이드로 화면을 완전 블랙 ===
         if (useSortingBlackout)
         {
             BringP2ToFront();
@@ -401,6 +427,9 @@ public class SpiralBoxWipe : MonoBehaviour
             float t = 0f;
             while (t < blackoutDuration)
             {
+                // 조기 스킵 체크
+                if (CanEarlySkip()) { yield return EarlyReloadAndExit(); yield break; } // ★ 변경
+
                 float k = Mathf.Clamp01(t / Mathf.Max(0.0001f, blackoutDuration));
                 if (blackoutCurve != null) k = blackoutCurve.Evaluate(k);
 
@@ -418,7 +447,12 @@ public class SpiralBoxWipe : MonoBehaviour
         if (spotlightDelayAfterBlack > 0f)
         {
             float s = 0f;
-            while (s < spotlightDelayAfterBlack) { s += Time.unscaledDeltaTime; yield return null; }
+            while (s < spotlightDelayAfterBlack)
+            {
+                if (CanEarlySkip()) { yield return EarlyReloadAndExit(); yield break; } // ★ 변경
+                s += Time.unscaledDeltaTime;
+                yield return null;
+            }
         }
 
         // === 2) 스포트라이트 '즉시' 등장 ===
@@ -432,12 +466,19 @@ public class SpiralBoxWipe : MonoBehaviour
 
         // === 3) (시작 후 youDiedDelay) 게임오버 텍스트 천천히 뜨기 ===
         float elapsed = 0f;
-        while (elapsed < Mathf.Max(0f, youDiedDelay - blackoutDuration)) { elapsed += Time.unscaledDeltaTime; yield return null; }
+        while (elapsed < Mathf.Max(0f, youDiedDelay - blackoutDuration))
+        {
+            if (CanEarlySkip()) { yield return EarlyReloadAndExit(); yield break; } // ★ 변경
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
 
         float tf = 0f;
         _label.rectTransform.localScale = Vector3.one * textScaleRange.x;
         while (tf < youDiedFadeIn)
         {
+            if (CanEarlySkip()) { yield return EarlyReloadAndExit(); yield break; } // ★ 변경
+
             float k = Mathf.Clamp01(tf / Mathf.Max(0.0001f, youDiedFadeIn));
             k = youDiedFadeCurve != null ? youDiedFadeCurve.Evaluate(k) : k;
             SetAlpha(_label, k);
@@ -452,7 +493,7 @@ public class SpiralBoxWipe : MonoBehaviour
         yield return StartCoroutine(FadeInAnyKey());
 
         // === 5) 입력 대기 ===
-        while (!(allowAnyKeySkip && Input.anyKeyDown))
+        while (!(allowAnyKeySkip && (Time.unscaledTime - routineStart) >= minAnyKeyDelay && Input.anyKeyDown)) // ★ 변경
             yield return null;
 
         // ---------- 정리 & 세이브 & 로드 ----------
@@ -469,13 +510,10 @@ public class SpiralBoxWipe : MonoBehaviour
             SaveManager.Instance.SaveNow();
         }
         SaveManager.RequestLoadOnNextScene();   // ← 추가
-        var op = SceneManager.LoadSceneAsync(sceneName);
-        while (!op.isDone) yield return null;
+        var op2 = SceneManager.LoadSceneAsync(sceneName);
+        while (!op2.isDone) yield return null;
 
-        // ========== ✨ 추가된 부분 ✨ ==========
         ShowUIs(); // 사망 연출 종료 후 모든 UI 다시 활성화
-        // ======================================
-
         HideUI();
         IsBusy = false;
     }
@@ -571,13 +609,11 @@ public class SpiralBoxWipe : MonoBehaviour
         // ★ 크기 설정 - 원본 크기 사용 또는 커스텀 크기
         if (useOriginalSpriteSize)
         {
-            // 원본 스프라이트 크기 그대로 사용
             _beamGO.transform.localScale = Vector3.one;
             Debug.Log($"SpiralBoxWipe: 원본 크기 사용 - Scale: {Vector3.one}");
         }
         else
         {
-            // 기존 방식: 길이/폭 스케일로 조정
             var sprite = _beamSR.sprite;
             if (sprite != null)
             {
@@ -600,10 +636,8 @@ public class SpiralBoxWipe : MonoBehaviour
         Debug.Log($"SpiralBoxWipe: 빔 생성 완료 - Position: {_beamGO.transform.position}, LocalPosition: {_beamGO.transform.localPosition}");
     }
 
-    // ★ 폴백용 프로그래밍 스프라이트 생성 (기존 코드 유지)
     Sprite GenerateBeamSprite(int w, int h, float opacity)
     {
-        // Pivot: Top center(0.5, 1) → 꼭짓점이 로컬 위쪽
         var tex = new Texture2D(w, h, TextureFormat.ARGB32, false, true);
         tex.wrapMode = TextureWrapMode.Clamp;
         var cols = new Color32[w * h];
@@ -718,7 +752,6 @@ public class SpiralBoxWipe : MonoBehaviour
     // ---------- Beam Cleanup ----------
     void DestroyBeam()
     {
-        // ★ 폴백 스프라이트의 텍스처만 정리 (외부 스프라이트는 건드리지 않음)
         if (_fallbackBeamSprite != null && _fallbackBeamSprite.texture != null)
         {
             Destroy(_fallbackBeamSprite.texture);
@@ -754,6 +787,5 @@ public class SpiralBoxWipe : MonoBehaviour
             }
         }
     }
-
     // ======================================
 }
