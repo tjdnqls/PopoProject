@@ -208,6 +208,14 @@ MonoBehaviour:
   attackOmegaAnim: attackOmega
   onHitShakeAmp: 0.6
   onHitShakeDur: 0.25
+  windEffect: {fileID: 5794441683494761729, guid: 018e3778ed5f7ac4288b37d4bfdbaf3f, type: 3}
+  dashKickOffset: {x: 0.06, y: 0.3}
+  dashKickLife: 0.35
+  dashKickSortingLayerName: Effects
+  dashKickSortingOrder: 250
+  dashKickFlipByDir: 1
+  dashKickRotateByDir: 0
+  dashKickBaseAngleDeg: 0
   groundLayerName: Ground
   monsterLayerName: Monster
   monkillLayerName: Monkill

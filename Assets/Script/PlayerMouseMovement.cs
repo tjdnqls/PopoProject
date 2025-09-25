@@ -8,12 +8,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMouseMovement : MonoBehaviour
 {
-    // === 필수 컴포넌트 / 레이어 ===
     public Rigidbody2D rb;
     public Animator rb2;
     public SmartCameraFollowByWall cameran;
     [Header("Layers")]
-    // ▼▼ LayerMask 대신 "이름"만 설정 (기본값 그대로 쓰면 인스펙터 세팅 불필요)
     [Header("Layer Names (auto-resolve)")]
     [SerializeField] private string groundLayerName = "Ground";
     [SerializeField] private string eventLayerName = "EventGround, OneWayGround";
@@ -27,59 +25,47 @@ public class PlayerMouseMovement : MonoBehaviour
 
     [Header("Auto Carry (Midair Catch)")]
     [SerializeField] private bool autoCatchEnabled = true;          // 오토 캐치 On/Off
-    [SerializeField] private Vector2 headCatchBoxSize = new(0.70f, 0.35f); // P1 머리 위 캐치 박스 크기
-    [SerializeField] private Vector2 headCatchBoxOffset = new(0f, 0.10f);  // P1 머리 위 기준 추가 오프셋(Y는 머리 윗면에서 더 올림)
     [SerializeField] private float autoCatchMinHeightAbove = 0.05f; // P2 발이 머리보다 최소 이만큼 높아야(두 번째 조건용)
     [SerializeField] private bool onlyCatchDuringThrowWindow = false; // true면 '던진 뒤(탄도창)'에만 캐치
     [SerializeField] private float autoCatchCooldown = 0.15f;       // 반복 캐치 튕김 방지
     [SerializeField] private float autoCatchBlockOnThrow = 0.2f; // 던진 직후 차단 시간
     private float autoCatchSuppressUntil = -1f;                  // 이 시각 전엔 오토캐치 금지
     private float nextAutoCatchAllowedAt = 0f;
-    // === Auto Catch – Whole Body ===
     [Header("Auto Catch – Whole Body")]
     [SerializeField] private bool autoCatchUseWholeBody = true;           // 몸 전체 판정 사용
     [SerializeField] private Vector2 bodyCatchPadding = new(0.06f, 0.06f); // P1 바디 박스 확장량(여유)
 
-    // === Camera Auto-Focus (to P1) ===
     [Header("Camera Auto-Focus (to P1)")]
     [SerializeField] private bool autoForceViewToP1OnCatch = true;        // 캐치 시 카메라/시점 P1 강제
     [SerializeField] private UnityEngine.Events.UnityEvent onForceViewToP1; // (선택) 카메라 스크립트 훅
-    // === Auto Carry Gate ===
     [Header("Auto Carry Gate")]
     [SerializeField] private bool autoCatchRequireP2Descending = true;         // P2가 내려오는 중일 때만
     [SerializeField] private float autoCatchMaxHoriz = 0.60f;                  // 가로 허용 오차
-    [SerializeField] private Vector2 autoCatchVerticalRange = new(0.05f, 0.90f); // 머리 위 최소/최대 높이
     [SerializeField] private bool autoCatchDisallowIfBlockingCeiling = true;   // 사이에 지형/트랩 있으면 금지
     [SerializeField] private LayerMask autoCatchObstructionMask;               // Ground|Event|Trap 등
 
     [SerializeField] private bool autoCatchDisallowIfP1Busy = true;            // P1이 바쁠 땐 금지(공격/락 등)
     [SerializeField] private bool autoCatchDisallowIfP2Hidden = true;          // P2가 숨김상태면 금지
 
-    // Animator 파라미터 이름(오토캐치용)
     [SerializeField] private string carryingBoolName = "carrying";             // 오토캐치 ON/OFF
     [SerializeField] private string carryEndTriggerName = "carryEnd";          // 캐리 해제 연출용 트리거(있으면 사용)
     [SerializeField] private string carryEndStateName = "CarryEnd";            // 없으면 이 상태로 크로스페이드
-    // 오토캐치 시 캐리 애니를 몇 프레임부터 시작할지
+    
     [SerializeField] private int autoCatchCarryStartFrame = 6;
 
-    // 캐리 애니메이션 상태 이름(Animator의 State 이름)
     [SerializeField] private string carryStateName = "Carry";
 
-    // (선택) 정확한 길이/프레임을 얻고 싶으면 클립 참조도 함께 지정
     [SerializeField] private AnimationClip carryClipRef;
 
-    // === Revive helpers ===
     [SerializeField] private float reviveIFrame = 1.2f; // 부활 후 무적 시간
     private float _invincibleUntil = -1f;               // 무적 타이머
     public bool IsInvincible => Time.time < _invincibleUntil;
 
-    // (선택) 체크포인트 기록용
     private Vector3 _lastSafePos;
     public void SetCheckpoint(Vector3 pos) { _lastSafePos = pos; }
     public void SetCheckpoint(Transform t) { if (t) { _lastSafePos = t.position; } }
 
 
-    // === 던지기 시작 위치(인스펙터로 조정) ===
     [Header("Throw Start (Inspector Control)")]
     [Tooltip("던지기 시작 지연(초). 이 시간이 지난 뒤 보이면서 실제로 날아가기 시작합니다.")]
     [SerializeField] private float throwDelay = 0.25f;
@@ -99,39 +85,34 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private string hazardLayerNames = "Trap, Monster, Monkill, MonAttack";
     private int hazardMask;
 
-    // 내부 캐시 (코드에서만 사용)
     private int groundMask, eventMask, trapMask, slimeMask;
     private LayerMask slimeLayerMask; // ContactFilter2D 용
     private int trapLayerIndex;
     public Player1HP dead;
-    // Throw 중엔 Run 애니메이션을 잠깐 막기 위한 플래그
     [SerializeField] private bool throwmanager = true;
-    // === Slime Stick Tuning ===
+
     [SerializeField] private float slimeStickPush = 22f;
     [SerializeField] private float slimeNormalClamp = 20f;
     [SerializeField] private float carrySlideMaxFall = -11f;
-    // ==== Throw Hold: 마지막 입력 우선 래치 ====
     private int holdHorizSign = 0;                 // -1=L, +1=R, 0=none
     private float holdHorizChangedAt = -999f;
     private float holdUpChangedAt = -999f;
+
     [Header("Audio – Footsteps")]
     [SerializeField] private bool enableFootstepLoop = true;
     [SerializeField] private float footstepMinSpeed = 0.1f; // |vx|가 이값 이상일 때만 발소리
     private string _currentWalkLoop = null;                  // 현재 재생 중인 루프 이름(KnightWalk/PrincessWalk)
     private bool jumpchk;
-    // 착지 사운드: 공중→착지 검출용
     [Header("Audio – Landing")]
     [SerializeField] private float landSfxMinAirTime = 0.05f; // 너무 짧은 공중 구간(잡음) 무시
     private bool _leftGroundSinceLast = false;                // 지난번 이후 '땅을 떠난 적'이 있는가
     private float _leftGroundAt = -999f;                      // 마지막으로 땅을 떠난 시각
 
-    // ==== Throw Preview (Sim) ====
     [Header("Throw Preview (Sim)")]
     [SerializeField] private LineRenderer throwPreview;
     [SerializeField] private float throwPreviewDuration = 2.0f;
     [SerializeField] private int throwPreviewSteps = 60;
 
-    // === Ceiling Slime (Head Stick) ===
     [Header("Ceiling Slime (Head Stick)")]
     [SerializeField] private bool enableCeilingSlime = true;
     [SerializeField] private float ceilingStickMaxTime = 5f;      // 5초 유지
@@ -145,7 +126,6 @@ public class PlayerMouseMovement : MonoBehaviour
     private float ignoreCeilingUntil = -1f;    // 이 시각 전엔 머리로 다시 안 붙음
     private float lastCeilingY = 0f;           // 붙었던 천장 Y 캐시(유지용)
 
-    // === P2 Laser Tether ===
     [Header("P2 Laser Tether")]
     [SerializeField] private string boxLayerName = "Box";   // 연결 대상 레이어(쉼표로 여러 개 가능)
     [SerializeField] private float p2LaserMaxDist = 10f;    // 조준/히트 최대 거리
@@ -166,7 +146,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private bool p2AnchorUseBoxBreakDist = true; // 박스 끊김 길이 재사용
     [SerializeField] private float p2AnchorMaxDist = 11.5f;       // 기본값(재사용 안할 때)
 
-    // === P2 Laser Tether (Visual) ===
     [Header("P2 Laser Visual")]
     [SerializeField] private Sprite impactSprite;              // 끝점 반짝이(작은 원형 스프라이트 추천)
     [SerializeField] private float beamBaseWidth = 0.08f;      // 기본 굵기
@@ -174,7 +153,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float beamPulseHz = 12f;          // 펄스 속도
     [SerializeField] private int beamSortingOrderOffset = 2;   // 플레이어보다 얼마나 위에 그릴지
 
-    // === P2 Laser Tether (Stop on Release) ===
     [Header("P2 Laser Stop-On-Release")]
     [SerializeField] private PhysicsMaterial2D boxHighFrictionMat; // friction=1, bounciness=0 권장(없으면 런타임 생성)
     [SerializeField] private float onReleaseExtraDrag = 10f;        // 해제 직후 드래그 임시 상승
@@ -183,7 +161,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private bool restoreMatAfter = true;           // 일정 시간 뒤 원복
     [SerializeField] private float restoreMatAfterSec = 0.6f;
 
-    // === P2 Laser Auto-Connect (Nearest & LoS) ===
     [Header("P2 Laser Auto-Connect")]
     [SerializeField] private float p2LaserAutoRadius = 10f;      // 자동 탐색 반경
     [SerializeField] private float p2LoSBoxWidth = 0.18f;        // 시야 박스캐스트 두께
@@ -204,11 +181,7 @@ public class PlayerMouseMovement : MonoBehaviour
     private int boxMask;
     private bool p2LaserActive = false;
     private Collider2D p2TetherCol;
-    private Rigidbody2D p2TetherRb;
-    private float p2LaserNextToggleAt = 0f;
 
-
-    // === Wall Detach(이탈 유예창) ===
     [SerializeField] private float wallDetachGrace = 0.13f;
     [NonSerialized] public float ignoreSlimeUntil = -1f;
     public bool IsSlimeSuppressed => Time.time < ignoreSlimeUntil;
@@ -226,17 +199,14 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float carryLockDuration = 0.6f; // 기존 고정 잠금(백업용)
     [SerializeField] private string carryBoolName = "carry"; // Animator Bool 파라미터명
 
-    // === 캐리 시작 규칙 ===
     [Header("Carry Start Rules")]
     [SerializeField] private bool requireGroundedForCarryStart = true;       // P1 접지 필수
     [SerializeField] private bool requireOtherGroundedForCarryStart = false; // P2 접지까지 필수
 
-    // === Carry Timing (anim-driven) ===
     [Header("Carry Timing (Anim-driven)")]
     [SerializeField] private bool useAnimDrivenCarry = true;
     [SerializeField] private float carryStartMinLock = 0.08f;
     [SerializeField] private float carryEndMinLock = 0.06f;
-    // ▼ 내려놓기: 정확히 0.6초 후에 보이게 고정
     [SerializeField] private float revealDelayOnDrop = 0.6f; // EXACT 0.6s
     private Coroutine _carryLockCo;
     private Coroutine _revealCo;       // P2 복귀 코루틴
@@ -254,7 +224,6 @@ public class PlayerMouseMovement : MonoBehaviour
     private float throwHoldStartedAt = -1f;
     private float _prevAnimSpeed = 1f;
 
-    // === 접지/레이 거리 ===
     [Header("Ray distances")]
     public float groundrayDistance = 1.3f;
     public float breakrayDistance = 1.4f;
@@ -264,7 +233,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float carryCooldown = 1.4f; // 해제 후 추가 쿨타임
     private float nextCarryAllowedAt = 1f;               // 다음 캐리 허용 시각
 
-    // === 키보드 이동 파라미터 (아이워너 느낌) ===
     [Header("Keyboard Movement (IWB-style)")]
     [SerializeField] public float moveSpeed = 9.5f;
     [SerializeField] private float accel = 180f;
@@ -283,7 +251,7 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D slimeNoFrictionMat;
     private PhysicsMaterial2D _originalMat;
     private bool _appliedNoFriction;
-    // === Ceiling Slime (Head Stick) ===
+
     [Header("Ceiling Slime (Head Stick)")]
     [SerializeField] private float headCheckDist = 0.12f;              // 머리 위 슬라임 감지 거리
     [SerializeField] private float ceilingStickDuration = 5f;           // 붙어있는 시간
@@ -292,7 +260,7 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float ceilingAttachSkin = 0.01f;           // 천장에 스냅 붙일 때 여유
 
     private float ceilingStickUntil = -1f;
-    // Hold 에임 옵션
+
     [SerializeField] private bool allowAimUpInHold = true;            // 홀드 상태에서도 ↑ 던지기 허용
     [SerializeField] private Vector2 throwStartLocalOffsetUp = new(0f, 0.75f); // ↑ 던지기 스폰 오프셋(머리 위 중앙 추천)
     [SerializeField] private bool upThrowKeepsFacing = true;          // ↑ 던질 땐 회전 유지(=P2 방향 안 바꿈)
@@ -316,7 +284,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float carryThrowBallisticMinTime = 1f;
     [SerializeField] private bool carryThrowHoldUntilGrounded = false;
 
-    // === Carry 안전 검사 ===
     [Header("Carry Safety Check")]
     [SerializeField] private float releaseAheadCheckDist = 0.45f; // 앞쪽 벽 체크 거리
     [SerializeField] private float releaseGroundProbeDown = 2.0f; // 낭떠러지(아래) 체크 거리
@@ -327,7 +294,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float slimeInwardAccel = 35f;
     [SerializeField] private float wallSlideMaxFallCarrying = -12f;
 
-    // 내부 상태
     private bool ballisticThrowActive = false;
     private float ballisticThrowEndTime = -1f;
     private float lastJumpStartTime = -999f;
@@ -337,18 +303,15 @@ public class PlayerMouseMovement : MonoBehaviour
     private int playerLayerIndexSelf;
     private int monsterLayerIndex; // 추가
 
-    // === 더블 점프 ===
     [Header("Extra Jumps")]
     [SerializeField] public int extraAirJumps = 1;
     private int airJumpsLeft = 0;
 
-    // === 바운스 패널 관련(유지) ===
     [Header("Bounce Panels")]
     [SerializeField] private float bounceImpulseX = 12f;
     [SerializeField] private float bounceImpulseY = 15f;
     [SerializeField] private float inputLockAfterImpulse = 0.12f;
     [SerializeField] private float bounceProtectDuration = 0.06f;
-    // PlayerMouseMovement.cs 아무 곳(필드 아래)에 추가
     public float GravityScaleNormal => gravityScaleNormal;
     public float GravityScaleFall => gravityScaleFall;   // (있으면 편하니 같이)
     [Header("Slime Wall")]
@@ -359,7 +322,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float wallJumpVertical = 11.5f;
     [SerializeField] private bool requireSpaceForWallJump = false;
     [SerializeField] private bool resetAirJumpsOnWallJump = true;
-    // --- 월점프 후 '반대키' 입력 잠금 ---
     [Header("Wall Jump Input Lock")]
     [SerializeField] private float wallOppositeInputLock = 0.5f; // 0.5초 잠금
     private float oppositeInputLockUntil = -1f;
@@ -370,15 +332,11 @@ public class PlayerMouseMovement : MonoBehaviour
     private float lastSlimeTouchAt = -999f;                      // 마지막 접촉 시각
     private int lastSlimeSide = 0;  // -1 = 왼쪽 벽(법선 +X), +1 = 오른쪽 벽(법선 -X)
 
-    // === 내려찍기 (추가) ===
     [Header("Dive (Down Slam)")]
     [SerializeField] private float diveSpeed = -36f;
     [SerializeField] private float diveGravityScale = 7.5f;
     private bool isDiving = false;
-    // Throw Hold: ↑ 에임 래치(탭 한 번으로 고정)
     private bool throwAimUpLatched = false;
-
-    // === 캐리(안아 들기) 관련 ===
     [Header("Carry (P1 carries P2)")]
     public PlayerMouseMovement otherPlayer;
     public float carryOffsetY = 0.5f;
@@ -394,7 +352,6 @@ public class PlayerMouseMovement : MonoBehaviour
     private float baseGravityNormal;
     private float baseGravityFall;
 
-    // --- 월점프 직후 같은 벽 재부착 금지용 ---
     [Tooltip("월점프 직후 같은 벽으로 재부착 금지 시간")]
     [SerializeField] private float wallRegrabBlock = 0.30f;
     private float wallRegrabUntil = -1f; // 이 시각 전까지 재부착 금지
@@ -405,7 +362,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private int p1MaxHP = 2;
     [SerializeField] private int p2MaxHP = 1;
 
-    // 내부 상태
     private bool _sceneReloading = false; // 리로드 중복 방지
 
     [Header("Ground Check Fix")]
@@ -413,7 +369,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float postJumpGroundIgnore = 0.06f;
     private float ignoreGroundUntil = -1f;
 
-    // === Bounce 속도 튜닝 ===
     [Header("Bounce Speed Tuning")]
     [SerializeField] private bool smoothBounce = true;
     [SerializeField] private float bounceTargetSpeed = 14f;
@@ -421,10 +376,8 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float bounceMaxSpeed = 18f;
 
     [Header("애니메이션")]
-    // rb2 사용 (Animator)
     private float janit = 0f;
 
-    // === 공격 ===
     [Header("Attack")]
     [SerializeField] private float attackCooldown = 1.0f; // 쿨타임 1초
     [SerializeField] private float attackDuration = 0.5f; // 공격 애니 길이(자동 종료)
@@ -437,7 +390,6 @@ public class PlayerMouseMovement : MonoBehaviour
     public int currentHP;
     public bool IsDead { get; private set; } = false;
 
-    // === Death Fall ===
     [Header("Death Fall")]
     [SerializeField] private float deadHorizontalDamp = 6f;   // 사망 후 가로 감쇠 속도(0이면 감쇠 안 함)
     [SerializeField] private bool keepFallingOnDeath = true;  // 사망해도 계속 낙하
@@ -452,7 +404,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float seamFixProbe = 0.03f;  // 발 앞 세로면 탐색 폭
     [SerializeField] private float seamFixLift = 0.03f;  // 살짝 들어올릴 높이
 
-    // Box 전용 스텝업 게이트(이중 레이)
     [Header("Step Up (Box gate)")]
     [SerializeField] private bool enableBoxGateForStepUp = true;
     [SerializeField] private float boxGateLowerY = 0.05f;   // 발밑 기준 낮은 레이 높이
@@ -460,7 +411,6 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private float boxGateDepth = 0.12f;   // 전방 탐색 깊이(=가로 길이)
     [SerializeField] private float boxGateThickness = 0.02f;// 레이 두께(얇은 띠)
 
-    // === 내부 상태 ===
     private float lastGroundedTime = -999f;
     private float lastJumpPressedTime = -999f;
     private float rawX = 0f;
@@ -484,10 +434,8 @@ public class PlayerMouseMovement : MonoBehaviour
     private bool touchL_byCollision, touchR_byCollision;
     private bool touchL_byTrigger, touchR_byTrigger;
 
-    // 접지 전/후 변화 감지용
     private bool wasGrounded = false;
 
-    // === 스케일/방향 ===
     public float dir = 1f;
     public bool dirseto = true;
     public bool chasize = true;
@@ -598,7 +546,6 @@ public class PlayerMouseMovement : MonoBehaviour
 
     void Update()
     {
-        // 유틸: 미리보기 선 감추기(있는 경우)
         void HideThrowPreview()
         {
             var tf = transform.Find("ThrowPreview");
@@ -609,7 +556,6 @@ public class PlayerMouseMovement : MonoBehaviour
             }
         }
 
-        // 유틸: 미리보기 선 확보(없으면 생성)
         LineRenderer EnsureThrowPreview()
         {
             var tf = transform.Find("ThrowPreview");
@@ -640,7 +586,6 @@ public class PlayerMouseMovement : MonoBehaviour
                     lr.sortingOrder = sr.sortingOrder + beamSortingOrderOffset + 1;
                 }
 
-                // 색상
                 lr.startColor = new Color(1f, 0f, 0f, 0.95f);
                 lr.endColor = new Color(1f, 0f, 0f, 0.95f);
             }
@@ -701,7 +646,6 @@ public class PlayerMouseMovement : MonoBehaviour
             var lr = EnsureThrowPreview();
             if (!lr) return;
 
-            // 충돌 중단 마스크(지형/이벤트/트랩에 닿으면 멈춤)
             int stopMask = groundMask | eventMask | trapMask;
 
             // 점들 계산
@@ -716,7 +660,6 @@ public class PlayerMouseMovement : MonoBehaviour
                 Vector2 p = (Vector2)startPos + v0 * t + 0.5f * a * (t * t);
                 Vector3 curr = new Vector3(p.x, p.y, startPos.z);
 
-                // 충돌 체크(라인캐스트)
                 var hit = Physics2D.Linecast(prev, curr, stopMask);
                 if (hit.collider)
                 {
@@ -736,7 +679,6 @@ public class PlayerMouseMovement : MonoBehaviour
         bool isSelected = (swap != null && swap.charSelect == playerID);
         bool suppressed = Time.time < swapSuppressUntil;
 
-        // 변경: 공격 중(P1)에는 입력 자체를 잠그기
         bool attackLock = AttackLocksInput();
         bool locked = suppressed || Time.time < inputLockUntil || attackLock;
         lockedall = locked; // 전체 트랜지션 중에는 모든 입력/조작 봉인
@@ -766,7 +708,6 @@ public class PlayerMouseMovement : MonoBehaviour
             return;
         }
 
-        // 좌/우 입력 (월점프 이후 '벽쪽 키' 잠금 반영)
         bool blockL = IsDirBlocked(-1);
         bool blockR = IsDirBlocked(+1);
 
@@ -778,9 +719,8 @@ public class PlayerMouseMovement : MonoBehaviour
 
         rawX = Mathf.Clamp(left + right, -1f, 1f);
 
-        // 점프 입력 버퍼 (홀드 중엔 이동만 잠그고 점프는 허용)
         bool jumpLocked = (suppressed || Time.time < inputLockUntil || attackLock);
-        // throwHoldActive면 이동락만 유지하고 점프는 허용(단, 공격 중은 그대로 금지)
+
         bool allowJumpNow = throwHoldActive ? !attackLock : !jumpLocked;
 
         if (allowJumpNow && Input.GetKeyDown(KeyCode.Space))
@@ -788,19 +728,16 @@ public class PlayerMouseMovement : MonoBehaviour
 
         jumpHeld = allowJumpNow && Input.GetKey(KeyCode.Space);
 
-        // ── P1 캐리/던지기 입력 처리 ─────────────────────────
         if (playerID == SwapController.PlayerChar.P1)
         {
             bool shiftDown = ThrowHoldDown();
             bool shiftUp = ThrowHoldUp();
             bool canToggleCarry = !locked && Time.time >= nextCarryAllowedAt;
 
-            // 캐리 중이 아닐 땐 보류 상태 초기화
             if (!isCarrying) throwComboPending = false;
 
             if (isCarrying && enableThrowHold)
             {
-                // ① 쉬프트 먼저 눌린 뒤, 짧게 방향키를 기다리는 보정 구간
                 if (throwComboPending)
                 {
                     HideThrowPreview();
@@ -811,19 +748,17 @@ public class PlayerMouseMovement : MonoBehaviour
                         Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
                     bool shiftHeld = ThrowHoldHeld();
 
-                    // 그레이스 안에 '쉬프트 계속 누른 상태 + 방향키'가 들어오면 홀드 에임 시작
                     if (shiftHeld && dirHeld)
                     {
                         throwComboPending = false;
                         BeginThrowHold();
-                        
-                        // 바로 프리뷰 표시
+                        InitThrowHoldAimFromKeys();
+
                         DrawThrowPreview();
                         rawX = 0f;
                         return;
                     }
 
-                    // 그레이스 끝났는데 방향키가 없으면 → DROP
                     if (Time.time >= throwComboPendingUntil)
                     {
                         throwComboPending = false;
@@ -851,6 +786,7 @@ public class PlayerMouseMovement : MonoBehaviour
                     {
                         // 쉬프트 + 방향키 동시 → 즉시 홀드 에임
                         BeginThrowHold();
+                        InitThrowHoldAimFromKeys();
                         DrawThrowPreview();
                     }
                     else
@@ -965,28 +901,6 @@ public class PlayerMouseMovement : MonoBehaviour
                 selectedObject.SetActive(false);
             }
         }
-        // --- P2 전용: 레이저 테더 토글 ---
-        if (playerID == SwapController.PlayerChar.P2 && !locked && !isCarrying && !isCarried)
-        {
-            if (Input.GetKeyDown(KeyCode.F) && Time.time >= p2LaserNextToggleAt)
-            {
-                if (p2LaserActive) EndP2Laser();
-                else TryBeginP2Laser();
-                p2LaserNextToggleAt = Time.time + p2LaserCooldown;
-            }
-        }
-
-        if (p2LaserActive)
-        {
-            if (p2AnchorMode)
-            {
-                if (p2AnchorCol == null) EndP2Laser(); // 대상 사라지면만 해제
-            }
-            else
-            {
-                if (p2TetherCol == null || IsP2LaserTooFar()) EndP2Laser();
-            }
-        }
 
         bool grounded = IsGroundedStrictSmall();
         if (grounded)
@@ -1002,6 +916,14 @@ public class PlayerMouseMovement : MonoBehaviour
             transform.localScale = new Vector3(dirseto ? dir : dir * 1f, dirsetofl, dirsetofl);
         }
 
+        if(isCarrying == false && playerID == SwapController.PlayerChar.P1)
+        {
+            extraAirJumps = 1;
+        }
+        else if(isCarrying == false && playerID == SwapController.PlayerChar.P2)
+        {
+            extraAirJumps = 0;
+        }
         // 천장 트랩
         CheckCeilingTrap();
 
@@ -1061,8 +983,6 @@ public class PlayerMouseMovement : MonoBehaviour
             v2.y = wallJumpVertical;
             rb.linearVelocity = v2;
 
-            // awayLeft  : 오른쪽 벽에 붙어 있다가 왼쪽으로 점프 → '오른쪽(벽쪽) 키' 잠금 => +1
-            // awayRight : 왼쪽  벽에 붙어 있다가 오른쪽으로 점프 → '왼쪽(벽쪽) 키' 잠금 => -1
             int wallSideDir = awayLeft ? +1 : -1;
             oppositeInputLockUntil = Time.time + wallOppositeInputLock;
             oppositeInputLockedDir = wallSideDir;
@@ -1234,7 +1154,6 @@ public class PlayerMouseMovement : MonoBehaviour
                 lastJumpStartTime = Time.time;
                 didCutThisJump = false;
 
-                // === DoubleJump FX: '지면/코요테 아님' → 공중점프일 때만 ===
                 if (!canCoyote && !grounded)
                 {
                     // FX: 더블점프 이펙트 (발밑에서, 스케일 x4)
@@ -1244,8 +1163,6 @@ public class PlayerMouseMovement : MonoBehaviour
                         Vector3 feet = new Vector3(b.center.x, b.min.y, transform.position.z);
                         SoundManager.Play("DoubleJump", transform);
                         FX.Play("doubleJumpe", feet + Vector3.down * 0.06f, 10f);
-                        // 만약 FX.Play(…, scale) 오버로드가 없다면 ↓ 이렇게도 가능:
-                        // SpriteEffectManager.Instance?.PlayScaled("doubleJumpe", feet + Vector3.down * 0.06f, 4f);
                     }
 
                     // 공중점프 1회 소모
@@ -1350,10 +1267,7 @@ public class PlayerMouseMovement : MonoBehaviour
         rb.linearVelocity = v;
         rb.linearVelocity = v;
         // --- P2 레이저 물리 끌어오기 ---
-        if (playerID == SwapController.PlayerChar.P2 && p2LaserActive)
-        {
-            UpdateP2LaserPhysics();
-        }
+        
 
         bool groundedThisFrame = groundedStrict;
         if (wasGrounded && !groundedThisFrame)
@@ -1654,9 +1568,6 @@ public class PlayerMouseMovement : MonoBehaviour
                 return;
             }
         }
-
-        // 던지기(THROW)는 위 조건과 무관하게 항상 진행
-        // ====== 여기부터 실제 캐리 해제 공통 처리 ======
         otherPlayer.transform.SetParent(otherOriginalParent, worldPositionStays: true);
 
         if (!anyDir)
@@ -1668,7 +1579,7 @@ public class PlayerMouseMovement : MonoBehaviour
             otherPlayer.isCarried = false;
             otherPlayer.rb.linearVelocity = Vector2.zero;
             otherPlayer.ballisticThrowActive = false;
-
+            extraAirJumps = 1;
             int faceToP1 = (transform.position.x > otherPlayer.transform.position.x) ? +1 : -1;
             otherPlayer.ForceFaceSign(faceToP1);
 
@@ -1678,8 +1589,9 @@ public class PlayerMouseMovement : MonoBehaviour
             // 애니 상태 정리
             if (rb2)
             {
+                extraAirJumps = 1;
                 AnimatorSetBoolSafe(rb2, carryBoolName, false);      // 수동 캐리일 수도 있으니 OFF
-                AnimatorSetBoolSafe(rb2, carryingBoolName, false);   // ★ 오토캐치 OFF
+                AnimatorSetBoolSafe(rb2, carryingBoolName, false);   //  오토캐치 OFF
                 if (!string.IsNullOrEmpty(carryEndTriggerName))      // 트리거가 있으면 사용
                     AnimatorSetTriggerSafe(rb2, carryEndTriggerName);
                 else if (!string.IsNullOrEmpty(carryEndStateName))   // 없으면 상태로 강제 전이
@@ -1737,6 +1649,7 @@ public class PlayerMouseMovement : MonoBehaviour
 
         if (playerID == SwapController.PlayerChar.P1)
         {
+            extraAirJumps = 1;
             CancelCarryLock();
             inputLockUntil = Time.time + 0.45f;
 
@@ -1785,6 +1698,8 @@ public class PlayerMouseMovement : MonoBehaviour
 
         _delayedThrowCo = null;
     }
+
+    // 1차
 
     private void ApplyLayerIgnores()
     {
@@ -1853,7 +1768,6 @@ public class PlayerMouseMovement : MonoBehaviour
             rb.gravityScale = gravityScaleFall; // 하강 중 중력
         }
     }
-
     private void RunAni()
     {
         
@@ -1862,18 +1776,15 @@ public class PlayerMouseMovement : MonoBehaviour
         lefthold = false;
         righthold = false;
     }
-
     private void RunexitAni()
     {
         if (rb2) rb2.SetBool("run", false);
     }
-
     private void JumpAni()
     {
         if (rb2) rb2.SetBool("jump", true);
         jumpchk = true;
     }
-
     private void JumpedAni()
     {
         if (rb2)
@@ -1883,14 +1794,12 @@ public class PlayerMouseMovement : MonoBehaviour
             rb2.SetBool("jumped", true);
         }
     }
-
     // === 공격 시작/종료 ===
     private void StartAttack()
     {
         attack = true;
         if (rb2) rb2.SetBool("attack", true);
 
-        // ★ 추가: 공격 시작 시 이동/점프 버퍼 초기화(버퍼 점프 방지)
         rawX = 0f;
         jumpHeld = false;
         lastJumpPressedTime = -999f;
@@ -1914,7 +1823,6 @@ public class PlayerMouseMovement : MonoBehaviour
             _attackPulseCo = null;
         }
         if (selectedObject) selectedObject.SetActive(false); // 펄스 타이머와 무관하게 끔
-        // selectedObject는 fPulseDuration 타이머로 별도 종료됨
     }
 
     private IEnumerator ActivateSelectedAfterDelay(float delay)
@@ -1976,7 +1884,6 @@ public class PlayerMouseMovement : MonoBehaviour
         Bounds b = bodyCollider.bounds;
         int sign = dirInput > 0f ? +1 : -1;
 
-        // ========== 🔵 Box 스텝업 게이트 (이중 레이) ==========
         bool allowBoxSurface = false;
         if (enableBoxGateForStepUp && boxMask != 0)
         {
@@ -2017,9 +1924,6 @@ public class PlayerMouseMovement : MonoBehaviour
                            upCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
                            upHit ? Color.blue : Color.gray, 0f);
 #endif
-            // 규칙:
-            //  - 낮은 레이만 맞고, 높은 레이는 안 맞으면 → 낮은 박스 → 스텝업 허용
-            //  - 높은 레이도 맞으면 → 높은 박스 → 스텝업 금지
             if (upHit) return;                // 높다 → 금지
             allowBoxSurface = lowHit && !upHit;
         }
@@ -2077,10 +1981,6 @@ public class PlayerMouseMovement : MonoBehaviour
                                                // 내부 카운터도 채움(grounded 간주)
         if (assumeGrounded)
         {
-            // 바로 점프 가능하도록 접지 타임/무시 타임 초기화
-            // (private라 이 클래스 안에서만 만질 수 있어요)
-            // grounded 처리를 신뢰한다면 아래 두 줄은 생략해도 됨
-            // 단, spawnOffset이 살짝 떠있으면 넣는게 편합니다.
             var now = Time.time;
             lastGroundedTime = now;
             ignoreGroundUntil = -1f;
@@ -2182,198 +2082,6 @@ public class PlayerMouseMovement : MonoBehaviour
         nextCarryAllowedAt = Mathf.Max(nextCarryAllowedAt, planned);
     }
 
-    private void TryBeginP2Laser()
-    {
-        bool anchor;
-        var best = FindNearestVisibleTarget(out anchor);
-        if (best == null) return;
-
-        p2AnchorMode = anchor;
-        if (p2AnchorMode)
-        {
-            p2AnchorCol = best;
-            p2TetherCol = null;
-            p2TetherRb = null;
-        }
-        else
-        {
-            p2TetherCol = best;
-            p2TetherRb = best.attachedRigidbody;
-            p2AnchorCol = null;
-        }
-
-        p2LaserActive = true;
-        UpdateP2LaserRenderer(true);
-    }
-
-    private Collider2D FindNearestVisibleTarget(out bool isAnchor)
-    {
-        isAnchor = false;
-        Vector2 origin = p2LaserMuzzle ? (Vector2)p2LaserMuzzle.position
-                                       : (Vector2)bodyCollider.bounds.center;
-
-        var filter = new ContactFilter2D { useLayerMask = true, useTriggers = false };
-        // Box + Anchor를 모두 탐색 (anchorMask가 0이면 boxMask만)
-        int mask = boxMask | anchorMask;
-        filter.SetLayerMask(mask != 0 ? mask : ~0); // 레이어 안쓰면 전체에서 찾고 아래에서 컴포넌트로 필터
-
-        int count = Physics2D.OverlapCircle(origin, p2LaserAutoRadius, filter, p2BoxScanBuf);
-
-        Collider2D best = null;
-        float bestDist = float.PositiveInfinity;
-
-        for (int i = 0; i < count; i++)
-        {
-            var c = p2BoxScanBuf[i];
-            if (!c || !c.enabled) continue;
-
-            // Box 또는 Anchor만 대상
-            bool anchor = IsAnchorCollider(c);
-            bool box = ((1 << c.gameObject.layer) & boxMask) != 0;
-
-            if (!anchor && !box) continue;
-
-            Vector2 target = c.bounds.center;
-            float dist = Vector2.Distance(origin, target);
-            if (dist < 0.001f) continue;
-
-            Vector2 dir = (target - origin) / dist;
-
-            // LoS 체크(벽 뒤 제외)
-            bool blocked = Physics2D.BoxCast(origin, new Vector2(p2LoSBoxWidth, p2LoSBoxWidth),
-                                             0f, dir, dist - 0.01f, p2ObstructionMask);
-            if (blocked) continue;
-
-            if (dist < bestDist)
-            {
-                bestDist = dist;
-                best = c;
-                isAnchor = anchor; // 마지막으로 갱신된 후보의 타입 기록
-            }
-        }
-        return best;
-    }
-
-    private void EndP2Laser()
-    {
-        if (!p2AnchorMode && p2TetherCol != null) // Box일 때만 정지 보조
-            ApplyHighFrictionAndStopNow(p2TetherCol);
-
-        p2LaserActive = false;
-        p2AnchorMode = false;
-        p2AnchorCol = null;
-        p2TetherCol = null;
-        p2TetherRb = null;
-
-        UpdateP2LaserRenderer(false);
-    }
-
-
-    private bool IsP2LaserTooFar()
-    {
-        if (p2TetherCol == null || bodyCollider == null) return true;
-        Bounds b1 = bodyCollider.bounds;
-        Bounds b2 = p2TetherCol.bounds;
-        float dist = Vector2.Distance(b1.center, b2.center);
-        return dist > p2LaserBreakDist;
-    }
-
-    private void UpdateP2LaserPhysics()
-    {
-        if (p2AnchorMode)
-        {
-            // 앵커 모드: 당기지 않음, 라인/임팩트만 갱신
-            UpdateP2LaserRenderer(true);
-            return;
-        }
-        if (p2TetherCol == null) { EndP2Laser(); return; }
-
-        // 자동 해제 거리 체크
-        if (IsP2LaserTooFar()) { EndP2Laser(); return; }
-
-        // P2와 Box가 접촉했으면 끌어오기만 중단(연결 유지)
-        var d = Physics2D.Distance(bodyCollider, p2TetherCol);
-        bool touching = d.isOverlapped || d.distance <= p2StopPullContactGap;
-
-        if (!touching)
-        {
-            // Box → P2 방향 힘(혹은 속도 상한)
-            Vector2 p2 = bodyCollider.bounds.center;
-            Vector2 bx = p2TetherCol.bounds.center;
-            Vector2 dir = (p2 - bx).normalized;
-
-            if (p2TetherRb != null && p2TetherRb.simulated)
-            {
-                p2TetherRb.AddForce(dir * p2PullForce, ForceMode2D.Force);
-
-                // 속도 상한
-                Vector2 v = p2TetherRb.linearVelocity;
-                float max = Mathf.Max(0.1f, p2PullSpeed);
-                if (v.magnitude > max) p2TetherRb.linearVelocity = v.normalized * max;
-            }
-            else
-            {
-                // Rigidbody가 없거나 Kinematic인 경우: 위치 보간
-                Vector2 next = Vector2.MoveTowards(bx, p2, p2PullSpeed * Time.fixedDeltaTime);
-                p2TetherCol.transform.position = next;
-            }
-        }
-        else
-        {
-            if (p2TetherRb != null) p2TetherRb.linearVelocity = Vector2.zero;
-        }
-
-        UpdateP2LaserRenderer(true);
-    }
-
-    private void UpdateP2LaserRenderer(bool on)
-    {
-        if (!p2LaserLine) return;
-
-        if (!on)
-        {
-            p2LaserLine.enabled = false;
-            if (p2ImpactFx) p2ImpactFx.gameObject.SetActive(false);
-            return;
-        }
-
-        p2LaserLine.enabled = true;
-
-        // 시작점
-        Vector3 start = p2LaserMuzzle ? p2LaserMuzzle.position
-                                      : (Vector3)bodyCollider.bounds.center;
-
-        //  여기: end 계산 부분을 아래처럼 교체
-        Vector3 end;
-        if (p2TetherCol != null) end = p2TetherCol.bounds.center;        // 박스에 붙은 경우
-        else if (p2AnchorCol != null) end = p2AnchorCol.bounds.center;   // 앵커에 붙은 경우
-        else
-        {
-            // 타겟이 없을 때는 가늠선(기존 로직 유지)
-            int sign = (transform.localScale.x >= 0f) ? +1 : -1;
-            end = start + new Vector3(sign * p2LaserMaxDist, 0f, 0f);
-        }
-
-        p2LaserLine.positionCount = 2;
-        p2LaserLine.SetPosition(0, start);
-        p2LaserLine.SetPosition(1, end);
-
-        // 굵기 펄스 등 기존 시각효과 유지
-        p2BeamPulseTimer += Time.deltaTime * beamPulseHz;
-        float pulse = 1f + beamPulseAmp * Mathf.Sin(p2BeamPulseTimer);
-        p2LaserLine.widthMultiplier = beamBaseWidth * pulse;
-
-        // 끝점 글로우도 같은 end 사용
-        if (p2ImpactFx != null)
-        {
-            p2ImpactFx.gameObject.SetActive(true);
-            p2ImpactFx.position = end;
-
-            float s = Mathf.Lerp(0.14f, 0.22f, (Mathf.Sin(Time.time * 9f) + 1f) * 0.5f);
-            p2ImpactFx.localScale = new Vector3(s, s, 1f);
-        }
-    }
-
     private void SetThrowPreviewColor(bool hazardous)
     {
         if (!throwPreview) return;
@@ -2467,7 +2175,6 @@ public class PlayerMouseMovement : MonoBehaviour
     public void AE_CarryEnd_Begin() { }
     public void AE_CarryEnd_End() { inputLockUntil = Time.time; }
 
-    // === 탄도 유지 판단용: Ground만 짧게 본다(OneWay/Event는 무시) ===
     private bool IsGroundedStrictSmall()
     {
         if (Time.time < ignoreGroundUntil) return false;
@@ -2490,8 +2197,6 @@ public class PlayerMouseMovement : MonoBehaviour
 
     // 외부에서 쓸 수 있도록 래퍼
     public bool IsGroundedStrictSmall_Public() => IsGroundedStrictSmall();
-    // P1 머리 위 ‘캐치 영역’과 P2의 바디가 겹치면 즉시 캐리로 스냅
-
     private bool CanEnterAutoCatchGate_Body(Bounds p1Body, Bounds p2Body)
     {
         if (Time.time < autoCatchSuppressUntil) return false;
@@ -2625,56 +2330,6 @@ public class PlayerMouseMovement : MonoBehaviour
         }
     }
 
-    private void ApplyHighFrictionAndStopNow(Collider2D anyColOnBox)
-    {
-        if (anyColOnBox == null) return;
-
-        var root = anyColOnBox.attachedRigidbody ? anyColOnBox.attachedRigidbody.transform
-                                                 : anyColOnBox.transform;
-
-        // 1) Rigidbody2D → 속도 즉시 0
-        var rb2d = root.GetComponent<Rigidbody2D>();
-        if (rb2d != null && rb2d.simulated)
-        {
-            // 잔여 속도 제거
-            rb2d.linearVelocity = Vector2.zero;
-            rb2d.angularVelocity = 0f;
-
-            // 임시 드래그 부스트
-            p2PrevDrag = rb2d.linearDamping;
-            p2PrevAngDrag = rb2d.angularDamping;
-            rb2d.linearDamping = onReleaseExtraDrag;
-            rb2d.angularDamping = onReleaseExtraAngDrag;
-        }
-
-        // 2) Collider2D들 → 고마찰 머티리얼 부여
-        p2LastCols.Clear();
-        var cols = root.GetComponentsInChildren<Collider2D>(includeInactive: false);
-
-        // 준비: 고마찰 머티리얼 없으면 런타임 생성
-        if (!boxHighFrictionMat)
-        {
-            boxHighFrictionMat = new PhysicsMaterial2D("Runtime_BoxHighFric_1");
-            boxHighFrictionMat.friction = 1.0f;
-            boxHighFrictionMat.bounciness = 0f;
-        }
-
-        for (int i = 0; i < cols.Length; i++)
-        {
-            var c = cols[i];
-            // 트리거나 상호작용 무관이면 스킵하고 싶다면 조건 추가 가능
-            p2LastCols.Add((c, c.sharedMaterial));
-            c.sharedMaterial = boxHighFrictionMat;
-        }
-
-        // 3) 원복 예약(선택)
-        if (restoreMatAfter)
-        {
-            if (p2RestoreCo != null) StopCoroutine(p2RestoreCo);
-            p2RestoreCo = StartCoroutine(RestoreBoxAfterDelay(root, rb2d));
-        }
-    }
-
     private IEnumerator RestoreBoxAfterDelay(Transform root, Rigidbody2D rb2d)
     {
         yield return new WaitForSeconds(onReleaseDragDuration);
@@ -2762,8 +2417,8 @@ public class PlayerMouseMovement : MonoBehaviour
         throwHoldStartedAt = Time.time;
 
         rawX = 0f;                    // 수평만 고정(미끄럼 방지)
-                                      // ⛔️ 기존: jumpHeld = false;  → 삭제
-                                      // ⛔️ 기존: lastJumpPressedTime = -999f; → 삭제
+                                      // 기존: jumpHeld = false;  → 삭제
+                                      // 기존: lastJumpPressedTime = -999f; → 삭제
 
         FreezeThrowAnimAtFirstFrame();
 
@@ -2946,14 +2601,39 @@ public class PlayerMouseMovement : MonoBehaviour
             rb.position = rb.position + new Vector2(0f, dy);
     }
 
-    private bool IsAnchorCollider(Collider2D c)
+    // 던지기 홀드 진입 직후, 현재 눌려있는 키로 초깃값 래치
+    void InitThrowHoldAimFromKeys()
     {
-        if (!c) return false;
-        if (c.GetComponentInParent<LaserAnchor>() != null) return true;           // 컴포넌트로 구분
-        if (anchorMask != 0 && ((1 << c.gameObject.layer) & anchorMask) != 0)     // (선택) 레이어로도 허용
-            return true;
-        return false;
+        bool w = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+        bool a = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+        bool d = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+
+        if (allowAimUpInHold && w)
+        {
+            // 위 에임 우선
+            throwAimUpLatched = true;
+            holdUpChangedAt = Time.time;
+            // 수평은 그대로 두되, 필요시 기본값을 유지
+        }
+        else
+        {
+            // 위 에임 해제하고 수평 결정
+            throwAimUpLatched = false;
+
+            if (a ^ d) // 둘 중 하나만 눌렸을 때
+            {
+                holdHorizSign = a ? -1 : +1;
+                holdHorizChangedAt = Time.time;
+                ForceFaceSign(holdHorizSign);
+            }
+            else
+            {
+                // 둘 다 미입력 또는 동시 입력이면 현 바라보는 방향 유지
+                holdHorizSign = (transform.localScale.x >= 0f) ? +1 : -1;
+            }
+        }
     }
+
     private void BeginCeilingRelease()
     {
         if (!stickingToCeiling) return;
@@ -3063,7 +2743,7 @@ public class PlayerMouseMovement : MonoBehaviour
         holdHorizChangedAt = holdUpChangedAt = -999f;
     }
 
-    // ▶ 한 번만 쓰는 프리뷰 라인 확보(중복 있으면 제거/비활성)
+    // 한 번만 쓰는 프리뷰 라인 확보(중복 있으면 제거/비활성)
     private void EnsureThrowPreviewLine()
     {
         // 1) 같은 이름 라인 찾기(있으면 재사용, 여러 개면 하나만 남기고 제거)
@@ -3117,7 +2797,7 @@ public class PlayerMouseMovement : MonoBehaviour
         DisableOtherPreviewLines();
     }
 
-    // ▶ 다른(예전) 프리뷰 라인들 끄기
+    // 다른(예전) 프리뷰 라인들 끄기
     private void DisableOtherPreviewLines()
     {
         var all = GetComponentsInChildren<LineRenderer>(true);
@@ -3132,7 +2812,7 @@ public class PlayerMouseMovement : MonoBehaviour
     }
 
 
-    // ▶ 프리뷰 숨기기(던질 때/홀드 종료 때 호출)
+    // 프리뷰 숨기기(던질 때/홀드 종료 때 호출)
     private void HideThrowPreview()
     {
         if (throwPreview)
@@ -3294,17 +2974,6 @@ public class PlayerMouseMovement : MonoBehaviour
         throwHoldActive = false;
         autoCatchSuppressUntil = -1f;
 
-        // 캐리/레이저 강제 해제
-        if (isCarrying) { isCarrying = false; carryset = false; }
-        if (isCarried)
-        {
-            isCarried = false;
-            if (rb) rb.simulated = true;
-            transform.SetParent(null, true);
-            SetOtherPlayerVisible(true);
-        }
-        if (playerID == SwapController.PlayerChar.P2 && p2LaserActive) EndP2Laser();
-
         // 애니 초기화
         ResetAnimStates();
         if (rb2)
@@ -3349,12 +3018,6 @@ public class PlayerMouseMovement : MonoBehaviour
         for (int i = 0; i < rends.Length; i++) if (rends[i].enabled) return true;
         return false;
     }
-
-    // 머리 위 슬라임 감지 (Ceiling)
-
-
-
-    // === 슬라임 접촉 감지: Collider.Cast 기반 ===
     private bool TouchingSlimeSideCast(int sign)
     {
         if (!bodyCollider) return false;
@@ -3505,4 +3168,3 @@ public class PlayerMouseMovement : MonoBehaviour
         dir = sign;
     }
 }
-

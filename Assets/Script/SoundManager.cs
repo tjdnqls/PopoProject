@@ -661,6 +661,18 @@ public class SoundManager : MonoBehaviour
         return (vp.x >= min && vp.x <= max && vp.y >= min && vp.y <= max);
     }
 
+    // SoundManager 클래스 내부에 추가
+    public static IReadOnlyList<string> GetSoundNames()
+    {
+        if (!Instance) return Array.Empty<string>();
+        // 맵이 비어있으면 재빌드
+        if (Instance._map == null || Instance._map.Count == 0) Instance.RebuildMapContext();
+        // 이름 목록 복사본 반환
+        var list = new List<string>(Instance._map.Keys);
+        return list;
+    }
+
+
     [ContextMenu("Rebuild Map")]
     private void RebuildMapContext() => BuildMap();
 
