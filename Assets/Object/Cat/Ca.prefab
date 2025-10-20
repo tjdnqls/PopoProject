@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8464236999627716079}
   - component: {fileID: 9088809396298139651}
   - component: {fileID: 4910270379248353141}
+  - component: {fileID: 1871598212131049210}
   m_Layer: 0
   m_Name: Ca
   m_TagString: Untagged
@@ -152,3 +153,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1871598212131049210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7705152282530612592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b821dfa57514e4e973b492dcab6977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 67105783
+  ignoreTilemaps: 0
+  tilemapMode: 0
+  tilemapLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  rescanPeriodically: 1
+  rescanInterval: 0.5
+  includeInactiveChildren: 1

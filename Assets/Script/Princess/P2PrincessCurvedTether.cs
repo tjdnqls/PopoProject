@@ -1,4 +1,4 @@
-// ===================== P2PrincessSpriteTether.cs =====================
+// ===================== P2PrincessSpriteTether.cs (Optimized) =====================
 // Unity 6.1 / Multi-target / World-space VFX root
 // - Guide Line(매우 낮은 알파), LightBeam "~"(거리 비례 알파 & ≤1.5f 파란색), Near-line Sparkle(≤1.5f 파란색)
 // - Outline Ring Sparkle: 콜라이더 엣지 "시계 방향(CW)" 공전 → 플레이어 거리/위치 변화와 무관하게 연속 회전
@@ -6,6 +6,12 @@
 //   ▸ 거리가 > nearBlueDistance + ringUnfreezeMargin 이 되면 다시 공전 재개
 // - SFX: PrincessMagic (전역 3초 쿨다운, “어느 시점에든 ≥ outer” 이후 “≤ inner”로 들어오면 1회 재생)
 // - 금지 API 미사용: OverlapCircleNonAlloc, (instance)OverlapCollider
+// - 성능 개선:
+//   1) 탐지 주기화(detectInterval) + 가까운 N개만 활성(maxActiveTargets)
+//   2) 거리 LOD: 멀면 Ring/Beam/Sparkle 비활성
+//   3) Collider/Renderer 캐시(Per-target) + 바운즈 합산만 매 프레임
+//   4) Outline 경로 빌드 캐시(지정 주기 pathRebuildInterval로만 갱신)
+//   5) 풀 재사용 및 알파/색상 변경 최소화
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -96,14 +102,29 @@ public class P2PrincessSpriteTether : MonoBehaviour
 
     [Header("PrincessMagic SFX")]
     [SerializeField] private string princessMagicSfxKey = "PrincessMagic";
-    [SerializeField, Min(0.01f)] private float princessMagicInner = 1.5f; // ≤ 이 거리로 들어오면
-    [SerializeField, Min(0.01f)] private float princessMagicOuter = 2.0f; // 그 전에 ≥ 이 거리를 한 번이라도 넘었어야 함
-    [SerializeField, Min(0.01f)] private float princessMagicCooldown = 3.0f; // 전역 쿨다운
+    [SerializeField, Min(0.01f)] private float princessMagicInner = 1.5f;
+    [SerializeField, Min(0.01f)] private float princessMagicOuter = 2.0f;
+    [SerializeField, Min(0.01f)] private float princessMagicCooldown = 3.0f;
+
+    // ---------------- Performance ----------------
+    [Header("Performance")]
+    [Tooltip("공주 탐지 호출 간격(초). 너무 낮추면 부하↑")]
+    [SerializeField, Min(0.01f)] private float detectInterval = 0.15f;
+    [Tooltip("가까운 순으로 최대 이 수만큼만 활성 관리")]
+    [SerializeField, Min(1)] private int maxActiveTargets = 4;
+    [Tooltip("이 거리보다 멀면 Ring 꺼짐")]
+    [SerializeField, Min(0f)] private float lodRingDisableDistance = 9f;
+    [Tooltip("이 거리보다 멀면 Beam 꺼짐")]
+    [SerializeField, Min(0f)] private float lodBeamDisableDistance = 10f;
+    [Tooltip("이 거리보다 멀면 Sparkle 꺼짐")]
+    [SerializeField, Min(0f)] private float lodSparkleDisableDistance = 10.5f;
+    [Tooltip("콜라이더(shape) 변화 감지 주기. 0이면 시작 시 1회만 경로 구성")]
+    [SerializeField, Min(0f)] private float pathRebuildInterval = 0.5f;
 
     // detection internals
     private int _princessMask;
     private CircleCollider2D _probe;
-    private readonly List<Collider2D> _overlaps = new(64);
+    private readonly List<Collider2D> _overlaps = new(128);
     private ContactFilter2D _filter;
 
     // per-target
@@ -114,6 +135,9 @@ public class P2PrincessSpriteTether : MonoBehaviour
 
     // sfx global cooldown
     private float _nextPrincessMagicTime = 0f;
+
+    // cadence
+    private float _nextDetectTime = 0f;
 
     void Awake()
     {
@@ -135,8 +159,14 @@ public class P2PrincessSpriteTether : MonoBehaviour
         Vector3 startPos = GetStartPos();
         if (_probe != null) { _probe.transform.position = startPos; _probe.radius = searchRadius; }
 
-        SyncTargets(startPos);
+        // 탐지 호출: cadence
+        if (Time.time >= _nextDetectTime)
+        {
+            SyncTargets(startPos);
+            _nextDetectTime = Time.time + detectInterval;
+        }
 
+        // 활성 타겟들 틱
         foreach (var kv in _tethers)
             kv.Value.TickAll(startPos, this);
     }
@@ -163,43 +193,62 @@ public class P2PrincessSpriteTether : MonoBehaviour
     private void SyncTargets(Vector3 startPos)
     {
         _overlaps.Clear();
+        // 금지된 instance.OverlapCollider 미사용: Static OverlapCollider 사용
         if (_probe != null) Physics2D.OverlapCollider(_probe, _filter, _overlaps);
 
-        var found = new HashSet<Transform>();
+        // 후보 수집 + 거리 정렬
+        _tempFound.Clear();
         for (int i = 0; i < _overlaps.Count; i++)
         {
             var col = _overlaps[i]; if (!col) continue;
             var root = col.transform;
-            if (!requireLineOfSight || HasLineOfSight(startPos, GetColliderGroupCenter(root)))
-                found.Add(root);
+            Vector3 center = GetColliderGroupCenterCached(root); // 캐시 사용
+            if (requireLineOfSight && !HasLineOfSight(startPos, center)) continue;
+            float d = Vector3.Distance(startPos, center);
+            _tempFound.Add(new Found { t = root, center = center, dist = d });
         }
+        _tempFound.Sort((a, b) => a.dist.CompareTo(b.dist));
 
-        var toRemove = new List<Transform>();
+        // 가까운 N개만 유지
+        var keepSet = _tempKeep; keepSet.Clear();
+        for (int i = 0; i < _tempFound.Count && i < maxActiveTargets; i++)
+            keepSet.Add(_tempFound[i].t);
+
+        // 제거
+        _tempToRemove.Clear();
         foreach (var kv in _tethers)
         {
             var t = kv.Key;
-            if (t == null) { toRemove.Add(t); continue; }
+            if (t == null) { _tempToRemove.Add(t); continue; }
 
-            if (!found.Contains(t))
+            bool keep = keepSet.Contains(t);
+            if (!keep)
             {
-                Vector3 c = GetColliderGroupCenter(t);
+                Vector3 c = GetColliderGroupCenterCached(t);
                 bool ok = (Vector3.Distance(startPos, c) <= searchRadius + detachHysteresis) &&
                           (!requireLineOfSight || HasLineOfSight(startPos, c));
-                if (!ok) toRemove.Add(t);
+                if (!ok) _tempToRemove.Add(t);
             }
         }
-        foreach (var t in toRemove)
+        for (int i = 0; i < _tempToRemove.Count; i++)
         {
+            var t = _tempToRemove[i];
             if (_tethers.TryGetValue(t, out var ti)) ti.Destroy();
             _tethers.Remove(t);
+            _targetCache.Remove(t);
         }
 
-        foreach (var t in found)
+        // 추가/활성
+        for (int i = 0; i < _tempFound.Count && i < maxActiveTargets; i++)
         {
-            if (!_tethers.TryGetValue(t, out var ti))
+            var f = _tempFound[i];
+            if (!_tethers.TryGetValue(f.t, out var ti))
             {
-                ti = new TetherInstance(t, this);
-                _tethers.Add(t, ti);
+                ti = new TetherInstance(f.t, this);
+                _tethers.Add(f.t, ti);
+                // 타겟 캐시 준비
+                if (!_targetCache.ContainsKey(f.t))
+                    _targetCache.Add(f.t, new TargetCache(f.t));
             }
             ti.SetActive(true);
         }
@@ -217,21 +266,15 @@ public class P2PrincessSpriteTether : MonoBehaviour
         return hit.collider == null;
     }
 
-    private Vector3 GetColliderGroupCenter(Transform t)
+    private Vector3 GetColliderGroupCenterCached(Transform t)
     {
-        var cols = t.GetComponentsInChildren<Collider2D>(true);
-        if (cols != null && cols.Length > 0)
+        if (t == null) return Vector3.zero;
+        if (!_targetCache.TryGetValue(t, out var cache))
         {
-            Bounds b = cols[0].bounds; for (int i = 1; i < cols.Length; i++) b.Encapsulate(cols[i].bounds);
-            return b.center;
+            cache = new TargetCache(t);
+            _targetCache[t] = cache;
         }
-        var rs = t.GetComponentsInChildren<Renderer>(true);
-        if (rs != null && rs.Length > 0)
-        {
-            Bounds b = rs[0].bounds; for (int i = 1; i < rs.Length; i++) b.Encapsulate(rs[i].bounds);
-            return b.center;
-        }
-        return t.position;
+        return cache.GetCenter();
     }
 
     private void ResolvePrincessMask()
@@ -269,25 +312,58 @@ public class P2PrincessSpriteTether : MonoBehaviour
     }
 
     // ---------- SFX Trigger (armed logic + global cooldown) ----------
-    private void TryPlayPrincessMagicArmed(ref bool armed, float currDist, string targetName)
+    private void TryPlayPrincessMagicArmed(ref bool armed, float currDist, string targetName, Transform posTfOverride = null)
     {
         if (string.IsNullOrEmpty(princessMagicSfxKey)) return;
 
-        // arming: 한 번이라도 outer 이상 떨어지면 무장
         if (currDist >= princessMagicOuter) { armed = true; return; }
 
-        // 발사: 무장 상태 + inner 진입 + 전역 쿨다운 OK
         if (armed && currDist <= princessMagicInner && Time.time >= _nextPrincessMagicTime)
         {
-            // ▶ PrincessMagic 재생 (테스트 로그)
-            Debug.Log($"[PrincessMagic SFX] Play '{princessMagicSfxKey}' (target='{targetName}', dist={currDist:F2}, t={Time.time:F2})");
-            // SoundManager(예시): 위치기반 재생이 있다면 startAnchor 기준으로, 없다면 this.transform
-            var posTf = startAnchor != null ? startAnchor : transform;
-            SoundManager.Play(princessMagicSfxKey, posTf); // <-- 프로젝트 사운드 매니저 시그니처에 맞게 사용
+            var posTf = posTfOverride != null ? posTfOverride : (startAnchor != null ? startAnchor : transform);
+            SoundManager.Play(princessMagicSfxKey, posTf);
 
             _nextPrincessMagicTime = Time.time + princessMagicCooldown;
-            armed = false; // 다시 outer로 나갔다가 들어올 때까지 재생 금지
+            armed = false;
         }
+    }
+
+    // ---------- Temp structs & caches ----------
+    private struct Found { public Transform t; public Vector3 center; public float dist; }
+    private readonly List<Found> _tempFound = new(64);
+    private readonly HashSet<Transform> _tempKeep = new();
+    private readonly List<Transform> _tempToRemove = new(16);
+
+    // Target center/bounds 캐시
+    private readonly Dictionary<Transform, TargetCache> _targetCache = new();
+    private class TargetCache
+    {
+        private readonly Transform _root;
+        private Collider2D[] _cols;
+        private Renderer[] _renders;
+
+        public TargetCache(Transform root)
+        {
+            _root = root;
+            _cols = _root.GetComponentsInChildren<Collider2D>(true);
+            _renders = _root.GetComponentsInChildren<Renderer>(true);
+        }
+
+        public Vector3 GetCenter()
+        {
+            Bounds? b = null;
+            if (_cols != null && _cols.Length > 0)
+            {
+                for (int i = 0; i < _cols.Length; i++) { var c = _cols[i]; if (!c) continue; if (b == null) b = c.bounds; else { var bb = b.Value; bb.Encapsulate(c.bounds); b = bb; } }
+            }
+            else if (_renders != null && _renders.Length > 0)
+            {
+                for (int i = 0; i < _renders.Length; i++) { var r = _renders[i]; if (!r) continue; if (b == null) b = r.bounds; else { var bb = b.Value; bb.Encapsulate(r.bounds); b = bb; } }
+            }
+            return b.HasValue ? b.Value.center : _root.position;
+        }
+
+        public Collider2D[] GetCols() => _cols;
     }
 
     // ---------- Nested per-target ----------
@@ -298,31 +374,28 @@ public class P2PrincessSpriteTether : MonoBehaviour
         private readonly GameObject _lineGO;
         private readonly SpriteRenderer _lineSR;
         private readonly PTetherLineProxy _lineProxy;
+        private readonly int _sortingLayerId;
+
         private Vector3 _lastA, _lastB;
         private bool _visible;
 
-        private readonly List<GameObject> _sparkPool = new();
-        private int _sparkCursor; private float _nextSparkTime;
-
-        private readonly List<GameObject> _beamPool = new();
-        private int _beamCursor; private float _nextBeamTime;
-
-        private readonly List<GameObject> _trailPool = new();
-        private int _trailCursor;
-
+        private readonly List<GameObject> _sparkPool = new(); private int _sparkCursor; private float _nextSparkTime;
+        private readonly List<GameObject> _beamPool = new(); private int _beamCursor; private float _nextBeamTime;
+        private readonly List<GameObject> _trailPool = new(); private int _trailCursor;
         private readonly List<GameObject> _ringPool = new();
 
-        // Ring path (rebuilt only for target shape; offsets는 절대 재초기화하지 않음)
+        // Ring path (rebuilt only at interval)
         private Vector3[] _ringPath;     // CW closed path
         private float[] _ringCum;        // cumulative lengths
         private float _ringTotalLen;
+        private float _nextPathRebuildTime;
 
-        // Ring animation state (index-aligned to pool)
+        // Ring animation state
         private float[] _ringOffsets;    // arc offset (m)
         private float[] _ringSpeeds;     // speed (m/s)
         private float[] _ringScales;     // cached scale
         private Vector3[] _ringFrozenPos;// freeze 위치 보관
-        private bool _ringFrozen;        // 전체 고정 상태(블루 근접)
+        private bool _ringFrozen;
         private bool _ringReady;
 
         // SFX arming per-target
@@ -334,12 +407,14 @@ public class P2PrincessSpriteTether : MonoBehaviour
         {
             this.target = target;
 
+            _sortingLayerId = SortingLayer.NameToID(owner.sortingLayerName);
+
             _lineGO = new GameObject("PrincessTetherSprite_Line");
             _lineGO.transform.SetParent(_worldVfxRoot, true);
             _lineSR = _lineGO.AddComponent<SpriteRenderer>();
             _lineSR.sprite = owner.lineSprite ?? MakeWhite1x1("PTether_Line_1x1");
             _lineSR.color = owner.lineColor;
-            _lineSR.sortingLayerName = owner.sortingLayerName;
+            _lineSR.sortingLayerID = _sortingLayerId;
             _lineSR.sortingOrder = owner.sortingOrder;
             _lineSR.drawMode = SpriteDrawMode.Tiled;
             _lineSR.enabled = false;
@@ -353,6 +428,8 @@ public class P2PrincessSpriteTether : MonoBehaviour
 
             _active = true;
             _sfxArmed = false;
+            _ringReady = false;
+            _nextPathRebuildTime = 0f;
         }
 
         public void SetActive(bool on)
@@ -383,20 +460,23 @@ public class P2PrincessSpriteTether : MonoBehaviour
 
             RenderLine(startPos, owner);
 
-            if (owner.sparklesEnabled && _visible && owner.sparklePoolPerTarget > 0)
-                TickNearSparkles(owner);
+            float dist = Vector3.Distance(_lastA, _lastB);
 
-            if (owner.beamsEnabled && _visible && owner.beamPoolPerTarget > 0)
-                TickBeams(owner);
+            // LOD: 멀면 기능 비활성
+            bool ringOk = owner.ringEnabled && _visible && dist <= owner.lodRingDisableDistance;
+            bool beamOk = owner.beamsEnabled && _visible && dist <= owner.lodBeamDisableDistance;
+            bool sparkOk = owner.sparklesEnabled && _visible && dist <= owner.lodSparkleDisableDistance;
 
-            if (owner.ringEnabled && _visible && _ringPool.Count > 0)
-                TickRing(owner);
+            if (sparkOk && owner.sparklePoolPerTarget > 0) TickNearSparkles(owner);
+            if (beamOk && owner.beamPoolPerTarget > 0) TickBeams(owner);
+            if (ringOk && _ringPool.Count > 0) TickRing(owner, dist);
+            else if (!ringOk) { for (int i = 0; i < _ringPool.Count; i++) if (_ringPool[i].activeSelf) _ringPool[i].SetActive(false); }
         }
 
         // ----- line -----
         private void RenderLine(Vector3 startPos, P2PrincessSpriteTether owner)
         {
-            Vector3 endPos = owner.GetColliderGroupCenter(target);
+            Vector3 endPos = owner.GetColliderGroupCenterCached(target);
             Vector3 dir = endPos - startPos;
             float length = dir.magnitude;
 
@@ -435,7 +515,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
             _lineProxy.A = _lastA; _lineProxy.B = _lastB; _lineProxy.closeness = closeness;
 
             // SFX (armed logic)
-            owner.TryPlayPrincessMagicArmed(ref _sfxArmed, length, target.name);
+            owner.TryPlayPrincessMagicArmed(ref _sfxArmed, length, target.name, owner.startAnchor ? owner.startAnchor : owner.transform);
         }
 
         // ----- near-line sparkles -----
@@ -451,7 +531,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 if (sr != null)
                 {
                     sr.color = owner.sparkleColor;
-                    sr.sortingLayerID = SortingLayer.NameToID(owner.sortingLayerName);
+                    sr.sortingLayerID = _sortingLayerId;
                     sr.sortingOrder = owner.sortingOrder + 1;
                 }
                 inst.SetActive(false); _sparkPool.Add(inst);
@@ -490,7 +570,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 bool useBlue = (len <= owner.nearBlueDistance);
                 var col = useBlue ? owner.nearBlueColor : owner.sparkleColor;
                 srGo.color = col;
-                srGo.sortingLayerID = SortingLayer.NameToID(owner.sortingLayerName);
+                srGo.sortingLayerID = _sortingLayerId;
                 srGo.sortingOrder = owner.sortingOrder + 1;
             }
 
@@ -515,7 +595,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 if (sr != null)
                 {
                     sr.color = owner.beamColor;
-                    sr.sortingLayerID = SortingLayer.NameToID(owner.sortingLayerName);
+                    sr.sortingLayerID = _sortingLayerId;
                     sr.sortingOrder = owner.sortingOrder + 20;
                     sr.enabled = true;
                 }
@@ -536,7 +616,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 if (sr != null)
                 {
                     sr.color = owner.beamTrailColor;
-                    sr.sortingLayerID = SortingLayer.NameToID(owner.sortingLayerName);
+                    sr.sortingLayerID = _sortingLayerId;
                     sr.sortingOrder = owner.sortingOrder + 22;
                 }
                 inst.SetActive(false); _trailPool.Add(inst);
@@ -564,13 +644,15 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 bool beamNearBlue = (Vector3.Distance(_lastA, _lastB) <= owner.nearBlueDistance);
                 if (beamNearBlue) { c = owner.nearBlueColor; c.a = owner.beamColor.a; }
                 sr.color = c;
+                sr.sortingLayerID = _sortingLayerId;
                 sr.sortingOrder = owner.sortingOrder + 20;
             }
 
             float speed = Random.Range(owner.beamSpeedRange.x, owner.beamSpeedRange.y);
             float amp = Random.Range(owner.beamAmplitudeRange.x, owner.beamAmplitudeRange.y);
             float wave = Random.Range(owner.beamWavelengthRange.x, owner.beamWavelengthRange.y);
-            float startT = Mathf.Clamp01(Random.Range(0f, 0.85f));
+
+            const float startT = 0f;
 
             var lb = go.GetComponent<PTetherLightBeam>();
             lb.ConfigureTrail(owner.beamTrailEnabled ? _trailPool : null,
@@ -601,7 +683,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 if (sr != null)
                 {
                     sr.color = owner.ringSparkleColor;
-                    sr.sortingLayerID = SortingLayer.NameToID(owner.sortingLayerName);
+                    sr.sortingLayerID = _sortingLayerId;
                     sr.sortingOrder = owner.sortingOrder + 30;
                 }
                 inst.SetActive(false); _ringPool.Add(inst);
@@ -612,24 +694,29 @@ public class P2PrincessSpriteTether : MonoBehaviour
             _ringScales = new float[_ringPool.Count];
             _ringFrozenPos = new Vector3[_ringPool.Count];
 
-            // 초기 오프셋/속도/스케일만 1회 설정(절대 리셋 X)
             for (int i = 0; i < _ringPool.Count; i++)
             {
-                _ringOffsets[i] = Random.value; // 0~1 비율, 실제 길이는 나중에 totalLen과 곱
+                _ringOffsets[i] = Random.value; // 0..1 (totalLen 곱은 경로 확정 후 1회)
                 _ringSpeeds[i] = Random.Range(owner.ringOrbitSpeedRange.x, owner.ringOrbitSpeedRange.y);
                 _ringScales[i] = Random.Range(owner.ringScaleRange.x, owner.ringScaleRange.y);
             }
 
             _ringFrozen = false;
-            _ringReady = false; // 경로만 아직 미생성
+            _ringReady = false;
+            _nextPathRebuildTime = 0f;
         }
 
-        private void EnsureRingPath(P2PrincessSpriteTether owner)
+        private void EnsureRingPath(P2PrincessSpriteTether owner, float now)
         {
-            if (_ringReady && _ringTotalLen > 1e-5f) return;
+            if (owner.pathRebuildInterval <= 0f && _ringReady && _ringTotalLen > 1e-5f) return;
+            if (_ringReady && now < _nextPathRebuildTime) return;
 
-            var cols = target.GetComponentsInChildren<Collider2D>(true);
-            var chosen = PTetherOutlineSampler.ChooseBest(cols);
+            // 타겟 캐시에서 Collider 우선 선택
+            Collider2D chosen = null;
+            var cache = owner._targetCache.TryGetValue(target, out var tc) ? tc : null;
+            var cols = cache != null ? tc.GetCols() : target.GetComponentsInChildren<Collider2D>(true);
+            chosen = PTetherOutlineSampler.ChooseBest(cols);
+
             int quality = Mathf.Max(8, Mathf.RoundToInt(owner.ringSampleCount * owner.ringPathQualityMul));
 
             _ringPath = (chosen != null)
@@ -638,28 +725,30 @@ public class P2PrincessSpriteTether : MonoBehaviour
 
             PTetherOutlineSampler.BuildCumulative(_ringPath, out _ringCum, out _ringTotalLen);
 
-            // 0~1 비율 오프셋을 실제 arc 길이로 변환(최초 1회)
             if (!_ringReady && _ringTotalLen > 1e-5f)
             {
                 for (int i = 0; i < _ringOffsets.Length; i++)
-                    _ringOffsets[i] *= _ringTotalLen;
+                    _ringOffsets[i] *= _ringTotalLen; // 0..1 -> arc length
             }
             _ringReady = true;
+            _nextPathRebuildTime = now + Mathf.Max(0.05f, owner.pathRebuildInterval);
         }
 
-        private void TickRing(P2PrincessSpriteTether owner)
+        private void TickRing(P2PrincessSpriteTether owner, float dist)
         {
-            EnsureRingPath(owner);
-            if (!_ringReady || _ringTotalLen <= 1e-5f) { foreach (var r in _ringPool) if (r.activeSelf) r.SetActive(false); return; }
+            float now = Time.time;
+            EnsureRingPath(owner, now);
+            if (!_ringReady || _ringTotalLen <= 1e-5f)
+            {
+                for (int i = 0; i < _ringPool.Count; i++) if (_ringPool[i].activeSelf) _ringPool[i].SetActive(false);
+                return;
+            }
 
-            float dist = Vector3.Distance(_lastA, _lastB);
             bool shouldFreeze = (dist <= owner.nearBlueDistance);
             bool shouldUnfreeze = (dist > owner.nearBlueDistance + owner.ringUnfreezeMargin);
 
-            // 상태 전환
             if (!_ringFrozen && shouldFreeze)
             {
-                // 현재 위치를 고정값으로 스냅
                 for (int i = 0; i < _ringPool.Count; i++)
                 {
                     Vector3 tan;
@@ -669,13 +758,12 @@ public class P2PrincessSpriteTether : MonoBehaviour
             }
             else if (_ringFrozen && shouldUnfreeze)
             {
-                _ringFrozen = false; // 다시 공전
+                _ringFrozen = false;
             }
 
-            // 알파(거리 비례), 컬러
             float closeness = (owner.searchRadius > 1e-5f) ? Mathf.Clamp01(1f - (dist / owner.searchRadius)) : 1f;
             float ringAlpha = Mathf.Lerp(owner.ringAlphaFar, owner.ringAlphaNear, Mathf.Pow(closeness, owner.ringAlphaExpo));
-            bool nearBlue = shouldFreeze; // 블루 상태 = 고정 상태와 동일 임계
+            bool nearBlue = shouldFreeze;
 
             float dt = Time.deltaTime;
 
@@ -688,17 +776,13 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 Vector3 pos, tangent;
                 if (_ringFrozen)
                 {
-                    // 고정: 위치/회전 갱신 안 함(엣지에 붙여둠)
                     pos = _ringFrozenPos[i];
-                    // 회전은 유지(변경 X)
                     tangent = Vector3.right;
                 }
                 else
                 {
-                    // 공전: 오프셋 적분(CW)
                     _ringOffsets[i] = (_ringOffsets[i] + _ringSpeeds[i] * dt) % _ringTotalLen;
                     pos = PTetherOutlineSampler.EvaluateAtArc(_ringPath, _ringCum, _ringTotalLen, _ringOffsets[i], out tangent);
-                    // 마지막 위치도 갱신해둔다(다음에 freeze 전환 시 사용)
                     _ringFrozenPos[i] = pos;
 
                     if (owner.ringAlignToTangent && tangent.sqrMagnitude > 1e-6f)
@@ -711,7 +795,6 @@ public class P2PrincessSpriteTether : MonoBehaviour
                 go.transform.position = pos;
                 go.transform.localScale = new Vector3(_ringScales[i], _ringScales[i], 1f);
 
-                // 깜빡임(멀리선 느리게)
                 float farInterval = 2.0f;
                 float nearRand = Random.Range(owner.ringFlickerInterval.x, owner.ringFlickerInterval.y);
                 float flickIntv = Mathf.Lerp(farInterval, nearRand, closeness);
@@ -723,7 +806,7 @@ public class P2PrincessSpriteTether : MonoBehaviour
                     var baseCol = nearBlue ? owner.nearBlueColor : owner.ringSparkleColor;
                     baseCol.a = Mathf.Clamp01(baseCol.a * ringAlpha * flickMul);
                     sr.color = baseCol;
-                    sr.sortingLayerID = SortingLayer.NameToID(owner.sortingLayerName);
+                    sr.sortingLayerID = _sortingLayerId;
                     sr.sortingOrder = owner.sortingOrder + 30;
                 }
 
@@ -815,7 +898,7 @@ sealed class PTetherLightBeam : MonoBehaviour
 {
     private PTetherLineProxy _provider; private SpriteRenderer _sr;
     private float _t, _tStart, _speed, _amp, _waveLen, _fadeInFrac, _fadeOutFrac, _beamLen, _beamThick, _phase0;
-    private Color _baseColor; private bool _inited;
+    private Color _origColor; private bool _inited;
 
     private List<GameObject> _trailPool; private int _trailCursor;
     private Transform _worldRoot;
@@ -825,7 +908,6 @@ sealed class PTetherLightBeam : MonoBehaviour
     private float _alphaFar = 0.15f, _alphaNear = 1.0f, _alphaExpo = 1.0f;
     private float _nearColorDist = 1.5f;
     private Color _nearColor = new(0.45f, 0.75f, 1f, 1f);
-    private Color _origColor;
 
     void Awake() { _sr = GetComponent<SpriteRenderer>(); }
 
@@ -866,8 +948,15 @@ sealed class PTetherLightBeam : MonoBehaviour
         _phase0 = Random.Range(0f, Mathf.PI * 2f);
 
         if (_sr == null) _sr = GetComponent<SpriteRenderer>();
-        if (_sr != null) { _sr.enabled = true; _baseColor = _sr.color; _origColor = _sr.color; transform.localScale = new Vector3(_beamLen, _beamThick, 1f); }
-        _inited = true; TickVisual(Time.deltaTime * 0.001f);
+        if (_sr != null)
+        {
+            _sr.enabled = true;
+            _origColor = _sr.color;
+            var c = _sr.color; c.a = 0f; _sr.color = c; // spawn pop 제거
+            transform.localScale = new Vector3(_beamLen, _beamThick, 1f);
+        }
+        _inited = true;
+        TickVisual(Time.deltaTime * 0.001f);
     }
 
     void Update() => TickVisual(Time.deltaTime);
@@ -908,7 +997,6 @@ sealed class PTetherLightBeam : MonoBehaviour
             var c = src; c.a = src.a * fadeMul * distMul; _sr.color = c;
         }
 
-        // trail spawn
         if (_trailPool != null && Time.time >= _nextTrailTime)
         {
             var tgo = NextInactive(_trailPool, ref _trailCursor);
@@ -981,8 +1069,8 @@ static class PTetherOutlineSampler
     }
     public static Vector3[] BuildBoundsCircleCW(Transform target, int minPoints)
     {
+        Bounds b = new(target.position, Vector3.one);
         var cols = target.GetComponentsInChildren<Collider2D>(true);
-        Bounds b;
         if (cols != null && cols.Length > 0)
         {
             b = cols[0].bounds;
@@ -996,7 +1084,6 @@ static class PTetherOutlineSampler
                 b = rs[0].bounds;
                 for (int i = 1; i < rs.Length; i++) b.Encapsulate(rs[i].bounds);
             }
-            else b = new Bounds(target.position, Vector3.one);
         }
         return BuildBoundsCircleCW(b, minPoints);
     }

@@ -73,6 +73,8 @@ public class Player1HP : MonoBehaviour, global::IDamageable
         if (CurrentHP <= 0)
         {
             CameraShaker.Shake(0.5f, 0.2f);
+            rb2.SetBool("hurt", true);
+            rb2.SetBool("death", true);
             Die(); // Die() 내부에서 HpChanged(0, max)와 Died 호출
         }
         else

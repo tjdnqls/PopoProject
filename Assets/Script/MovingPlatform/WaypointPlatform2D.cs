@@ -842,6 +842,7 @@ public class WaypointPlatform2D : MonoBehaviour
         }
         catch { /* fail-safe: 아무 것도 안 함 */ }
     }
+}
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(WaypointPlatform2D))]
@@ -953,5 +954,4 @@ public class WaypointPlatform2D : MonoBehaviour
             serializedObject.ApplyModifiedProperties();
         }
     }
-}
 #endif

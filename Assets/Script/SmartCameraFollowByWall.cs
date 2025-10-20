@@ -4,102 +4,122 @@ using UnityEngine.UI;
 using TMPro;
 using static UnityEngine.GraphicsBuffer;
 
+/// <summary>
+/// ìŠ¤ë§ˆíŠ¸ ì¹´ë©”ë¼ íŒ”ë¡œìš° - PlayerMouseMovement ì‹œìŠ¤í…œì— ë§ê²Œ ìµœì í™”
+/// </summary>
 public class SmartCameraFollowByWall : MonoBehaviour
 {
-    public Transform target1;
-    public Transform target2;
+    [Header("Camera Targets")]
+    public Transform target1; // P1 Transform
+    public Transform target2; // P2 Transform
+    
+    [Header("Camera Settings")]
     public float followSpeed = 10f;
+    public float yOffset = 3f;
+    
+    [Header("Wall Detection")]
     public float rayDistance = 8f;
     public float raygroundDistance = 4f;
-    public float yOffset = 3f;
     public LayerMask wallLayer;
     public LayerMask groundLayer;
-    public SwapController.PlayerChar playerID; // Inspector¿¡¼­ P1 or P2 ÁöÁ¤
-    public SwapController swap; // ÀÎ½ºÆåÅÍ¿¡¼­ Á÷Á¢ µå·¡±× ¿¬°á (SwapController ¿ÀºêÁ§Æ®)
-    public PlayerMouseMovement carry;
-    public bool swapsup = true;
-    public GameObject selectmark1;
-    public GameObject selectmark2;
-    public PlayerMouseMovement rb;
-    public Player1HP dead;
-    public Player2HP deade;
+    
+    [Header("Player System References")]
+    public SwapController swap; // SwapController ì°¸ì¡°
+    public PlayerMouseMovement p1Movement; // P1 PlayerMouseMovement ì°¸ì¡°
+    public PlayerMouseMovement p2Movement; // P2 PlayerMouseMovement ì°¸ì¡°
+    
+    [Header("Legacy References (for compatibility)")]
+    public PlayerController p1Controller; // í˜¸í™˜ì„±ì„ ìœ„í•œ ì°¸ì¡°
+    public PlayerController p2Controller; // í˜¸í™˜ì„±ì„ ìœ„í•œ ì°¸ì¡°
+    
+    [Header("Camera State")]
+    public bool swapsup = true; // true = P1 í¬ì»¤ìŠ¤, false = P2 í¬ì»¤ìŠ¤
+    
+    [Header("UI Elements")]
+    public GameObject selectmark1; // P1 ì„ íƒ ë§ˆì»¤
+    public GameObject selectmark2; // P2 ì„ íƒ ë§ˆì»¤
+    public GameObject Knight_UI;   // P1 UI
+    public GameObject Princess_UI; // P2 UI
+    
+    [Header("Health System")]
+    public Player1HP dead;  // P1 ì²´ë ¥
+    public Player2HP deade; // P2 ì²´ë ¥
     public bool deadcount;
 
-    // ---- ³»ºÎ »óÅÂ ----
-    private bool blockLeft, blockRight, blockUp; // µğ¹ö±×¿ë Ç¥½Ã(½ÇÁ¦ ÀÌµ¿Àº BoxCast·Î Á¦ÇÑ)
+    // ---- ë‚´ë¶€ ìƒíƒœ ----
+    private bool blockLeft, blockRight, blockUp; // ë””ë²„ê·¸ìš© í‘œì‹œ(ì‹¤ì œ ì´ë™ì€ BoxCastë¡œ ì œí•œ)
     private Vector3 currentVelocity;
     [SerializeField] private float arrowRotationOffsetDeg = 0f;
 
     // === Auto select P1 when carry starts ===
     [Header("Auto Select to P1 on Carry")]
     [SerializeField] private bool autoSelectP1OnCarry = true;
-    private bool wasCarrying = false; // Ä³¸® »óÅÂ »ó½Â¿§Áö °¨Áö¿ë
+    private bool wasCarrying = false; // ìºë¦¬ ìƒíƒœ ìƒìŠ¹ì—£ì§€ ê°ì§€ìš©
 
-    [SerializeField] private Color nearColor = new Color(1f, 0.78f, 0.06f, 1f); // ÁøÇÑ ³ë¶û(Amber #FFC107)
-    [SerializeField] private Color farColor = new Color(1f, 0.97f, 0.71f, 1f); // ¿¬ÇÑ ³ë¶û
-    [SerializeField] private float nearDistance = 3f;   // ÀÌ ÀÌÇÏÀÌ¸é °ÅÀÇ nearColor/nearScale
-    [SerializeField] private float farDistance = 25f;  // ÀÌ ÀÌ»óÀÌ¸é °ÅÀÇ farColor/farScale
-    [SerializeField] private UnityEngine.UI.Graphic indicatorGraphic; // È­»ìÇ¥ UI(Image µî)
+    [SerializeField] private Color nearColor = new Color(1f, 0.78f, 0.06f, 1f); // ì§„í•œ ë…¸ë‘(Amber #FFC107)
+    [SerializeField] private Color farColor = new Color(1f, 0.97f, 0.71f, 1f); // ì—°í•œ ë…¸ë‘
+    [SerializeField] private float nearDistance = 3f;   // ì´ ì´í•˜ì´ë©´ ê±°ì˜ nearColor/nearScale
+    [SerializeField] private float farDistance = 25f;  // ì´ ì´ìƒì´ë©´ ê±°ì˜ farColor/farScale
+    [SerializeField] private UnityEngine.UI.Graphic indicatorGraphic; // í™”ì‚´í‘œ UI(Image ë“±)
 
-    [SerializeField] private GameObject Knight_UI;
-    [SerializeField] private GameObject Princess_UI;
+    // UI ì°¸ì¡°ëŠ” ìœ„ì—ì„œ ì„ ì–¸ë¨
 
     // ===== Off-screen Indicator UI =====
-    [SerializeField] private Camera cam;                       // ºñ¿öµÎ¸é ÀÚµ¿À¸·Î Camera.main »ç¿ë
-    [SerializeField] private RectTransform canvasRect;         // CanvasÀÇ RectTransform
-    [SerializeField] private RectTransform offscreenIndicator; // È­¸é °¡ÀåÀÚ¸®¿¡ ºÙÀ» ¾ÆÀÌÄÜ(È­»ìÇ¥)
-    [SerializeField] private float edgePadding = 48f;          // È­¸é °¡ÀåÀÚ¸®·ÎºÎÅÍ ¿©¹é
-    [SerializeField] private bool showDistance = false;        // ¿øÇÏ¸é °Å¸® ÅØ½ºÆ® Ç¥½Ã
-    [SerializeField] private TMPro.TextMeshProUGUI distanceText; // (¼±ÅÃ) °Å¸® Ç¥½Ã ÅØ½ºÆ®
+    [SerializeField] private Camera cam;                       // ë¹„ì›Œë‘ë©´ ìë™ìœ¼ë¡œ Camera.main ì‚¬ìš©
+    [SerializeField] private RectTransform canvasRect;         // Canvasì˜ RectTransform
+    [SerializeField] private RectTransform offscreenIndicator; // í™”ë©´ ê°€ì¥ìë¦¬ì— ë¶™ì„ ì•„ì´ì½˜(í™”ì‚´í‘œ)
+    [SerializeField] private float edgePadding = 48f;          // í™”ë©´ ê°€ì¥ìë¦¬ë¡œë¶€í„° ì—¬ë°±
+    [SerializeField] private bool showDistance = false;        // ì›í•˜ë©´ ê±°ë¦¬ í…ìŠ¤íŠ¸ í‘œì‹œ
+    [SerializeField] private TMPro.TextMeshProUGUI distanceText; // (ì„ íƒ) ê±°ë¦¬ í‘œì‹œ í…ìŠ¤íŠ¸
 
-    // --- °æ°í ¾ÆÀÌÄÜ(ºü¸¥ ÆäÀÌµå ÀÎ/¾Æ¿ô) ---
+    // --- ê²½ê³  ì•„ì´ì½˜(ë¹ ë¥¸ í˜ì´ë“œ ì¸/ì•„ì›ƒ) ---
     [Header("Danger Warning")]
-    [SerializeField] private LayerMask hazardMask;           // Trap | Bullet | Monster Æ÷ÇÔ
-    [SerializeField] private float hazardCheckRadius = 3.0f; // ÇÃ·¹ÀÌ¾î2 ÁÖº¯ Ã¼Å© ¹İ°æ
-    [SerializeField] private RectTransform warnIcon;         // È­»ìÇ¥ À§¿¡ ¹èÄ¡ÇÒ °æ°í ¾ÆÀÌÄÜ
-    [SerializeField] private Vector2 warnScreenOffset = new Vector2(0f, 36f); // È­»ìÇ¥¿¡¼­ À§·Î ¶ç¿ì±â
-    [SerializeField] private float warnBlinkSpeed = 6f;      // ºü¸£°Ô ¹İÂ¦
+    [SerializeField] private LayerMask hazardMask;           // Trap | Bullet | Monster í¬í•¨
+    [SerializeField] private float hazardCheckRadius = 3.0f; // í”Œë ˆì´ì–´2 ì£¼ë³€ ì²´í¬ ë°˜ê²½
+    [SerializeField] private RectTransform warnIcon;         // í™”ì‚´í‘œ ìœ„ì— ë°°ì¹˜í•  ê²½ê³  ì•„ì´ì½˜
+    [SerializeField] private Vector2 warnScreenOffset = new Vector2(0f, 36f); // í™”ì‚´í‘œì—ì„œ ìœ„ë¡œ ë„ìš°ê¸°
+    [SerializeField] private float warnBlinkSpeed = 6f;      // ë¹ ë¥´ê²Œ ë°˜ì§
     [SerializeField] private float warnAlphaMin = 0.15f;
     [SerializeField] private float warnAlphaMax = 1f;
-    [SerializeField] private float warnFadeOutSpeed = 8f;    // À§ÇèÀÌ »ç¶óÁú ¶§ ºü¸£°Ô »ç¶óÁü
+    [SerializeField] private float warnFadeOutSpeed = 8f;    // ìœ„í—˜ì´ ì‚¬ë¼ì§ˆ ë•Œ ë¹ ë¥´ê²Œ ì‚¬ë¼ì§
     private CanvasGroup warnGroup;
 
-    // === ÀüÈ¯ Á¦¾î ===
-    [Header("Tab ÀüÈ¯ ÀÌµ¿")]
-    [SerializeField] private bool disableWallGroundWhileTransit = true; // ÀüÈ¯ Áß º®/¹Ù´Ú Â÷´Ü ÇØÁ¦(¿É¼Ç)
-    [SerializeField] private float transitArriveEps = 0.20f;            // Ä«¸Ş¶ó µµÂø ÆÇÁ¤(¿ùµå À¯´Ö)
-    [SerializeField] private float transitMaxDuration = 1.2f;           // ÀüÈ¯ Å¸ÀÓ¾Æ¿ô(ÃÊ)
-    [SerializeField] private float transitBoostFollowSpeed = 16f;       // ÀüÈ¯ Áß ÀÓ½Ã ÃßÁ¾ ¼Óµµ
+    // === ì „í™˜ ì œì–´ ===
+    [Header("Tab ì „í™˜ ì´ë™")]
+    [SerializeField] private bool disableWallGroundWhileTransit = true; // ì „í™˜ ì¤‘ ë²½/ë°”ë‹¥ ì°¨ë‹¨ í•´ì œ(ì˜µì…˜)
+    [SerializeField] private float transitArriveEps = 0.20f;            // ì¹´ë©”ë¼ ë„ì°© íŒì •(ì›”ë“œ ìœ ë‹›)
+    [SerializeField] private float transitMaxDuration = 1.2f;           // ì „í™˜ íƒ€ì„ì•„ì›ƒ(ì´ˆ)
+    [SerializeField] private float transitBoostFollowSpeed = 16f;       // ì „í™˜ ì¤‘ ì„ì‹œ ì¶”ì¢… ì†ë„
     private bool isTransit = false;
     private float transitUntil = 0f;
     private float originalFollowSpeed = 0f;
 
-    // === °Å¸® ±â¹İ ½ºÄÉÀÏ ===
+    // === ê±°ë¦¬ ê¸°ë°˜ ìŠ¤ì¼€ì¼ ===
     [Header("Indicator Scale by Distance")]
-    [SerializeField] private float nearScale = 1.4f;   // °¡±î¿ï ¶§ È­»ìÇ¥ Å©±â
-    [SerializeField] private float farScale = 0.7f;    // ¸Ö ¶§ È­»ìÇ¥ Å©±â
-    [SerializeField, Tooltip("½ºÄÉÀÏ º¸°£ ¼Óµµ(ÃÊ´ç)")]
+    [SerializeField] private float nearScale = 1.4f;   // ê°€ê¹Œìš¸ ë•Œ í™”ì‚´í‘œ í¬ê¸°
+    [SerializeField] private float farScale = 0.7f;    // ë©€ ë•Œ í™”ì‚´í‘œ í¬ê¸°
+    [SerializeField, Tooltip("ìŠ¤ì¼€ì¼ ë³´ê°„ ì†ë„(ì´ˆë‹¹)")]
     private float scaleLerpSpeed = 12f;
 
-    // ³»ºÎ Ä³½Ã
-    private Vector3 indicatorBaseScale = Vector3.one; // ÀÎµğÄÉÀÌÅÍ ¿øº» ½ºÄÉÀÏ
-    private float currentScale = 1f;                  // ÇöÀç ¹èÀ²(1=±âº»)
+    // ë‚´ë¶€ ìºì‹œ
+    private Vector3 indicatorBaseScale = Vector3.one; // ì¸ë””ì¼€ì´í„° ì›ë³¸ ìŠ¤ì¼€ì¼
+    private float currentScale = 1f;                  // í˜„ì¬ ë°°ìœ¨(1=ê¸°ë³¸)
 
-    // ====== BoxCast Confiner(³¢ÀÓ ¹æÁö) ======
+    // ====== BoxCast Confiner(ë¼ì„ ë°©ì§€) ======
     [Header("BoxCast Confiner (anti-stuck)")]
-    [SerializeField, Tooltip("Ä«¸Ş¶ó°¡ Åë°ú °¡´ÉÇÑ ¡®»óÀÚ¡¯·Î °¡Á¤ÇÏ°í, ÀÌµ¿ °æ·Î¸¦ BoxCast·Î Á¦ÇÑÇÕ´Ï´Ù.")]
+    [SerializeField, Tooltip("ì¹´ë©”ë¼ê°€ í†µê³¼ ê°€ëŠ¥í•œ â€˜ìƒìâ€™ë¡œ ê°€ì •í•˜ê³ , ì´ë™ ê²½ë¡œë¥¼ BoxCastë¡œ ì œí•œí•©ë‹ˆë‹¤.")]
     private bool useBoxCastConfiner = true;
 
-    [SerializeField, Tooltip("Ãæµ¹¸é°úÀÇ ÃÖ¼Ò ÀÌ°İ(½ºÅ²). ³Ê¹« ÀÛÀ¸¸é »ìÂ¦ °ãÄ¡°í, ³Ê¹« Å©¸é ¸ñÀûÁö¿¡ ¸ø ´ê½À´Ï´Ù.")]
+    [SerializeField, Tooltip("ì¶©ëŒë©´ê³¼ì˜ ìµœì†Œ ì´ê²©(ìŠ¤í‚¨). ë„ˆë¬´ ì‘ìœ¼ë©´ ì‚´ì§ ê²¹ì¹˜ê³ , ë„ˆë¬´ í¬ë©´ ëª©ì ì§€ì— ëª» ë‹¿ìŠµë‹ˆë‹¤.")]
     private float confinerSkin = 0.08f;
 
-    [SerializeField, Tooltip("BoxCast Å©±â¸¦ ÀÌ¸¸Å­ Ãà¼ÒÇØ¼­ ºÒÇÊ¿äÇÑ Á¢ÃËÀ» ÁÙÀÔ´Ï´Ù.")]
+    [SerializeField, Tooltip("BoxCast í¬ê¸°ë¥¼ ì´ë§Œí¼ ì¶•ì†Œí•´ì„œ ë¶ˆí•„ìš”í•œ ì ‘ì´‰ì„ ì¤„ì…ë‹ˆë‹¤.")]
     private float boxShrink = 0.02f;
 
-    [SerializeField, Tooltip("°°Àº ÀÚ¸®¿¡¼­ ´Ù¼¸ ÇÁ·¹ÀÓ ÀÌ»ó ¡®²ŞÂ½¡¯µµ ¸øÇÏ¸é Àá±ñ ÄÜÆÄÀÌ³Ê ÇØÁ¦(Å»Ãâ¿ë).")]
+    [SerializeField, Tooltip("ê°™ì€ ìë¦¬ì—ì„œ ë‹¤ì„¯ í”„ë ˆì„ ì´ìƒ â€˜ê¿ˆì©â€™ë„ ëª»í•˜ë©´ ì ê¹ ì½˜íŒŒì´ë„ˆ í•´ì œ(íƒˆì¶œìš©).")]
     private int stuckFramesToForgive = 5;
 
-    [SerializeField, Tooltip("Å»Ãâ¿ëÀ¸·Î ÄÜÆÄÀÌ³Ê¸¦ Àá±ñ ²ô´Â ½Ã°£(ÃÊ).")]
+    [SerializeField, Tooltip("íƒˆì¶œìš©ìœ¼ë¡œ ì½˜íŒŒì´ë„ˆë¥¼ ì ê¹ ë„ëŠ” ì‹œê°„(ì´ˆ).")]
     private float forgiveSeconds = 0.15f;
 
     private float forgiveUntil = 0f;
@@ -108,18 +128,18 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
     private LayerMask ConfinerMask => wallLayer | groundLayer;
 
-    // ====== Swap SFX (OneShot ÀüÈ¯À½ Àü¿ë) ======
+    // ====== Swap SFX (OneShot ì „í™˜ìŒ ì „ìš©) ======
     [Header("Swap SFX (OneShot)")]
-    [SerializeField] private bool useSoundManagerOneShot = true;     // SoundManagerÀÇ PlayOneShot »ç¿ë ¿©ºÎ
+    [SerializeField] private bool useSoundManagerOneShot = true;     // SoundManagerì˜ PlayOneShot ì‚¬ìš© ì—¬ë¶€
     [SerializeField] private string knightSwapSfxKey = "KnightChenge";
     [SerializeField] private string princessSwapSfxKey = "PrincessChenge";
-    [SerializeField] private AudioClip knightSwapClip;               // SoundManager ¹Ì»ç¿ë ½Ã »ç¿ë
-    [SerializeField] private AudioClip princessSwapClip;             // SoundManager ¹Ì»ç¿ë ½Ã »ç¿ë
-    [SerializeField] private float minSwapSfxInterval = 0.2f;        // Áßº¹ ÀÌº¥Æ® µğ¹Ù¿î½º °£°İ
+    [SerializeField] private AudioClip knightSwapClip;               // SoundManager ë¯¸ì‚¬ìš© ì‹œ ì‚¬ìš©
+    [SerializeField] private AudioClip princessSwapClip;             // SoundManager ë¯¸ì‚¬ìš© ì‹œ ì‚¬ìš©
+    [SerializeField] private float minSwapSfxInterval = 0.2f;        // ì¤‘ë³µ ì´ë²¤íŠ¸ ë””ë°”ìš´ìŠ¤ ê°„ê²©
 
-    private bool _lastIsP1Focus;     // Á÷Àü ÇÁ·¹ÀÓÀÇ ½ÃÁ¡ ´ë»ó(P1=true/P2=false)
+    private bool _lastIsP1Focus;     // ì§ì „ í”„ë ˆì„ì˜ ì‹œì  ëŒ€ìƒ(P1=true/P2=false)
     private float _lastSwapSfxTime = -999f;
-    private AudioSource _swapAudio;  // ·ÎÄÃ OneShot Àç»ı¿ë
+    private AudioSource _swapAudio;  // ë¡œì»¬ OneShot ì¬ìƒìš©
 
     private void Awake()
     {
@@ -145,14 +165,14 @@ public class SmartCameraFollowByWall : MonoBehaviour
             warnIcon.gameObject.SetActive(false);
         }
 
-        // Swap OneShot¿ë ·ÎÄÃ AudioSource(¹é¾÷ °æ·Î)
+        // Swap OneShotìš© ë¡œì»¬ AudioSource(ë°±ì—… ê²½ë¡œ)
         if (!useSoundManagerOneShot)
         {
             _swapAudio = GetComponent<AudioSource>();
             if (_swapAudio == null) _swapAudio = gameObject.AddComponent<AudioSource>();
             _swapAudio.playOnAwake = false;
             _swapAudio.loop = false;
-            _swapAudio.spatialBlend = 0f; // UI ¼º°İÀÌ¸é 0, 3D¸é 1·Î º¯°æ
+            _swapAudio.spatialBlend = 0f; // UI ì„±ê²©ì´ë©´ 0, 3Dë©´ 1ë¡œ ë³€ê²½
         }
 
         lastAppliedPos = transform.position;
@@ -160,18 +180,59 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
     private void Reset()
     {
-        Knight_UI = gameObject;
-        Princess_UI = gameObject;
+        // ê¸°ë³¸ê°’ ì„¤ì • (í•„ìš”ì‹œ ìˆ˜ì •)
+        if (Knight_UI == null) Knight_UI = gameObject;
+        if (Princess_UI == null) Princess_UI = gameObject;
     }
 
     void Start()
     {
-        selectmark2.SetActive(false);
-        selectmark1.SetActive(true);
-        wasCarrying = (carry != null && carry.isCarrying);
+        // ì´ˆê¸° UI ì„¤ì •
+        if (selectmark1) selectmark1.SetActive(true);
+        if (selectmark2) selectmark2.SetActive(false);
+        
+        // PlayerMouseMovement ì°¸ì¡° ìë™ ì°¾ê¸°
+        FindPlayerMovementReferences();
+        
+        // SwapController ì°¸ì¡° ìë™ ì°¾ê¸°
+        if (swap == null)
+        {
+            swap = FindObjectOfType<SwapController>();
+            if (swap == null)
+                Debug.LogWarning("[SmartCameraFollowByWall] SwapController not found!");
+        }
+        
+        // ìºë¦¬ ìƒíƒœ ì´ˆê¸°í™”
+        wasCarrying = p1Movement ? p1Movement.isCarrying : false;
 
-        // SFX: ½ÃÀÛ ½Ã º£ÀÌ½º¶óÀÎ ÀúÀå(Áï½Ã Àç»ı ¹æÁö)
-        _lastIsP1Focus = swapsup; // swapsup == true¸é P1, false¸é P2
+        // SFX: ì‹œì‘ ì‹œ ë² ì´ìŠ¤ë¼ì¸ ì €ì¥(ì¦‰ì‹œ ì¬ìƒ ë°©ì§€)
+        _lastIsP1Focus = swapsup; // swapsup == trueë©´ P1, falseë©´ P2
+    }
+    
+    private void FindPlayerMovementReferences()
+    {
+        // PlayerMouseMovement ì°¸ì¡° ìë™ ì°¾ê¸°
+        if (p1Movement == null || p2Movement == null)
+        {
+            var allMovements = FindObjectsOfType<PlayerMouseMovement>();
+            foreach (var movement in allMovements)
+            {
+                if (movement.playerID == SwapController.PlayerChar.P1)
+                {
+                    p1Movement = movement;
+                    if (target1 == null) target1 = movement.transform;
+                }
+                else if (movement.playerID == SwapController.PlayerChar.P2)
+                {
+                    p2Movement = movement;
+                    if (target2 == null) target2 = movement.transform;
+                }
+            }
+        }
+        
+        // ê²½ê³  ë©”ì‹œì§€
+        if (p1Movement == null) Debug.LogWarning("[SmartCameraFollowByWall] P1 PlayerMouseMovement not found!");
+        if (p2Movement == null) Debug.LogWarning("[SmartCameraFollowByWall] P2 PlayerMouseMovement not found!");
     }
 
     void Update()
@@ -179,29 +240,32 @@ public class SmartCameraFollowByWall : MonoBehaviour
         if (!cam) cam = Camera.main;
         Vector3 cameraPos = transform.position;
 
-        // ===== ¸ñÇ¥ ¼±ÅÃ =====
+        // ===== ëª©í‘œ ì„ íƒ =====
         if (SpiralBoxWipe.IsBusy && deade.IsDead == true)
             swapsup = false;
 
-        if (Input.GetKeyDown(KeyCode.Tab) && dead.Dead == false && !SpiralBoxWipe.IsBusy)
+        // SwapControllerì™€ ë™ê¸°í™” (ì§ì ‘ Tab ì…ë ¥ ì²˜ë¦¬ ì œê±°)
+        if (swap != null)
         {
-            if (carry.isCarrying == false)
+            // SwapControllerì˜ ìƒíƒœì™€ ë™ê¸°í™”
+            bool shouldBeP1 = swap.charSelect == SwapController.PlayerChar.P1;
+            if (swapsup != shouldBeP1)
             {
-                swapsup = !swapsup;
-                // ÀüÈ¯ ½ÃÀÛ
+                swapsup = shouldBeP1;
+                // ì „í™˜ ì‹œì‘
                 isTransit = true;
                 transitUntil = Time.unscaledTime + transitMaxDuration;
                 originalFollowSpeed = Mathf.Approximately(originalFollowSpeed, 0f) ? followSpeed : originalFollowSpeed;
                 followSpeed = Mathf.Max(followSpeed, transitBoostFollowSpeed);
-                // ÀüÈ¯À½Àº ÇÁ·¹ÀÓ ¸»¹Ì¿¡¼­ ÀÏ°ı °¨Áö
             }
         }
 
-        if (autoSelectP1OnCarry && carry != null)
+        // ìºë¦¬ ì‹œì‘ ì‹œ ìë™ P1 ì „í™˜
+        if (autoSelectP1OnCarry && p1Movement)
         {
-            bool nowCarrying = carry.isCarrying;
+            bool nowCarrying = p1Movement.isCarrying;
 
-            // P2 ½ÃÁ¡(swapsup == false)ÀÏ ¶§ Ä³¸®°¡ '½ÃÀÛ'µÇ¸é °­Á¦ ÀüÈ¯
+            // P2 ì‹œì (swapsup == false)ì¼ ë•Œ ìºë¦¬ê°€ 'ì‹œì‘'ë˜ë©´ ê°•ì œ ì „í™˜
             if (nowCarrying && !wasCarrying && !swapsup)
             {
                 ForceToP1();
@@ -210,23 +274,10 @@ public class SmartCameraFollowByWall : MonoBehaviour
         }
         Transform focus = swapsup ? target1 : target2;
 
-        // ===== UI Ç¥±â =====
-        if (swapsup)
-        {
-            Knight_UI.SetActive(true);
-            Princess_UI.SetActive(false);
-            selectmark2.SetActive(false);
-            selectmark1.SetActive(true);
-        }
-        else
-        {
-            Knight_UI.SetActive(false);
-            Princess_UI.SetActive(true);
-            selectmark2.SetActive(true);
-            selectmark1.SetActive(false);
-        }
+        // ===== UI í‘œê¸° =====
+        UpdateUI();
 
-        // ===== µğ¹ö±× ·¹ÀÌ(Ç¥½Ã¿ë) =====
+        // ===== ë””ë²„ê·¸ ë ˆì´(í‘œì‹œìš©) =====
         {
             blockLeft = Physics2D.Raycast(cameraPos, Vector2.left, rayDistance, wallLayer);
             blockRight = Physics2D.Raycast(cameraPos, Vector2.right, rayDistance, wallLayer);
@@ -234,17 +285,17 @@ public class SmartCameraFollowByWall : MonoBehaviour
             blockUp = hitUpRaw.collider != null && hitUpRaw.collider.tag != "OneWay";
         }
 
-        // ===== ¸ñÇ¥ À§Ä¡ =====
+        // ===== ëª©í‘œ ìœ„ì¹˜ =====
         float targetX = focus.position.x;
         float desiredY = focus.position.y + yOffset;
         float targetY = desiredY;
 
         Vector3 desired = new Vector3(targetX, targetY, cameraPos.z);
 
-        // ===== ºÎµå·¯¿î ÃßÁ¾ =====
+        // ===== ë¶€ë“œëŸ¬ìš´ ì¶”ì¢… =====
         Vector3 smooth = Vector3.SmoothDamp(cameraPos, desired, ref currentVelocity, 1f / followSpeed);
 
-        // ===== ÀüÈ¯ Áß ÄÜÆÄÀÌ³Ê ¿ìÈ¸ ¿©ºÎ =====
+        // ===== ì „í™˜ ì¤‘ ì½˜íŒŒì´ë„ˆ ìš°íšŒ ì—¬ë¶€ =====
         bool bypassConfiner = isTransit && disableWallGroundWhileTransit;
 
         // ===== BoxCast Confiner =====
@@ -254,7 +305,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
             nextPos = ConfineMoveByBoxCast(cameraPos, smooth);
         }
 
-        // ===== ÀüÈ¯ Á¾·á ÆÇÁ¤ =====
+        // ===== ì „í™˜ ì¢…ë£Œ íŒì • =====
         if (isTransit)
         {
             float remain = Vector2.Distance(new Vector2(nextPos.x, nextPos.y),
@@ -265,14 +316,14 @@ public class SmartCameraFollowByWall : MonoBehaviour
             if (arrived || timedOut)
             {
                 isTransit = false;
-                followSpeed = originalFollowSpeed; // ¼Óµµ ¿øº¹
+                followSpeed = originalFollowSpeed; // ì†ë„ ì›ë³µ
             }
         }
 
-        // ===== ½ÇÁ¦ À§Ä¡ ¹İ¿µ =====
+        // ===== ì‹¤ì œ ìœ„ì¹˜ ë°˜ì˜ =====
         transform.position = nextPos;
 
-        // ===== ³¢ÀÓ Å»Ãâ =====
+        // ===== ë¼ì„ íƒˆì¶œ =====
         if (useBoxCastConfiner && !bypassConfiner)
         {
             float moved = (nextPos - lastAppliedPos).sqrMagnitude;
@@ -299,7 +350,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
         lastAppliedPos = transform.position;
 
-        // ===== Ä«¸Ş¶ó ½¦ÀÌÄ¿ º¸Á¤ =====
+        // ===== ì¹´ë©”ë¼ ì‰ì´ì»¤ ë³´ì • =====
         if (CameraShaker.Exists)
         {
             var s = CameraShaker.Instance;
@@ -314,16 +365,16 @@ public class SmartCameraFollowByWall : MonoBehaviour
             transform.rotation = Quaternion.identity;
         }
 
-        // ===== ¿ÀÇÁ½ºÅ©¸° ÀÎµğÄÉÀÌÅÍ =====
+        // ===== ì˜¤í”„ìŠ¤í¬ë¦° ì¸ë””ì¼€ì´í„° =====
         Transform self = swapsup ? target1 : target2;
         Transform other = swapsup ? target2 : target1;
         UpdateOffscreenIndicator(other, self);
 
-        // ===== ÀüÈ¯À½: µü ÇÑ ¹ø¸¸ OneShot =====
+        // ===== ì „í™˜ìŒ: ë”± í•œ ë²ˆë§Œ OneShot =====
         PlayChaseSwapSfxIfChanged();
     }
 
-    // === BoxCast ±â¹İ ÀÌµ¿ Á¦ÇÑ(Ãà ºĞ¸®) ===
+    // === BoxCast ê¸°ë°˜ ì´ë™ ì œí•œ(ì¶• ë¶„ë¦¬) ===
     private Vector3 ConfineMoveByBoxCast(Vector3 from, Vector3 to)
     {
         if (!cam) cam = Camera.main;
@@ -335,7 +386,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
         Vector3 pos = from;
         Vector3 delta = to - from;
 
-        // 1) XÃà ÀÌµ¿
+        // 1) Xì¶• ì´ë™
         float dx = delta.x;
         if (Mathf.Abs(dx) > 1e-5f)
         {
@@ -353,14 +404,14 @@ public class SmartCameraFollowByWall : MonoBehaviour
             }
         }
 
-        // 2) YÃà ÀÌµ¿
+        // 2) Yì¶• ì´ë™
         float dy = delta.y;
         if (Mathf.Abs(dy) > 1e-5f)
         {
             Vector2 dir = dy > 0 ? Vector2.up : Vector2.down;
             float dist = Mathf.Abs(dy);
 
-            bool ignoreOneWay = dy > 0f; // À§·Î °¥ ¶§´Â OneWay´Â ¹«½Ã(ÃµÀåÀ¸·Î Ãë±ŞÇÏÁö ¾ÊÀ½)
+            bool ignoreOneWay = dy > 0f; // ìœ„ë¡œ ê°ˆ ë•ŒëŠ” OneWayëŠ” ë¬´ì‹œ(ì²œì¥ìœ¼ë¡œ ì·¨ê¸‰í•˜ì§€ ì•ŠìŒ)
             if (TryBoxCastFiltered((Vector2)pos, boxSize, dir, dist, ConfinerMask, ignoreOneWay, out RaycastHit2D hitY))
             {
                 float allow = Mathf.Max(0f, hitY.distance - confinerSkin);
@@ -375,7 +426,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
         return pos;
     }
 
-    // BoxCast °á°ú¿¡¼­ OneWay/Trigger ¹«½Ã(ÇÊ¿ä ½Ã)
+    // BoxCast ê²°ê³¼ì—ì„œ OneWay/Trigger ë¬´ì‹œ(í•„ìš” ì‹œ)
     private bool TryBoxCastFiltered(Vector2 origin, Vector2 size, Vector2 dir, float dist,
                                     LayerMask mask, bool ignoreOneWay, out RaycastHit2D hitOut)
     {
@@ -393,7 +444,7 @@ public class SmartCameraFollowByWall : MonoBehaviour
             var h = hits[i];
             if (h.collider == null) continue;
             if (h.collider.isTrigger) continue;
-            if (h.collider.CompareTag("OneWay")) continue; // À§·Î ÀÌµ¿ Áß¿£ ¹«½Ã
+            if (h.collider.CompareTag("OneWay")) continue; // ìœ„ë¡œ ì´ë™ ì¤‘ì—” ë¬´ì‹œ
             if (h.distance < best)
             {
                 best = h.distance;
@@ -406,20 +457,23 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
     private void ForceToP1()
     {
-        // Ä«¸Ş¶ó ´ë»ó ÀüÈ¯
+        // ì¹´ë©”ë¼ ëŒ€ìƒ ì „í™˜
         swapsup = true;
 
-        // ºÎµå·¯¿î ÀüÈ¯ ½ÃÀÛ(ÇöÀç ÀüÈ¯ ·ÎÁ÷ Àç»ç¿ë)
+        // ë¶€ë“œëŸ¬ìš´ ì „í™˜ ì‹œì‘(í˜„ì¬ ì „í™˜ ë¡œì§ ì¬ì‚¬ìš©)
         isTransit = true;
         transitUntil = Time.unscaledTime + transitMaxDuration;
         originalFollowSpeed = Mathf.Approximately(originalFollowSpeed, 0f) ? followSpeed : originalFollowSpeed;
         followSpeed = Mathf.Max(followSpeed, transitBoostFollowSpeed);
 
-        // SwapControllerµµ ÇÔ²² °»½Å(ÀÖÀ» ¶§)
+        // SwapControllerë„ í•¨ê»˜ ê°±ì‹ (ìˆì„ ë•Œ)
         if (swap != null)
+        {
             swap.charSelect = SwapController.PlayerChar.P1;
+            swap.Current = SwapController.PlayerChar.P1;
+        }
 
-        // ÀüÈ¯ Áï½Ã SFX º¯È­ ¹İ¿µ(¿ÜºÎ È£Ãâ ´ëºñ)
+        // ì „í™˜ ì¦‰ì‹œ SFX ë³€í™” ë°˜ì˜(ì™¸ë¶€ í˜¸ì¶œ ëŒ€ë¹„)
         PlayChaseSwapSfxIfChanged();
     }
 
@@ -559,7 +613,28 @@ public class SmartCameraFollowByWall : MonoBehaviour
         return Physics2D.OverlapCircle(center, hazardCheckRadius, hazardMask) != null;
     }
 
-    // === ÀüÈ¯ ½Ã¿¡¸¸ OneShotÀ» 1È¸ Àç»ı(·çÇÁ »ç¿ë ±İÁö) ===
+    // === UI ì—…ë°ì´íŠ¸ ===
+    private void UpdateUI()
+    {
+        if (swapsup)
+        {
+            // P1 ì„ íƒ ìƒíƒœ
+            if (Knight_UI) Knight_UI.SetActive(true);
+            if (Princess_UI) Princess_UI.SetActive(false);
+            if (selectmark1) selectmark1.SetActive(true);
+            if (selectmark2) selectmark2.SetActive(false);
+        }
+        else
+        {
+            // P2 ì„ íƒ ìƒíƒœ
+            if (Knight_UI) Knight_UI.SetActive(false);
+            if (Princess_UI) Princess_UI.SetActive(true);
+            if (selectmark1) selectmark1.SetActive(false);
+            if (selectmark2) selectmark2.SetActive(true);
+        }
+    }
+    
+    // === ì „í™˜ ì‹œì—ë§Œ OneShotì„ 1íšŒ ì¬ìƒ(ë£¨í”„ ì‚¬ìš© ê¸ˆì§€) ===
     private void PlayChaseSwapSfxIfChanged()
     {
         bool nowIsP1 = swapsup; // true: P1, false: P2
@@ -569,8 +644,15 @@ public class SmartCameraFollowByWall : MonoBehaviour
             {
                 if (useSoundManagerOneShot)
                 {
-                    // ÇÁ·ÎÁ§Æ®ÀÇ »ç¿îµå ¸Å´ÏÀú¿¡ ¸ÂÃç ÇÔ¼ö¸íÀ» Á¶Á¤ÇÏ¼¼¿ä.
-                    SoundManager.Play(nowIsP1 ? knightSwapSfxKey : princessSwapSfxKey, transform);
+                    // í”„ë¡œì íŠ¸ì˜ ì‚¬ìš´ë“œ ë§¤ë‹ˆì €ì— ë§ì¶° í•¨ìˆ˜ëª…ì„ ì¡°ì •í•˜ì„¸ìš”.
+                    try
+                    {
+                        SoundManager.Play(nowIsP1 ? knightSwapSfxKey : princessSwapSfxKey, transform);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogWarning($"[SmartCameraFollowByWall] Failed to play swap SFX: {e.Message}");
+                    }
                 }
                 else
                 {
@@ -586,5 +668,31 @@ public class SmartCameraFollowByWall : MonoBehaviour
 
             _lastIsP1Focus = nowIsP1;
         }
+    }
+    
+    // === Public Interface ===
+    
+    /// <summary>
+    /// ê°•ì œë¡œ P1ë¡œ ì „í™˜ (ì™¸ë¶€ì—ì„œ í˜¸ì¶œ ê°€ëŠ¥)
+    /// </summary>
+    public void ForceSelectP1()
+    {
+        ForceToP1();
+    }
+    
+    /// <summary>
+    /// í˜„ì¬ í¬ì»¤ìŠ¤ëœ í”Œë ˆì´ì–´ê°€ P1ì¸ì§€ í™•ì¸
+    /// </summary>
+    public bool IsP1Focused()
+    {
+        return swapsup;
+    }
+    
+    /// <summary>
+    /// í˜„ì¬ í¬ì»¤ìŠ¤ëœ í”Œë ˆì´ì–´ê°€ P2ì¸ì§€ í™•ì¸
+    /// </summary>
+    public bool IsP2Focused()
+    {
+        return !swapsup;
     }
 }

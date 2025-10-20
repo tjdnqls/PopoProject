@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+// P2 레이저 테더 시스템 제거됨
 
 public class PlayerMouseMovement : MonoBehaviour
 {
@@ -51,11 +51,16 @@ public class PlayerMouseMovement : MonoBehaviour
     [SerializeField] private string carryEndTriggerName = "carryEnd";          // 캐리 해제 연출용 트리거(있으면 사용)
     [SerializeField] private string carryEndStateName = "CarryEnd";            // 없으면 이 상태로 크로스페이드
     
-    [SerializeField] private int autoCatchCarryStartFrame = 6;
+    [SerializeField] private int autoCatchCarryStartFrame = 10; // 자동캐리 시 애니메이션 시작 프레임
 
     [SerializeField] private string carryStateName = "Carry";
-
-    [SerializeField] private AnimationClip carryClipRef;
+    [SerializeField] private string carryingStateName = "Carrying"; // 자동캐리용 애니메이션 상태명
+    
+    [Header("Carry Animation Clip Reference")]
+    [SerializeField, Tooltip("수동캐리 시 정확한 프레임 시작을 위해 Carry 애니메이션 클립을 여기에 연결하세요.")]
+    private AnimationClip carryClipRef;
+    [SerializeField, Tooltip("자동캐리 시 정확한 프레임 시작을 위해 Carrying 애니메이션 클립을 여기에 연결하세요.")]
+    private AnimationClip carryingClipRef;
 
     [SerializeField] private float reviveIFrame = 1.2f; // 부활 후 무적 시간
     private float _invincibleUntil = -1f;               // 무적 타이머
@@ -80,10 +85,17 @@ public class PlayerMouseMovement : MonoBehaviour
     private float throwComboPendingUntil = -1f;
     private bool throwComboPending = false;
     [Header("Throw Preview Colors")]
-    [SerializeField] private Color previewSafeColor = new Color(1f, 0.2f, 0.2f, 0.95f); // 안전(빨강)
-    [SerializeField] private Color previewHazardColor = new Color(0.2f, 0.6f, 1f, 0.95f); // 위험(파랑)
+    [SerializeField] private Color previewSafeColor = new Color(0.2f, 0.6f, 1f, 0.95f); // 안전(파랑)
+    [SerializeField] private Color previewHazardColor = new Color(1f, 0.2f, 0.2f, 0.95f); // 위험(빨강)
     [SerializeField] private string hazardLayerNames = "Trap, Monster, Monkill, MonAttack";
     private int hazardMask;
+    
+    [Header("P2 Silhouette at Landing Point")]
+    [SerializeField] private bool showP2Silhouette = true; // P2 실루엣 표시 여부
+    [SerializeField] private Color p2SilhouetteSafeColor = new Color(0.2f, 0.6f, 1f, 0.7f); // 안전 시 P2 색상
+    [SerializeField] private Color p2SilhouetteHazardColor = new Color(1f, 0.2f, 0.2f, 0.7f); // 위험 시 P2 색상
+    [SerializeField] private float p2SilhouetteScale = 0.8f; // P2 실루엣 크기 비율
+    private GameObject p2SilhouetteObject; // P2 실루엣 오브젝트
 
     private int groundMask, eventMask, trapMask, slimeMask;
     private LayerMask slimeLayerMask; // ContactFilter2D 용
@@ -126,65 +138,10 @@ public class PlayerMouseMovement : MonoBehaviour
     private float ignoreCeilingUntil = -1f;    // 이 시각 전엔 머리로 다시 안 붙음
     private float lastCeilingY = 0f;           // 붙었던 천장 Y 캐시(유지용)
 
-    [Header("P2 Laser Tether")]
-    [SerializeField] private string boxLayerName = "Box";   // 연결 대상 레이어(쉼표로 여러 개 가능)
-    [SerializeField] private float p2LaserMaxDist = 10f;    // 조준/히트 최대 거리
-    [SerializeField] private float p2LaserBreakDist = 11.5f;// 이 거리 넘으면 자동 해제
-    [SerializeField] private float p2PullForce = 20f;       // AddForce 끌어오기 힘
-    [SerializeField] private float p2PullSpeed = 4.0f;      // 끌려오는 속도 상한
-    [SerializeField] private float p2StopPullContactGap = 0.005f; // P2와 접촉 시 끌기 정지
-    [SerializeField] private float p2LaserCooldown = 0.05f; // 토글 스팸 방지
-    [SerializeField] private float p2LaserBoxCastHalfHeight = 0.35f; // 히트 편의 위해 얇은 BoxCast 높이
-    [SerializeField] private LineRenderer p2LaserLine;      // (선택) 시각화 라인
-    [SerializeField] private Transform p2LaserMuzzle;       // (선택) 레이저 시작 위치
-                                                            // === P2 Wire Anchor ===
-    [Header("P2 Wire Anchor")]
-    [SerializeField] private string anchorLayerName = "WireAnchor"; // 선택: 레이어로도 구분하고 싶다면 사용
-    private int anchorMask;
-    private bool p2AnchorMode = false;       // true면 와이어 모드
-    private Collider2D p2AnchorCol;          // 앵커 대상
-    [SerializeField] private bool p2AnchorUseBoxBreakDist = true; // 박스 끊김 길이 재사용
-    [SerializeField] private float p2AnchorMaxDist = 11.5f;       // 기본값(재사용 안할 때)
-
-    [Header("P2 Laser Visual")]
-    [SerializeField] private Sprite impactSprite;              // 끝점 반짝이(작은 원형 스프라이트 추천)
-    [SerializeField] private float beamBaseWidth = 0.08f;      // 기본 굵기
-    [SerializeField] private float beamPulseAmp = 0.12f;       // 굵기 펄스 진폭(비율)
-    [SerializeField] private float beamPulseHz = 12f;          // 펄스 속도
-    [SerializeField] private int beamSortingOrderOffset = 2;   // 플레이어보다 얼마나 위에 그릴지
-
-    [Header("P2 Laser Stop-On-Release")]
-    [SerializeField] private PhysicsMaterial2D boxHighFrictionMat; // friction=1, bounciness=0 권장(없으면 런타임 생성)
-    [SerializeField] private float onReleaseExtraDrag = 10f;        // 해제 직후 드래그 임시 상승
-    [SerializeField] private float onReleaseExtraAngDrag = 2f;
-    [SerializeField] private float onReleaseDragDuration = 0.35f;   // 임시 드래그 유지 시간
-    [SerializeField] private bool restoreMatAfter = true;           // 일정 시간 뒤 원복
-    [SerializeField] private float restoreMatAfterSec = 0.6f;
-
-    [Header("P2 Laser Auto-Connect")]
-    [SerializeField] private float p2LaserAutoRadius = 10f;      // 자동 탐색 반경
-    [SerializeField] private float p2LoSBoxWidth = 0.18f;        // 시야 박스캐스트 두께
-    [SerializeField] private LayerMask p2ObstructionMask;        // 기본값: Ground|Event|Trap
-    private readonly Collider2D[] p2BoxScanBuf = new Collider2D[32]; // NonAlloc 버퍼
-
-
-    private List<(Collider2D col, PhysicsMaterial2D orig)> p2LastCols = new();
-    private float p2PrevDrag = -1f, p2PrevAngDrag = -1f;
-    private Coroutine p2RestoreCo;
-    
-
-    private Transform p2ImpactFx;    // 끝점 글로우
-    private SpriteRenderer p2ImpactSr;
-    private float p2BeamPulseTimer = 0f;
-
-
-    private int boxMask;
-    private bool p2LaserActive = false;
-    private Collider2D p2TetherCol;
-
     [SerializeField] private float wallDetachGrace = 0.13f;
     [NonSerialized] public float ignoreSlimeUntil = -1f;
     public bool IsSlimeSuppressed => Time.time < ignoreSlimeUntil;
+
 
     [Header("F Pulse Object")]
     [SerializeField] private GameObject selectedObject;
@@ -468,8 +425,6 @@ public class PlayerMouseMovement : MonoBehaviour
         TryResolveSwap();
         ResolveLayerMasks();
         ApplyLayerIgnores();
-        EnsureP2LaserLine();
-        EnsureP2ImpactFx();
     }
 
     void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
@@ -500,9 +455,6 @@ public class PlayerMouseMovement : MonoBehaviour
         eventMask = GetMaskFromCsv(eventLayerName);
         trapMask = GetMaskFromCsv(trapLayerName);
         slimeMask = GetMaskFromCsv(slimeLayerName);
-        boxMask = GetMaskFromCsv(boxLayerName);
-        anchorMask = GetMaskFromCsv(anchorLayerName);
-
 
 
         slimeLayerMask = slimeMask;
@@ -517,15 +469,7 @@ public class PlayerMouseMovement : MonoBehaviour
         if (trapLayerIndex < 0) Debug.LogWarning($"[Player] Trap layer index for '{trapLayerName}' not found.");
         if (playerLayerIndexSelf < 0) Debug.LogWarning($"[Player] Player layer '{playerLayerName}' not found.");
         if (monsterLayerIndex < 0) Debug.LogWarning($"[Player] Monster layer '{monsterLayerName}' not found.");
-        if (boxMask == 0) Debug.LogWarning($"[Player] Box layer(s) '{boxLayerName}' not found.");
-        if (anchorMask == 0) { /* 레이어 안 쓸거면 경고 생략 가능 */ }
 
-        if (p2ObstructionMask.value == 0)
-        {
-            // Ground|Event|Trap을 가림막으로 사용
-            int mask = groundMask | eventMask | trapMask;
-            p2ObstructionMask = mask;
-        }
         hazardMask = GetMaskFromCsv(hazardLayerNames);
         if (hazardMask == 0)
         {
@@ -583,7 +527,7 @@ public class PlayerMouseMovement : MonoBehaviour
                 if (sr)
                 {
                     lr.sortingLayerID = sr.sortingLayerID;
-                    lr.sortingOrder = sr.sortingOrder + beamSortingOrderOffset + 1;
+                    lr.sortingOrder = sr.sortingOrder + 2 + 1;
                 }
 
                 lr.startColor = new Color(1f, 0f, 0f, 0.95f);
@@ -837,6 +781,9 @@ public class PlayerMouseMovement : MonoBehaviour
 
                     // ★ 프리뷰 갱신 (실제 물리와 동기화된 포물선)
                     UpdateThrowPreview();
+                    
+                    // P2 실루엣 스프라이트 업데이트
+                    UpdateP2SilhouetteSprite();
                     return;
                 }
             }
@@ -1260,13 +1207,9 @@ public class PlayerMouseMovement : MonoBehaviour
         }
 
         FixVerticalSeam(rawX);
-        if (playerID == SwapController.PlayerChar.P2 && p2LaserActive && p2AnchorMode && p2AnchorCol)
-        {
-            ApplyAnchorConstraint(ref v);
-        }
         rb.linearVelocity = v;
-        rb.linearVelocity = v;
-        // --- P2 레이저 물리 끌어오기 ---
+        // --- P2 레이저 물리 끌어오기 기능 제거됨 ---
+        // (P2의 박스 끌기 레이저 기능이 제거되었습니다)
         
 
         bool groundedThisFrame = groundedStrict;
@@ -1885,49 +1828,6 @@ public class PlayerMouseMovement : MonoBehaviour
         Bounds b = bodyCollider.bounds;
         int sign = dirInput > 0f ? +1 : -1;
 
-        bool allowBoxSurface = false;
-        if (enableBoxGateForStepUp && boxMask != 0)
-        {
-            float cx = b.center.x + sign * (b.extents.x + boxGateDepth * 0.5f);
-            Vector2 size = new Vector2(boxGateDepth, boxGateThickness);
-
-            Vector2 lowCenter = new Vector2(cx, b.min.y + boxGateLowerY);
-            Vector2 upCenter = new Vector2(cx, b.min.y + boxGateUpperY);
-
-            bool lowHit = Physics2D.OverlapBox(lowCenter, size, 0f, boxMask);
-            bool upHit = Physics2D.OverlapBox(upCenter, size, 0f, boxMask);
-
-#if UNITY_EDITOR
-            // 디버그 시각화
-            Debug.DrawLine(lowCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
-                           lowCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
-                           lowHit ? Color.cyan : Color.gray, 0f);
-            Debug.DrawLine(lowCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
-                           lowCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
-                           lowHit ? Color.cyan : Color.gray, 0f);
-            Debug.DrawLine(lowCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
-                           lowCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
-                           lowHit ? Color.cyan : Color.gray, 0f);
-            Debug.DrawLine(lowCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
-                           lowCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
-                           lowHit ? Color.cyan : Color.gray, 0f);
-
-            Debug.DrawLine(upCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
-                           upCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
-                           upHit ? Color.blue : Color.gray, 0f);
-            Debug.DrawLine(upCenter + new Vector2(size.x * 0.5f, -size.y * 0.5f),
-                           upCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
-                           upHit ? Color.blue : Color.gray, 0f);
-            Debug.DrawLine(upCenter + new Vector2(size.x * 0.5f, size.y * 0.5f),
-                           upCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
-                           upHit ? Color.blue : Color.gray, 0f);
-            Debug.DrawLine(upCenter + new Vector2(-size.x * 0.5f, size.y * 0.5f),
-                           upCenter + new Vector2(-size.x * 0.5f, -size.y * 0.5f),
-                           upHit ? Color.blue : Color.gray, 0f);
-#endif
-            if (upHit) return;                // 높다 → 금지
-            allowBoxSurface = lowHit && !upHit;
-        }
 
         // ===== 발 앞쪽에서 '올라탈 표면' 높이 측정 =====
         float feetY = b.min.y + 0.01f;
@@ -1937,8 +1837,7 @@ public class PlayerMouseMovement : MonoBehaviour
         );
         float rayLen = stepUpMax + 0.06f;
 
-        //Box 표면도 허용해야 Box 위로 올라간다
-        int surfaceMask = groundMask | eventMask | (allowBoxSurface ? boxMask : 0);
+        int surfaceMask = groundMask | eventMask;
 
         RaycastHit2D down = Physics2D.Raycast(rayOrigin, Vector2.down, rayLen, surfaceMask);
 #if UNITY_EDITOR
@@ -1990,33 +1889,6 @@ public class PlayerMouseMovement : MonoBehaviour
         if (rb) rb.linearVelocity = Vector2.zero;
     }
 
-    private void ApplyAnchorConstraint(ref Vector2 v)
-    {
-        // 앵커 중심과 플레이어 몸 중심
-        Vector2 anchor = p2AnchorCol.bounds.center;
-        Vector2 center = bodyCollider.bounds.center;
-
-        float max = p2AnchorUseBoxBreakDist ? p2LaserBreakDist : p2AnchorMaxDist;
-
-        // LaserAnchor가 길이 오버라이드하면 적용
-        var la = p2AnchorCol.GetComponentInParent<LaserAnchor>();
-        if (la && la.maxDistanceOverride > 0f) max = la.maxDistanceOverride;
-
-        Vector2 r = center - anchor;
-        float dist = r.magnitude;
-        if (dist <= max + 0.0001f) return;
-
-        Vector2 dir = r / dist;
-
-        // 1) 바깥쪽 속도 성분 제거(더 멀어지지 않게)
-        float outV = Vector2.Dot(v, dir);
-        if (outV > 0f) v -= dir * outV;
-
-        // 2) 위치 스냅(원주 위로)
-        Vector2 targetCenter = anchor + dir * max;
-        Vector2 delta = targetCenter - center;
-        rb.position += delta; // bounds.center 기준 보정
-    }
 
     private void FixVerticalSeam(float dirInput)
     {
@@ -2095,79 +1967,6 @@ public class PlayerMouseMovement : MonoBehaviour
         throwPreview.colorGradient = g;
     }
 
-    private void EnsureP2LaserLine()
-    {
-        if (p2LaserLine != null) return;
-
-        var go = new GameObject("P2LaserLine");
-        go.transform.SetParent(transform, false);
-        p2LaserLine = go.AddComponent<LineRenderer>();
-
-        // 머티리얼 없이도 또렷하게: 기본 Unlit 느낌
-        var shader = Shader.Find("Sprites/Default");
-        var mat = new Material(shader);
-        p2LaserLine.sharedMaterial = mat;
-
-        p2LaserLine.textureMode = LineTextureMode.Stretch;
-        p2LaserLine.numCapVertices = 8;
-        p2LaserLine.numCornerVertices = 3;
-        p2LaserLine.alignment = LineAlignment.View;
-        p2LaserLine.positionCount = 2;
-        p2LaserLine.enabled = false;
-
-        // 파란빛 그라디언트
-        var g = new Gradient();
-        g.SetKeys(
-            new GradientColorKey[] {
-            new GradientColorKey(new Color(0.25f, 0.75f, 1f, 1f), 0f),  // 밝은 파랑
-            new GradientColorKey(new Color(0.05f, 0.35f, 1f, 1f), 1f)   // 진한 파랑
-            },
-            new GradientAlphaKey[] {
-            new GradientAlphaKey(0.85f, 0f),
-            new GradientAlphaKey(0.85f, 1f)
-            }
-        );
-        p2LaserLine.colorGradient = g;
-
-        // 기본 굵기 곡선(중앙 살짝 두껍게)
-        var w = new AnimationCurve(
-            new Keyframe(0f, 1.0f),
-            new Keyframe(0.15f, 1.2f),
-            new Keyframe(0.85f, 1.2f),
-            new Keyframe(1f, 0.8f)
-        );
-        p2LaserLine.widthCurve = w;
-        p2LaserLine.widthMultiplier = beamBaseWidth;
-
-        // 정렬: 플레이어 스프라이트보다 위
-        var sr = GetComponentInChildren<SpriteRenderer>();
-        if (sr != null)
-        {
-            p2LaserLine.sortingLayerID = sr.sortingLayerID;
-            p2LaserLine.sortingOrder = sr.sortingOrder + beamSortingOrderOffset;
-        }
-    }
-
-    private void EnsureP2ImpactFx()
-    {
-        if (p2ImpactFx != null || impactSprite == null) return;
-
-        var fx = new GameObject("P2LaserImpact");
-        fx.transform.SetParent(transform, false);
-        p2ImpactSr = fx.AddComponent<SpriteRenderer>();
-        p2ImpactSr.sprite = impactSprite;
-        p2ImpactSr.color = new Color(0.35f, 0.75f, 1f, 0.9f); // 푸른 글로우
-
-        var sr = GetComponentInChildren<SpriteRenderer>();
-        if (sr != null)
-        {
-            p2ImpactSr.sortingLayerID = sr.sortingLayerID;
-            p2ImpactSr.sortingOrder = sr.sortingOrder + beamSortingOrderOffset + 1;
-        }
-
-        p2ImpactFx = fx.transform;
-        p2ImpactFx.gameObject.SetActive(false);
-    }
 
 
     // 애니메이션 이벤트 훅(선택 사용)
@@ -2323,41 +2122,110 @@ public class PlayerMouseMovement : MonoBehaviour
         isCarrying = true;
         carryset = true;
 
-        // ★ 오토캐치: 'carrying'만 On
+        // ★ 오토캐치: 'carrying'만 On (자동캐리시에는 carry 애니 대신 carrying 애니 사용)
         if (rb2)
         {
             AnimatorSetBoolSafe(rb2, carryingBoolName, true);
-            // 수동 캐리용 'carry'는 건드리지 않음
+            // 자동캐리시에는 carry Bool을 켜지 않음 (carrying만 사용)
+            // AnimatorSetBoolSafe(rb2, carryBoolName, true); // 제거됨
+            
+            // 자동캐리 시 carrying 애니메이션을 10프레임부터 시작
+            StartCoroutine(SetCarryingAnimationFrame(autoCatchCarryStartFrame));
         }
     }
 
-    private IEnumerator RestoreBoxAfterDelay(Transform root, Rigidbody2D rb2d)
+    // 수동캐리 시 애니메이션 프레임 설정 코루틴 (Carry 애니메이션)
+    private System.Collections.IEnumerator SetCarryAnimationFrame(int startFrame)
     {
-        yield return new WaitForSeconds(onReleaseDragDuration);
-
-        // 드래그 원래값 복원
-        if (rb2d != null)
+        if (rb2 == null) yield break;
+        
+        // 애니메이션이 시작될 때까지 대기
+        yield return new WaitForEndOfFrame();
+        yield return null;
+        
+        // Carry 애니메이션 상태가 시작될 때까지 대기 (최대 10프레임)
+        int waitFrames = 0;
+        while (waitFrames < 10)
         {
-            if (p2PrevDrag >= 0f) rb2d.linearDamping = p2PrevDrag;
-            if (p2PrevAngDrag >= 0f) rb2d.angularDamping = p2PrevAngDrag;
-        }
-
-        // 마찰은 조금 더 유지했다가 원복
-        if (restoreMatAfter)
-        {
-            yield return new WaitForSeconds(Mathf.Max(0f, restoreMatAfterSec - onReleaseDragDuration));
-            for (int i = 0; i < p2LastCols.Count; i++)
+            AnimatorStateInfo currentState = rb2.GetCurrentAnimatorStateInfo(0);
+            if (currentState.IsName(carryStateName))
             {
-                var (col, orig) = p2LastCols[i];
-                if (col) col.sharedMaterial = orig;
+                break;
             }
-            p2LastCols.Clear();
+            yield return null;
+            waitFrames++;
         }
-
-        p2PrevDrag = p2PrevAngDrag = -1f;
-        p2RestoreCo = null;
+        
+        // 60fps 기준으로 프레임을 시간으로 변환
+        float frameTime = startFrame / 60f;
+        float normalizedTime;
+        
+        // 애니메이션 클립의 길이를 고려하여 정규화된 시간 계산
+        if (carryClipRef != null)
+        {
+            normalizedTime = frameTime / carryClipRef.length;
+            // 0~1 범위로 제한
+            normalizedTime = Mathf.Clamp01(normalizedTime);
+        }
+        else
+        {
+            // carryClipRef가 없으면 기본 1초 기준으로 가정
+            normalizedTime = Mathf.Clamp01(frameTime / 1f);
+            Debug.LogWarning($"[PlayerMouseMovement] carryClipRef is null, using default 1s timing.");
+        }
+        
+        // 애니메이션을 해당 프레임에서 시작
+        rb2.Play(carryStateName, 0, normalizedTime);
+        
+        Debug.Log($"[PlayerMouseMovement] Manual-carry animation started from frame {startFrame} (normalized time: {normalizedTime:F3})");
     }
-
+    
+    // 자동캐리 시 애니메이션 프레임 설정 코루틴 (Carrying 애니메이션)
+    private System.Collections.IEnumerator SetCarryingAnimationFrame(int startFrame)
+    {
+        if (rb2 == null) yield break;
+        
+        // 애니메이션이 시작될 때까지 대기
+        yield return new WaitForEndOfFrame();
+        yield return null;
+        
+        // Carrying 애니메이션 상태가 시작될 때까지 대기 (최대 10프레임)
+        int waitFrames = 0;
+        while (waitFrames < 10)
+        {
+            AnimatorStateInfo currentState = rb2.GetCurrentAnimatorStateInfo(0);
+            if (currentState.IsName(carryingStateName))
+            {
+                break;
+            }
+            yield return null;
+            waitFrames++;
+        }
+        
+        // 60fps 기준으로 프레임을 시간으로 변환
+        float frameTime = startFrame / 60f;
+        float normalizedTime;
+        
+        // 애니메이션 클립의 길이를 고려하여 정규화된 시간 계산
+        if (carryingClipRef != null)
+        {
+            normalizedTime = frameTime / carryingClipRef.length;
+            // 0~1 범위로 제한
+            normalizedTime = Mathf.Clamp01(normalizedTime);
+        }
+        else
+        {
+            // carryingClipRef가 없으면 기본 1초 기준으로 가정
+            normalizedTime = Mathf.Clamp01(frameTime / 1f);
+            Debug.LogWarning($"[PlayerMouseMovement] carryingClipRef is null, using default 1s timing.");
+        }
+        
+        // 애니메이션을 해당 프레임에서 시작
+        rb2.Play(carryingStateName, 0, normalizedTime);
+        
+        Debug.Log($"[PlayerMouseMovement] Auto-carry (carrying) animation started from frame {startFrame} (normalized time: {normalizedTime:F3})");
+    }
+    
     private void SetFrictionless(bool on)
     {
         if (!bodyCollider) return;
@@ -2753,7 +2621,7 @@ public class PlayerMouseMovement : MonoBehaviour
         for (int i = 0; i < all.Length; i++)
         {
             var lr = all[i];
-            if (lr == p2LaserLine) continue; // P2 레이저 라인은 건드리지 않음
+            // P2 레이저 라인 제거됨
             if (lr.gameObject.name == "ThrowPreviewLine")
             {
                 if (found == null) found = lr;
@@ -2805,7 +2673,7 @@ public class PlayerMouseMovement : MonoBehaviour
         for (int i = 0; i < all.Length; i++)
         {
             var lr = all[i];
-            if (lr == throwPreview || lr == p2LaserLine) continue;
+            if (lr == throwPreview) continue;
             string n = lr.gameObject.name;
             if (n.Contains("Throw") || n.Contains("Preview"))
                 lr.enabled = false;
@@ -2821,6 +2689,9 @@ public class PlayerMouseMovement : MonoBehaviour
             throwPreview.positionCount = 0;
             throwPreview.enabled = false;
         }
+        
+        // P2 실루엣도 숨기기
+        HideP2Silhouette();
     }
 
     private void UpdateThrowPreview()
@@ -2857,6 +2728,9 @@ public class PlayerMouseMovement : MonoBehaviour
 
         // 기본은 안전색
         SetThrowPreviewColor(false);
+        
+        // P2 실루엣 준비
+        EnsureP2Silhouette();
 
         int total = Mathf.Max(2, steps);
         line.positionCount = total;
@@ -2923,6 +2797,9 @@ public class PlayerMouseMovement : MonoBehaviour
                     line.enabled = true;
 
                     SetThrowPreviewColor(hazardAtEnd);
+                    
+                    // P2 실루엣을 착지 지점에 표시
+                    ShowP2SilhouetteAtPosition(endPoint, hazardAtEnd);
                     return;
                 }
             }
@@ -2936,6 +2813,9 @@ public class PlayerMouseMovement : MonoBehaviour
         bool hazardFinal = Physics2D.OverlapCircle(p, Mathf.Max(0.06f, radius * 0.8f), hazardMask);
         SetThrowPreviewColor(hazardFinal);
         line.enabled = true;
+        
+        // P2 실루엣을 마지막 지점에 표시
+        ShowP2SilhouetteAtPosition(p, hazardFinal);
     }
 
     public void ForceReviveAt(Vector3 worldPos)
@@ -3146,18 +3026,79 @@ public class PlayerMouseMovement : MonoBehaviour
         Vector2 right = center + Vector2.right * 0.1f;
 
         RaycastHit2D centerHit = Physics2D.Raycast(center, Vector2.up, rayDistance, trapMask);
-        RaycastHit2D leftHit = Physics2D.Raycast(left, Vector2.up, rayDistance, trapMask);
-        RaycastHit2D rightHit = Physics2D.Raycast(right, Vector2.up, rayDistance, trapMask);
-
-        Debug.DrawRay(center, Vector2.up * rayDistance, centerHit.collider ? Color.magenta : Color.gray);
-        Debug.DrawRay(left, Vector2.up * rayDistance, leftHit.collider ? Color.magenta : Color.gray);
-        Debug.DrawRay(right, Vector2.up * rayDistance, rightHit.collider ? Color.magenta : Color.gray);
-
-        bool hitTrap =
-            (centerHit.collider && ((trapLayerIndex >= 0 && centerHit.collider.gameObject.layer == trapLayerIndex) || centerHit.collider.CompareTag("Trap"))) ||
-            (leftHit.collider && ((trapLayerIndex >= 0 && leftHit.collider.gameObject.layer == trapLayerIndex) || leftHit.collider.CompareTag("Trap"))) ||
-            (rightHit.collider && ((trapLayerIndex >= 0 && rightHit.collider.gameObject.layer == trapLayerIndex) || rightHit.collider.CompareTag("Trap")));
-        _ = hitTrap; // 현재는 시각 디버그만
+    }
+    
+    // === P2 실루엣 관리 ===
+    
+    private void EnsureP2Silhouette()
+    {
+        if (!showP2Silhouette || otherPlayer == null) return;
+        
+        if (p2SilhouetteObject == null)
+        {
+            // P2 실룣엣 오브젝트 생성
+            p2SilhouetteObject = new GameObject("P2Silhouette");
+            p2SilhouetteObject.transform.SetParent(transform, false);
+            
+            // P2의 SpriteRenderer를 복사하여 실룣엣 생성
+            var p2SpriteRenderer = otherPlayer.GetComponentInChildren<SpriteRenderer>();
+            if (p2SpriteRenderer != null)
+            {
+                var silhouetteSR = p2SilhouetteObject.AddComponent<SpriteRenderer>();
+                silhouetteSR.sprite = p2SpriteRenderer.sprite;
+                silhouetteSR.sortingLayerID = p2SpriteRenderer.sortingLayerID;
+                silhouetteSR.sortingOrder = p2SpriteRenderer.sortingOrder + 1; // P2보다 위에
+                
+                // 초기 색상 설정 (안전 색상)
+                silhouetteSR.color = p2SilhouetteSafeColor;
+                
+                // 크기 조정
+                p2SilhouetteObject.transform.localScale = Vector3.one * p2SilhouetteScale;
+            }
+            
+            // 초기에는 비활성화
+            p2SilhouetteObject.SetActive(false);
+        }
+    }
+    
+    private void ShowP2SilhouetteAtPosition(Vector2 position, bool isHazardous)
+    {
+        if (!showP2Silhouette || p2SilhouetteObject == null) return;
+        
+        // 위치 설정
+        p2SilhouetteObject.transform.position = new Vector3(position.x, position.y, transform.position.z);
+        
+        // 색상 설정
+        var silhouetteSR = p2SilhouetteObject.GetComponent<SpriteRenderer>();
+        if (silhouetteSR != null)
+        {
+            silhouetteSR.color = isHazardous ? p2SilhouetteHazardColor : p2SilhouetteSafeColor;
+        }
+        
+        // 활성화
+        p2SilhouetteObject.SetActive(true);
+    }
+    
+    private void HideP2Silhouette()
+    {
+        if (p2SilhouetteObject != null)
+        {
+            p2SilhouetteObject.SetActive(false);
+        }
+    }
+    
+    // P2 실룣엣 스프라이트 업데이트 (애니메이션 변경 시 호출)
+    private void UpdateP2SilhouetteSprite()
+    {
+        if (!showP2Silhouette || p2SilhouetteObject == null || otherPlayer == null) return;
+        
+        var p2SpriteRenderer = otherPlayer.GetComponentInChildren<SpriteRenderer>();
+        var silhouetteSR = p2SilhouetteObject.GetComponent<SpriteRenderer>();
+        
+        if (p2SpriteRenderer != null && silhouetteSR != null && silhouetteSR.sprite != p2SpriteRenderer.sprite)
+        {
+            silhouetteSR.sprite = p2SpriteRenderer.sprite;
+        }
     }
 
     // === 유틸: 스프라이트 좌우 강제 (항상 '자기 자신'만 수정) ===

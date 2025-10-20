@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7118345414370417609}
   - component: {fileID: 2457372783041995336}
   - component: {fileID: -9115908124103126150}
+  - component: {fileID: -455303081548350661}
   - component: {fileID: 7065786474972069596}
   m_Layer: 16
   m_Name: Blood_1
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.6698113, g: 0.034754362, b: 0.034754362, a: 1}
   m_FlipX: 0
@@ -184,6 +185,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-455303081548350661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6865428161056805613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b821dfa57514e4e973b492dcab6977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 67042294
+  ignoreTilemaps: 0
+  tilemapMode: 0
+  tilemapLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  rescanPeriodically: 1
+  rescanInterval: 0.5
+  includeInactiveChildren: 1
 --- !u!114 &7065786474972069596
 MonoBehaviour:
   m_ObjectHideFlags: 0

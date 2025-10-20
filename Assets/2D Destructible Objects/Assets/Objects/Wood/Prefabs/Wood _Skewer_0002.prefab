@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 50219395184509840}
   - component: {fileID: 61472537485679966}
   - component: {fileID: 114934226110494174}
+  - component: {fileID: 556498963962419404}
   m_Layer: 0
   m_Name: Wood _Skewer_0002
   m_TagString: Untagged
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300014, guid: 83f20a3caf2c81841acda3122c131fde, type: 3}
   m_Color: {r: 0.5372549, g: 0.37647063, b: 0.21960786, a: 1}
   m_FlipX: 0
@@ -179,3 +180,26 @@ MonoBehaviour:
   shardSpeedMultiplier: {x: 150, y: 500}
   fadingSpeed: 1
   startFadingAfterSeconds: 4
+--- !u!114 &556498963962419404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752615592082870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b821dfa57514e4e973b492dcab6977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 4194304
+  ignoreTilemaps: 0
+  tilemapMode: 0
+  tilemapLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  rescanPeriodically: 1
+  rescanInterval: 0.5
+  includeInactiveChildren: 1

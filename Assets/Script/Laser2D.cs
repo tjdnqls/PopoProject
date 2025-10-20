@@ -37,8 +37,8 @@ public class Laser2D : MonoBehaviour
     [Tooltip("타겟팅에 따라 자동 색상 적용")]
     public bool autoTintByTarget = true;
     public Color tintP1Only = new Color(0.1f, 0.01f, 0.01f, 1f);   // 회색(=P1)
-    public Color tintP2Only = new Color(0.25f, 0.55f, 1f, 1f);      // 파랑(=P2)
-    public Color tintBoth = new Color(1f, 0.92f, 0.25f, 1f);      // 노랑(=둘 다)
+    public Color tintP2Only = new Color(0.25f, 0.55f, 1f, 1f);     // 파랑(=P2)
+    public Color tintBoth = new Color(1f, 0.92f, 0.25f, 1f);       // 노랑(=둘 다)
 
     // ---- Runtime ----
     private BoxCollider2D box;
@@ -90,6 +90,7 @@ public class Laser2D : MonoBehaviour
         sr.sortingOrder = orderInLayer;
         sr.sprite = sprite != null ? sprite : MakeFallbackWhiteSprite();
 
+        SanitizeMasks();   // <<< 수정: 장애물 마스크에서 플레이어/자신 레이어 제외
         ApplyAutoTint();
         CachePlayers();
         UpdateLaserGeometry(); // 초기화
@@ -104,6 +105,7 @@ public class Laser2D : MonoBehaviour
             box.size = new Vector2(Mathf.Max(0.01f, maxLength), Mathf.Max(0.01f, width));
             box.offset = new Vector2(box.size.x * 0.5f, 0f);
         }
+        SanitizeMasks();   // <<< 수정: 에디터 값 변경 시에도 항상 정리
     }
 
     void FixedUpdate() => UpdateLaserGeometry();
@@ -118,7 +120,9 @@ public class Laser2D : MonoBehaviour
         Vector2 origin = (Vector2)transform.position + dir * skin;
         float castDist = Mathf.Max(0.001f, len - skin);
 
-        var filter = new ContactFilter2D { useLayerMask = true, layerMask = obstacleMask, useTriggers = true };
+        // <<< 수정: 트리거는 장애물로 취급하지 않도록 변경
+        var filter = new ContactFilter2D { useLayerMask = true, layerMask = obstacleMask, useTriggers = false };
+
         int count = Physics2D.Raycast(origin, dir, filter, _hits, castDist);
 
         float hitDist = float.PositiveInfinity;
@@ -220,6 +224,16 @@ public class Laser2D : MonoBehaviour
             case Targeting.P2Only: sr.color = tintP2Only; break; // 파랑
             case Targeting.BothPlayers: sr.color = tintBoth; break; // 노랑
         }
+    }
+
+    // <<< 추가: 장애물 마스크 정리(플레이어/자기 레이어 제거)
+    void SanitizeMasks()
+    {
+        // 자신 레이어 제거
+        obstacleMask &= ~(1 << gameObject.layer);
+
+        // playerMask에 포함된 모든 레이어 제거
+        obstacleMask &= ~playerMask;
     }
 
     // 스프라이트 없을 때 안전장치용 1x1 흰색

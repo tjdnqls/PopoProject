@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6739446996265279806}
   - component: {fileID: 1295500773919712242}
   - component: {fileID: 1767035018179976243}
+  - component: {fileID: 6683608412323684820}
   m_Layer: 0
   m_Name: at
   m_TagString: Untagged
@@ -152,3 +153,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6683608412323684820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7326722624449095310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b821dfa57514e4e973b492dcab6977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 67105783
+  ignoreTilemaps: 0
+  tilemapMode: 0
+  tilemapLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  rescanPeriodically: 1
+  rescanInterval: 0.5
+  includeInactiveChildren: 1

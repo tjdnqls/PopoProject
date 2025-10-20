@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8817476912747273497}
   - component: {fileID: 7889028833051285940}
   - component: {fileID: 5198889387107018510}
+  - component: {fileID: 1926511510178139116}
   - component: {fileID: 2418588521410121874}
   m_Layer: 16
   m_Name: Blood_0
@@ -186,6 +187,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1926511510178139116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360708946295218638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b821dfa57514e4e973b492dcab6977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 67042294
+  ignoreTilemaps: 0
+  tilemapMode: 0
+  tilemapLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  rescanPeriodically: 1
+  rescanInterval: 0.5
+  includeInactiveChildren: 1
 --- !u!114 &2418588521410121874
 MonoBehaviour:
   m_ObjectHideFlags: 0
